@@ -1,0 +1,77 @@
+
+# The AWS account where resource are created
+account_id = ""
+
+# The AWS region to be used
+region = "eu-central-1"
+
+# The tags to be added to all resources
+tags = {}
+
+# The machine size of the Linux nodes for the regular services
+linuxNodeSize = "m5a.4xlarge"
+
+# The minimum number of Linux nodes for the regular services
+linuxNodeCountMin = 1
+
+# The maximum number of Linux nodes for the regular services
+linuxNodeCountMax = 12
+
+# The machine size of the Linux nodes for the job execution
+linuxExecutionNodeSize = "m5a.4xlarge"
+
+# The minimum number of Linux nodes for the job execution
+linuxExecutionNodeCountMin = 1
+
+# The maximum number of Linux nodes for the job execution
+linuxExecutionNodeCountMax = 10
+
+# Specifies whether a VM for the dSPACE Installation Manager will be deployed
+licenseServer = true
+
+# The version of the EKS cluster.
+kubernetesVersion = "1.21"
+
+# The CIDR for the virtual private cluster.
+vpcCidr = "10.1.0.0/18"
+
+# List of CIDRs for the private subnets.
+vpcPrivateSubnets = ["10.1.0.0/22", "10.1.4.0/22", "10.1.8.0/22"]
+
+# List of CIDRs for the public subnets.
+vpcPublicSubnets = ["10.1.12.0/22", "10.1.16.0/22", "10.1.20.0/22"]
+
+# List of CIDRs for the database subnets.
+vpcDatabaseSubnets = ["10.1.24.0/22", "10.1.28.0/22", "10.1.32.0/22"]
+
+# Install AWS Distro for OpenTelemetry to collect cluster metrics and send them to AWS CloudWatch.
+enable_aws_open_telemetry = false
+
+# Install FluentBit to send container logs to CloudWatch.
+enable_aws_for_fluentbit = true
+
+simpheraInstances = {
+  "production" = {
+    name                         = "simphera-production"
+    postgresqlAdminLogin         = "dbuser"
+    postgresqlAdminPassword      = "" # leave blank to generate random password
+    postgresqlVersion            = "11"
+    postgresqlStorage            = 640000
+    db_instance_type_keycloak    = "db.t3.large"
+    db_instance_type_simphera    = "db.t3.large"
+    k8s_namespace                = "simphera"
+    secret_minio_accesskey       = "miniouser"
+    secret_minio_secretkey       = "" # leave blank to generate random password
+    secret_couchdb_adminUsername = "admin"
+    secret_keycloak_password     = "" # leave blank to generate random password
+    secret_couchdb_adminPassword = "" # leave blank to generate random password
+    secret_tls_public_file       = "wildcard.crt"
+    secret_tls_private_file      = "wildcard.key"
+    simphera_fqdn                = "simphera.example.com"
+    minio_fqdn                   = "minio.example.com"
+    keycloak_fqdn                = "keycloak.example.com"
+    license_server_fqdn          = "licenses.example.com"
+    simphera_chart_registry      = "registry.dspace.cloud"
+    simphera_image_tag           = "2022-03-14-0911-1"
+  }
+}

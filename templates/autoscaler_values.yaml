@@ -1,0 +1,22 @@
+awsRegion: ${aws_region}
+
+autoDiscovery:
+  clusterName: ${eks_cluster_id}
+extraArgs:
+  aws-use-static-instance-list: true
+
+rbac:
+  serviceAccount:
+    create: false
+    name: ${service_account_name}
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+nodeSelector:
+  kubernetes.io/os: linux
