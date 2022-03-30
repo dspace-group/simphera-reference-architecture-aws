@@ -17,7 +17,7 @@ variable "tags" {
 
 variable "tenant" {
   type        = string
-  description = "Account Name or unique account unique id e.g., apps or management or aws007"
+  description = "Account name or unique account id e.g., apps or management or aws007"
   default     = "aws"
 }
 
