@@ -110,8 +110,6 @@
 | EKS cluster secret encryption key | No |
 | EKS Workers FluentBit CloudWatch Log group KMS Key | No |
 
-# <a name="CategorySecurityIdentityCompliance"></a> ![Security, Identity, & Compliance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/SecurityIdentityCompliance.png) Security, Identity, & Compliance
-
 ## <a name="ServiceIdentityandAccessManagement"></a> ![AWS Identity and Access Management](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/IdentityandAccessManagement.png) AWS Identity and Access Management
 
 ### <a name="ResourceRole"></a> ![Role](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/IdentityAccessManagementRole.png) Role
