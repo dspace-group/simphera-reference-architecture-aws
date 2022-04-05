@@ -2,6 +2,13 @@
 
 ## <a name="ServiceEC2"></a> ![Amazon Elastic Compute Cloud](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2.png) Amazon Elastic Compute Cloud
 
+### <a name="ResourceEC2Instance"></a>![EC2 Instance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2Instance.png) Elastic IP address
+| AMI Name | Platform | Description | Mandatory |
+| -------- | -------- | ----------- | --------- |
+| amazon-eks-node | Linux/UNIX | Default node pool instances (auto-scaled) | Yes |
+| amazon-eks-node | Linux/UNIX | Execution node pool instances (auto-scaled) | No |
+| amzn2-ami-hvm-2.0.20210813.1-x86_64-gp2 | Amazon Linux  | dSPACE license server  | No |
+
 ### <a name="ResourceEC2ElasticIPAddress"></a>![Elastic IP address](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2ElasticIPAddress.png) Elastic IP address
 | Description |
 | ----------- |
@@ -18,6 +25,12 @@
 # <a name="CategoryContainers"></a> ![Containers](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Containers/Containers.png) Containers
 
 ## <a name="ServiceElasticKubernetesService"></a> ![Amazon Elastic Kubernetes Service](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Containers/ElasticKubernetesService.png) Amazon Elastic Kubernetes Service
+
+
+### <a name="ResourceCluster"></a>Cluster
+| Name | Description | Mandatory |
+| ---- | ----------- | --------- |
+| &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-eks | Kubernetes cluster for SIMPHERA. | Yes |
 
 ### <a name="ResourceNodeGroup"></a>Node group
 | Description | Mandatory |
@@ -99,6 +112,7 @@
 | &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt; | Stores binary data like zipped files containing simulation models, test results, vehicle models, etc. | private | No |
 | &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-license-server | This bucket is used for the initial setup of the license server to transfer several license files securely between an administration PC and the license server  | private | No |
 
+## <a name="ServiceAmazonElasticBlockStore"></a> ![Amazon Elastic Block Store](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Storage/ElasticBlockStore.png) Amazon Elastic Block Store 
 
 # <a name="CategorySecurityIdentityCompliance"></a> ![Security, Identity, & Compliance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/SecurityIdentityCompliance.png) Security, Identity, & Compliance
 
