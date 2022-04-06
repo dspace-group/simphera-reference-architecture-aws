@@ -22,6 +22,12 @@
 
 ## <a name="ServiceEC2AutoScaling"></a> ![Amazon EC2 Auto Scaling](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2AutoScaling.png) Amazon EC2 Auto Scaling
 
+### <a name="ResourceAutoScalingGroup"></a> Auto Scaling Group
+| Name | Mandatory |
+| ---- | --------- |
+| Auto scaling group for default node pool. | Yes |
+| Auto scaling group for execution node pool. | No |
+
 # <a name="CategoryContainers"></a> ![Containers](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Containers/Containers.png) Containers
 
 ## <a name="ServiceElasticKubernetesService"></a> ![Amazon Elastic Kubernetes Service](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Containers/ElasticKubernetesService.png) Amazon Elastic Kubernetes Service
@@ -113,6 +119,13 @@
 | &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-license-server | This bucket is used for the initial setup of the license server to transfer several license files securely between an administration PC and the license server  | private | No |
 
 ## <a name="ServiceAmazonElasticBlockStore"></a> ![Amazon Elastic Block Store](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Storage/ElasticBlockStore.png) Amazon Elastic Block Store 
+
+# <a name="ResourceVolume"></a> ![Volume](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Storage/ElasticBlockStoreVolume.png) Volume
+
+| Description | Mandatory |
+| ----------- | --------- |
+| Volume attached to the license server EC2 | No |
+| Kubernetes Persistent Volumes CouchDB nodes (deprecated) | No |
 
 # <a name="CategorySecurityIdentityCompliance"></a> ![Security, Identity, & Compliance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/SecurityIdentityCompliance.png) Security, Identity, & Compliance
 
