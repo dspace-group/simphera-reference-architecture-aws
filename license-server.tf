@@ -6,12 +6,12 @@ resource "aws_instance" "license_server" {
   instance_type        = "t3a.large"
   iam_instance_profile = aws_iam_instance_profile.license_server_profile[0].name
   subnet_id            = module.vpc.private_subnets[0]
-  tags                 = merge(var.tags, { "Name" = "${local.infrastructurename}-license-server" })
+  tags                 = merge(var.tags, { "Name" = local.license_server })
 }
 resource "aws_iam_role" "license_server_role" {
   count       = var.licenseServer ? 1 : 0
   description = "IAM role used for the license server instance profile."
-  name        = "${local.infrastructurename}-role"
+  name        = local.license_server_role
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -26,61 +26,28 @@ resource "aws_iam_role" "license_server_role" {
     ]
   })
 }
-resource "aws_iam_role_policy" "role_policy" {
-  count  = var.licenseServer ? 1 : 0
-  name   = "${local.infrastructurename}-role-policy"
-  role   = aws_iam_role.license_server_role[0].id
-  policy = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:ListBucket"
-            ],
-            "Resource": "arn:aws:s3:::${local.infrastructurename}-license-server"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:PutObject",
-                "s3:GetObject",
-                "s3:DeleteObject"
-            ],
-            "Resource": "arn:aws:s3:::${local.infrastructurename}-license-server/*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "ssm:UpdateInstanceInformation",
-                "ssmmessages:CreateControlChannel",
-                "ssmmessages:CreateDataChannel",
-                "ssmmessages:OpenControlChannel",
-                "ssmmessages:OpenDataChannel"
-            ],
-            "Resource": "*"
-        },
-        {
-            "Effect": "Allow",
-            "Action": [
-                "s3:GetEncryptionConfiguration"
-            ],
-            "Resource": "*"
-        }
-    ]
+
+resource "aws_iam_policy" "license_server_policy" {
+  count       = var.licenseServer ? 1 : 0
+  name        = local.license_server_policy
+  description = "Allows access to S3 bucket and Secure Session Manager connections."
+  policy      = templatefile("${path.module}/templates/license_server_policy.json", { bucket = local.license_server_bucket })
 }
-EOF
+
+resource "aws_iam_role_policy_attachment" "minio_policy_attachment" {
+  count      = var.licenseServer ? 1 : 0
+  role       = aws_iam_role.license_server_role[0].name
+  policy_arn = aws_iam_policy.license_server_policy[0].arn
 }
+
 
 resource "aws_s3_bucket" "license_server_bucket" {
   count  = var.licenseServer ? 1 : 0
-  bucket = "${local.infrastructurename}-license-server"
+  bucket = local.license_server_bucket
   acl    = "private"
-  tags   = var.tags
 }
 resource "aws_iam_instance_profile" "license_server_profile" {
   count = var.licenseServer ? 1 : 0
-  name  = "${local.infrastructurename}-instance-profile"
+  name  = local.license_server_instance_profile
   role  = aws_iam_role.license_server_role[0].name
 }
