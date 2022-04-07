@@ -22,21 +22,7 @@ The license server is deployed on a EC2 instance.
 Project files and test results are stored in an non-public Amazon S3 bucket.
 For the initial setup of the license server, several files need to be exchanged between an administration PC and the license server.
 These files are exchanged via an non-public S3 bucket that can be read and written from the administration PC and the license server.
-
-It follows a list of all mandatory and optional AWS resources required for a SIMPHERA deployment:
-* Amazon Elastic Kubernetes Service Cluster
-* Node group
-* Amazon EC2 Instance for license server
-* Amazon RDS PostgreSQL instance for project data
-* Amazon RDS PostgreSQL instance for Keycloak
-* Amazon S3 bucket for project data and results (non-public)
-* Amazon S3 bucket for license server configuration files (non-public)
-* Amazon Virtual Private Cloud
-  * 3 private subnets in different availability zones
-  * 3 public subnets in different availability zones
-  * 3 database subnets in different availability zones
-  * Internet Gateway
-  * NAT Gateway
+A detailed list of the AWS resources that are mandatory/optional for the operation of SIMPHERA can be found in the [AWSCloudSpec](./AWSCloudSpec.md).
 
 ## Usage Instructions
 
@@ -159,6 +145,17 @@ Alternatively, you can get the cluster credentials by using the following comman
 ```bash
 aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
 ```
+
+## Backups
+
+SIMPHERA stores data in the PostgreSQL database and in S3 buckets (MinIO).
+It is recommended to enable continuous backups which allows point-in-time recovery.
+[Point-in-time recovery](https://docs.aws.amazon.com/aws-backup/latest/devguide/point-in-time-recovery.html) lets you restore your data to any point in time within a defined retention period.
+Versioning must be enabled on S3 buckets which is a requirement for point-in-time recovery.
+These Terraform files enable versioning for the S3 bucket that is used for MinIO.
+The AWS documentation describes how to [restore a database](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-rds.html) and how to [restore S3 data](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
+It is recommended to copy the backups of a production resource deployed in one AWS region to another AWS region.
+In case of a disaster in the region of a production resource its backup can still be restored.
 
 
 <!-- BEGIN_TF_DOCS -->
