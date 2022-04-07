@@ -77,8 +77,118 @@
 | NAT Gateway for SIMPHERA Virtual Private Network. |
 
 ### <a name="ResourceSecurityGroup"></a>Security group
-| Name | Description |
-| ---- | ----------- |
+<table>
+    <tr>
+        <th>Group name</th>
+        <th>Group description</th>
+        <th>Direction</th>
+        <th>Protocol</th>
+        <th>Port range</th>
+        <th>Rule description</th>
+    </tr>
+    <tr>
+        <td rowspan="5">eks-cluster-sg-&lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-eks></td>
+        <td rowspan="5">EKS created security group applied to ENI that is attached to EKS Control Plane master nodes,
+            as well as any managed workloads.</td>
+        <td>inbound</td>
+        <td>tcp</td>
+        <td>30128</td>
+        <td><a
+                href="https://kubernetes.io/docs/concepts/services-networking/_print/#aws-nlb-support">kubernetes.io/rule/nlb/health</a>
+        </td>
+    </tr>
+    <tr>
+        <td>inbound</td>
+        <td>All</td>
+        <td>All</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>inbound</td>
+        <td>tcp</td>
+        <td>30804</td>
+        <td><a
+                href="https://kubernetes.io/docs/concepts/services-networking/_print/#aws-nlb-support">kubernetes.io/rule/nlb/health</a>
+        </td>
+    </tr>
+    <tr>
+        <td>inbound</td>
+        <td>icmp</td>
+        <td>3 - 4</td>
+        <td><a
+                href="https://kubernetes.io/docs/concepts/services-networking/_print/#aws-nlb-support">kubernetes.io/rule/nlb/mtu</a>
+        </td>
+    </tr>
+    <tr>
+        <td>outbound</td>
+        <td>All</td>
+        <td>All</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan="2">default</td>
+        <td rowspan="2">default VPC security group</td>
+        <td>inbound</td>
+        <td>All</td>
+        <td>All</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>outbound</td>
+        <td>All</td>
+        <td>All</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td rowspan="1">&lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-db-sg</td>
+        <td rowspan="1">PostgreSQL security group</td>
+        <td>inbound</td>
+        <td>tcp</td>
+        <td>5432</td>
+        <td>PostgreSQL access from within VPC</td>
+    </tr>
+    <tr>
+        <td rowspan="4">&lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-eks-eks_worker_sg</td>
+        <td rowspan="4">Security group for all nodes in the cluster.</td>
+        <td>inbound</td>
+        <td>All</td>
+        <td>All</td>
+        <td>Allow node to communicate with each other.</td>
+    </tr>
+    <tr>
+        <td>inbound</td>
+        <td>tcp</td>
+        <td>1025 - 65535</td>
+        <td>Allow workers pods to receive communication from the cluster control plane.</td>
+    </tr>
+    <tr>
+        <td>inbound</td>
+        <td>tcp</td>
+        <td>443</td>
+        <td>Allow pods running extension API servers on port 443 to receive communication from cluster control plane.
+        </td>
+    </tr>
+    <tr>
+        <td>outbound</td>
+        <td>All</td>
+        <td>All</td>
+        <td>Allow nodes all egress to the Internet.</td>
+    </tr>
+    <tr>
+        <td rowspan="2">&lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-eks-eks_cluster_sg</td>
+        <td rowspan="2">EKS cluster security group.</td>
+        <td>inbound</td>
+        <td>tcp</td>
+        <td>443</td>
+        <td>Allow pods to communicate with the EKS cluster API.</td>
+    </tr>
+    <tr>
+        <td>outbound</td>
+        <td>All</td>
+        <td>All</td>
+        <td>Allow cluster egress access to the Internet.</td>
+    </tr>
+</table>
 
 
 ### <a name="ResourceSubnet"></a>Subnet
