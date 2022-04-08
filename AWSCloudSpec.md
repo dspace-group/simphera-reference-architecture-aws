@@ -2,7 +2,7 @@
 
 ## <a name="ServiceEC2"></a> ![Amazon Elastic Compute Cloud](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2.png) Amazon Elastic Compute Cloud
 
-### <a name="ResourceEC2Instance"></a>![EC2 Instance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2Instance.png) Elastic IP address
+### <a name="ResourceEC2Instance"></a>![EC2 Instance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2Instance.png) EC2 Instance
 | AMI Name | Platform | Description | Mandatory |
 | -------- | -------- | ----------- | --------- |
 | amazon-eks-node | Linux/UNIX | Default node pool instances (auto-scaled) | Yes |
@@ -51,7 +51,7 @@
 ### <a name="ResourcePostgreSQLInstance"></a>![PostgreSQL instance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Database/AuroraPostgreSQLInstance.png) PostgreSQL instance
 | Name | Description | Mandatory |
 | ---- | ----------- | --------- |
-| &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-simphera | Store data records of items like projects, test suites, etc. | No |
+| &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-simphera | Store data records of items like projects, test suites, etc. | Yes |
 | &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-keycloak | Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance. | No |
 
 # <a name="CategoryManagementGovernance"></a> ![Management & Governance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/ManagementGovernance/ManagementGovernance.png) Management & Governance
@@ -225,7 +225,7 @@
 
 | Name | Description | [ACL](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl) | Mandatory |
 | ---- | ----------- | ----| --------- |
-| &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt; | Stores binary data like zipped files containing simulation models, test results, vehicle models, etc. | private | No |
+| &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt; | Stores binary data like zipped files containing simulation models, test results, vehicle models, etc. | private | Yes |
 | &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-license-server | This bucket is used for the initial setup of the license server to transfer several license files securely between an administration PC and the license server  | private | No |
 
 ## <a name="ServiceAmazonElasticBlockStore"></a> ![Amazon Elastic Block Store](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Storage/ElasticBlockStore.png) Amazon Elastic Block Store 
