@@ -52,7 +52,7 @@
 | Name | Description | Mandatory |
 | ---- | ----------- | --------- |
 | &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-simphera | Store data records of items like projects, test suites, etc. | Yes |
-| &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-keycloak | Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance. | No |
+| &lt;tenant&gt;-&lt;environment&gt;-&lt;zone&gt;-keycloak | Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance. | Yes |
 
 # <a name="CategoryManagementGovernance"></a> ![Management & Governance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/ManagementGovernance/ManagementGovernance.png) Management & Governance
 ## <a name="ServiceCloudWatch"></a> ![Amazon CloudWatch](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/ManagementGovernance/CloudWatch.png) Amazon CloudWatch

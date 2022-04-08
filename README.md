@@ -24,6 +24,21 @@ For the initial setup of the license server, several files need to be exchanged 
 These files are exchanged via an non-public S3 bucket that can be read and written from the administration PC and the license server.
 A detailed list of the AWS resources that are mandatory/optional for the operation of SIMPHERA can be found in the [AWSCloudSpec](./AWSCloudSpec.md).
 
+## Billable Resources and Services
+Charges may apply for the following AWS resources and services:
+
+| Service | Description | Mandatory? | 
+| ------- | ----------- | ---------- | 
+| Amazon Elastic Kubernetes Service | A Kubernetes cluster is required to run SIMPHERA. | Yes |
+| Amazon Virtual Private Cloud | Virtual network for SIMPHERA. | Yes |
+| Elastic Load Balancing | SIMPHERA uses a network load balancer. | Yes |
+| Amazon EC2 Auto Scaling | SIMPHERA automatically scales compute nodes if the capacity is exhausted. | Yes |
+| Amazon Relational Database | Project and authorization data is stored in Amazon RDS for PostgreSQL instances. | Yes |
+| Amazon Simple Storage Service | Binary artifacts are stored in an S3 bucket. | Yes |
+| AWS Key Management Service (AWS KMS) | Encryption for Kubernetes secrets is enabled by default. | |
+| Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. ||
+| Amazon CloudWatch | Metrics and container logs to CloudWatch. It is recommended to deploy the dSPACE monitoring stack in Kubernetes.||
+
 ## Usage Instructions
 
 To create the AWS resources that are required for operating SIMPHERA, you need to accomplish the following tasks:
