@@ -18,7 +18,7 @@ The data for SIMPHERA projects is stored in a Amazon RDS PostgreSQL instance.
 Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance.
 Executors need licenses to execute tests and simulations.
 They obtain the licenses from a license server.
-The license server is deployed on a EC2 instance.
+The license server is deployed on an EC2 instance.
 Project files and test results are stored in an non-public Amazon S3 bucket.
 For the initial setup of the license server, several files need to be exchanged between an administration PC and the license server.
 These files are exchanged via an non-public S3 bucket that can be read and written from the administration PC and the license server.
