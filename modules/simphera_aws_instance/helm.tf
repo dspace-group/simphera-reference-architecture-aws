@@ -49,7 +49,7 @@ resource "helm_release" "simphera" {
   name      = "simphera"
   chart     = local.simphera_chart_path
   version   = var.simphera_image_tag
-  namespace = var.k8s_namespace
+  namespace = kubernetes_namespace.k8s_namespace.metadata[0].name
   #timeout   = "1200"
   wait   = false # TODO set to true for production
   values = [templatefile("${path.module}/templates/quickstart.yaml", local.quickstart_helm_values)]
