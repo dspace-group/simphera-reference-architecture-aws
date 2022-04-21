@@ -49,6 +49,7 @@ To create the AWS resources that are required for operating SIMPHERA, you need t
 1. create non-public S3 bucket for Terraform state
 1. create IAM policy that gives the IAM user access to the S3 bucket
 1. clone this repository onto your local administration PC
+1. create Secrets manager secret(s)
 1. adjust Terraform variables
 1. apply Terraform configuration
 1. connect to the Kubernetes cluster
@@ -124,11 +125,32 @@ Create the following [IAM policy for accessing the Terraform state bucket](https
     ]
 }
 ```
+### Create Secrets Manager Secrets
+
+Usernames and passwords for the PostgreSQL databases, MinIO, and Keycloak are stored in AWS Secrets Manager.
+Before you let Terraform create AWS resources you need to manually create a Secrets Manager secret that stores the usernames and passwords.
+It is recommended to create individual secrets per SIMPHERA instance (e.g. production and staging instance).
+To create the secret, open the Secrets Manager console and click the button `Store a new secret`.
+As secret type choose `Other type of secret`. 
+Open the Plaintext tab and paste the following JSON object and enter your usernames and passwords:
+```json
+{
+  "couchdb_username": "",
+  "couchdb_password": "",
+  "minio_accesskey": "",
+  "minio_secretkey": "",
+  "postgresql_password": "",
+  "keycloak_password": ""
+}
+```
+On the next page you can define a name for the secret. 
+Automatic credentials rotation is currently not supported.
+When you adjust your Terraform variables as described in the next section, you need to reference the name of the secret.
+
 ### Adjust Terraform Variables
 
 For your configuration, please make a copy of the file `terraform.tfvars.example`, name it `terraform.tfvars` and open the file in a text editor. This file contains all variables that are configurable including documentation of the variables. Please adapt the values before you deploy the resources.
-Secrets and passwords should not be stored as plain text in the tfvars file. 
-Important: It is highly recommended to store the passwords in AWS Secrets Manager and to read them with a [`aws_secretsmanager_secret_version`](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/secretsmanager_secret_version) data source.
+
 
 ### Apply Terraform Configuration
 
@@ -144,6 +166,7 @@ Afterwards you can deploy the resources:
 terraform apply
 ```
 Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
+Installation times may very, but it is expected to take up to 30 min to complete the deployment.
 
 To delete all resources from your AWS account you have to execute the following command:
 
@@ -171,6 +194,29 @@ These Terraform files enable versioning for the S3 bucket that is used for MinIO
 The AWS documentation describes how to [restore a database](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-rds.html) and how to [restore S3 data](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
 It is recommended to copy the backups of a production resource deployed in one AWS region to another AWS region.
 In case of a disaster in the region of a production resource its backup can still be restored.
+
+
+## Encryption
+Encryption of Kubernetes secrets is enabled per default. 
+Encryption of the PostgreSQL and MinIO data is currently not supported.
+
+## Rotating Credentials
+
+Credentials can be manually rotated:
+Open the secret in the Secrets Manager console and change the passwords manually.
+Important: During credentials rotation, SIMPHERA will not be available for a short period.
+Fill in the placeholders `<namespace>` and the `<path_to_kubeconfig>` and run the following command to remove SIMPHERA from your Kubernetes cluster:
+
+```bash
+helm delete simphera -n <namespace> --kubeconfig <path_to_kubeconfig>
+```
+
+Run the following command without changing your `tfvars` file.
+
+```bash
+terraform apply
+```
+This command will redeploy SIMPHERA so that Kubernetes pods and jobs will retrieve the new credentials.
 
 
 <!-- BEGIN_TF_DOCS -->
