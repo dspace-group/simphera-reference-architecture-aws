@@ -7,11 +7,12 @@ resource "aws_db_instance" "simphera" {
   instance_class         = var.db_instance_type_simphera
   identifier             = "${var.infrastructurename}-simphera"
   name                   = replace("${var.infrastructurename}simphera", "/[^0-9a-zA-Z]/", "") # Use alphanumeric characters only
-  username               = var.postgresqlAdminLogin
-  password               = var.postgresqlAdminPassword
+  username               = local.secret_postgres_username
+  password               = local.secrets["postgresql_password"]
   skip_final_snapshot    = true
   db_subnet_group_name   = "${var.infrastructurename}-vpc"
   vpc_security_group_ids = [module.security_group.security_group_id]
+  apply_immediately      = true
 
 }
 
@@ -46,12 +47,14 @@ resource "aws_db_instance" "keycloak" {
   instance_class         = var.db_instance_type_keycloak
   identifier             = "${var.infrastructurename}-keycloak"
   name                   = replace("${var.infrastructurename}keycloak", "/[^0-9a-zA-Z]/", "")
-  username               = var.postgresqlAdminLogin
-  password               = var.postgresqlAdminPassword
+  username               = local.secret_postgres_username
+  password               = local.secrets["postgresql_password"]
   skip_final_snapshot    = true
   db_subnet_group_name   = "${var.infrastructurename}-vpc"
   vpc_security_group_ids = [module.security_group.security_group_id]
+  apply_immediately      = true
 }
+
 
 data "http" "aws_tls_certificate" {
   url = "https://truststore.pki.rds.amazonaws.com/${var.region}/${var.region}-bundle.pem"

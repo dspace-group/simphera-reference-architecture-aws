@@ -49,18 +49,6 @@ variable "name" {
   description = "The name of the SIMPHERA instance. e.g. production"
 }
 
-variable "postgresqlAdminLogin" {
-  type        = string
-  description = "Login name of the account for the PostgreSQL Server"
-  default     = "dbuser"
-}
-
-variable "postgresqlAdminPassword" {
-  type        = string
-  description = "Password of the account for the PostgreSQL Server"
-  sensitive   = true
-}
-
 variable "postgresqlVersion" {
   type        = string
   description = "PostgreSQL Server version to deploy"
@@ -91,35 +79,11 @@ variable "k8s_namespace" {
   default     = "simphera"
 }
 
-variable "secret_minio_accesskey" {
-  description = "MinIO access key"
-  type        = string
-  default     = "miniouser"
-}
-variable "secret_minio_secretkey" {
-  description = "MinIO secret key"
-  sensitive   = true
-  type        = string
-
-}
-
-variable "secret_couchdb_adminPassword" {
-  description = "CouchDB admin password"
-  sensitive   = true
+variable "secretname" {
+  description = "Secrets manager secret"
   type        = string
 }
 
-variable "secret_couchdb_adminUsername" {
-  description = "CouchDB admin username"
-  type        = string
-  default     = "admin"
-}
-
-variable "secret_keycloak_password" {
-  description = "Keycloak admin password"
-  sensitive   = true
-  type        = string
-}
 
 variable "secret_tls_public_file" {
   description = "Public key of TLS certificate"

@@ -153,32 +153,26 @@ variable "microsoftDotnetLibraryLicenseAccepted" {
 
 variable "simpheraInstances" {
   type = map(object({
-    name                         = string
-    postgresqlAdminLogin         = string
-    postgresqlAdminPassword      = string
-    postgresqlVersion            = string
-    postgresqlStorage            = number
-    db_instance_type_simphera    = string
-    db_instance_type_keycloak    = string
-    k8s_namespace                = string
-    secret_minio_accesskey       = string
-    secret_minio_secretkey       = string
-    secret_couchdb_adminPassword = string
-    secret_couchdb_adminUsername = string
-    secret_keycloak_password     = string
-    secret_tls_public_file       = string
-    secret_tls_private_file      = string
-    simphera_fqdn                = string
-    keycloak_fqdn                = string
-    minio_fqdn                   = string
-    license_server_fqdn          = string
-    simphera_chart_registry      = optional(string)
-    simphera_chart_repository    = optional(string)
-    simphera_chart_tag           = optional(string)
-    simphera_image_tag           = optional(string)
-    registry_username            = optional(string)
-    registry_password            = optional(string)
-    simphera_chart_local_path    = optional(string)
+    name                      = string
+    postgresqlVersion         = string
+    postgresqlStorage         = number
+    db_instance_type_simphera = string
+    db_instance_type_keycloak = string
+    k8s_namespace             = string
+    secretname                = string
+    secret_tls_public_file    = string
+    secret_tls_private_file   = string
+    simphera_fqdn             = string
+    keycloak_fqdn             = string
+    minio_fqdn                = string
+    license_server_fqdn       = string
+    simphera_chart_registry   = optional(string)
+    simphera_chart_repository = optional(string)
+    simphera_chart_tag        = optional(string)
+    simphera_image_tag        = optional(string)
+    registry_username         = optional(string)
+    registry_password         = optional(string)
+    simphera_chart_local_path = optional(string)
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
 
