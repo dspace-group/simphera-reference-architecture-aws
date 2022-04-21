@@ -6,8 +6,9 @@
 | AMI Name | Platform | Description | Mandatory |
 | -------- | -------- | ----------- | --------- |
 | amazon-eks-node | Linux/UNIX | Default node pool instances (auto-scaled) | Yes |
-| amazon-eks-node | Linux/UNIX | Execution node pool instances (auto-scaled) | No |
+| amazon-eks-node | Linux/UNIX | Execution node pool instances (auto-scaled). The default instance type for the execution node pool is t3.medium. Running a large number of simulations in parallel may exceed the maximum number of vCPUs limited in the service quota `Running On-Demand All Standard (A, C, D, H, I, M, R, T, Z) instances`. | No |
 | amzn2-ami-hvm-2.0.20210813.1-x86_64-gp2 | Amazon Linux  | dSPACE license server  | No |
+
 
 ### <a name="ResourceEC2ElasticIPAddress"></a>![Elastic IP address](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2ElasticIPAddress.png) Elastic IP address
 | Description |
