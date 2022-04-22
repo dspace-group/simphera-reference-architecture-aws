@@ -41,8 +41,9 @@ resource "kubernetes_service_account" "minio_service_account" {
   }
 }
 resource "aws_s3_bucket" "bucket" {
-  bucket = var.infrastructurename
-  acl    = "private"
+  bucket        = var.infrastructurename
+  acl           = "private"
+  force_destroy = true
   versioning {
     enabled = true
   }

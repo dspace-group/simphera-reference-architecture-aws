@@ -42,9 +42,10 @@ resource "aws_iam_role_policy_attachment" "minio_policy_attachment" {
 
 
 resource "aws_s3_bucket" "license_server_bucket" {
-  count  = var.licenseServer ? 1 : 0
-  bucket = local.license_server_bucket
-  acl    = "private"
+  count         = var.licenseServer ? 1 : 0
+  bucket        = local.license_server_bucket
+  acl           = "private"
+  force_destroy = true
 }
 resource "aws_iam_instance_profile" "license_server_profile" {
   count = var.licenseServer ? 1 : 0
