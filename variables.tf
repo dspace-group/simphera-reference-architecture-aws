@@ -150,7 +150,6 @@ variable "simpheraInstances" {
     db_instance_type_keycloak = string
     k8s_namespace             = string
     secretname                = string
-    license_server_fqdn       = string
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
 
