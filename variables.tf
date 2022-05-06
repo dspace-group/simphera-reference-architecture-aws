@@ -33,6 +33,11 @@ variable "zone" {
   default     = "dev"
 }
 
+variable "infrastructurename" {
+  type        = string
+  description = "The name of the infrastructure. e.g. simphera-infra"
+}
+
 variable "linuxNodeSize" {
   type        = string
   description = "The machine size of the Linux nodes for the regular services"
@@ -109,9 +114,9 @@ variable "enable_aws_for_fluentbit" {
   default     = false
 }
 
-variable "enable_aws_open_telemetry" {
+variable "enable_ingress_nginx" {
   type        = bool
-  description = "Install AWS Distro for OpenTelemetry to collect cluster metrics and send them to AWS CloudWatch."
+  description = "Enable Ingress Nginx add-on"
   default     = false
 }
 

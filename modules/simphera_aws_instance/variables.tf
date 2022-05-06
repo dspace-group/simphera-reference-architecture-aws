@@ -8,6 +8,11 @@ variable "infrastructurename" {
   description = "The name of the infrastructure. e.g. simphera-infra"
 }
 
+variable "postgresql_security_group_id" {
+  type        = string
+  description = "The ID of the security group"
+}
+
 variable "k8s_cluster_id" {
   type        = string
   description = "Id of the Kubernetes cluster"

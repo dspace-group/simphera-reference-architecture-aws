@@ -12,6 +12,7 @@ resource "aws_iam_role" "license_server_role" {
   count       = var.licenseServer ? 1 : 0
   description = "IAM role used for the license server instance profile."
   name        = local.license_server_role
+  tags        = var.tags
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -32,6 +33,7 @@ resource "aws_iam_policy" "license_server_policy" {
   name        = local.license_server_policy
   description = "Allows access to S3 bucket and Secure Session Manager connections."
   policy      = templatefile("${path.module}/templates/license_server_policy.json", { bucket = local.license_server_bucket })
+  tags        = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "minio_policy_attachment" {
@@ -44,9 +46,15 @@ resource "aws_iam_role_policy_attachment" "minio_policy_attachment" {
 resource "aws_s3_bucket" "license_server_bucket" {
   count         = var.licenseServer ? 1 : 0
   bucket        = local.license_server_bucket
-  acl           = "private"
   force_destroy = true
 }
+
+resource "aws_s3_bucket_acl" "license_server_bucket_acl" {
+  count  = var.licenseServer ? 1 : 0
+  bucket = aws_s3_bucket.license_server_bucket[0].id
+  acl    = "private"
+}
+
 resource "aws_iam_instance_profile" "license_server_profile" {
   count = var.licenseServer ? 1 : 0
   name  = local.license_server_instance_profile
