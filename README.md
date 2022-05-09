@@ -44,18 +44,18 @@ Charges may apply for the following AWS resources and services:
 To create the AWS resources that are required for operating SIMPHERA, you need to accomplish the following tasks:
 1. install Terraform on your local administration PC
 1. register an AWS account where the resources needed for SIMPHERA are created
-1. create IAM user with least privileges required to create the resources for SIMPHERA
+1. create an IAM user with least privileges required to create the resources for SIMPHERA
 1. create security credentials for that IAM user
 1. create non-public S3 bucket for Terraform state
 1. create IAM policy that gives the IAM user access to the S3 bucket
 1. clone this repository onto your local administration PC
-1. create Secrets manager secret(s)
+1. create Secrets manager secrets
 1. adjust Terraform variables
 1. apply Terraform configuration
 1. connect to the Kubernetes cluster
 
 ### Install Terraform
-This reference architecture is provided as a [Terraform](https://terraform.io/) configuration. Terraform is an open-source command line tool to automatically create and manage cloud resources. A Terraform configuration consists of various `.tf` text files. These files contain the specifications of the resources to be created in the cloud infrastructure. That is the reason why this approach is called _infrastructure-as-code_. The main advantage of this approach is _reproducibility_ becaue the configuration can be mainted in a source control system such as Git.
+This reference architecture is provided as a [Terraform](https://terraform.io/) configuration. Terraform is an open-source command line tool to automatically create and manage cloud resources. A Terraform configuration consists of various `.tf` text files. These files contain the specifications of the resources to be created in the cloud infrastructure. That is the reason why this approach is called _infrastructure-as-code_. The main advantage of this approach is _reproducibility_ because the configuration can be mainted in a source control system such as Git.
 
 Terraform uses _variables_ to make the specification configurable. The concrete values for these variables are specified in `.tfvars` files. So it is the task of the administrator to fill the `.tfvars` files with the correct values. This is explained in more detail in a later chapter.
 
@@ -81,7 +81,7 @@ Default output format [None]: json
 
 ### Create State Bucket
 
-As mentioned before Terraform stores the state of the resources it creates within an S3 bucket. 
+As mentioned before, Terraform stores the state of the resources it creates within an S3 bucket. 
 The bucket name needs to be globally unique.
 
 After you have created the bucket, you need to link it with Terraform:
@@ -101,7 +101,7 @@ terraform {
   }
 }
 ```
-Important: It is highly recommended to enable server-side encryption of the state file. Encryption is not enabled per default.
+Important: It is highly recommended to [enable server-side encryption of the state file](https://www.terraform.io/language/settings/backends/s3). Encryption is not enabled per default.
 ### Create IAM Policy for State Bucket
 Create the following [IAM policy for accessing the Terraform state bucket](https://www.terraform.io/language/settings/backends/s3#s3-bucket-permissions) and assign it to the IAM user:
 
@@ -145,7 +145,8 @@ Open the Plaintext tab and paste the following JSON object and enter your userna
 ```
 On the next page you can define a name for the secret. 
 Automatic credentials rotation is currently not supported.
-When you adjust your Terraform variables as described in the next section, you need to reference the name of the secret.
+You have to provide the name of the secret in your Terraform variables.
+The next section describes how you need to adjust your Terraform variables.
 
 ### Adjust Terraform Variables
 
@@ -181,7 +182,7 @@ This deployment contains a managed Kubernetes cluster (EKS). In order to use com
 Alternatively, you can get the cluster credentials by using the following command:
 
 ```bash
-aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+aws eks --region <region> update-kubeconfig --name <cluster_name>
 ```
 
 ## Backups
@@ -204,20 +205,14 @@ Encryption of the PostgreSQL and MinIO data is currently not supported.
 
 Credentials can be manually rotated:
 Open the secret in the Secrets Manager console and change the passwords manually.
-Important: During credentials rotation, SIMPHERA will not be available for a short period.
 Fill in the placeholders `<namespace>` and the `<path_to_kubeconfig>` and run the following command to remove SIMPHERA from your Kubernetes cluster:
 
 ```bash
 helm delete simphera -n <namespace> --kubeconfig <path_to_kubeconfig>
 ```
 
-Run the following command without changing your `tfvars` file.
-
-```bash
-terraform apply
-```
-This command will redeploy SIMPHERA so that Kubernetes pods and jobs will retrieve the new credentials.
-
+Reinstall the SIMPHERA Quickstart Helmchart so that all Kubernetes pods and jobs will retrieve the new credentials.
+Important: During credentials rotation, SIMPHERA will not be available for a short period.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
