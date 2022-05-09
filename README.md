@@ -220,22 +220,22 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.74.3 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 2.4.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.7.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.13.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.11.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.74.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.13.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-samples/aws-eks-accelerator-for-terraform.git | v3.3.0 |
-| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-samples/aws-eks-accelerator-for-terraform.git//modules/kubernetes-addons | v3.3.0 |
+| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.0.4 |
+| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons | v4.0.4 |
+| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_simphera_instance"></a> [simphera\_instance](#module\_simphera\_instance) | ./modules/simphera_aws_instance | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | v3.11.0 |
 
@@ -243,25 +243,27 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 
 | Name | Type |
 |------|------|
-| [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/iam_instance_profile) | resource |
-| [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy.role_policy](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/iam_role_policy) | resource |
-| [aws_instance.license_server](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/instance) | resource |
-| [aws_s3_bucket.license_server_bucket](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/s3_bucket) | resource |
-| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/availability_zones) | data source |
-| [aws_eks_cluster.cluster](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/eks_cluster) | data source |
-| [aws_eks_cluster_auth.cluster](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/eks_cluster_auth) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/region) | data source |
+| [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.license_server_policy](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_policy) | resource |
+| [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.minio_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_instance.license_server](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/instance) | resource |
+| [aws_s3_bucket.license_server_bucket](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_acl.license_server_bucket_acl](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/s3_bucket_acl) | resource |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/availability_zones) | data source |
+| [aws_eks_cluster.cluster](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/eks_cluster) | data source |
+| [aws_eks_cluster_auth.cluster](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/eks_cluster_auth) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/region) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The AWS account id to be used to create resources. | `string` | n/a | yes |
-| <a name="input_dspaceEulaAccepted"></a> [dspaceEulaAccepted](#input\_dspaceEulaAccepted) | By setting this variable to true you accept the dSPACE End User License Agreement (https://www.dspace.com/en/pub/home/support/eula.cfm). | `string` | n/a | yes |
 | <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
-| <a name="input_enable_aws_open_telemetry"></a> [enable\_aws\_open\_telemetry](#input\_enable\_aws\_open\_telemetry) | Install AWS Distro for OpenTelemetry to collect cluster metrics and send them to AWS CloudWatch. | `bool` | `false` | no |
+| <a name="input_enable_ingress_nginx"></a> [enable\_ingress\_nginx](#input\_enable\_ingress\_nginx) | Enable Ingress Nginx add-on | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment area, e.g. prod or preprod | `string` | `"preprod"` | no |
+| <a name="input_infrastructurename"></a> [infrastructurename](#input\_infrastructurename) | The name of the infrastructure. e.g. simphera-infra | `string` | n/a | yes |
 | <a name="input_kubernetesVersion"></a> [kubernetesVersion](#input\_kubernetesVersion) | The version of the AKS cluster. | `string` | `"1.21"` | no |
 | <a name="input_licenseServer"></a> [licenseServer](#input\_licenseServer) | Specifies whether a license server VM will be created. | `bool` | `false` | no |
 | <a name="input_linuxExecutionNodeCountMax"></a> [linuxExecutionNodeCountMax](#input\_linuxExecutionNodeCountMax) | The maximum number of Linux nodes for the job execution | `number` | `10` | no |
@@ -273,9 +275,8 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="input_map_accounts"></a> [map\_accounts](#input\_map\_accounts) | Additional AWS account numbers to add to the aws-auth ConfigMap | `list(string)` | `[]` | no |
 | <a name="input_map_roles"></a> [map\_roles](#input\_map\_roles) | Additional IAM roles to add to the aws-auth ConfigMap | <pre>list(object({<br>    rolearn  = string<br>    username = string<br>    groups   = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_map_users"></a> [map\_users](#input\_map\_users) | Additional IAM users to add to the aws-auth ConfigMap | <pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))</pre> | `[]` | no |
-| <a name="input_microsoftDotnetLibraryLicenseAccepted"></a> [microsoftDotnetLibraryLicenseAccepted](#input\_microsoftDotnetLibraryLicenseAccepted) | By setting this variable to true you accept the Microsoft .NET Library License (https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm). | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region to be used. | `string` | `"eu-central-1"` | no |
-| <a name="input_simpheraInstances"></a> [simpheraInstances](#input\_simpheraInstances) | A list containing the individual SIMPHERA instances, such as 'staging' and 'production'. | <pre>map(object({<br>    name                         = string<br>    postgresqlAdminLogin         = string<br>    postgresqlAdminPassword      = string<br>    postgresqlVersion            = string<br>    postgresqlStorage            = number<br>    db_instance_type_simphera    = string<br>    db_instance_type_keycloak    = string<br>    k8s_namespace                = string<br>    secret_minio_accesskey       = string<br>    secret_minio_secretkey       = string<br>    secret_couchdb_adminPassword = string<br>    secret_couchdb_adminUsername = string<br>    secret_keycloak_password     = string<br>    secret_tls_public_file       = string<br>    secret_tls_private_file      = string<br>    simphera_fqdn                = string<br>    keycloak_fqdn                = string<br>    minio_fqdn                   = string<br>    license_server_fqdn          = string<br>    simphera_chart_registry      = optional(string)<br>    simphera_chart_repository    = optional(string)<br>    simphera_chart_tag           = optional(string)<br>    simphera_image_tag           = optional(string)<br>    registry_username            = optional(string)<br>    registry_password            = optional(string)<br>    simphera_chart_local_path    = optional(string)<br>  }))</pre> | n/a | yes |
+| <a name="input_simpheraInstances"></a> [simpheraInstances](#input\_simpheraInstances) | A list containing the individual SIMPHERA instances, such as 'staging' and 'production'. | <pre>map(object({<br>    name                      = string<br>    postgresqlVersion         = string<br>    postgresqlStorage         = number<br>    db_instance_type_simphera = string<br>    db_instance_type_keycloak = string<br>    k8s_namespace             = string<br>    secretname                = string<br>  }))</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | The tags to be added to all resources. | `map(any)` | `{}` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Account name or unique account id e.g., apps or management or aws007 | `string` | `"aws"` | no |
 | <a name="input_vpcCidr"></a> [vpcCidr](#input\_vpcCidr) | The CIDR for the virtual private cluster. | `string` | `"10.1.0.0/18"` | no |
