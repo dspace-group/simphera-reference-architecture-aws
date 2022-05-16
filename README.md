@@ -164,20 +164,28 @@ terraform apply
 Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
 Installation times may very, but it is expected to take up to 30 min to complete the deployment.
 
-To delete all resources from your AWS account you have to execute the following command:
+To delete all resources from your AWS account you need to run the following command to run the `eks-addons` modules:
 
+```sh
+terraform destroy -target="module.eks-addons"
+```
+
+To delete the remaining resources, run the following command:
 ```sh
 terraform destroy
 ```
 
+Terraform is not able to properly [plan the removal of resources in the right order](https://github.com/aws-ia/terraform-aws-eks-blueprints/issues/353) which leads to a deadlock.
+
 ### Connect to Kubernetes Cluster
 
-This deployment contains a managed Kubernetes cluster (EKS). In order to use command line tools such as `kubectl` or `helm` you need a _kubeconfig_ configuration file. This file will automatically be exported by Terraform under the filename `kubeconfig_<tenant>-<environment>-<zone>`.
+This deployment contains a managed Kubernetes cluster (EKS). 
+In order to use command line tools such as `kubectl` or `helm` you need a _kubeconfig_ configuration file. 
+You can update your _kubeconfig_ using the [aws cli update-kubeconfig command](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/eks/update-kubeconfig.html):
 
-Alternatively, you can get the cluster credentials by using the following command:
 
 ```bash
-aws eks --region <region> update-kubeconfig --name <cluster_name>
+aws eks --region <region> update-kubeconfig --name <cluster_name> --kubeconfig <filename>
 ```
 
 ## Backups
