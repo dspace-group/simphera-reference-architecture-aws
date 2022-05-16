@@ -127,24 +127,19 @@ Create the following [IAM policy for accessing the Terraform state bucket](https
 ```
 ### Create Secrets Manager Secrets
 
-Usernames and passwords for the PostgreSQL databases, MinIO, and Keycloak are stored in AWS Secrets Manager.
-Before you let Terraform create AWS resources you need to manually create a Secrets Manager secret that stores the usernames and passwords.
+Username and password for the PostgreSQL databases are stored in AWS Secrets Manager.
+Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
 It is recommended to create individual secrets per SIMPHERA instance (e.g. production and staging instance).
 To create the secret, open the Secrets Manager console and click the button `Store a new secret`.
 As secret type choose `Other type of secret`. 
 Open the Plaintext tab and paste the following JSON object and enter your usernames and passwords:
 ```json
 {
-  "couchdb_username": "",
-  "couchdb_password": "",
-  "minio_accesskey": "",
-  "minio_secretkey": "",
-  "postgresql_password": "",
-  "keycloak_password": ""
+  "postgresql_password": ""
 }
 ```
 On the next page you can define a name for the secret. 
-Automatic credentials rotation is currently not supported.
+Automatic credentials rotation is currently not supported by SIMPHERA, but you can <a href="#rotating-credentials">rotate secrets manually</a>.
 You have to provide the name of the secret in your Terraform variables.
 The next section describes how you need to adjust your Terraform variables.
 
