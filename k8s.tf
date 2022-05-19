@@ -57,7 +57,7 @@ module "eks-addons" {
   enable_ingress_nginx                = var.enable_ingress_nginx
   tags                                = var.tags
   aws_for_fluentbit_helm_config = {
-    values = [templatefile("templates/fluentbit_values.yaml", {
+    values = [templatefile("${path.module}/templates/fluentbit_values.yaml", {
       aws_region           = data.aws_region.current.name,
       log_group_name       = local.log_group_name,
       service_account_name = "aws-for-fluent-bit-sa"
@@ -65,13 +65,13 @@ module "eks-addons" {
   }
 
   ingress_nginx_helm_config = {
-    values = [templatefile("templates/nginx_values.yaml", {
+    values = [templatefile("${path.module}/templates/nginx_values.yaml", {
       internal = "false",
       scheme   = "internet-facing",
     })]
   }
   cluster_autoscaler_helm_config = {
-    values = [templatefile("templates/autoscaler_values.yaml", {
+    values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
       aws_region           = data.aws_region.current.name,
       eks_cluster_id       = module.eks.eks_cluster_id,
       service_account_name = "cluster-autoscaler-sa"
