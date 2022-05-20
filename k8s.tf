@@ -1,17 +1,19 @@
 
 
 module "eks" {
-  source             = "git::https://github.com/aws-samples/aws-eks-accelerator-for-terraform.git?ref=v3.3.0"
+  source             = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.0.4"
   tenant             = local.tenant
   environment        = local.environment
   zone               = local.zone
-  kubernetes_version = var.kubernetesVersion
+  cluster_version    = var.kubernetesVersion
+  cluster_name       = var.infrastructurename
   vpc_id             = module.vpc.vpc_id
   private_subnet_ids = module.vpc.private_subnets
   create_eks         = true
   map_accounts       = var.map_accounts
   map_users          = var.map_users
   map_roles          = var.map_roles
+  tags               = var.tags
   managed_node_groups = {
     "default" = {
       node_group_name = "default"
@@ -44,31 +46,32 @@ module "eks" {
 
 
 module "eks-addons" {
-  source                              = "git::https://github.com/aws-samples/aws-eks-accelerator-for-terraform.git//modules/kubernetes-addons?ref=v3.3.0"
+  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.0.4"
   eks_cluster_id                      = module.eks.eks_cluster_id
   enable_amazon_eks_vpc_cni           = true
   enable_amazon_eks_coredns           = true
   enable_amazon_eks_kube_proxy        = true
   enable_aws_load_balancer_controller = false
   enable_cluster_autoscaler           = true
-  enable_aws_open_telemetry           = var.enable_aws_open_telemetry
   enable_aws_for_fluentbit            = var.enable_aws_for_fluentbit
+  enable_ingress_nginx                = var.enable_ingress_nginx
+  tags                                = var.tags
   aws_for_fluentbit_helm_config = {
-    values = [templatefile("templates/fluentbit_values.yaml", {
+    values = [templatefile("${path.module}/templates/fluentbit_values.yaml", {
       aws_region           = data.aws_region.current.name,
       log_group_name       = local.log_group_name,
       service_account_name = "aws-for-fluent-bit-sa"
     })]
   }
-  enable_ingress_nginx = true
+
   ingress_nginx_helm_config = {
-    values = [templatefile("templates/nginx_values.yaml", {
+    values = [templatefile("${path.module}/templates/nginx_values.yaml", {
       internal = "false",
       scheme   = "internet-facing",
     })]
   }
   cluster_autoscaler_helm_config = {
-    values = [templatefile("templates/autoscaler_values.yaml", {
+    values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
       aws_region           = data.aws_region.current.name,
       eks_cluster_id       = module.eks.eks_cluster_id,
       service_account_name = "cluster-autoscaler-sa"

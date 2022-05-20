@@ -44,18 +44,18 @@ Charges may apply for the following AWS resources and services:
 To create the AWS resources that are required for operating SIMPHERA, you need to accomplish the following tasks:
 1. install Terraform on your local administration PC
 1. register an AWS account where the resources needed for SIMPHERA are created
-1. create IAM user with least privileges required to create the resources for SIMPHERA
+1. create an IAM user with least privileges required to create the resources for SIMPHERA
 1. create security credentials for that IAM user
 1. create non-public S3 bucket for Terraform state
 1. create IAM policy that gives the IAM user access to the S3 bucket
 1. clone this repository onto your local administration PC
-1. create Secrets manager secret(s)
+1. create Secrets manager secrets
 1. adjust Terraform variables
 1. apply Terraform configuration
 1. connect to the Kubernetes cluster
 
 ### Install Terraform
-This reference architecture is provided as a [Terraform](https://terraform.io/) configuration. Terraform is an open-source command line tool to automatically create and manage cloud resources. A Terraform configuration consists of various `.tf` text files. These files contain the specifications of the resources to be created in the cloud infrastructure. That is the reason why this approach is called _infrastructure-as-code_. The main advantage of this approach is _reproducibility_ becaue the configuration can be mainted in a source control system such as Git.
+This reference architecture is provided as a [Terraform](https://terraform.io/) configuration. Terraform is an open-source command line tool to automatically create and manage cloud resources. A Terraform configuration consists of various `.tf` text files. These files contain the specifications of the resources to be created in the cloud infrastructure. That is the reason why this approach is called _infrastructure-as-code_. The main advantage of this approach is _reproducibility_ because the configuration can be mainted in a source control system such as Git.
 
 Terraform uses _variables_ to make the specification configurable. The concrete values for these variables are specified in `.tfvars` files. So it is the task of the administrator to fill the `.tfvars` files with the correct values. This is explained in more detail in a later chapter.
 
@@ -81,7 +81,7 @@ Default output format [None]: json
 
 ### Create State Bucket
 
-As mentioned before Terraform stores the state of the resources it creates within an S3 bucket. 
+As mentioned before, Terraform stores the state of the resources it creates within an S3 bucket. 
 The bucket name needs to be globally unique.
 
 After you have created the bucket, you need to link it with Terraform:
@@ -101,7 +101,7 @@ terraform {
   }
 }
 ```
-Important: It is highly recommended to enable server-side encryption of the state file. Encryption is not enabled per default.
+Important: It is highly recommended to [enable server-side encryption of the state file](https://www.terraform.io/language/settings/backends/s3). Encryption is not enabled per default.
 ### Create IAM Policy for State Bucket
 Create the following [IAM policy for accessing the Terraform state bucket](https://www.terraform.io/language/settings/backends/s3#s3-bucket-permissions) and assign it to the IAM user:
 
@@ -127,25 +127,21 @@ Create the following [IAM policy for accessing the Terraform state bucket](https
 ```
 ### Create Secrets Manager Secrets
 
-Usernames and passwords for the PostgreSQL databases, MinIO, and Keycloak are stored in AWS Secrets Manager.
-Before you let Terraform create AWS resources you need to manually create a Secrets Manager secret that stores the usernames and passwords.
+Username and password for the PostgreSQL databases are stored in AWS Secrets Manager.
+Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
 It is recommended to create individual secrets per SIMPHERA instance (e.g. production and staging instance).
 To create the secret, open the Secrets Manager console and click the button `Store a new secret`.
 As secret type choose `Other type of secret`. 
 Open the Plaintext tab and paste the following JSON object and enter your usernames and passwords:
 ```json
 {
-  "couchdb_username": "",
-  "couchdb_password": "",
-  "minio_accesskey": "",
-  "minio_secretkey": "",
-  "postgresql_password": "",
-  "keycloak_password": ""
+  "postgresql_password": ""
 }
 ```
 On the next page you can define a name for the secret. 
-Automatic credentials rotation is currently not supported.
-When you adjust your Terraform variables as described in the next section, you need to reference the name of the secret.
+Automatic credentials rotation is currently not supported by SIMPHERA, but you can <a href="#rotating-credentials">rotate secrets manually</a>.
+You have to provide the name of the secret in your Terraform variables.
+The next section describes how you need to adjust your Terraform variables.
 
 ### Adjust Terraform Variables
 
@@ -168,20 +164,28 @@ terraform apply
 Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
 Installation times may very, but it is expected to take up to 30 min to complete the deployment.
 
-To delete all resources from your AWS account you have to execute the following command:
+To delete all resources from your AWS account you need to run the following command to run the `eks-addons` modules:
 
+```sh
+terraform destroy -target="module.eks-addons"
+```
+
+To delete the remaining resources, run the following command:
 ```sh
 terraform destroy
 ```
 
+Terraform is not able to properly [plan the removal of resources in the right order](https://github.com/aws-ia/terraform-aws-eks-blueprints/issues/353) which leads to a deadlock.
+
 ### Connect to Kubernetes Cluster
 
-This deployment contains a managed Kubernetes cluster (EKS). In order to use command line tools such as `kubectl` or `helm` you need a _kubeconfig_ configuration file. This file will automatically be exported by Terraform under the filename `kubeconfig_<tenant>-<environment>-<zone>`.
+This deployment contains a managed Kubernetes cluster (EKS). 
+In order to use command line tools such as `kubectl` or `helm` you need a _kubeconfig_ configuration file. 
+You can update your _kubeconfig_ using the [aws cli update-kubeconfig command](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/eks/update-kubeconfig.html):
 
-Alternatively, you can get the cluster credentials by using the following command:
 
 ```bash
-aws eks --region $(terraform output -raw region) update-kubeconfig --name $(terraform output -raw cluster_name)
+aws eks --region <region> update-kubeconfig --name <cluster_name> --kubeconfig <filename>
 ```
 
 ## Backups
@@ -204,20 +208,14 @@ Encryption of the PostgreSQL and MinIO data is currently not supported.
 
 Credentials can be manually rotated:
 Open the secret in the Secrets Manager console and change the passwords manually.
-Important: During credentials rotation, SIMPHERA will not be available for a short period.
 Fill in the placeholders `<namespace>` and the `<path_to_kubeconfig>` and run the following command to remove SIMPHERA from your Kubernetes cluster:
 
 ```bash
 helm delete simphera -n <namespace> --kubeconfig <path_to_kubeconfig>
 ```
 
-Run the following command without changing your `tfvars` file.
-
-```bash
-terraform apply
-```
-This command will redeploy SIMPHERA so that Kubernetes pods and jobs will retrieve the new credentials.
-
+Reinstall the SIMPHERA Quickstart Helmchart so that all Kubernetes pods and jobs will retrieve the new credentials.
+Important: During credentials rotation, SIMPHERA will not be available for a short period.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -225,22 +223,22 @@ This command will redeploy SIMPHERA so that Kubernetes pods and jobs will retrie
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 3.74.3 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | 2.4.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.7.1 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | 4.13.0 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | 2.11.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 3.74.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.13.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-samples/aws-eks-accelerator-for-terraform.git | v3.3.0 |
-| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-samples/aws-eks-accelerator-for-terraform.git//modules/kubernetes-addons | v3.3.0 |
+| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.0.4 |
+| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons | v4.0.4 |
+| <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_simphera_instance"></a> [simphera\_instance](#module\_simphera\_instance) | ./modules/simphera_aws_instance | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | v3.11.0 |
 
@@ -248,25 +246,27 @@ This command will redeploy SIMPHERA so that Kubernetes pods and jobs will retrie
 
 | Name | Type |
 |------|------|
-| [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/iam_instance_profile) | resource |
-| [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy.role_policy](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/iam_role_policy) | resource |
-| [aws_instance.license_server](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/instance) | resource |
-| [aws_s3_bucket.license_server_bucket](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/resources/s3_bucket) | resource |
-| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/availability_zones) | data source |
-| [aws_eks_cluster.cluster](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/eks_cluster) | data source |
-| [aws_eks_cluster_auth.cluster](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/eks_cluster_auth) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/3.74.3/docs/data-sources/region) | data source |
+| [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.license_server_policy](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_policy) | resource |
+| [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.minio_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_instance.license_server](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/instance) | resource |
+| [aws_s3_bucket.license_server_bucket](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_acl.license_server_bucket_acl](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/resources/s3_bucket_acl) | resource |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/availability_zones) | data source |
+| [aws_eks_cluster.cluster](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/eks_cluster) | data source |
+| [aws_eks_cluster_auth.cluster](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/eks_cluster_auth) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/4.13.0/docs/data-sources/region) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The AWS account id to be used to create resources. | `string` | n/a | yes |
-| <a name="input_dspaceEulaAccepted"></a> [dspaceEulaAccepted](#input\_dspaceEulaAccepted) | By setting this variable to true you accept the dSPACE End User License Agreement (https://www.dspace.com/en/pub/home/support/eula.cfm). | `string` | n/a | yes |
 | <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
-| <a name="input_enable_aws_open_telemetry"></a> [enable\_aws\_open\_telemetry](#input\_enable\_aws\_open\_telemetry) | Install AWS Distro for OpenTelemetry to collect cluster metrics and send them to AWS CloudWatch. | `bool` | `false` | no |
+| <a name="input_enable_ingress_nginx"></a> [enable\_ingress\_nginx](#input\_enable\_ingress\_nginx) | Enable Ingress Nginx add-on | `bool` | `false` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | Environment area, e.g. prod or preprod | `string` | `"preprod"` | no |
+| <a name="input_infrastructurename"></a> [infrastructurename](#input\_infrastructurename) | The name of the infrastructure. e.g. simphera-infra | `string` | n/a | yes |
 | <a name="input_kubernetesVersion"></a> [kubernetesVersion](#input\_kubernetesVersion) | The version of the AKS cluster. | `string` | `"1.21"` | no |
 | <a name="input_licenseServer"></a> [licenseServer](#input\_licenseServer) | Specifies whether a license server VM will be created. | `bool` | `false` | no |
 | <a name="input_linuxExecutionNodeCountMax"></a> [linuxExecutionNodeCountMax](#input\_linuxExecutionNodeCountMax) | The maximum number of Linux nodes for the job execution | `number` | `10` | no |
@@ -278,9 +278,8 @@ This command will redeploy SIMPHERA so that Kubernetes pods and jobs will retrie
 | <a name="input_map_accounts"></a> [map\_accounts](#input\_map\_accounts) | Additional AWS account numbers to add to the aws-auth ConfigMap | `list(string)` | `[]` | no |
 | <a name="input_map_roles"></a> [map\_roles](#input\_map\_roles) | Additional IAM roles to add to the aws-auth ConfigMap | <pre>list(object({<br>    rolearn  = string<br>    username = string<br>    groups   = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_map_users"></a> [map\_users](#input\_map\_users) | Additional IAM users to add to the aws-auth ConfigMap | <pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))</pre> | `[]` | no |
-| <a name="input_microsoftDotnetLibraryLicenseAccepted"></a> [microsoftDotnetLibraryLicenseAccepted](#input\_microsoftDotnetLibraryLicenseAccepted) | By setting this variable to true you accept the Microsoft .NET Library License (https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm). | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The AWS region to be used. | `string` | `"eu-central-1"` | no |
-| <a name="input_simpheraInstances"></a> [simpheraInstances](#input\_simpheraInstances) | A list containing the individual SIMPHERA instances, such as 'staging' and 'production'. | <pre>map(object({<br>    name                         = string<br>    postgresqlAdminLogin         = string<br>    postgresqlAdminPassword      = string<br>    postgresqlVersion            = string<br>    postgresqlStorage            = number<br>    db_instance_type_simphera    = string<br>    db_instance_type_keycloak    = string<br>    k8s_namespace                = string<br>    secret_minio_accesskey       = string<br>    secret_minio_secretkey       = string<br>    secret_couchdb_adminPassword = string<br>    secret_couchdb_adminUsername = string<br>    secret_keycloak_password     = string<br>    secret_tls_public_file       = string<br>    secret_tls_private_file      = string<br>    simphera_fqdn                = string<br>    keycloak_fqdn                = string<br>    minio_fqdn                   = string<br>    license_server_fqdn          = string<br>    simphera_chart_registry      = optional(string)<br>    simphera_chart_repository    = optional(string)<br>    simphera_chart_tag           = optional(string)<br>    simphera_image_tag           = optional(string)<br>    registry_username            = optional(string)<br>    registry_password            = optional(string)<br>    simphera_chart_local_path    = optional(string)<br>  }))</pre> | n/a | yes |
+| <a name="input_simpheraInstances"></a> [simpheraInstances](#input\_simpheraInstances) | A list containing the individual SIMPHERA instances, such as 'staging' and 'production'. | <pre>map(object({<br>    name                      = string<br>    postgresqlVersion         = string<br>    postgresqlStorage         = number<br>    db_instance_type_simphera = string<br>    db_instance_type_keycloak = string<br>    k8s_namespace             = string<br>    secretname                = string<br>  }))</pre> | n/a | yes |
 | <a name="input_tags"></a> [tags](#input\_tags) | The tags to be added to all resources. | `map(any)` | `{}` | no |
 | <a name="input_tenant"></a> [tenant](#input\_tenant) | Account name or unique account id e.g., apps or management or aws007 | `string` | `"aws"` | no |
 | <a name="input_vpcCidr"></a> [vpcCidr](#input\_vpcCidr) | The CIDR for the virtual private cluster. | `string` | `"10.1.0.0/18"` | no |

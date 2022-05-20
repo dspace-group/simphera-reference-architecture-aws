@@ -1,6 +1,7 @@
 resource "aws_iam_role" "minio_iam_role" {
-  name        = "${var.infrastructurename}-s3-role"
+  name        = "${local.instancename}-s3-role"
   description = "IAM role for the MinIO service account"
+  tags        = var.tags
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -18,12 +19,14 @@ resource "aws_iam_role" "minio_iam_role" {
       }
     ]
   })
+
 }
 
 resource "aws_iam_policy" "minio_policy" {
-  name        = "${var.infrastructurename}-s3-policy"
+  name        = "${local.instancename}-s3-policy"
   description = "Allows access to S3 bucket."
-  policy      = templatefile("${path.module}/templates/minio-policy.json", { bucket = var.infrastructurename })
+  policy      = templatefile("${path.module}/templates/minio-policy.json", { bucket = local.instancename })
+  tags        = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "minio_policy_attachment" {
@@ -41,11 +44,20 @@ resource "kubernetes_service_account" "minio_service_account" {
   }
 }
 resource "aws_s3_bucket" "bucket" {
-  bucket        = var.infrastructurename
-  acl           = "private"
+  bucket        = local.instancename
   force_destroy = true
-  versioning {
-    enabled = true
+  tags          = var.tags
+}
+
+resource "aws_s3_bucket_acl" "bucket_acl" {
+  bucket = aws_s3_bucket.bucket.id
+  acl    = "private"
+}
+
+resource "aws_s3_bucket_versioning" "bucket_versioning" {
+  bucket = aws_s3_bucket.bucket.id
+  versioning_configuration {
+    status = "Enabled"
   }
 }
 

@@ -33,6 +33,11 @@ variable "zone" {
   default     = "dev"
 }
 
+variable "infrastructurename" {
+  type        = string
+  description = "The name of the infrastructure. e.g. simphera-infra"
+}
+
 variable "linuxNodeSize" {
   type        = string
   description = "The machine size of the Linux nodes for the regular services"
@@ -109,9 +114,9 @@ variable "enable_aws_for_fluentbit" {
   default     = false
 }
 
-variable "enable_aws_open_telemetry" {
+variable "enable_ingress_nginx" {
   type        = bool
-  description = "Install AWS Distro for OpenTelemetry to collect cluster metrics and send them to AWS CloudWatch."
+  description = "Enable Ingress Nginx add-on"
   default     = false
 }
 
@@ -141,16 +146,6 @@ variable "map_users" {
   default = []
 }
 
-variable "dspaceEulaAccepted" {
-  type        = string
-  description = "By setting this variable to true you accept the dSPACE End User License Agreement (https://www.dspace.com/en/pub/home/support/eula.cfm)."
-}
-
-variable "microsoftDotnetLibraryLicenseAccepted" {
-  type        = string
-  description = "By setting this variable to true you accept the Microsoft .NET Library License (https://www.microsoft.com/web/webpi/eula/net_library_eula_enu.htm)."
-}
-
 variable "simpheraInstances" {
   type = map(object({
     name                      = string
@@ -160,19 +155,6 @@ variable "simpheraInstances" {
     db_instance_type_keycloak = string
     k8s_namespace             = string
     secretname                = string
-    secret_tls_public_file    = string
-    secret_tls_private_file   = string
-    simphera_fqdn             = string
-    keycloak_fqdn             = string
-    minio_fqdn                = string
-    license_server_fqdn       = string
-    simphera_chart_registry   = optional(string)
-    simphera_chart_repository = optional(string)
-    simphera_chart_tag        = optional(string)
-    simphera_image_tag        = optional(string)
-    registry_username         = optional(string)
-    registry_password         = optional(string)
-    simphera_chart_local_path = optional(string)
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
 
