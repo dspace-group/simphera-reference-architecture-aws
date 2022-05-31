@@ -14,7 +14,7 @@ module "simphera_instance" {
   db_instance_type_keycloak    = each.value.db_instance_type_keycloak
   db_retention_keycloak        = each.db_retention_keycloak
   db_instance_type_simphera    = each.value.db_instance_type_simphera
-  db_retention_simphera        = each.db_instance_type_simphera
+  db_retention_simphera        = each.db_retention_simphera
   k8s_namespace                = each.value.k8s_namespace
   secretname                   = each.value.secretname
   public_subnets               = module.vpc.public_subnets
