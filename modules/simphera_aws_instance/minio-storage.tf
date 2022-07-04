@@ -45,7 +45,6 @@ resource "kubernetes_service_account" "minio_service_account" {
 }
 resource "aws_s3_bucket" "bucket" {
   bucket        = local.instancename
-  force_destroy = true
   tags          = var.tags
 }
 

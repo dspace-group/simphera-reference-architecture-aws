@@ -188,16 +188,106 @@ You can update your _kubeconfig_ using the [aws cli update-kubeconfig command](h
 aws eks --region <region> update-kubeconfig --name <cluster_name> --kubeconfig <filename>
 ```
 
-## Backups
+## Backup and Restore
 
-SIMPHERA stores data in the PostgreSQL database and in S3 buckets (MinIO).
-It is recommended to enable continuous backups which allows point-in-time recovery.
+SIMPHERA stores data in the PostgreSQL database and in S3 buckets (MinIO) that needs to be backed up.
+AWS supports continuous backups for Amazon RDS for PostgreSQL and S3 that allows point-in-time recovery.
 [Point-in-time recovery](https://docs.aws.amazon.com/aws-backup/latest/devguide/point-in-time-recovery.html) lets you restore your data to any point in time within a defined retention period.
-Versioning must be enabled on S3 buckets which is a requirement for point-in-time recovery.
-These Terraform files enable versioning for the S3 bucket that is used for MinIO.
-The AWS documentation describes how to [restore a database](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-rds.html) and how to [restore S3 data](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
-It is recommended to copy the backups of a production resource deployed in one AWS region to another AWS region.
-In case of a disaster in the region of a production resource its backup can still be restored.
+
+This Terraform module creates an AWS backup plan that makes continuous backups of the PostgreSQL database and S3 buckets.
+The backups are stored in an AWS backup vault per SIMPHERA instance.
+An IAM role is also automatically created that has proper permissions to create backups.
+To enable backups for your SIMPHERA instance, make sure you have the flag `enable_backup_service` et in your `.tfvars` file:
+
+```hcl
+simpheraInstances = {
+  "production" = {
+        enable_backup_service    = true
+    }
+}
+```
+
+### Amazon RDS for PostgreSQL
+
+Create an target RDS instance (backup server) that is a copy of a source RDS instance (production server) of a specific point-in-time.
+The command [`restore-db-instance-to-point-in-time`](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/restore-db-instance-to-point-in-time.html) creates the target database. 
+Most of the configuration settings are copied from the source database.
+To be able to connect to the target instance the easiest way is to explicitly set the same security group and subnet group as used for the source instance.
+
+Restoring an RDS instance can be done via Powershell as described in the remainder:
+
+```bash
+aws rds restore-db-instance-to-point-in-time --source-db-instance-identifier simphera-reference-production-simphera --target-db-instance simphera-reference-production-simphera-backup --vpc-security-group-ids sg-0b954a0e25cd11b6d --db-subnet-group-name simphera-reference-vpc --restore-time 2022-06-16T23:45:00.000Z --tags Key=timestamp,Value=2022-06-16T23:45:00.000Z
+```
+
+Execute the following command to create the pgdump pod using the standard postgres image and open a bash:
+```bash
+kubectl run pgdump -ti -n simphera --image postgres --kubeconfig .\kube.config -- bash
+```
+
+In the pod's Bash, use the pg_dump and pg_restore commands to stream the data from the backup server to the production server:
+```bash
+pg_dump -h simphera-reference-production-simphera-backup.cexy8brfkmxk.eu-central-1.rds.amazonaws.com -p 5432 -U dbuser -Fc simpherareferenceproductionsimphera | pg_restore --clean --if-exists -h simphera-reference-production-simphera.cexy8brfkmxk.eu-central-1.rds.amazonaws.com -p 5432 -U dbuser -d simpherareferenceproductionsimphera
+```
+
+Alternatively, you can [restore the RDS instance via the AWS console](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-rds.html).
+
+
+### S3
+
+This Terraform creates an S3 bucket for project data and results and enables versioning of the S3 bucket which is a requirement for point-in-time recovery.
+
+To restore the S3 buckets to an older version you need to create an IAM role that has proper permissions:
+```powershell
+$rolename = "restore-role"
+$trustrelation = @"
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": ["sts:AssumeRole"],
+      "Effect": "allow",
+      "Principal": {
+        "Service": ["backup.amazonaws.com"]
+      }
+    }
+  ]
+}
+"@
+
+echo $trustrelation > trust.json
+
+aws iam create-role --role-name $rolename --assume-role-policy-document file://trust.json --description "Role to restore"
+
+aws iam attach-role-policy --role-name $rolename --policy-arn="arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Restore"
+
+aws iam attach-role-policy --role-name $rolename --policy-arn="arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForRestores"
+
+$rolearn=aws iam get-role --role-name $rolename --query 'Role.Arn'
+```
+
+Restoring an S3 bucket can be done via Powershell as described in the remainder:
+You can restore the S3 data in-place, into another existing bucket, or into a new bucket.
+
+```powershell
+$uuid = New-Guid
+$metadata = @"
+{
+  "DestinationBucketName": "man-validation-platform-int-results",
+  "NewBucket": "true",
+  "RestoreTime": "2022-06-20T23:45:00.000Z",
+  "Encrypted": "false",
+  "CreationToken": "$uuid"
+}
+"@
+$metadata = $metadata -replace '([\\]*)"', '$1$1\"'
+aws backup start-restore-job `
+--recovery-point-arn "arn:aws:backup:eu-central-1:012345678901:recovery-point:continuous:simphera-reference-production-0f51c39b" `
+--iam-role-arn $rolearn `
+--metadata $metadata
+```
+
+Alternatively, you can [restore the S3 data via the AWS console](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
 
 
 ## Encryption

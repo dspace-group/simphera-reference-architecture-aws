@@ -91,3 +91,16 @@ variable "eks_oidc_provider_arn" {
   type        = string
   description = "The ARN of the OIDC Provider if `enable_irsa = true`."
 }
+
+## BACKUPS
+variable "enable_backup_service" {
+  default = false
+  type    = bool
+}
+
+variable "backup_retention" {
+  default     = 35
+  type        = number
+  description = "The retention period for continuous backups can be between 1 and 35 days."
+}
+
