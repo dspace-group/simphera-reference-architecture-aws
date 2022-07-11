@@ -1,35 +1,37 @@
 resource "aws_db_instance" "simphera" {
-  allocated_storage      = var.postgresqlStorage / 1024
-  engine                 = "postgres"
-  engine_version         = var.postgresqlVersion
-  instance_class         = var.db_instance_type_simphera
-  identifier             = "${local.instancename}-simphera"
-  db_name                = replace("${local.instancename}simphera", "/[^0-9a-zA-Z]/", "") # Use alphanumeric characters only
-  username               = local.secret_postgres_username
-  password               = local.secrets["postgresql_password"]
-  skip_final_snapshot    = true
-  db_subnet_group_name   = "${var.infrastructurename}-vpc"
-  vpc_security_group_ids = [var.postgresql_security_group_id]
-  apply_immediately      = true
-  tags                   = var.tags
+  allocated_storage       = var.postgresqlStorage / 1024
+  engine                  = "postgres"
+  engine_version          = var.postgresqlVersion
+  instance_class          = var.db_instance_type_simphera
+  identifier              = "${local.instancename}-simphera"
+  db_name                 = replace("${local.instancename}simphera", "/[^0-9a-zA-Z]/", "") # Use alphanumeric characters only
+  username                = local.secret_postgres_username
+  password                = local.secrets["postgresql_password"]
+  skip_final_snapshot     = true
+  db_subnet_group_name    = "${var.infrastructurename}-vpc"
+  vpc_security_group_ids  = [var.postgresql_security_group_id]
+  apply_immediately       = true
+  tags                    = var.tags
+  backup_retention_period = var.db_retention_simphera
 
 }
 
 resource "aws_db_instance" "keycloak" {
-  count                  = 1
-  allocated_storage      = var.postgresqlStorage / 1024
-  engine                 = "postgres"
-  engine_version         = var.postgresqlVersion
-  instance_class         = var.db_instance_type_keycloak
-  identifier             = "${local.instancename}-keycloak"
-  db_name                = replace("${local.instancename}keycloak", "/[^0-9a-zA-Z]/", "")
-  username               = local.secret_postgres_username
-  password               = local.secrets["postgresql_password"]
-  skip_final_snapshot    = true
-  db_subnet_group_name   = "${var.infrastructurename}-vpc"
-  vpc_security_group_ids = [var.postgresql_security_group_id]
-  apply_immediately      = true
-  tags                   = var.tags
+  count                   = 1
+  allocated_storage       = var.postgresqlStorage / 1024
+  engine                  = "postgres"
+  engine_version          = var.postgresqlVersion
+  instance_class          = var.db_instance_type_keycloak
+  identifier              = "${local.instancename}-keycloak"
+  db_name                 = replace("${local.instancename}keycloak", "/[^0-9a-zA-Z]/", "")
+  username                = local.secret_postgres_username
+  password                = local.secrets["postgresql_password"]
+  skip_final_snapshot     = true
+  db_subnet_group_name    = "${var.infrastructurename}-vpc"
+  vpc_security_group_ids  = [var.postgresql_security_group_id]
+  apply_immediately       = true
+  tags                    = var.tags
+  backup_retention_period = var.db_retention_keycloak
 }
 
 
