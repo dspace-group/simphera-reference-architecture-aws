@@ -162,3 +162,26 @@ variable "simpheraInstances" {
 
 }
 
+variable "enable_patching" {
+  type        = bool
+  description = "Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually."
+  default     = false
+}
+
+variable "scan_schedule" {
+  description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
+  type        = string
+  default     = "cron(0 0 * * ? *)"
+}
+variable "install_schedule" {
+  description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."
+  type        = string
+  default     = "cron(0 3 * * ? *)"
+}
+
+variable "maintainance_duration" {
+  default     = 3
+  description = "How long in hours for the maintenance window."
+  type        = number
+}
+

@@ -20,4 +20,5 @@ module "simphera_instance" {
   public_subnets               = module.vpc.public_subnets
   vpc_id                       = module.vpc.vpc_id
   postgresql_security_group_id = module.security_group.security_group_id
+  kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
 }

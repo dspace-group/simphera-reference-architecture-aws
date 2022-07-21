@@ -164,18 +164,49 @@ terraform apply
 Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
 Installation times may very, but it is expected to take up to 30 min to complete the deployment.
 
-To delete all resources from your AWS account you need to run the following command to run the `eks-addons` modules:
+### Destroy Infrastructure
+
+Resources that contain data, i.e. the databases, S3 storage, and the recovery points in the backup vault are protected against unintentional deletion.
+:warning: **If you continue with the procedure described in this section, your data will be irretrievably deleted.** 
+
+
+Before the backup vault can be deleted, all the continuous recovery points for S3 storage and the databases need to be deleted, for example by using the following Powershell snippet:
+```powershell
+$vault="simphera-reference-production-backup-vault"
+$recoverypoints = aws backup list-recovery-points-by-backup-vault --backup-vault-name $vault | ConvertFrom-Json
+foreach ($rp in $recoverypoints.RecoveryPoints){
+  aws backup delete-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn 
+}
+aws backup delete-backup-vault --backup-vault-name $vault
+```
+
+Before the databases can be deleted, you need to remove their delete protection:
+```powershell
+aws rds modify-db-instance --db-instance-identifier simphera-reference-production-simphera --no-deletion-protection
+aws rds delete-db-instance --db-instance-identifier simphera-reference-production-simphera --skip-final-snapshot
+```
+
+You can remove the S3 buckets like this:
+```powershell
+aws s3 rb s3://mybucket --force
+```
+
+The remaining infrastructure resources can be deleted via Terraform.
+Due to a bug, Terraform is not able to properly [plan the removal of resources in the right order](https://github.com/aws-ia/terraform-aws-eks-blueprints/issues/353) which leads to a deadlock.
+To workaround the bug, you need to need to remove the `eks-addons` module at first:
 
 ```sh
 terraform destroy -target="module.eks-addons"
 ```
+
+:warning: **It is important that you have completed the preceding steps. Otherwise, the following command will not finish completly, leaving you in a deadlock state.**
 
 To delete the remaining resources, run the following command:
 ```sh
 terraform destroy
 ```
 
-Terraform is not able to properly [plan the removal of resources in the right order](https://github.com/aws-ia/terraform-aws-eks-blueprints/issues/353) which leads to a deadlock.
+
 
 ### Connect to Kubernetes Cluster
 

@@ -1,19 +1,21 @@
 
 
 module "eks" {
-  source             = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.0.4"
-  tenant             = local.tenant
-  environment        = local.environment
-  zone               = local.zone
-  cluster_version    = var.kubernetesVersion
-  cluster_name       = var.infrastructurename
-  vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnets
-  create_eks         = true
-  map_accounts       = var.map_accounts
-  map_users          = var.map_users
-  map_roles          = var.map_roles
-  tags               = var.tags
+  source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.0.4"
+  tenant                                 = local.tenant
+  environment                            = local.environment
+  zone                                   = local.zone
+  cluster_version                        = var.kubernetesVersion
+  cluster_name                           = var.infrastructurename
+  vpc_id                                 = module.vpc.vpc_id
+  private_subnet_ids                     = module.vpc.private_subnets
+  create_eks                             = true
+  map_accounts                           = var.map_accounts
+  map_users                              = var.map_users
+  map_roles                              = var.map_roles
+  tags                                   = var.tags
+  cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
+  cloudwatch_log_group_retention_in_days = 90
   managed_node_groups = {
     "default" = {
       node_group_name = "default"
@@ -69,6 +71,8 @@ module "eks-addons" {
       internal = "false",
       scheme   = "internet-facing",
     })]
+    namespace        = "nginx",
+    create_namespace = true
   }
   cluster_autoscaler_helm_config = {
     values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {

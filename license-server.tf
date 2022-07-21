@@ -1,12 +1,47 @@
-
-
 resource "aws_instance" "license_server" {
   count                = var.licenseServer ? 1 : 0
-  ami                  = "ami-07df274a488ca9195" #Amazon Linux 2 AMI (HVM)    
+  ami                  = data.aws_ami.amazon_linux_kernel5.id
   instance_type        = "t3a.large"
   iam_instance_profile = aws_iam_instance_profile.license_server_profile[0].name
   subnet_id            = module.vpc.private_subnets[0]
-  tags                 = merge(var.tags, { "Name" = local.license_server })
+
+  metadata_options {
+    http_endpoint = "enabled"
+    http_tokens   = "required" # Require session token for Instance Metadata Service Version 2 (IMDSv2)
+  }
+
+  lifecycle {
+    ignore_changes = [
+      ami,
+    ]
+  }
+  tags = merge(var.tags, { "Name" = local.license_server })
+}
+
+data "aws_ami" "amazon_linux_kernel5" {
+  most_recent = true
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-kernel-5*"]
+  }
+
+  filter {
+    name   = "block-device-mapping.volume-type"
+    values = ["gp2"]
+  }
+
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+
+  owners = ["amazon"]
 }
 resource "aws_iam_role" "license_server_role" {
   count       = var.licenseServer ? 1 : 0
@@ -42,11 +77,16 @@ resource "aws_iam_role_policy_attachment" "minio_policy_attachment" {
   policy_arn = aws_iam_policy.license_server_policy[0].arn
 }
 
+resource "aws_iam_role_policy_attachment" "license_server_ssm" {
+  count      = var.licenseServer ? 1 : 0
+  role       = aws_iam_role.license_server_role[0].name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
 
 resource "aws_s3_bucket" "license_server_bucket" {
-  count         = var.licenseServer ? 1 : 0
-  bucket        = local.license_server_bucket
-  force_destroy = true
+  count  = var.licenseServer ? 1 : 0
+  bucket = local.license_server_bucket
+  tags   = var.tags
 }
 
 resource "aws_s3_bucket_acl" "license_server_bucket_acl" {

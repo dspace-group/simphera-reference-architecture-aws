@@ -104,3 +104,9 @@ variable "backup_retention" {
   description = "The retention period for continuous backups can be between 1 and 35 days."
 }
 
+variable "kms_key_cloudwatch" {
+  type        = string
+  description = "ARN of KMS encryption key used to encrypt CloudWatch log groups."
+  default     = ""
+}
+

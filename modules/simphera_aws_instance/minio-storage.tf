@@ -29,11 +29,41 @@ resource "aws_iam_policy" "minio_policy" {
   tags        = var.tags
 }
 
+resource "aws_iam_role" "executor_role" {
+  name = "${var.name}-executoragentlinux"
+
+  # Terraform's "jsonencode" function converts a
+  # Terraform expression result to valid JSON syntax.
+  assume_role_policy = jsonencode({
+    "Version" : "2012-10-17",
+    "Statement" : [
+      {
+        "Effect" : "Allow",
+        "Principal" : {
+          "Federated" : var.eks_oidc_provider_arn
+        },
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Condition" : {
+          "StringEquals" : {
+            "${local.eks_oidc_issuer}:sub" : "system:serviceaccount:${var.k8s_namespace}:executoragentlinux"
+          }
+        }
+      }
+    ]
+  })
+
+  tags = var.tags
+
+}
 resource "aws_iam_role_policy_attachment" "minio_policy_attachment" {
   role       = aws_iam_role.minio_iam_role.name
   policy_arn = aws_iam_policy.minio_policy.arn
 }
 
+resource "aws_iam_role_policy_attachment" "executor_attachment" {
+  role       = aws_iam_role.executor_role.name
+  policy_arn = aws_iam_policy.minio_policy.arn
+}
 resource "kubernetes_service_account" "minio_service_account" {
   metadata {
     name      = local.minio_serviceaccount
@@ -44,19 +74,25 @@ resource "kubernetes_service_account" "minio_service_account" {
   }
 }
 resource "aws_s3_bucket" "bucket" {
-  bucket        = local.instancename
-  tags          = var.tags
+  bucket = local.instancename
+  tags   = var.tags
 }
 
-resource "aws_s3_bucket_acl" "bucket_acl" {
-  bucket = aws_s3_bucket.bucket.id
-  acl    = "private"
-}
 
 resource "aws_s3_bucket_versioning" "bucket_versioning" {
   bucket = aws_s3_bucket.bucket.id
   versioning_configuration {
     status = "Enabled"
+  }
+}
+
+resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption" {
+  bucket = aws_s3_bucket.bucket.bucket
+
+  rule {
+    apply_server_side_encryption_by_default {
+      sse_algorithm = "aws:kms"
+    }
   }
 }
 
