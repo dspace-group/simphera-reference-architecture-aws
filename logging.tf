@@ -34,7 +34,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_logs_encry
 }
 
 resource "aws_kms_key" "kms_key_cloudwatch_log_group" {
-  description         = "CloudWatch log group for EKS cluster ${var.infrastructurename}"
+  description         = "KMS key used to encrypt Kubernetes, VPC Flow, Amazon RDS for PostgreSQL and SSM Patch manager log groups within infrastructure ${var.infrastructurename}"
   enable_key_rotation = true
   policy              = <<POLICY
 {
