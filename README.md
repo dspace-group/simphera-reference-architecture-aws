@@ -322,8 +322,12 @@ Alternatively, you can [restore the S3 data via the AWS console](https://docs.aw
 
 
 ## Encryption
-Encryption of Kubernetes secrets is enabled per default. 
-Encryption of the PostgreSQL and MinIO data is currently not supported.
+
+Encryption is enabled at all AWS resources that are created by Terraform:
+ - PostgreSQL databases
+ - S3 buckets
+ - CloudWatch logs
+ - Backup Vault
 
 ## Rotating Credentials
 
