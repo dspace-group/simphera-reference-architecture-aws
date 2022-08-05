@@ -172,23 +172,41 @@ Resources that contain data, i.e. the databases, S3 storage, and the recovery po
 
 Before the backup vault can be deleted, all the continuous recovery points for S3 storage and the databases need to be deleted, for example by using the following Powershell snippet:
 ```powershell
-$vault="simphera-reference-production-backup-vault"
-$recoverypoints = aws backup list-recovery-points-by-backup-vault --backup-vault-name $vault | ConvertFrom-Json
-foreach ($rp in $recoverypoints.RecoveryPoints){
-  aws backup delete-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn 
+$vaults = terraform output backup_vaults | ConvertFrom-Json
+foreach ($vault in $vaults){
+  Write-Host "Deleting $vault"
+  $recoverypoints = aws backup list-recovery-points-by-backup-vault --backup-vault-name $vault | ConvertFrom-Json
+  foreach ($rp in $recoverypoints.RecoveryPoints){
+    aws backup delete-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn
+  }
+  foreach ($rp in $recoverypoints.RecoveryPoints){
+    Do  
+    {  
+      Start-Sleep -Seconds 10
+      aws backup describe-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn | ConvertFrom-Json
+    } while( $LASTEXITCODE -eq 0)
+  }  
+  aws backup delete-backup-vault --backup-vault-name $vault
 }
-aws backup delete-backup-vault --backup-vault-name $vault
 ```
+
 
 Before the databases can be deleted, you need to remove their delete protection:
 ```powershell
-aws rds modify-db-instance --db-instance-identifier simphera-reference-production-simphera --no-deletion-protection
-aws rds delete-db-instance --db-instance-identifier simphera-reference-production-simphera --skip-final-snapshot
+$databases = terraform output database_identifiers | ConvertFrom-Json
+foreach ($db in $databases){
+  Write-Host "Deleting database $db"
+  aws rds modify-db-instance --db-instance-identifier $db --no-deletion-protection
+  aws rds delete-db-instance --db-instance-identifier $db --skip-final-snapshot
+}
 ```
 
 You can remove the S3 buckets like this:
 ```powershell
-aws s3 rb s3://mybucket --force
+$buckets = terraform output s3_buckets | ConvertFrom-Json
+foreach ($bucket in $buckets){
+  aws s3 rb s3://$bucket --force
+}
 ```
 
 The remaining infrastructure resources can be deleted via Terraform.
