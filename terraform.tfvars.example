@@ -1,6 +1,7 @@
 
 # The AWS account where resource are created
 account_id = ""
+infrastructurename = "simphera-reference"
 
 # The AWS region to be used
 region = "eu-central-1"
@@ -54,27 +55,21 @@ vpcPublicSubnets = ["10.1.12.0/22", "10.1.16.0/22", "10.1.20.0/22"]
 vpcDatabaseSubnets = ["10.1.24.0/22", "10.1.28.0/22", "10.1.32.0/22"]
 
 # Install AWS Distro for OpenTelemetry to collect cluster metrics and send them to AWS CloudWatch.
-enable_aws_open_telemetry = false
+enable_ingress_nginx = true
 
 # Install FluentBit to send container logs to CloudWatch.
-enable_aws_for_fluentbit = true
+enable_aws_for_fluentbit = false
 
 simpheraInstances = {
   "production" = {
-    name                         = "simphera-production"
-    postgresqlVersion            = "11"
-    postgresqlStorage            = 640000
-    db_instance_type_keycloak    = "db.t3.large"
-    db_instance_type_simphera    = "db.t3.large"
-    k8s_namespace                = "simphera"
-    secretname                   = "aws-simphera-dev-production"
-    secret_tls_public_file       = "wildcard.crt"
-    secret_tls_private_file      = "wildcard.key"
-    simphera_fqdn                = "simphera.example.com"
-    minio_fqdn                   = "minio.example.com"
-    keycloak_fqdn                = "keycloak.example.com"
-    license_server_fqdn          = "licenses.example.com"
-    simphera_chart_registry      = "registry.dspace.cloud"
-    simphera_image_tag           = "2022-03-14-0911-1"
+    name                      = "production"
+    postgresqlVersion         = "11"
+    postgresqlStorage         = 640000
+    db_instance_type_keycloak = "db.t3.large"
+    db_instance_type_simphera = "db.t3.large"
+    k8s_namespace             = "simphera"
+    secretname                = "simphera-reference-dev-eks-production"
+    enable_backup_service     = true
+    backup_retention          = 35
   }
 }
