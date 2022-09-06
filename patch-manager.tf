@@ -26,9 +26,21 @@ resource "aws_ssm_maintenance_window_target" "scan" {
   resource_type = "INSTANCE"
 
   targets {
+    key    = "tag:Patch Group"
+    values = [local.patchgroupid]
+  }
+}
+
+resource "aws_ssm_maintenance_window_target" "scan_eks_nodes" {
+  count         = var.enable_patching ? 1 : 0
+  window_id     = aws_ssm_maintenance_window.scan[0].id
+  resource_type = "INSTANCE"
+
+  targets {
     key    = "tag:name"
     values = [local.eks_cluster_id]
   }
+
 }
 
 resource "aws_ssm_maintenance_window_target" "install" {
@@ -37,8 +49,8 @@ resource "aws_ssm_maintenance_window_target" "install" {
   resource_type = "INSTANCE"
 
   targets {
-    key    = "InstanceIds"
-    values = [local.license_server_instance_id]
+    key    = "tag:Patch Group"
+    values = [local.patchgroupid]
   }
 }
 
@@ -52,7 +64,7 @@ resource "aws_ssm_maintenance_window_task" "scan" {
   window_id       = aws_ssm_maintenance_window.scan[0].id
   targets {
     key    = "WindowTargetIds"
-    values = [aws_ssm_maintenance_window_target.scan[0].id]
+    values = [aws_ssm_maintenance_window_target.scan[0].id, aws_ssm_maintenance_window_target.scan_eks_nodes[0].id]
   }
   task_invocation_parameters {
     run_command_parameters {
@@ -116,4 +128,36 @@ resource "aws_cloudwatch_log_group" "ssm_install_log_group" {
   retention_in_days = 30
   kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
   tags              = var.tags
+}
+
+resource "aws_ssm_patch_baseline" "production" {
+  name             = "${var.infrastructurename}-patch-baseline"
+  description      = "Default Patch Baseline for Amazon Linux 2 Provided by AWS but with Medium Severity Security Patches."
+  operating_system = "AMAZON_LINUX_2"
+  approval_rule {
+    approve_after_days = 7
+
+    patch_filter {
+      key    = "SEVERITY"
+      values = ["Important", "Critical", "Medium"]
+    }
+    patch_filter {
+      key    = "CLASSIFICATION"
+      values = ["Security"]
+    }
+  }
+  approval_rule {
+    approve_after_days = 7
+
+    patch_filter {
+      key    = "CLASSIFICATION"
+      values = ["Bugfix"]
+    }
+  }
+  tags = var.tags
+}
+
+resource "aws_ssm_patch_group" "patch_group" {
+  baseline_id = aws_ssm_patch_baseline.production.id
+  patch_group = "${var.infrastructurename}-patch-group"
 }

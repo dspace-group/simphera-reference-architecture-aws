@@ -19,7 +19,13 @@ resource "aws_iam_role" "minio_iam_role" {
       }
     ]
   })
+}
 
+# https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-ssl-requests-only.html
+resource "aws_s3_bucket_policy" "buckets_ssl" {
+  for_each = local.buckets
+  bucket   = each.value
+  policy   = templatefile("${path.module}/../../templates/bucket_policy.json", { bucket = each.value })
 }
 
 resource "aws_iam_policy" "minio_policy" {

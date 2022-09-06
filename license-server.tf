@@ -15,7 +15,7 @@ resource "aws_instance" "license_server" {
       ami,
     ]
   }
-  tags = merge(var.tags, { "Name" = local.license_server })
+  tags = merge(var.tags, { "Name" = local.license_server, "Patch Group" = local.patchgroupid })
 }
 
 data "aws_ami" "amazon_linux_kernel5" {
@@ -87,6 +87,13 @@ resource "aws_s3_bucket" "license_server_bucket" {
   count  = var.licenseServer ? 1 : 0
   bucket = local.license_server_bucket
   tags   = var.tags
+}
+
+# https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-ssl-requests-only.html
+resource "aws_s3_bucket_policy" "license_server_bucket_ssl" {
+  count  = var.licenseServer ? 1 : 0
+  bucket = aws_s3_bucket.license_server_bucket[0].id
+  policy = templatefile("${path.module}/templates/bucket_policy.json", { bucket = aws_s3_bucket.license_server_bucket[0].id })
 }
 
 resource "aws_s3_bucket_acl" "license_server_bucket_acl" {
