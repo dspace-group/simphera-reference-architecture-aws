@@ -6,6 +6,8 @@ resource "aws_instance" "license_server" {
   subnet_id            = module.vpc.private_subnets[0]
 
   metadata_options {
+    # [EC2.8] EC2 instances should use IMDSv2
+    # https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html#fsbp-ec2-8
     http_endpoint = "enabled"
     http_tokens   = "required" # Require session token for Instance Metadata Service Version 2 (IMDSv2)
   }

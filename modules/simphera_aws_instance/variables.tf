@@ -110,3 +110,9 @@ variable "kms_key_cloudwatch" {
   default     = ""
 }
 
+variable "log_bucket" {
+  type        = string
+  description = "Name of the S3 bucket where S3 server access logs are stored"
+  default     = ""
+}
+

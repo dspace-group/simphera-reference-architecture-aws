@@ -9,6 +9,8 @@ resource "aws_s3_bucket" "bucket_logs" {
       }
     }
   }
+
+  #[S3.9] S3 bucket server access logging should be enabled
   logging {
     target_bucket = "${var.infrastructurename}-logs"        # Cannot self-reference block aws_s3_bucket.bucket_logs.id
     target_prefix = "bucket/${var.infrastructurename}-logs" # Cannot self-reference block aws_s3_bucket.bucket_logs.id

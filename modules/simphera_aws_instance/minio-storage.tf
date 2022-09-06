@@ -21,7 +21,7 @@ resource "aws_iam_role" "minio_iam_role" {
   })
 }
 
-# https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-ssl-requests-only.html
+# [S3.5] S3 buckets should require requests to use Secure Socket Layer
 resource "aws_s3_bucket_policy" "buckets_ssl" {
   for_each = local.buckets
   bucket   = each.value
@@ -82,6 +82,21 @@ resource "kubernetes_service_account" "minio_service_account" {
 resource "aws_s3_bucket" "bucket" {
   bucket = local.instancename
   tags   = var.tags
+
+  server_side_encryption_configuration {
+    rule {
+      bucket_key_enabled = false
+      apply_server_side_encryption_by_default {
+        sse_algorithm = "AES256"
+      }
+    }
+  }
+
+  #[S3.9] S3 bucket server access logging should be enabled
+  logging {
+    target_bucket = var.log_bucket        # Cannot self-reference block aws_s3_bucket.bucket_logs.id
+    target_prefix = "bucket/${local.instancename}-logs" # Cannot self-reference block aws_s3_bucket.bucket_logs.id
+  }  
 }
 
 
@@ -92,6 +107,7 @@ resource "aws_s3_bucket_versioning" "bucket_versioning" {
   }
 }
 
+# [S3.4] S3 buckets should have server-side encryption enabled
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption" {
   bucket = aws_s3_bucket.bucket.bucket
 
@@ -102,7 +118,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
   }
 }
 
-
+# [S3.8] S3 Block Public Access setting should be enabled at the bucket level
 resource "aws_s3_bucket_public_access_block" "bucket_access_block" {
   bucket = aws_s3_bucket.bucket.id
 

@@ -43,7 +43,8 @@ module "security_group" {
   ]
 }
 
-
+# [EC2.6] VPC flow logging should be enabled in all VPCs
+# https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html#fsbp-ec2-6
 resource "aws_flow_log" "flowlog" {
   iam_role_arn    = aws_iam_role.flowlogs_role.arn
   log_destination = aws_cloudwatch_log_group.flowlogs.arn
