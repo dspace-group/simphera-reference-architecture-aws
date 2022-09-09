@@ -23,9 +23,8 @@ resource "aws_iam_role" "minio_iam_role" {
 
 # [S3.5] S3 buckets should require requests to use Secure Socket Layer
 resource "aws_s3_bucket_policy" "buckets_ssl" {
-  for_each = local.buckets
-  bucket   = each.value
-  policy   = templatefile("${path.module}/../../templates/bucket_policy.json", { bucket = each.value })
+  bucket = aws_s3_bucket.bucket.id
+  policy = templatefile("${path.module}/../../templates/bucket_policy.json", { bucket = aws_s3_bucket.bucket.id })
 }
 
 resource "aws_iam_policy" "minio_policy" {
@@ -94,9 +93,9 @@ resource "aws_s3_bucket" "bucket" {
 
   #[S3.9] S3 bucket server access logging should be enabled
   logging {
-    target_bucket = var.log_bucket        # Cannot self-reference block aws_s3_bucket.bucket_logs.id
+    target_bucket = var.log_bucket                      # Cannot self-reference block aws_s3_bucket.bucket_logs.id
     target_prefix = "bucket/${local.instancename}-logs" # Cannot self-reference block aws_s3_bucket.bucket_logs.id
-  }  
+  }
 }
 
 
