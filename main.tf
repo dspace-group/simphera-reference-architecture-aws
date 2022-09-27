@@ -1,6 +1,6 @@
 
 terraform {
-  required_version = ">= 1.1.7" #nullable input values available in Terraform v1.1.0 and later.
+  required_version = ">= 1.1.7, < 1.3.0" #nullable input values available in Terraform v1.1.0 and later.
 
   required_providers {
     aws = {
