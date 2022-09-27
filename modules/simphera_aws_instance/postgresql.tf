@@ -35,12 +35,12 @@ resource "aws_db_instance" "keycloak" {
 
 output "simphera_db_instance" {
   value       = aws_db_instance.simphera.address
-  description = "Adress for the simphera database instance"
+  description = "Address for the simphera database instance"
 }
 
 output "keycloak_db_instance" {
   value       = aws_db_instance.keycloak[0].address
-  description = "Adress for the keycloak database instance"
+  description = "Address for the keycloak database instance"
 }
 
 data "http" "aws_tls_certificate" {
