@@ -24,12 +24,12 @@ output "simphera_db_instances" {
   value = tomap({
     for name, instance in module.simphera_instance : name => instance.simphera_db_instance
   })
-  description = "Contains the endpoint for the simphera database instance for a given SIMPHERA instance."
+  description = "Contains the address for the simphera database instance for a given SIMPHERA instance."
 }
 
 output "keycloak_db_instances" {
   value = tomap({
     for name, instance in module.simphera_instance : name => instance.keycloak_db_instance
   })
-  description = "Contains the endpoint for the simphera database instance for a given SIMPHERA instance."
+  description = "Contains the address for the keycloak database instance for a given SIMPHERA instance."
 }
