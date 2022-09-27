@@ -34,12 +34,12 @@ resource "aws_db_instance" "keycloak" {
 
 
 output "simphera_db_instance" {
-  value       = aws_db_instance.simphera.adress
+  value       = aws_db_instance.simphera.address
   description = "Adress for the simphera database instance"
 }
 
 output "keycloak_db_instance" {
-  value       = aws_db_instance.keycloak[0].adress
+  value       = aws_db_instance.keycloak[0].address
   description = "Adress for the keycloak database instance"
 }
 
