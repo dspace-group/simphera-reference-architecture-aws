@@ -33,6 +33,16 @@ resource "aws_db_instance" "keycloak" {
 }
 
 
+output "simphera_db_instance" {
+  value       = aws_db_instance.simphera.endpoint
+  description = "FQDN for the simphera database instance"
+}
+
+output "keycloak_db_instance" {
+  value       = aws_db_instance.keycloak[0].endpoint
+  description = "FQDN for the keycloak database instance"
+}
+
 data "http" "aws_tls_certificate" {
   url = "https://truststore.pki.rds.amazonaws.com/${var.region}/${var.region}-bundle.pem"
 }
