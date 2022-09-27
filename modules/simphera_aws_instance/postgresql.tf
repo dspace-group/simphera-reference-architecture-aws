@@ -34,13 +34,13 @@ resource "aws_db_instance" "keycloak" {
 
 
 output "simphera_db_instance" {
-  value       = aws_db_instance.simphera.endpoint
-  description = "FQDN for the simphera database instance"
+  value       = aws_db_instance.simphera.adress
+  description = "Adress for the simphera database instance"
 }
 
 output "keycloak_db_instance" {
-  value       = aws_db_instance.keycloak[0].endpoint
-  description = "FQDN for the keycloak database instance"
+  value       = aws_db_instance.keycloak[0].adress
+  description = "Adress for the keycloak database instance"
 }
 
 data "http" "aws_tls_certificate" {
