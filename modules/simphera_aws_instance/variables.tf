@@ -47,7 +47,7 @@ variable "postgresqlStorage" {
   default     = 20
   validation {
     condition     = 20 <= var.postgresqlStorage && var.postgresqlStorage <= 65536
-    error_message = "postgresqlStorage must be between 100 and 65536 GiB."
+    error_message = "postgresqlStorage must be between 20 and 65536 GiB."
   }
 }
 
@@ -67,7 +67,7 @@ variable "postgresqlStorageKeycloak" {
   default     = 20
   validation {
     condition     = 20 <= var.postgresqlStorageKeycloak && var.postgresqlStorageKeycloak <= 65536
-    error_message = "var.postgresqlStorageKeycloak must be between 20 and 65536 GiB."
+    error_message = "postgresqlStorageKeycloak must be between 20 and 65536 GiB."
   }
 }
 
@@ -77,7 +77,7 @@ variable "postgresqlMaxStorageKeycloak" {
   default     = 20
   validation {
     condition     = 20 <= var.postgresqlMaxStorageKeycloak && var.postgresqlMaxStorageKeycloak <= 65536
-    error_message = "postgresqlStorageKeycloak must be between 20 and 65536 GiB."
+    error_message = "postgresqlMaxStorageKeycloak must be between 20 and 65536 GiB."
   }
 }
 
