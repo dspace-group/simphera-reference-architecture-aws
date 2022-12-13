@@ -132,12 +132,27 @@ Before you let Terraform create AWS resources, you need to manually create a Sec
 It is recommended to create individual secrets per SIMPHERA instance (e.g. production and staging instance).
 To create the secret, open the Secrets Manager console and click the button `Store a new secret`.
 As secret type choose `Other type of secret`. 
+The password must contain from 8 to 128 characters and must not contain any of the following: / (slash), '(single quote), "(double quote) and @ (at sign).
 Open the Plaintext tab and paste the following JSON object and enter your usernames and passwords:
 ```json
 {
-  "postgresql_password": ""
+  "postgresql_password": "<your password>"
 }
 ```
+
+Alternatively, you can create the secret with the following Powershell script:
+
+```powershell
+$region = "<your region>"
+$postgresqlCredentials = @"
+{
+    "postgresql_password" : "<your password>"
+}
+"@ | ConvertFrom-Json | ConvertTo-Json -Compress
+$postgresqlCredentials = $postgresqlCredentials -replace '([\\]*)"', '$1$1\"'
+aws secretsmanager create-secret --name <secret name> --secret-string $postgresqlCredentials --region $region
+```
+
 On the next page you can define a name for the secret. 
 Automatic credentials rotation is currently not supported by SIMPHERA, but you can <a href="#rotating-credentials">rotate secrets manually</a>.
 You have to provide the name of the secret in your Terraform variables.
@@ -147,6 +162,13 @@ The next section describes how you need to adjust your Terraform variables.
 
 For your configuration, please make a copy of the file `terraform.tfvars.example`, name it `terraform.tfvars` and open the file in a text editor. This file contains all variables that are configurable including documentation of the variables. Please adapt the values before you deploy the resources.
 
+```diff
+simpheraInstances = {
+  "production" = {
++    secretname = "<secret name>"
+    }
+}
+```
 
 ### Apply Terraform Configuration
 

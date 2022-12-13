@@ -82,7 +82,7 @@ variable "licenseServer" {
 variable "kubernetesVersion" {
   type        = string
   description = "The version of the AKS cluster."
-  default     = "1.21"
+  default     = "1.22"
 }
 variable "vpcCidr" {
   type        = string
@@ -148,13 +148,16 @@ variable "map_users" {
 
 variable "simpheraInstances" {
   type = map(object({
-    name                      = string
-    postgresqlVersion         = string
-    postgresqlStorage         = number
-    db_instance_type_simphera = string
-    db_instance_type_keycloak = string
-    k8s_namespace             = string
-    secretname                = string
+    name                         = string
+    postgresqlVersion            = string
+    postgresqlStorage            = number
+    postgresqlMaxStorage         = number
+    postgresqlStorageKeycloak    = number
+    postgresqlMaxStorageKeycloak = number
+    db_instance_type_simphera    = string
+    db_instance_type_keycloak    = string
+    k8s_namespace                = string
+    secretname                   = string
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
 
