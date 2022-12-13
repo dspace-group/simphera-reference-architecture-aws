@@ -43,9 +43,44 @@ variable "postgresqlVersion" {
 
 variable "postgresqlStorage" {
   type        = number
-  description = "PostgreSQL Storage in MB, must be divisble by 1024"
-  default     = 640000
+  description = "PostgreSQL Storage in GiB for SIMPHERA."
+  default     = 20
+  validation {
+    condition     = 20 <= var.postgresqlStorage && var.postgresqlStorage <= 65536
+    error_message = "postgresqlStorage must be between 100 and 65536 GiB."
+  }
 }
+
+variable "postgresqlMaxStorage" {
+  type        = number
+  description = "The upper limit to which Amazon RDS can automatically scale the storage of the SIMPHERA database. Must be greater than or equal to postgresqlStorage or 0 to disable Storage Autoscaling."
+  default     = 20
+  validation {
+    condition     = 20 <= var.postgresqlMaxStorage && var.postgresqlMaxStorage <= 65536
+    error_message = "postgresqlMaxStorage must be between 20 and 65536 GiB."
+  }
+}
+
+variable "postgresqlStorageKeycloak" {
+  type        = number
+  description = "PostgreSQL Storage in GiB for Keycloak. The minimum value is 100 GiB and the maximum value is 65.536 GiB"
+  default     = 20
+  validation {
+    condition     = 20 <= var.postgresqlStorageKeycloak && var.postgresqlStorageKeycloak <= 65536
+    error_message = "var.postgresqlStorageKeycloak must be between 20 and 65536 GiB."
+  }
+}
+
+variable "postgresqlMaxStorageKeycloak" {
+  type        = number
+  description = "The upper limit to which Amazon RDS can automatically scale the storage of the Keycloak database. Must be greater than or equal to postgresqlStorage or 0 to disable Storage Autoscaling."
+  default     = 20
+  validation {
+    condition     = 20 <= var.postgresqlMaxStorageKeycloak && var.postgresqlMaxStorageKeycloak <= 65536
+    error_message = "postgresqlStorageKeycloak must be between 20 and 65536 GiB."
+  }
+}
+
 
 variable "db_instance_type_keycloak" {
   type        = string

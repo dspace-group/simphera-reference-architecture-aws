@@ -62,6 +62,7 @@ module "eks-addons" {
       log_group_name       = local.log_group_name,
       service_account_name = "aws-for-fluent-bit-sa"
     })]
+    dependency_update = true
   }
 
   ingress_nginx_helm_config = {
@@ -69,6 +70,7 @@ module "eks-addons" {
       internal = "false",
       scheme   = "internet-facing",
     })]
+    dependency_update = true
   }
   cluster_autoscaler_helm_config = {
     values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
@@ -76,6 +78,7 @@ module "eks-addons" {
       eks_cluster_id       = module.eks.eks_cluster_id,
       service_account_name = "cluster-autoscaler-sa"
     })]
+    dependency_update = true
   }
   depends_on = [module.eks.managed_node_groups]
 }

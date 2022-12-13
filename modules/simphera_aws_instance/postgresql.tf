@@ -1,5 +1,6 @@
 resource "aws_db_instance" "simphera" {
-  allocated_storage      = var.postgresqlStorage / 1024
+  allocated_storage      = var.postgresqlStorage
+  max_allocated_storage  = var.postgresqlMaxStorage
   engine                 = "postgres"
   engine_version         = var.postgresqlVersion
   instance_class         = var.db_instance_type_simphera
@@ -17,7 +18,8 @@ resource "aws_db_instance" "simphera" {
 
 resource "aws_db_instance" "keycloak" {
   count                  = 1
-  allocated_storage      = var.postgresqlStorage / 1024
+  allocated_storage      = var.postgresqlStorageKeycloak
+  max_allocated_storage  = var.postgresqlMaxStorageKeycloak
   engine                 = "postgres"
   engine_version         = var.postgresqlVersion
   instance_class         = var.db_instance_type_keycloak
