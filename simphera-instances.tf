@@ -25,4 +25,5 @@ module "simphera_instance" {
   postgresql_security_group_id = module.security_group.security_group_id
   kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
   log_bucket                   = aws_s3_bucket.bucket_logs.id
+  database_subnet_group_name   = module.vpc.database_subnet_group_name
 }

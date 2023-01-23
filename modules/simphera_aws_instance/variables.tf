@@ -151,3 +151,7 @@ variable "log_bucket" {
   default     = ""
 }
 
+variable "database_subnet_group_name" {
+  type        = string
+  description = "Name of database subnet group"
+}

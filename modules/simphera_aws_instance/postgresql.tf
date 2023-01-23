@@ -20,7 +20,7 @@ resource "aws_db_instance" "simphera" {
   iam_database_authentication_enabled = true # [RDS.10] IAM authentication should be configured for RDS instances
   copy_tags_to_snapshot               = true
   storage_encrypted                   = true # [RDS.3] RDS DB instances should have encryption at rest enabled
-  db_subnet_group_name                = "${var.infrastructurename}-vpc"
+  db_subnet_group_name                = var.database_subnet_group_name
   vpc_security_group_ids              = [var.postgresql_security_group_id]
   tags                                = var.tags
 
@@ -52,7 +52,7 @@ resource "aws_db_instance" "keycloak" {
   iam_database_authentication_enabled = true # [RDS.10] IAM authentication should be configured for RDS instances
   copy_tags_to_snapshot               = true
   storage_encrypted                   = true # [RDS.3] RDS DB instances should have encryption at rest enabled
-  db_subnet_group_name                = "${var.infrastructurename}-vpc"
+  db_subnet_group_name                = var.database_subnet_group_name
   vpc_security_group_ids              = [var.postgresql_security_group_id]
   tags                                = var.tags
   depends_on = [
