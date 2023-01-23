@@ -11,6 +11,9 @@ module "simphera_instance" {
   name                         = each.value.name
   postgresqlVersion            = each.value.postgresqlVersion
   postgresqlStorage            = each.value.postgresqlStorage
+  postgresqlMaxStorage         = each.value.postgresqlMaxStorage
+  postgresqlStorageKeycloak    = each.value.postgresqlStorageKeycloak
+  postgresqlMaxStorageKeycloak = each.value.postgresqlMaxStorageKeycloak
   db_instance_type_keycloak    = each.value.db_instance_type_keycloak
   db_instance_type_simphera    = each.value.db_instance_type_simphera
   k8s_namespace                = each.value.k8s_namespace

@@ -1,11 +1,13 @@
 resource "aws_db_instance" "simphera" {
-  allocated_storage                   = var.postgresqlStorage / 1024
+
+  allocated_storage                   = var.postgresqlStorage
+  max_allocated_storage               = var.postgresqlMaxStorage
   auto_minor_version_upgrade          = true # [RDS.13] RDS automatic minor version upgrades should be enabled
   engine                              = "postgres"
   engine_version                      = var.postgresqlVersion
   instance_class                      = var.db_instance_type_simphera
   identifier                          = local.db_simphera_id
-  name                                = replace("${local.instancename}simphera", "/[^0-9a-zA-Z]/", "") # Use alphanumeric characters only
+  db_name                             = replace("${local.instancename}simphera", "/[^0-9a-zA-Z]/", "") # Use alphanumeric characters only
   username                            = local.secret_postgres_username
   password                            = local.secrets["postgresql_password"]
   multi_az                            = true # [RDS.5] RDS DB instances should be configured with multiple Availability Zones
@@ -21,20 +23,23 @@ resource "aws_db_instance" "simphera" {
   db_subnet_group_name                = "${var.infrastructurename}-vpc"
   vpc_security_group_ids              = [var.postgresql_security_group_id]
   tags                                = var.tags
+
   depends_on = [
     aws_cloudwatch_log_group.db_simphera
   ]
 
+
 }
 
 resource "aws_db_instance" "keycloak" {
-  allocated_storage                   = var.postgresqlStorage / 1024
+  allocated_storage                   = var.postgresqlStorage
+  max_allocated_storage               = var.postgresqlMaxStorageKeycloak
   auto_minor_version_upgrade          = true # [RDS.13] RDS automatic minor version upgrades should be enabled
   engine                              = "postgres"
   engine_version                      = var.postgresqlVersion
   instance_class                      = var.db_instance_type_keycloak
   identifier                          = local.db_keycloak_id
-  name                                = replace("${local.instancename}keycloak", "/[^0-9a-zA-Z]/", "")
+  db_name                             = replace("${local.instancename}keycloak", "/[^0-9a-zA-Z]/", "")
   username                            = local.secret_postgres_username
   password                            = local.secrets["postgresql_password"]
   multi_az                            = true # [RDS.5] RDS DB instances should be configured with multiple Availability Zones

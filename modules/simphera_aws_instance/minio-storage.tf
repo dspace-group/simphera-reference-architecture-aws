@@ -23,9 +23,9 @@ resource "aws_iam_role" "minio_iam_role" {
 
 # [S3.5] S3 buckets should require requests to use Secure Socket Layer
 resource "aws_s3_bucket_policy" "buckets_ssl" {
-  for_each = local.buckets
-  bucket   = each.value
-  policy   = templatefile("${path.module}/../../templates/bucket_policy.json", { bucket = each.value })
+
+  bucket = aws_s3_bucket.bucket.bucket
+  policy = templatefile("${path.module}/../../templates/bucket_policy.json", { bucket = aws_s3_bucket.bucket.bucket })
 }
 
 resource "aws_iam_policy" "minio_policy" {
@@ -83,22 +83,12 @@ resource "aws_s3_bucket" "bucket" {
   bucket = local.instancename
   tags   = var.tags
 
-  server_side_encryption_configuration {
-    rule {
-      bucket_key_enabled = false
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
-
   #[S3.9] S3 bucket server access logging should be enabled
   logging {
-    target_bucket = var.log_bucket        # Cannot self-reference block aws_s3_bucket.bucket_logs.id
+    target_bucket = var.log_bucket                      # Cannot self-reference block aws_s3_bucket.bucket_logs.id
     target_prefix = "bucket/${local.instancename}-logs" # Cannot self-reference block aws_s3_bucket.bucket_logs.id
-  }  
+  }
 }
-
 
 resource "aws_s3_bucket_versioning" "bucket_versioning" {
   bucket = aws_s3_bucket.bucket.id
@@ -120,7 +110,7 @@ resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_encryption
 
 # [S3.8] S3 Block Public Access setting should be enabled at the bucket level
 resource "aws_s3_bucket_public_access_block" "bucket_access_block" {
-  bucket = aws_s3_bucket.bucket.id
+  bucket = aws_s3_bucket.bucket.bucket
 
   block_public_acls       = true
   block_public_policy     = true
