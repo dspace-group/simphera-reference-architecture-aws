@@ -1,3 +1,9 @@
+variable "profile" {
+  type        = string
+  description = "The AWS profile used."
+  default     = "default"
+}
+
 variable "account_id" {
   type        = string
   description = "The AWS account id to be used to create resources."
@@ -39,9 +45,9 @@ variable "infrastructurename" {
 }
 
 variable "linuxNodeSize" {
-  type        = string
+  type        = list(string)
   description = "The machine size of the Linux nodes for the regular services"
-  default     = "m5a.4xlarge"
+  default     = ["m5a.4xlarge", "m5a.8xlarge"]
 }
 
 variable "linuxNodeCountMin" {
@@ -57,9 +63,9 @@ variable "linuxNodeCountMax" {
 }
 
 variable "linuxExecutionNodeSize" {
-  type        = string
+  type        = list(string)
   description = "The machine size of the Linux nodes for the job execution"
-  default     = "t3.medium"
+  default     = ["m5a.4xlarge", "m5a.8xlarge"]
 }
 
 variable "linuxExecutionNodeCountMin" {

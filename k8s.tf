@@ -19,7 +19,7 @@ module "eks" {
   managed_node_groups = {
     "default" = {
       node_group_name = "default"
-      instance_types  = [var.linuxNodeSize]
+      instance_types  = var.linuxNodeSize
       subnet_ids      = module.vpc.private_subnets
       desired_size    = var.linuxNodeCountMin
       max_size        = var.linuxNodeCountMax
@@ -27,7 +27,7 @@ module "eks" {
     },
     "execnodes" = {
       node_group_name = "execnodes"
-      instance_types  = [var.linuxExecutionNodeSize]
+      instance_types  = var.linuxExecutionNodeSize
       subnet_ids      = module.vpc.private_subnets
       desired_size    = var.linuxExecutionNodeCountMin
       max_size        = var.linuxExecutionNodeCountMax

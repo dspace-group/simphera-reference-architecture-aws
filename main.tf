@@ -1,6 +1,6 @@
 
 terraform {
-  required_version = ">= 1.1.7" #nullable input values available in Terraform v1.1.0 and later.
+  required_version = ">= 1.1.7"
 
   required_providers {
     aws = {
@@ -17,6 +17,7 @@ terraform {
 provider "aws" {
   region              = var.region
   allowed_account_ids = local.allowed_account_ids
+  profile             = var.profile
 }
 data "aws_eks_cluster" "cluster" {
   name = module.eks.eks_cluster_id
