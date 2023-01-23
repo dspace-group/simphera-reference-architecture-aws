@@ -1,20 +1,17 @@
 resource "aws_s3_bucket" "bucket_logs" {
   bucket = "${var.infrastructurename}-logs"
   tags   = var.tags
-  server_side_encryption_configuration {
-    rule {
-      bucket_key_enabled = false
-      apply_server_side_encryption_by_default {
-        sse_algorithm = "AES256"
-      }
-    }
-  }
 
   #[S3.9] S3 bucket server access logging should be enabled
-  logging {
-    target_bucket = "${var.infrastructurename}-logs"        # Cannot self-reference block aws_s3_bucket.bucket_logs.id
-    target_prefix = "bucket/${var.infrastructurename}-logs" # Cannot self-reference block aws_s3_bucket.bucket_logs.id
-  }
+
+}
+
+
+resource "aws_s3_bucket_logging" "logging" {
+  bucket = aws_s3_bucket.bucket_logs.id
+  #[S3.9] S3 bucket server access logging should be enabled
+  target_bucket = "${var.infrastructurename}-logs"        # Cannot self-reference block aws_s3_bucket.bucket_logs.id
+  target_prefix = "bucket/${var.infrastructurename}-logs" # Cannot self-reference block aws_s3_bucket.bucket_logs.id
 }
 
 resource "aws_s3_bucket_public_access_block" "buckets_logs_access" {
