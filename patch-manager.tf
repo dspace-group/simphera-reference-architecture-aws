@@ -37,7 +37,7 @@ resource "aws_ssm_maintenance_window_target" "scan_eks_nodes" {
   resource_type = "INSTANCE"
 
   targets {
-    key    = "tag:name"
+    key    = "tag:eks:cluster-name"
     values = [module.eks.eks_cluster_id]
   }
 
