@@ -1,10 +1,7 @@
 
 
 module "eks" {
-  source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.0.4"
-  tenant                                 = local.tenant
-  environment                            = local.environment
-  zone                                   = local.zone
+  source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.21.0"
   cluster_version                        = var.kubernetesVersion
   cluster_name                           = var.infrastructurename
   vpc_id                                 = module.vpc.vpc_id
@@ -48,7 +45,7 @@ module "eks" {
 
 
 module "eks-addons" {
-  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.0.4"
+  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.21.0"
   eks_cluster_id                      = module.eks.eks_cluster_id
   enable_amazon_eks_vpc_cni           = true
   enable_amazon_eks_coredns           = true
