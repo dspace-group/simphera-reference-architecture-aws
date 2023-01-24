@@ -70,7 +70,7 @@ resource "kubernetes_secret" "aws_tls_certificate" {
     namespace = kubernetes_namespace.k8s_namespace.metadata[0].name
   }
   data = {
-    "databaseCertificates.pem" = data.http.aws_tls_certificate.body
+    "databaseCertificates.pem" = data.http.aws_tls_certificate.response_body
   }
   type = "Opaque"
 }

@@ -9,15 +9,6 @@ region = "eu-central-1"
 # The tags to be added to all resources
 tags = {}
 
-# Account name or unique account id e.g., apps or management or aws007
-tenant = "aws"
-
-# Environment area, e.g. prod or preprod
-environment = "simphera"
-
-# zone, e.g. dev or qa or load or ops etc...
-zone = "dev"
-
 # The machine size of the Linux nodes for the regular services
 linuxNodeSize = "m5a.4xlarge"
 

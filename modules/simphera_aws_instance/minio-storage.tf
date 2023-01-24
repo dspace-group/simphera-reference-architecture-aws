@@ -83,11 +83,14 @@ resource "aws_s3_bucket" "bucket" {
   bucket = local.instancename
   tags   = var.tags
 
+}
+
+
+resource "aws_s3_bucket_logging" "logging" {
+  bucket = aws_s3_bucket.bucket.id
   #[S3.9] S3 bucket server access logging should be enabled
-  logging {
-    target_bucket = var.log_bucket                      # Cannot self-reference block aws_s3_bucket.bucket_logs.id
-    target_prefix = "bucket/${local.instancename}-logs" # Cannot self-reference block aws_s3_bucket.bucket_logs.id
-  }
+  target_bucket = var.log_bucket
+  target_prefix = "logs/bucket/${aws_s3_bucket.bucket.id}"
 }
 
 resource "aws_s3_bucket_versioning" "bucket_versioning" {

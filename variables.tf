@@ -21,24 +21,6 @@ variable "tags" {
   default     = {}
 }
 
-variable "tenant" {
-  type        = string
-  description = "Account name or unique account id e.g., apps or management or aws007"
-  default     = "aws"
-}
-
-variable "environment" {
-  type        = string
-  default     = "preprod"
-  description = "Environment area, e.g. prod or preprod "
-}
-
-variable "zone" {
-  type        = string
-  description = "zone, e.g. dev or qa or load or ops etc..."
-  default     = "dev"
-}
-
 variable "infrastructurename" {
   type        = string
   description = "The name of the infrastructure. e.g. simphera-infra"
