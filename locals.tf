@@ -14,5 +14,6 @@ locals {
   flowlogs_cloudwatch_loggroup              = "/aws/vpc/${module.eks.eks_cluster_id}"
   patch_manager_cloudwatch_loggroup_scan    = "/aws/ssm/${module.eks.eks_cluster_id}/scan"
   patch_manager_cloudwatch_loggroup_install = "/aws/ssm/${module.eks.eks_cluster_id}/install"
-  patchgroupid                              = split(",", aws_ssm_patch_group.patch_group.id)[0]
+  #patchgroupid                              = split(",", aws_ssm_patch_group.patch_group.id)[0]
+  patchgroupid = "${var.infrastructurename}-patch-group"
 }

@@ -72,7 +72,7 @@ resource "aws_ssm_maintenance_window_task" "scan" {
       timeout_seconds = 600
 
       cloudwatch_config {
-        cloudwatch_log_group_name = aws_cloudwatch_log_group.ssm_scan_log_group.name
+        cloudwatch_log_group_name = aws_cloudwatch_log_group.ssm_scan_log_group[0].name
         cloudwatch_output_enabled = true
       }
 
@@ -105,7 +105,7 @@ resource "aws_ssm_maintenance_window_task" "install" {
       timeout_seconds = 600
 
       cloudwatch_config {
-        cloudwatch_log_group_name = aws_cloudwatch_log_group.ssm_install_log_group.name
+        cloudwatch_log_group_name = aws_cloudwatch_log_group.ssm_install_log_group[0].name
         cloudwatch_output_enabled = true
       }
       parameter {
@@ -117,6 +117,7 @@ resource "aws_ssm_maintenance_window_task" "install" {
 }
 
 resource "aws_cloudwatch_log_group" "ssm_scan_log_group" {
+  count             = var.enable_patching ? 1 : 0
   name              = local.patch_manager_cloudwatch_loggroup_scan
   retention_in_days = 30
   kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
@@ -124,6 +125,7 @@ resource "aws_cloudwatch_log_group" "ssm_scan_log_group" {
 }
 
 resource "aws_cloudwatch_log_group" "ssm_install_log_group" {
+  count             = var.enable_patching && var.licenseServer ? 1 : 0
   name              = local.patch_manager_cloudwatch_loggroup_install
   retention_in_days = 30
   kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
@@ -131,6 +133,7 @@ resource "aws_cloudwatch_log_group" "ssm_install_log_group" {
 }
 
 resource "aws_ssm_patch_baseline" "production" {
+  count            = var.enable_patching && var.licenseServer ? 1 : 0
   name             = "${var.infrastructurename}-patch-baseline"
   description      = "Default Patch Baseline for Amazon Linux 2 Provided by AWS but with Medium Severity Security Patches."
   operating_system = "AMAZON_LINUX_2"
@@ -158,6 +161,7 @@ resource "aws_ssm_patch_baseline" "production" {
 }
 
 resource "aws_ssm_patch_group" "patch_group" {
-  baseline_id = aws_ssm_patch_baseline.production.id
-  patch_group = "${var.infrastructurename}-patch-group"
+  count       = var.enable_patching && var.licenseServer ? 1 : 0
+  baseline_id = aws_ssm_patch_baseline.production[0].id
+  patch_group = local.patchgroupid
 }
