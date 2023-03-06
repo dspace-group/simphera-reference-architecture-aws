@@ -91,7 +91,7 @@ resource "aws_s3_bucket" "license_server_bucket" {
   tags   = var.tags
 }
 
-# https://docs.aws.amazon.com/config/latest/developerguide/s3-bucket-ssl-requests-only.html
+# [S3.5] S3 buckets should require requests to use Secure Socket Layer
 resource "aws_s3_bucket_policy" "license_server_bucket_ssl" {
   count  = var.licenseServer ? 1 : 0
   bucket = aws_s3_bucket.license_server_bucket[0].id

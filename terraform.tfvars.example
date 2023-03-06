@@ -10,7 +10,7 @@ region = "eu-central-1"
 tags = {}
 
 # The machine size of the Linux nodes for the regular services
-linuxNodeSize = "m5a.4xlarge"
+linuxNodeSize = ["m5a.4xlarge"]
 
 # The minimum number of Linux nodes for the regular services
 linuxNodeCountMin = 1
@@ -19,7 +19,7 @@ linuxNodeCountMin = 1
 linuxNodeCountMax = 12
 
 # The machine size of the Linux nodes for the job execution
-linuxExecutionNodeSize = "m5a.4xlarge"
+linuxExecutionNodeSize = ["m5a.4xlarge"]
 
 # The minimum number of Linux nodes for the job execution
 linuxExecutionNodeCountMin = 1
@@ -31,7 +31,7 @@ linuxExecutionNodeCountMax = 10
 licenseServer = false
 
 # The version of the EKS cluster.
-kubernetesVersion = "1.22"
+kubernetesVersion = "1.23"
 
 # The CIDR for the virtual private cluster.
 vpcCidr = "10.1.0.0/18"
@@ -62,5 +62,7 @@ simpheraInstances = {
     db_instance_type_simphera    = "db.t3.large"
     k8s_namespace                = "simphera"
     secretname                   = "aws-simphera-dev-production"
+    enable_backup_service        = true
+    backup_retention             = 35    
   }
 }

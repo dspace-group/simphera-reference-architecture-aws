@@ -22,6 +22,13 @@ resource "aws_s3_bucket_public_access_block" "buckets_logs_access" {
   restrict_public_buckets = true
 }
 
+# [S3.5] S3 buckets should require requests to use Secure Socket Layer
+resource "aws_s3_bucket_policy" "buckets_logs_ssl" {
+
+  bucket = aws_s3_bucket.bucket_logs.bucket
+  policy = templatefile("${path.module}/templates/bucket_policy.json", { bucket = aws_s3_bucket.bucket_logs.bucket })
+}
+
 resource "aws_s3_bucket_server_side_encryption_configuration" "bucket_logs_encryption" {
   bucket = aws_s3_bucket.bucket_logs.bucket
 
