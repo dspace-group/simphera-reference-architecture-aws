@@ -78,11 +78,13 @@ resource "kubernetes_service_account" "minio_service_account" {
       "eks.amazonaws.com/role-arn" = aws_iam_role.minio_iam_role.arn
     }
   }
+  automount_service_account_token = false
 }
+
+
 resource "aws_s3_bucket" "bucket" {
   bucket = local.instancename
   tags   = var.tags
-
 }
 
 

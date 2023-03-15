@@ -74,10 +74,11 @@ module "eks-addons" {
     dependency_update = true
   }
   cluster_autoscaler_helm_config = {
+    create_service_account_secret_token = true
     values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
-      aws_region           = data.aws_region.current.name,
-      eks_cluster_id       = module.eks.eks_cluster_id,
-      service_account_name = "cluster-autoscaler-sa"
+      aws_region     = data.aws_region.current.name,
+      eks_cluster_id = module.eks.eks_cluster_id,
+      image_tag      = "v${module.eks.eks_cluster_version}.0"
     })]
     dependency_update = true
   }

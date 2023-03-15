@@ -5,10 +5,9 @@ autoDiscovery:
 extraArgs:
   aws-use-static-instance-list: true
 
-rbac:
-  serviceAccount:
-    create: false
-    name: ${service_account_name}
+image:
+  tag: ${image_tag}
+
 
 resources:
   limits:

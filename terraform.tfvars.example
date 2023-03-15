@@ -31,7 +31,7 @@ linuxExecutionNodeCountMax = 10
 licenseServer = false
 
 # The version of the EKS cluster.
-kubernetesVersion = "1.23"
+kubernetesVersion = "1.24"
 
 # The CIDR for the virtual private cluster.
 vpcCidr = "10.1.0.0/18"
