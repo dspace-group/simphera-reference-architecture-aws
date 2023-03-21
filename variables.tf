@@ -148,18 +148,18 @@ variable "map_users" {
 
 variable "simpheraInstances" {
   type = map(object({
-    name                      = string
-    postgresqlVersion         = string
-    postgresqlStorage         = number
+    name                         = string
+    postgresqlVersion            = string
+    postgresqlStorage            = number
     postgresqlMaxStorage         = number
-    db_instance_type_simphera = string
-    db_retention_simphera     = number
+    db_instance_type_simphera    = string
+    db_retention_simphera        = number
     postgresqlStorageKeycloak    = number
     postgresqlMaxStorageKeycloak = number
-    db_instance_type_keycloak = string
-    db_retention_keycloak     = number
-    k8s_namespace             = string
-    secretname                = string
+    db_instance_type_keycloak    = string
+    db_retention_keycloak        = number
+    k8s_namespace                = string
+    secretname                   = string
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
 
