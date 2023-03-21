@@ -23,7 +23,6 @@ resource "aws_db_instance" "simphera" {
   db_subnet_group_name                = var.database_subnet_group_name
   vpc_security_group_ids              = [var.postgresql_security_group_id]
   tags                                = var.tags
-
   depends_on = [
     aws_cloudwatch_log_group.db_simphera
   ]

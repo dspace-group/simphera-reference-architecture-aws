@@ -81,7 +81,6 @@ variable "postgresqlMaxStorageKeycloak" {
   }
 }
 
-
 variable "db_instance_type_keycloak" {
   type        = string
   description = "PostgreSQL database instance type for Keycloak data"
@@ -134,7 +133,7 @@ variable "enable_backup_service" {
 }
 
 variable "backup_retention" {
-  default     = 35
+  default     = 7
   type        = number
   description = "The retention period for continuous backups can be between 1 and 35 days."
 }
