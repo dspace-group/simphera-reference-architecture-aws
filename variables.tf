@@ -82,7 +82,7 @@ variable "licenseServer" {
 variable "kubernetesVersion" {
   type        = string
   description = "The version of the AKS cluster."
-  default     = "1.21"
+  default     = "1.22"
 }
 variable "vpcCidr" {
   type        = string
@@ -151,8 +151,11 @@ variable "simpheraInstances" {
     name                      = string
     postgresqlVersion         = string
     postgresqlStorage         = number
+    postgresqlMaxStorage         = number
     db_instance_type_simphera = string
     db_retention_simphera     = number
+    postgresqlStorageKeycloak    = number
+    postgresqlMaxStorageKeycloak = number
     db_instance_type_keycloak = string
     db_retention_keycloak     = number
     k8s_namespace             = string
