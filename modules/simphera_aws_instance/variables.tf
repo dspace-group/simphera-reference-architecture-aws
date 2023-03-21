@@ -88,10 +88,22 @@ variable "db_instance_type_keycloak" {
   default     = "db.t3.large"
 }
 
+variable "db_retention_keycloak" {
+  type        = number
+  description = "Number of days the keycloak database is retained after deletion."
+  default     = 7
+}
+
 variable "db_instance_type_simphera" {
   type        = string
   description = "PostgreSQL database instance type for SIMPHERA data"
   default     = "db.t3.large"
+}
+
+variable "db_retention_simphera" {
+  type        = number
+  description = "Number of days the SIMPHERA database is retained after deletion."
+  default     = 7
 }
 
 variable "k8s_namespace" {

@@ -67,7 +67,9 @@ simpheraInstances = {
     postgresqlStorageKeycloak    = 20
     postgresqlMaxStorageKeycloak = 100
     db_instance_type_keycloak    = "db.t3.large"
+    db_retention_keycloak        = 7
     db_instance_type_simphera    = "db.t3.large"
+    db_retention_simphera        = 7
     k8s_namespace                = "simphera"
     secretname                   = "aws-simphera-dev-production"
   }
