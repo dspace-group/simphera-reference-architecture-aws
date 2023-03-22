@@ -154,3 +154,9 @@ variable "database_subnet_group_name" {
   type        = string
   description = "Name of database subnet group"
 }
+
+variable "cloudwatch_retention" {
+  default     = 7
+  description = "Cloudwatch retention period for the PostgreSQL logs."
+  type        = number
+}

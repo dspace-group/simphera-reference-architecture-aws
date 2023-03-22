@@ -177,3 +177,11 @@ variable "maintainance_duration" {
   type        = number
 }
 
+
+variable "cloudwatch_retention" {
+  default     = 7
+  description = "Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs."
+  type        = number
+}
+
+

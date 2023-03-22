@@ -110,14 +110,14 @@ resource "aws_iam_role_policy_attachment" "rds_enhanced_monitoring_policy" {
 
 resource "aws_cloudwatch_log_group" "db_simphera" {
   name              = "/aws/rds/instance/${local.db_simphera_id}/postgresql" # CAUTION: the name is predetermined by AWS RDS. Do not change it. Otherwise AWS will create a new log group without retention and encryption.
-  retention_in_days = 30
+  retention_in_days = var.cloudwatch_retention
   kms_key_id        = var.kms_key_cloudwatch
   tags              = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "db_keycloak" {
   name              = "/aws/rds/instance/${local.db_keycloak_id}/postgresql" # CAUTION: the name is predetermined by AWS RDS. Do not change it. Otherwise AWS will create a new log group without retention and encryption.
-  retention_in_days = 30
+  retention_in_days = var.cloudwatch_retention
   kms_key_id        = var.kms_key_cloudwatch
   tags              = var.tags
 }

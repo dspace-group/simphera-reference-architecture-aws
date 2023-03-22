@@ -54,7 +54,7 @@ resource "aws_flow_log" "flowlog" {
 
 resource "aws_cloudwatch_log_group" "flowlogs" {
   name              = local.flowlogs_cloudwatch_loggroup
-  retention_in_days = 30
+  retention_in_days = var.cloudwatch_retention
   kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
   tags              = var.tags
 }

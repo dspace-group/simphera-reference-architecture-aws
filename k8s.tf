@@ -12,7 +12,7 @@ module "eks" {
   map_roles                              = var.map_roles
   tags                                   = var.tags
   cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
-  cloudwatch_log_group_retention_in_days = 90
+  cloudwatch_log_group_retention_in_days = var.cloudwatch_retention
   managed_node_groups = {
     "default" = {
       node_group_name = "default"

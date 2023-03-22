@@ -20,6 +20,7 @@ module "simphera_instance" {
   secretname                   = each.value.secretname
   enable_backup_service        = each.value.enable_backup_service
   backup_retention             = each.value.backup_retention
+  cloudwatch_retention         = var.cloudwatch_retention
   public_subnets               = module.vpc.public_subnets
   vpc_id                       = module.vpc.vpc_id
   postgresql_security_group_id = module.security_group.security_group_id
