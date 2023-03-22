@@ -34,6 +34,17 @@
                 "s3:GetEncryptionConfiguration"
             ],
             "Resource": "*"
-        }
+        },
+        {
+            "Action": [
+                "logs:PutLogEvents",
+                "logs:DescribeLogStreams",
+                "logs:CreateLogStream",
+                "logs:CreateLogGroup"
+            ],
+            "Effect": "Allow",
+            "Resource": "*",
+            "Sid": ""
+        }          
     ]
 }

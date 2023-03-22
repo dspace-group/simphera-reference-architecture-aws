@@ -81,29 +81,16 @@ variable "postgresqlMaxStorageKeycloak" {
   }
 }
 
-
 variable "db_instance_type_keycloak" {
   type        = string
   description = "PostgreSQL database instance type for Keycloak data"
   default     = "db.t3.large"
 }
 
-variable "db_retention_keycloak" {
-  type        = number
-  description = "Number of days the keycloak database is retained after deletion."
-  default     = 7
-}
-
 variable "db_instance_type_simphera" {
   type        = string
   description = "PostgreSQL database instance type for SIMPHERA data"
   default     = "db.t3.large"
-}
-
-variable "db_retention_simphera" {
-  type        = number
-  description = "Number of days the SIMPHERA database is retained after deletion."
-  default     = 7
 }
 
 variable "k8s_namespace" {
@@ -137,4 +124,39 @@ variable "eks_oidc_issuer_url" {
 variable "eks_oidc_provider_arn" {
   type        = string
   description = "The ARN of the OIDC Provider if `enable_irsa = true`."
+}
+
+## BACKUPS
+variable "enable_backup_service" {
+  default = false
+  type    = bool
+}
+
+variable "backup_retention" {
+  default     = 7
+  type        = number
+  description = "The retention period for continuous backups can be between 1 and 35 days."
+}
+
+variable "kms_key_cloudwatch" {
+  type        = string
+  description = "ARN of KMS encryption key used to encrypt CloudWatch log groups."
+  default     = ""
+}
+
+variable "log_bucket" {
+  type        = string
+  description = "Name of the S3 bucket where S3 server access logs are stored"
+  default     = ""
+}
+
+variable "database_subnet_group_name" {
+  type        = string
+  description = "Name of database subnet group"
+}
+
+variable "cloudwatch_retention" {
+  default     = 7
+  description = "Cloudwatch retention period for the PostgreSQL logs."
+  type        = number
 }

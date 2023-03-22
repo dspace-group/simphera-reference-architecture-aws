@@ -24,3 +24,6 @@
 
 wildcard.crt
 wildcard.key
+
+temp
+terraform.log

@@ -1,15 +1,15 @@
 
 terraform {
-  required_version = ">= 1.1.7, <= 1.2.9" #nullable input values available in Terraform v1.1.0 and later.
+  required_version = ">= 1.1.7"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "4.13.0"
+      version = ">= 4.47"
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = "2.11.0"
+      version = "2.18.1"
     }
 
   }
@@ -17,6 +17,7 @@ terraform {
 provider "aws" {
   region              = var.region
   allowed_account_ids = local.allowed_account_ids
+  profile             = var.profile
 }
 data "aws_eks_cluster" "cluster" {
   name = module.eks.eks_cluster_id

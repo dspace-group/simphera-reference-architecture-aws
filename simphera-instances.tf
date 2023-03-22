@@ -15,12 +15,16 @@ module "simphera_instance" {
   postgresqlStorageKeycloak    = each.value.postgresqlStorageKeycloak
   postgresqlMaxStorageKeycloak = each.value.postgresqlMaxStorageKeycloak
   db_instance_type_keycloak    = each.value.db_instance_type_keycloak
-  db_retention_keycloak        = each.value.db_retention_keycloak
   db_instance_type_simphera    = each.value.db_instance_type_simphera
-  db_retention_simphera        = each.value.db_retention_simphera
   k8s_namespace                = each.value.k8s_namespace
   secretname                   = each.value.secretname
+  enable_backup_service        = each.value.enable_backup_service
+  backup_retention             = each.value.backup_retention
+  cloudwatch_retention         = var.cloudwatch_retention
   public_subnets               = module.vpc.public_subnets
   vpc_id                       = module.vpc.vpc_id
   postgresql_security_group_id = module.security_group.security_group_id
+  kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
+  log_bucket                   = aws_s3_bucket.bucket_logs.id
+  database_subnet_group_name   = module.vpc.database_subnet_group_name
 }

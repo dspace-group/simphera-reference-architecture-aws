@@ -1,3 +1,9 @@
+variable "profile" {
+  type        = string
+  description = "The AWS profile used."
+  default     = "default"
+}
+
 variable "account_id" {
   type        = string
   description = "The AWS account id to be used to create resources."
@@ -15,33 +21,15 @@ variable "tags" {
   default     = {}
 }
 
-variable "tenant" {
-  type        = string
-  description = "Account name or unique account id e.g., apps or management or aws007"
-  default     = "aws"
-}
-
-variable "environment" {
-  type        = string
-  default     = "preprod"
-  description = "Environment area, e.g. prod or preprod "
-}
-
-variable "zone" {
-  type        = string
-  description = "zone, e.g. dev or qa or load or ops etc..."
-  default     = "dev"
-}
-
 variable "infrastructurename" {
   type        = string
   description = "The name of the infrastructure. e.g. simphera-infra"
 }
 
 variable "linuxNodeSize" {
-  type        = string
+  type        = list(string)
   description = "The machine size of the Linux nodes for the regular services"
-  default     = "m5a.4xlarge"
+  default     = ["m5a.4xlarge", "m5a.8xlarge"]
 }
 
 variable "linuxNodeCountMin" {
@@ -57,9 +45,9 @@ variable "linuxNodeCountMax" {
 }
 
 variable "linuxExecutionNodeSize" {
-  type        = string
+  type        = list(string)
   description = "The machine size of the Linux nodes for the job execution"
-  default     = "t3.medium"
+  default     = ["m5a.4xlarge", "m5a.8xlarge"]
 }
 
 variable "linuxExecutionNodeCountMin" {
@@ -153,15 +141,47 @@ variable "simpheraInstances" {
     postgresqlStorage            = number
     postgresqlMaxStorage         = number
     db_instance_type_simphera    = string
-    db_retention_simphera        = number
     postgresqlStorageKeycloak    = number
     postgresqlMaxStorageKeycloak = number
     db_instance_type_keycloak    = string
-    db_retention_keycloak        = number
     k8s_namespace                = string
     secretname                   = string
+    enable_backup_service        = bool
+    backup_retention             = number
+
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
 
 }
+
+variable "enable_patching" {
+  type        = bool
+  description = "Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually."
+  default     = false
+}
+
+variable "scan_schedule" {
+  description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
+  type        = string
+  default     = "cron(0 0 * * ? *)"
+}
+variable "install_schedule" {
+  description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."
+  type        = string
+  default     = "cron(0 3 * * ? *)"
+}
+
+variable "maintainance_duration" {
+  default     = 3
+  description = "How long in hours for the maintenance window."
+  type        = number
+}
+
+
+variable "cloudwatch_retention" {
+  default     = 7
+  description = "Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs."
+  type        = number
+}
+
 

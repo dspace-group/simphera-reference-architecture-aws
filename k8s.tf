@@ -1,23 +1,22 @@
 
 
 module "eks" {
-  source             = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.0.4"
-  tenant             = local.tenant
-  environment        = local.environment
-  zone               = local.zone
-  cluster_version    = var.kubernetesVersion
-  cluster_name       = var.infrastructurename
-  vpc_id             = module.vpc.vpc_id
-  private_subnet_ids = module.vpc.private_subnets
-  create_eks         = true
-  map_accounts       = var.map_accounts
-  map_users          = var.map_users
-  map_roles          = var.map_roles
-  tags               = var.tags
+  source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.25.0"
+  cluster_version                        = var.kubernetesVersion
+  cluster_name                           = var.infrastructurename
+  vpc_id                                 = module.vpc.vpc_id
+  private_subnet_ids                     = module.vpc.private_subnets
+  create_eks                             = true
+  map_accounts                           = var.map_accounts
+  map_users                              = var.map_users
+  map_roles                              = var.map_roles
+  tags                                   = var.tags
+  cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
+  cloudwatch_log_group_retention_in_days = var.cloudwatch_retention
   managed_node_groups = {
     "default" = {
       node_group_name = "default"
-      instance_types  = [var.linuxNodeSize]
+      instance_types  = var.linuxNodeSize
       subnet_ids      = module.vpc.private_subnets
       desired_size    = var.linuxNodeCountMin
       max_size        = var.linuxNodeCountMax
@@ -25,7 +24,7 @@ module "eks" {
     },
     "execnodes" = {
       node_group_name = "execnodes"
-      instance_types  = [var.linuxExecutionNodeSize]
+      instance_types  = var.linuxExecutionNodeSize
       subnet_ids      = module.vpc.private_subnets
       desired_size    = var.linuxExecutionNodeCountMin
       max_size        = var.linuxExecutionNodeCountMax
@@ -46,7 +45,7 @@ module "eks" {
 
 
 module "eks-addons" {
-  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.0.4"
+  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.25.0"
   eks_cluster_id                      = module.eks.eks_cluster_id
   enable_amazon_eks_vpc_cni           = true
   enable_amazon_eks_coredns           = true
@@ -70,13 +69,15 @@ module "eks-addons" {
       internal = "false",
       scheme   = "internet-facing",
     })]
+    namespace         = "nginx",
+    create_namespace  = true
     dependency_update = true
   }
   cluster_autoscaler_helm_config = {
     values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
-      aws_region           = data.aws_region.current.name,
-      eks_cluster_id       = module.eks.eks_cluster_id,
-      service_account_name = "cluster-autoscaler-sa"
+      aws_region     = data.aws_region.current.name,
+      eks_cluster_id = module.eks.eks_cluster_id,
+      image_tag      = "v${module.eks.eks_cluster_version}.0"
     })]
     dependency_update = true
   }
