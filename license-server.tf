@@ -69,7 +69,7 @@ resource "aws_iam_policy" "license_server_policy" {
   count       = var.licenseServer ? 1 : 0
   name        = local.license_server_policy
   description = "Allows access to S3 bucket and Secure Session Manager connections."
-  policy      = templatefile("${path.module}/templates/license_server_policy.json", { bucket = local.license_server_bucket })
+  policy      = templatefile("${path.module}/templates/license_server_policy.json", { bucket = local.license_server_bucket_name })
   tags        = var.tags
 }
 
@@ -87,7 +87,7 @@ resource "aws_iam_role_policy_attachment" "license_server_ssm" {
 
 resource "aws_s3_bucket" "license_server_bucket" {
   count  = var.licenseServer ? 1 : 0
-  bucket = local.license_server_bucket
+  bucket = local.license_server_bucket_name
   tags   = var.tags
 }
 

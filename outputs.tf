@@ -10,7 +10,5 @@ output "database_identifiers" {
 
 output "s3_buckets" {
   description = "S3 buckets from all SIMPHERA instances."
-  # TODO append license server buckets
-  # TODO append s3 logs bucket
-  value = flatten([for name, instance in module.simphera_instance : instance.s3_buckets])
+  value       = local.s3_buckets
 }
