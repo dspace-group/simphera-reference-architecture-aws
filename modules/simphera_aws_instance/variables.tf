@@ -99,6 +99,13 @@ variable "k8s_namespace" {
   default     = "simphera"
 }
 
+variable "enable_deletion_protection" {
+  type        = bool
+  description = "Enable deletion protection for databases."
+  default     = true
+}
+
+
 variable "secretname" {
   description = "Secrets manager secret"
   type        = string
