@@ -148,6 +148,7 @@ variable "simpheraInstances" {
     secretname                   = string
     enable_backup_service        = bool
     backup_retention             = number
+    enable_deletion_protection   = bool
 
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
