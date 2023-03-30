@@ -1,10 +1,8 @@
 
 locals {
   infrastructurename                        = var.infrastructurename
-  zones                                     = length(data.aws_availability_zones.available.names)
   log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
   allowed_account_ids                       = [var.account_id]
-  license_server_instance_id                = var.licenseServer ? split("instance/", aws_instance.license_server[0].arn)[1] : ""
   license_server_role                       = "${local.infrastructurename}-license-server-role"
   license_server_policy                     = "${local.infrastructurename}-license-server-policy"
   license_server_bucket_name                = "${local.infrastructurename}-license-server-bucket"
