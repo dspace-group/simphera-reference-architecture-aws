@@ -69,7 +69,7 @@ variable "licenseServer" {
 
 variable "kubernetesVersion" {
   type        = string
-  description = "The version of the AKS cluster."
+  description = "The version of the EKS cluster."
   default     = "1.22"
 }
 variable "vpcCidr" {
