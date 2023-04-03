@@ -69,7 +69,7 @@ variable "licenseServer" {
 
 variable "kubernetesVersion" {
   type        = string
-  description = "The version of the AKS cluster."
+  description = "The version of the EKS cluster."
   default     = "1.22"
 }
 variable "vpcCidr" {
@@ -148,6 +148,7 @@ variable "simpheraInstances" {
     secretname                   = string
     enable_backup_service        = bool
     backup_retention             = number
+    enable_deletion_protection   = bool
 
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."

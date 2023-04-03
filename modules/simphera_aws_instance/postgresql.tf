@@ -14,8 +14,8 @@ resource "aws_db_instance" "simphera" {
   enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
   monitoring_interval                 = 60
   monitoring_role_arn                 = aws_iam_role.rds_enhanced_monitoring_role.arn # [RDS.9] Database logging should be enabled
-  deletion_protection                 = true                                          # [RDS.7] RDS clusters should have deletion protection enabled
-  skip_final_snapshot                 = false
+  deletion_protection                 = var.enable_deletion_protection                # [RDS.7] RDS clusters should have deletion protection enabled
+  skip_final_snapshot                 = !var.enable_deletion_protection
   final_snapshot_identifier           = "${local.db_simphera_id}-final-snapshot"
   iam_database_authentication_enabled = true # [RDS.10] IAM authentication should be configured for RDS instances
   copy_tags_to_snapshot               = true
@@ -45,8 +45,8 @@ resource "aws_db_instance" "keycloak" {
   enabled_cloudwatch_logs_exports     = ["postgresql", "upgrade"]
   monitoring_interval                 = 60
   monitoring_role_arn                 = aws_iam_role.rds_enhanced_monitoring_role.arn # [RDS.9] Database logging should be enabled
-  deletion_protection                 = true                                          # [RDS.7] RDS clusters should have deletion protection enabled
-  skip_final_snapshot                 = false
+  deletion_protection                 = var.enable_deletion_protection                # [RDS.7] RDS clusters should have deletion protection enabled
+  skip_final_snapshot                 = !var.enable_deletion_protection
   final_snapshot_identifier           = "${local.db_keycloak_id}-final-snapshot"
   iam_database_authentication_enabled = true # [RDS.10] IAM authentication should be configured for RDS instances
   copy_tags_to_snapshot               = true
