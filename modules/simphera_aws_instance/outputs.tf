@@ -9,6 +9,11 @@ output "database_identifiers" {
   value       = ["${aws_db_instance.simphera.identifier}", "${aws_db_instance.keycloak.identifier}"]
 }
 
+output "database_endpoints" {
+  description = "Endpoints of the SIMPHERA and Keycloak databases created for this SIMPHERA instance."
+  value       = ["${aws_db_instance.simphera.endpoint}", "${aws_db_instance.keycloak.endpoint}"]
+}
+
 output "s3_buckets" {
   description = "S3 buckets created for this SIMPHERA instance."
   value       = ["${aws_s3_bucket.bucket.bucket}"]
