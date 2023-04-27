@@ -3,7 +3,6 @@ terraform {
   backend "s3" {
     bucket = "terraform-state"
     key    = "simphera.tfstate"
-    #The region of the bucket (same region as your deployment, ie. var.region).
-    region = "eu-central-1"
+    region = "eu-central-1" #Same region as specified in your deployment, ie. var.region.
   }
 }
