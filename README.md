@@ -79,6 +79,24 @@ Default region name [None]: eu-central-1
 Default output format [None]: json
 ```
 
+If you have been provided with session token, you can add it via following command:
+```bash
+aws configure set aws_session_token "<your_session_token>"
+```
+
+Access credentials are typically stored in `~/.aws/credentials` and configurations in `~/.aws/config`.
+
+Verify connectivity and your access credentials by executing following command:
+```bash
+aws sts get-caller-identity
+
+{
+    "UserId": "REWAYDCFMNYCPKCWRZEHT:JohnDoe@dspace.com",
+    "Account": "592245445799",
+    "Arn": "arn:aws:sts::592245445799:assumed-role/AWSReservedSSO_AdministratorAccess_vmcbaym7ueknr9on/JohnDoe@dspace.com"
+}
+```
+
 ### Create State Bucket
 
 As mentioned before, Terraform stores the state of the resources it creates within an S3 bucket. 
@@ -96,8 +114,8 @@ terraform {
     #The name of the file to be used inside the container to be used for this terraform state.
     key    = "simphera.tfstate"
     
-    #The region of the bucket.
-    region = var.region
+    #The region of the bucket (same region as your deployment, ie. var.region).
+    region = "eu-central-1"
   }
 }
 ```
@@ -111,20 +129,29 @@ Create the following [IAM policy for accessing the Terraform state bucket](https
     "Statement": [
         {
             "Effect": "Allow",
+            "Principal": {
+                "AWS": "<your_account_arn>"
+            },            
             "Action": "s3:ListBucket",
             "Resource": "arn:aws:s3:::terraform-state"
         },
         {
             "Effect": "Allow",
+            "Principal": {
+                "AWS": "<your_account_arn>"
+            },            
             "Action": [
                 "s3:GetObject",
                 "s3:PutObject"
             ],
-            "Resource": "arn:aws:s3:::terraform-state/simphera.tfstate"
+            "Resource": "arn:aws:s3:::terraform-state/<storage_key_state_backend>"
         }
     ]
 }
 ```
+
+Your account ARN (Amazon Resource Number) is in the output of `aws sts get-caller-identity` command.
+
 ### Create Secrets Manager Secrets
 
 Username and password for the PostgreSQL databases are stored in AWS Secrets Manager.
@@ -185,6 +212,7 @@ terraform apply
 ```
 Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
 Installation times may very, but it is expected to take up to 30 min to complete the deployment.
+It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.
 
 ### Destroy Infrastructure
 
