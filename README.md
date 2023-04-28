@@ -85,7 +85,7 @@ aws configure set aws_session_token "<your_session_token>"
 ```
 
 Access credentials are typically stored in `~/.aws/credentials` and configurations in `~/.aws/config`.
-There are [various ways](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration) on how to authenticate, to run terraform.
+There are [various ways](https://registry.terraform.io/providers/hashicorp/aws/latest/docs#authentication-and-configuration) on how to authenticate, to run Terraform.
 This depends on your specific setup.
 
 Verify connectivity and your access credentials by executing following command:
