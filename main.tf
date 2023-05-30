@@ -5,7 +5,8 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 4.47"
+      version = "~> 4.47"
+      # beginning with version 5.0 some arguments are removed from resource "aws_vpc".
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
