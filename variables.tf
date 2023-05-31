@@ -81,9 +81,9 @@ variable "gpuNodeCountMax" {
 }
 
 variable "gpuNodeSize" {
-  type        = string
+  type        = list(string)
   description = "The machine size of the nodes for the gpu job execution"
-  default     = "p3.2xlarge"
+  default     = ["p3.2xlarge"]
 }
 
 variable "licenseServer" {
