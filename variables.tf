@@ -83,7 +83,7 @@ variable "gpuNodeCountMax" {
 variable "gpuNodeSize" {
   type        = string
   description = "The machine size of the nodes for the gpu job execution"
-  default     = "Standard_NC16as_T4_v3"
+  default     = "p3.2xlarge"
 }
 
 variable "licenseServer" {
