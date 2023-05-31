@@ -61,6 +61,31 @@ variable "linuxExecutionNodeCountMax" {
   description = "The maximum number of Linux nodes for the job execution"
   default     = 10
 }
+
+variable "gpuNodePool" {
+  type        = bool
+  description = "Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster"
+  default     = false
+}
+
+variable "gpuNodeCountMin" {
+  type        = number
+  description = "The minimum number of nodes for gpu job execution"
+  default     = 0
+}
+
+variable "gpuNodeCountMax" {
+  type        = number
+  description = "The maximum number of nodes for gpu job execution"
+  default     = 12
+}
+
+variable "gpuNodeSize" {
+  type        = string
+  description = "The machine size of the nodes for the gpu job execution"
+  default     = "Standard_NC16as_T4_v3"
+}
+
 variable "licenseServer" {
   type        = bool
   description = "Specifies whether a license server VM will be created."
