@@ -86,9 +86,9 @@ module "eks-addons" {
 }
 
 resource "aws_efs_file_system" "measurement_fs" {
-  creation_token  = "mario-demo-simphera"
-  encrypted       = true
-  tags            = var.tags
+  creation_token = "mario-demo-simphera"
+  encrypted      = true
+  tags           = var.tags
 }
 
 data "aws_iam_policy_document" "policy" {
