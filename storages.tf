@@ -1,7 +1,17 @@
-resource "aws_efs_file_system" "measurement_fs" {
-  creation_token = "mario-demo-simphera"
+locals {
+  storage_subnets = tomap({
+    zone1 = module.vpc.private_subnets[0]
+    zone2 = module.vpc.private_subnets[1]
+    zone3 = module.vpc.private_subnets[2]
+  })
+}
+
+resource "aws_efs_file_system" "efs_file_system" {
+  creation_token = "efs-sile-system"
   encrypted      = true
-  tags           = var.tags
+  tags = {
+    Name = "efs-sile-system"
+  }
 }
 
 data "aws_iam_policy_document" "policy" {
@@ -21,7 +31,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:TagResource",
     ]
 
-    resources = [aws_efs_file_system.measurement_fs.arn]
+    resources = [aws_efs_file_system.efs_file_system.arn]
 
     condition {
       test     = "Bool"
@@ -32,14 +42,14 @@ data "aws_iam_policy_document" "policy" {
 }
 
 resource "aws_efs_file_system_policy" "policy" {
-  file_system_id = aws_efs_file_system.measurement_fs.id
+  file_system_id = aws_efs_file_system.efs_file_system.id
   policy         = data.aws_iam_policy_document.policy.json
 }
 
 resource "aws_efs_mount_target" "alpha" {
-  for_each        = toset(module.vpc.private_subnets)
-  file_system_id  = aws_efs_file_system.measurement_fs.id
-  subnet_id       = each.key
+  for_each        = local.storage_subnets
+  file_system_id  = aws_efs_file_system.efs_file_system.id
+  subnet_id       = each.value
   security_groups = [module.eks.cluster_primary_security_group_id]
 }
 
@@ -51,7 +61,7 @@ resource "kubernetes_storage_class_v1" "efs" {
   storage_provisioner = "efs.csi.aws.com"
   parameters = {
     provisioningMode = "efs-ap" # Dynamic provisioning
-    fileSystemId     = aws_efs_file_system.measurement_fs.id
+    fileSystemId     = aws_efs_file_system.efs_file_system.id
     directoryPerms   = "700"
   }
 
