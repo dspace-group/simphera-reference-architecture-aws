@@ -46,6 +46,7 @@ To create the AWS resources that are required for operating SIMPHERA, you need t
 1. register an AWS account where the resources needed for SIMPHERA are created
 1. create an IAM user with least privileges required to create the resources for SIMPHERA
 1. create security credentials for that IAM user
+1. request service quota increase for gpu instances if needed
 1. create non-public S3 bucket for Terraform state
 1. create IAM policy that gives the IAM user access to the S3 bucket
 1. clone this repository onto your local administration PC
@@ -62,6 +63,10 @@ Terraform uses _variables_ to make the specification configurable. The concrete 
 Terraform has the concept of a _state_. On the one hand side there are the resource specifications in the `.tf` files. On the other hand there are the resources in the cloud infrastructure that are created based on these files. Terraform needs to store _mapping information_ which element of the specification belongs to which resource in the cloud infrastructure. This mapping is called the _state_. In general you could store the state on your local hard drive. But that is not a good idea because in that case nobody else could change some settings and apply these changes. Therefore the state itself should be stored in the cloud.
 
 This reference architecture has been tested with Terraform version v1.1.7.
+
+### Request service quota for gpu computing instances
+
+In case you want to add a gpu node pool to your architecture you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. You can adjust your gpu node pool's size to your quota using terraform variables later. For the default vaule you have to increase the quota for _Running Dedicated p3 Hosts_.
 
 ### Create Security Credentials
 
