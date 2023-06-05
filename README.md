@@ -36,6 +36,7 @@ Charges may apply for the following AWS resources and services:
 | Amazon EC2 Auto Scaling | SIMPHERA automatically scales compute nodes if the capacity is exhausted. | Yes |
 | Amazon Relational Database | Project and authorization data is stored in Amazon RDS for PostgreSQL instances. | Yes |
 | Amazon Simple Storage Service | Binary artifacts are stored in an S3 bucket. | Yes |
+| Amazon Elastic File System | Binary artifact are temporary stored in EFS | Yes |
 | AWS Key Management Service (AWS KMS) | Encryption for Kubernetes secrets is enabled by default. | |
 | Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. ||
 | Amazon CloudWatch | Metrics and container logs to CloudWatch. It is recommended to deploy the dSPACE monitoring stack in Kubernetes.||
@@ -408,6 +409,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 - PostgreSQL databases
 - S3 buckets
+- EFS (Elastic file system)
 - CloudWatch logs
 - Backup Vault
 
@@ -444,8 +446,8 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.27.0 |
-| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons | v4.27.0 |
+| <a name="module_eks"></a> [eks](#module\_eks) | git::<https://github.com/aws-ia/terraform-aws-eks-blueprints.git> | v4.27.0 |
+| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::<https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons> | v4.27.0 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_simphera_instance"></a> [simphera\_instance](#module\_simphera\_instance) | ./modules/simphera_aws_instance | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | v3.11.0 |

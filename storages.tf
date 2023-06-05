@@ -16,7 +16,7 @@ resource "aws_efs_file_system" "efs_file_system" {
 
 data "aws_iam_policy_document" "policy" {
   statement {
-    sid    = "ExampleStatement01"
+    sid    = "EfsPolicy"
     effect = "Allow"
 
     principals {
@@ -46,7 +46,7 @@ resource "aws_efs_file_system_policy" "policy" {
   policy         = data.aws_iam_policy_document.policy.json
 }
 
-resource "aws_efs_mount_target" "alpha" {
+resource "aws_efs_mount_target" "mount_target" {
   for_each        = local.storage_subnets
   file_system_id  = aws_efs_file_system.efs_file_system.id
   subnet_id       = each.value
