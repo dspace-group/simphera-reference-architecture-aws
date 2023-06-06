@@ -1,9 +1,5 @@
 locals {
-  storage_subnets = tomap({
-    zone1 = module.vpc.private_subnets[0]
-    zone2 = module.vpc.private_subnets[1]
-    zone3 = module.vpc.private_subnets[2]
-  })
+  storage_subnets = { for index, zone in var.vpcPrivateSubnets : "zone${index}" => module.vpc.private_subnets[index] }
 }
 
 resource "aws_efs_file_system" "efs_file_system" {
