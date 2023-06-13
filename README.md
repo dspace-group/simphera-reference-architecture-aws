@@ -76,7 +76,7 @@ On your administration PC you need to install the [Terraform](https://terraform.
 To [configure your aws account](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) run the following command:
 
 ```bash
-aws configure
+aws configure --profile <profile-name>
 
 AWS Access Key ID [None]: *********
 AWS Secret Access Key [None]: *******
@@ -87,7 +87,7 @@ Default output format [None]: json
 If you have been provided with session token, you can add it via following command:
 
 ```bash
-aws configure set aws_session_token "<your_session_token>"
+aws configure set aws_session_token "<your_session_token>" --profile <profile-name>
 ```
 
 Access credentials are typically stored in `~/.aws/credentials` and configurations in `~/.aws/config`.
@@ -237,20 +237,21 @@ Before the backup vault can be deleted, all the continuous recovery points for S
 
 ```powershell
 $vaults = terraform output backup_vaults | ConvertFrom-Json
+$profile = "<profile_name>"
 foreach ($vault in $vaults){
   Write-Host "Deleting $vault"
-  $recoverypoints = aws backup list-recovery-points-by-backup-vault --backup-vault-name $vault | ConvertFrom-Json
+  $recoverypoints = aws backup list-recovery-points-by-backup-vault --profile $profile --backup-vault-name $vault | ConvertFrom-Json
   foreach ($rp in $recoverypoints.RecoveryPoints){
-    aws backup delete-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn
+    aws backup delete-recovery-point --profile $profile --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn
   }
   foreach ($rp in $recoverypoints.RecoveryPoints){
     Do  
     {  
       Start-Sleep -Seconds 10
-      aws backup describe-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn | ConvertFrom-Json
+      aws backup describe-recovery-point --profile $profile --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn | ConvertFrom-Json
     } while( $LASTEXITCODE -eq 0)
   }  
-  aws backup delete-backup-vault --backup-vault-name $vault
+  aws backup delete-backup-vault --profile $profile --backup-vault-name $vault
 }
 ```
 
@@ -260,8 +261,8 @@ Before the databases can be deleted, you need to remove their delete protection:
 $databases = terraform output database_identifiers | ConvertFrom-Json
 foreach ($db in $databases){
   Write-Host "Deleting database $db"
-  aws rds modify-db-instance --db-instance-identifier $db --no-deletion-protection
-  aws rds delete-db-instance --db-instance-identifier $db --skip-final-snapshot
+  aws rds modify-db-instance --profile $profile --db-instance-identifier $db --no-deletion-protection
+  aws rds delete-db-instance --profile $profile --db-instance-identifier $db --skip-final-snapshot
 }
 ```
 
@@ -270,7 +271,7 @@ You can remove the S3 buckets like this:
 ```powershell
 $buckets = terraform output s3_buckets | ConvertFrom-Json
 foreach ($bucket in $buckets){
-  aws s3 rb s3://$bucket --force
+  aws s3 rb s3://$bucket --force --profile $profile
 }
 ```
 
