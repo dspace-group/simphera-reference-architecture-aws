@@ -24,6 +24,7 @@ module "eks-addons" {
   enable_amazon_eks_vpc_cni           = true
   enable_amazon_eks_coredns           = true
   enable_amazon_eks_kube_proxy        = true
+  enable_aws_efs_csi_driver           = true
   enable_aws_load_balancer_controller = false
   enable_cluster_autoscaler           = true
   enable_aws_for_fluentbit            = var.enable_aws_for_fluentbit
@@ -57,4 +58,3 @@ module "eks-addons" {
   }
   depends_on = [module.eks.managed_node_groups]
 }
-
