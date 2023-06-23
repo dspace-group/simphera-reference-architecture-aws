@@ -3,10 +3,9 @@ locals {
 }
 
 resource "aws_efs_file_system" "efs_file_system" {
-  creation_token = "efs-sile-system"
   encrypted      = true
   tags = {
-    Name = "efs-sile-system"
+    Name = "efs-file-system"
   }
 }
 
