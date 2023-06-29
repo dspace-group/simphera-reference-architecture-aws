@@ -70,7 +70,7 @@ This reference architecture has been tested with Terraform version v1.1.7.
 
 ### Request service quota for gpu computing instances
 
-In case you want to add a gpu node pool to your architecture you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. You can adjust your gpu node pool's size to your quota using terraform variables later. For the default vaule you have to increase the quota for _Running Dedicated p3 Hosts_.
+In case you want to add a gpu node pool to your architecture you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. For the default vaule you have to increase the quota for _Running Dedicated p3 Hosts_.
 
 ### Create Security Credentials
 
