@@ -38,7 +38,7 @@ resource "aws_db_instance" "keycloak" {
   engine_version                      = var.postgresqlVersion
   instance_class                      = var.db_instance_type_keycloak
   identifier                          = local.db_keycloak_id
-  db_name                             = replace("${local.instancename}keycloak", "/[^0-9a-zA-Z]/", "")
+  db_name                             = "keycloak"
   username                            = local.secret_postgres_username
   password                            = local.secrets["postgresql_password"]
   multi_az                            = true # [RDS.5] RDS DB instances should be configured with multiple Availability Zones
