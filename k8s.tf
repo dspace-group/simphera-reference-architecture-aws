@@ -13,34 +13,8 @@ module "eks" {
   tags                                   = var.tags
   cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
   cloudwatch_log_group_retention_in_days = var.cloudwatch_retention
-  managed_node_groups = {
-    "default" = {
-      node_group_name = "default"
-      instance_types  = var.linuxNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxNodeCountMin
-      max_size        = var.linuxNodeCountMax
-      min_size        = var.linuxNodeCountMin
-    },
-    "execnodes" = {
-      node_group_name = "execnodes"
-      instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxExecutionNodeCountMin
-      max_size        = var.linuxExecutionNodeCountMax
-      min_size        = var.linuxExecutionNodeCountMin
-      k8s_labels = {
-        "purpose" = "execution"
-      }
-      k8s_taints = [
-        {
-          key      = "purpose",
-          value    = "execution",
-          "effect" = "NO_SCHEDULE"
-        }
-      ]
-    }
-  }
+  managed_node_groups                    = merge(local.default_managed_node_pools, var.gpuNodePool ? local.gpu_node_pool : {})
+
 }
 
 
