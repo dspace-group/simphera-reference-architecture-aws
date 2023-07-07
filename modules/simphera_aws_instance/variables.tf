@@ -19,11 +19,6 @@ variable "k8s_cluster_id" {
   default     = ""
 }
 
-variable "k8s_cluster_oidc_arn" {
-  type        = string
-  description = "ARN of the Kubernetes cluster OIDC provider"
-  default     = ""
-}
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."
@@ -109,17 +104,6 @@ variable "enable_deletion_protection" {
 variable "secretname" {
   description = "Secrets manager secret"
   type        = string
-}
-
-variable "public_subnets" {
-  type        = list(string)
-  description = "Public subnets where the Application Loadbalancer and API Gateway are created."
-  default     = []
-}
-
-variable "vpc_id" {
-  type        = string
-  description = "Id of the VPC where the Application Loadbalancer and API Gateway are created."
 }
 
 variable "eks_oidc_issuer_url" {

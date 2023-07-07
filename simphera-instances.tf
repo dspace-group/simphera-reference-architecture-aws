@@ -4,7 +4,6 @@ module "simphera_instance" {
   region                       = var.region
   infrastructurename           = local.infrastructurename
   k8s_cluster_id               = module.eks.eks_cluster_id
-  k8s_cluster_oidc_arn         = module.eks.eks_oidc_provider_arn
   tags                         = var.tags
   eks_oidc_issuer_url          = module.eks.eks_oidc_issuer_url
   eks_oidc_provider_arn        = module.eks.eks_oidc_provider_arn
@@ -22,7 +21,6 @@ module "simphera_instance" {
   backup_retention             = each.value.backup_retention
   cloudwatch_retention         = var.cloudwatch_retention
   enable_deletion_protection   = each.value.enable_deletion_protection
-  public_subnets               = module.vpc.public_subnets
   vpc_id                       = module.vpc.vpc_id
   postgresql_security_group_id = module.security_group.security_group_id
   kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
