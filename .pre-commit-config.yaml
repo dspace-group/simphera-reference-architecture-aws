@@ -5,12 +5,12 @@ repos:
 #         name: terraform_format
 #         entry: --entrypoint /src/hooks/terraform_format.sh hashicorp/terraform:1.5.2
 #         language: docker_image
--   repo: local
-    hooks:
-    -   id: terraform_validate
-        name: terraform_validate
-        entry: --entrypoint /src/hooks/terraform_validate.sh hashicorp/terraform:1.5.2
-        language: docker_image
+# -   repo: local
+#     hooks:
+#     -   id: terraform_validate
+#         name: terraform_validate
+#         entry: --entrypoint /src/hooks/terraform_validate.sh hashicorp/terraform:1.5.2
+#         language: docker_image
 # -   repo: local
 #     hooks:
 #     -   id: tflint
@@ -23,9 +23,9 @@ repos:
 #         name: tfsec
 #         entry: --entrypoint /src/hooks/tfsec.sh aquasec/tfsec:v1.28
 #         language: docker_image                         
-# -   repo: local
-#     hooks:
-#     -   id: terraform_apply
-#         name: terraform_apply
-#         entry: --entrypoint /src/hooks/validate_tfvars.sh hashicorp/terraform:1.5.2
-#         language: docker_image
+-   repo: local
+    hooks:
+    -   id: terraform_apply
+        name: terraform_apply
+        entry: --entrypoint /src/hooks/terraform_docs.sh quay.io/terraform-docs/terraform-docs:0.16.0
+        language: docker_image

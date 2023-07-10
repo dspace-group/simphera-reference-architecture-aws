@@ -24,6 +24,7 @@ variable "tags" {
 variable "infrastructurename" {
   type        = string
   description = "The name of the infrastructure. e.g. simphera-infra"
+  default     = "simphera"
 }
 
 variable "linuxNodeSize" {
@@ -152,7 +153,23 @@ variable "simpheraInstances" {
 
   }))
   description = "A list containing the individual SIMPHERA instances, such as 'staging' and 'production'."
-
+  default = {
+    "production" = {
+      name                         = "production"
+      postgresqlVersion            = "11"
+      postgresqlStorage            = 20
+      postgresqlMaxStorage         = 100
+      postgresqlStorageKeycloak    = 20
+      postgresqlMaxStorageKeycloak = 100
+      db_instance_type_keycloak    = "db.t3.large"
+      db_instance_type_simphera    = "db.t3.large"
+      k8s_namespace                = "simphera"
+      secretname                   = "aws-simphera-dev-production"
+      enable_backup_service        = true
+      backup_retention             = 35
+      enable_deletion_protection   = true
+    }
+  }
 }
 
 variable "enable_patching" {
