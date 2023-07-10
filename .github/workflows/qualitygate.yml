@@ -56,7 +56,7 @@ jobs:
           working-dir: .
           output-file: README.md
           output-method: inject
-          git-push: "false"
+          git-push: "true"
 
       - name: Terraform-docs Regenerate terraform.tfvars.example
         uses: terraform-docs/gh-actions@v1.0.0
@@ -65,5 +65,5 @@ jobs:
           output-file: terraform.tfvars.example
           output-format: tfvars hcl
           output-method: replace
-          git-push: "false"    
+          git-push: "true"    
 
