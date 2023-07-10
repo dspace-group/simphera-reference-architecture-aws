@@ -8,9 +8,10 @@ jobs:
     name: Qualitygate
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          ref: ${{ github.event.pull_request.head.ref }}
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.0
         with:
