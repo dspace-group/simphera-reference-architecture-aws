@@ -10,7 +10,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          #fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
           ref: ${{ github.event.pull_request.head.ref }}
       - name: HashiCorp - Setup Terraform
         uses: hashicorp/setup-terraform@v2.0.0
@@ -56,7 +56,7 @@ jobs:
           working-dir: .
           output-file: README.md
           output-method: inject
-          git-push: "true"
+          git-push: "false"
 
       - name: Terraform-docs Regenerate terraform.tfvars.example
         uses: terraform-docs/gh-actions@v1.0.0
@@ -65,5 +65,5 @@ jobs:
           output-file: terraform.tfvars.example
           output-format: tfvars hcl
           output-method: replace
-          git-push: "true"    
+          git-push: "false"    
 
