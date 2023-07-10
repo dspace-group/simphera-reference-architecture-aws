@@ -12,8 +12,6 @@ jobs:
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
       - name: HashiCorp - Setup Terraform
-        # You may pin to the exact commit or the version.
-        # uses: hashicorp/setup-terraform@17d4c9b8043b238f6f35641cdd8433da1e6f3867
         uses: hashicorp/setup-terraform@v2.0.0
         with:
         #   # The hostname of a Terraform Cloud/Enterprise instance to place within the credentials block of the Terraform CLI configuration file. Defaults to `app.terraform.io`.
