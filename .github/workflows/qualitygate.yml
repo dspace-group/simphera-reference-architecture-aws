@@ -30,12 +30,12 @@ jobs:
       - name: Terraform format
         run: terraform fmt -check -recursive
 
-      - name: Terraform validate
-        run: terraform validate
-        
       - name: Terraform init
         run: terraform init -backend=false
 
+      - name: Terraform validate
+        run: terraform validate
+        
       - name: Init TFLint
         run: tflint --init
 
