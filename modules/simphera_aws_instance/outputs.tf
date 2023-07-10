@@ -1,7 +1,7 @@
 
 output "backup_vaults" {
   description = "Backups vaults created for the SIMPHERA instance."
-  value       = [aws_backup_vault.backup-vault.*.name]
+  value       = [aws_backup_vault.backup-vault[*].name]
 }
 
 output "database_identifiers" {

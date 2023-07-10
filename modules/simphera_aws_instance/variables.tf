@@ -13,12 +13,6 @@ variable "postgresql_security_group_id" {
   description = "The ID of the security group"
 }
 
-variable "k8s_cluster_id" {
-  type        = string
-  description = "Id of the Kubernetes cluster"
-  default     = ""
-}
-
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."
