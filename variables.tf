@@ -86,6 +86,11 @@ variable "gpuNodeSize" {
   default     = ["p3.2xlarge"]
 }
 
+variable "gpuNodeDiskSize" {
+  type        = list(string)
+  description = "The machine size of the nodes for the gpu job execution"
+  default     = ["100"]
+}
 variable "licenseServer" {
   type        = bool
   description = "Specifies whether a license server VM will be created."
