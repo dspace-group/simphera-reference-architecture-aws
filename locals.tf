@@ -54,7 +54,7 @@ locals {
       desired_size    = var.gpuNodeCountMin
       max_size        = var.gpuNodeCountMax
       min_size        = var.gpuNodeCountMin
-      disk_size       = var.disk_size
+      disk_size       = var.gpuNodeDiskSize
       k8s_labels = {
         "purpose" = "gpu"
       }
