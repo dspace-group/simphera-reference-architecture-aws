@@ -27,14 +27,12 @@ jobs:
       - name: Setup tflint
         uses: terraform-linters/setup-tflint@v2
 
-      - name: tfsec action
-        uses: aquasecurity/tfsec-action@v1.0.2
-        with:
-          additional_args: --exclude-downloaded-modules --config-file tfsec.yaml
-
       - name: Terraform format
         run: terraform fmt -check -recursive
 
+      - name: Terraform validate
+        run: terraform validate
+        
       - name: Terraform init
         run: terraform init -backend=false
 
@@ -47,8 +45,10 @@ jobs:
       - name: Terraform lint SIMPHERA Base
         run: tflint --config ../../.tflint.hcl --chdir ./modules/simphera_aws_instance
 
-      - name: Terraform validate
-        run: terraform validate
+      - name: tfsec action
+        uses: aquasecurity/tfsec-action@v1.0.2
+        with:
+          additional_args: --exclude-downloaded-modules --config-file tfsec.yaml
 
       - name: Terraform-docs Update README.md
         uses: terraform-docs/gh-actions@v1.0.0
