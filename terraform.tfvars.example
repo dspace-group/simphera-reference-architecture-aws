@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 account_id               = ""
 cloudwatch_retention     = 7
 enable_aws_for_fluentbit = false
@@ -66,3 +67,4 @@ vpcPublicSubnets = [
   "10.1.16.0/22",
   "10.1.20.0/22"
 ]
+<!-- END_TF_DOCS -->
