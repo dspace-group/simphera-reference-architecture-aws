@@ -50,8 +50,21 @@ jobs:
 
       - name: Terraform validate
         run: terraform validate
-      - uses: addnab/docker-run-action@v3
+
+      - name: Terraform-docs Update README.md
+        uses: terraform-docs/gh-actions@v1.0.0
         with:
-          image: zenika/terraform-azure-cli:latest
-          options: -v ${{ github.workspace }}:/src
-          run: chmod +x /src/hooks/validate_tfvars.sh && /src/hooks/validate_tfvars.sh
+          working-dir: .
+          output-file: README.md
+          output-method: inject
+          git-push: "true"
+
+      - name: Terraform-docs Regenerate terraform.tfvars.example
+        uses: terraform-docs/gh-actions@v1.0.0
+        with:
+          working-dir: .
+          output-file: terraform.tfvars.example
+          output-format: tfvars hcl
+          output-method: replace
+          git-push: "true"    
+
