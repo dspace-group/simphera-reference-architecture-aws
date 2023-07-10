@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 # run terraform apply and redirect stderr to stdout
