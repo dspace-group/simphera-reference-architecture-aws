@@ -87,9 +87,9 @@ variable "gpuNodeSize" {
 }
 
 variable "gpuNodeDiskSize" {
-  type        = list(string)
-  description = "The machine size of the nodes for the gpu job execution"
-  default     = ["100"]
+  type        = number
+  description = "The disk size in GiB of the nodes for the gpu job execution"
+  default     = 100
 }
 variable "licenseServer" {
   type        = bool
