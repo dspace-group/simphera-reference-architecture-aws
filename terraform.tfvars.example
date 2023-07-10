@@ -1,8 +1,14 @@
-account_id                 = ""
-cloudwatch_retention       = 7
-enable_aws_for_fluentbit   = false
-enable_ingress_nginx       = false
-enable_patching            = false
+account_id               = ""
+cloudwatch_retention     = 7
+enable_aws_for_fluentbit = false
+enable_ingress_nginx     = false
+enable_patching          = false
+gpuNodeCountMax          = 12
+gpuNodeCountMin          = 0
+gpuNodePool              = false
+gpuNodeSize = [
+  "p3.2xlarge"
+]
 infrastructurename         = "simphera"
 install_schedule           = "cron(0 3 * * ? *)"
 kubernetesVersion          = "1.22"

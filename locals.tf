@@ -16,4 +16,54 @@ locals {
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
   s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
 
+  default_managed_node_pools = {
+    "default" = {
+      node_group_name = "default"
+      instance_types  = var.linuxNodeSize
+      subnet_ids      = module.vpc.private_subnets
+      desired_size    = var.linuxNodeCountMin
+      max_size        = var.linuxNodeCountMax
+      min_size        = var.linuxNodeCountMin
+    },
+    "execnodes" = {
+      node_group_name = "execnodes"
+      instance_types  = var.linuxExecutionNodeSize
+      subnet_ids      = module.vpc.private_subnets
+      desired_size    = var.linuxExecutionNodeCountMin
+      max_size        = var.linuxExecutionNodeCountMax
+      min_size        = var.linuxExecutionNodeCountMin
+      k8s_labels = {
+        "purpose" = "execution"
+      }
+      k8s_taints = [
+        {
+          key      = "purpose",
+          value    = "execution",
+          "effect" = "NO_SCHEDULE"
+        }
+      ]
+    }
+
+  }
+
+  gpu_node_pool = {
+    "gpuexecnodes" = {
+      node_group_name = "gpuexecnodes"
+      instance_types  = var.gpuNodeSize
+      subnet_ids      = module.vpc.private_subnets
+      desired_size    = var.gpuNodeCountMin
+      max_size        = var.gpuNodeCountMax
+      min_size        = var.gpuNodeCountMin
+      k8s_labels = {
+        "purpose" = "gpu"
+      }
+      k8s_taints = [
+        {
+          key      = "purpose",
+          value    = "gpu",
+          "effect" = "NO_SCHEDULE"
+        }
+      ]
+    }
+  }
 }
