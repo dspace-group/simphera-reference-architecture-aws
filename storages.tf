@@ -4,8 +4,7 @@ locals {
 
 resource "aws_efs_file_system" "efs_file_system" {
   encrypted = true
-  tags = {
-    Name = "efs-file-system"
+  tags      = var.tags
   }
 }
 
