@@ -5,6 +5,7 @@ enable_ingress_nginx     = false
 enable_patching          = false
 gpuNodeCountMax          = 12
 gpuNodeCountMin          = 0
+gpuNodeDiskSize          = 100
 gpuNodePool              = false
 gpuNodeSize = [
   "p3.2xlarge"

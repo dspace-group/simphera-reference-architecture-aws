@@ -83,7 +83,7 @@ On your administration PC you need to install the [Terraform](https://terraform.
 To [configure your aws account](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-quickstart.html) run the following command:
 
 ```bash
-aws configure
+aws configure --profile <profile-name>
 
 AWS Access Key ID [None]: *********
 AWS Secret Access Key [None]: *******
@@ -94,7 +94,7 @@ Default output format [None]: json
 If you have been provided with session token, you can add it via following command:
 
 ```bash
-aws configure set aws_session_token "<your_session_token>"
+aws configure set aws_session_token "<your_session_token>" --profile <profile-name>
 ```
 
 Access credentials are typically stored in `~/.aws/credentials` and configurations in `~/.aws/config`.
@@ -244,20 +244,21 @@ Before the backup vault can be deleted, all the continuous recovery points for S
 
 ```powershell
 $vaults = terraform output backup_vaults | ConvertFrom-Json
+$profile = "<profile_name>"
 foreach ($vault in $vaults){
   Write-Host "Deleting $vault"
-  $recoverypoints = aws backup list-recovery-points-by-backup-vault --backup-vault-name $vault | ConvertFrom-Json
+  $recoverypoints = aws backup list-recovery-points-by-backup-vault --profile $profile --backup-vault-name $vault | ConvertFrom-Json
   foreach ($rp in $recoverypoints.RecoveryPoints){
-    aws backup delete-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn
+    aws backup delete-recovery-point --profile $profile --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn
   }
   foreach ($rp in $recoverypoints.RecoveryPoints){
     Do  
     {  
       Start-Sleep -Seconds 10
-      aws backup describe-recovery-point --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn | ConvertFrom-Json
+      aws backup describe-recovery-point --profile $profile --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn | ConvertFrom-Json
     } while( $LASTEXITCODE -eq 0)
   }  
-  aws backup delete-backup-vault --backup-vault-name $vault
+  aws backup delete-backup-vault --profile $profile --backup-vault-name $vault
 }
 ```
 
@@ -267,8 +268,8 @@ Before the databases can be deleted, you need to remove their delete protection:
 $databases = terraform output database_identifiers | ConvertFrom-Json
 foreach ($db in $databases){
   Write-Host "Deleting database $db"
-  aws rds modify-db-instance --db-instance-identifier $db --no-deletion-protection
-  aws rds delete-db-instance --db-instance-identifier $db --skip-final-snapshot
+  aws rds modify-db-instance --profile $profile --db-instance-identifier $db --no-deletion-protection
+  aws rds delete-db-instance --profile $profile --db-instance-identifier $db --skip-final-snapshot
 }
 ```
 
@@ -277,7 +278,7 @@ You can remove the S3 buckets like this:
 ```powershell
 $buckets = terraform output s3_buckets | ConvertFrom-Json
 foreach ($bucket in $buckets){
-  aws s3 rb s3://$bucket --force
+  aws s3 rb s3://$bucket --force --profile $profile
 }
 ```
 
@@ -447,15 +448,15 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.58.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.18.1 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.22.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.27.0 |
-| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons | v4.27.0 |
+| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.32.1 |
+| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons | v4.32.1 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_simphera_instance"></a> [simphera\_instance](#module\_simphera\_instance) | ./modules/simphera_aws_instance | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | v3.11.0 |
@@ -517,6 +518,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="input_enable_patching"></a> [enable\_patching](#input\_enable\_patching) | Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually. | `bool` | `false` | no |
 | <a name="input_gpuNodeCountMax"></a> [gpuNodeCountMax](#input\_gpuNodeCountMax) | The maximum number of nodes for gpu job execution | `number` | `12` | no |
 | <a name="input_gpuNodeCountMin"></a> [gpuNodeCountMin](#input\_gpuNodeCountMin) | The minimum number of nodes for gpu job execution | `number` | `0` | no |
+| <a name="input_gpuNodeDiskSize"></a> [gpuNodeDiskSize](#input\_gpuNodeDiskSize) | The disk size in GiB of the nodes for the gpu job execution | `number` | `100` | no |
 | <a name="input_gpuNodePool"></a> [gpuNodePool](#input\_gpuNodePool) | Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster | `bool` | `false` | no |
 | <a name="input_gpuNodeSize"></a> [gpuNodeSize](#input\_gpuNodeSize) | The machine size of the nodes for the gpu job execution | `list(string)` | <pre>[<br>  "p3.2xlarge"<br>]</pre> | no |
 | <a name="input_infrastructurename"></a> [infrastructurename](#input\_infrastructurename) | The name of the infrastructure. e.g. simphera-infra | `string` | `"simphera"` | no |
