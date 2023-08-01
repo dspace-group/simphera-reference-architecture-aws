@@ -72,7 +72,9 @@ This reference architecture has been tested with Terraform version v1.1.7.
 
 If you want to run [AURELION](https://www.dspace.com/en/pub/home/products/sw/experimentandvisualization/aurelion_sensor-realistic_sim.cfm) with your SIMPHERA solution, you need to add gpu instances to your cluster.
 
-In case you want to add a gpu node pool to your architecture you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. For the default value you have to increase the quota for _Running Dedicated p3 Hosts_.
+In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the SIMPHERA Reference Architecture for AWS uses p3.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every p3.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
+
+
 
 ### Create Security Credentials
 
