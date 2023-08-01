@@ -453,8 +453,8 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eks"></a> [eks](#module\_eks) | git::<https://github.com/aws-ia/terraform-aws-eks-blueprints.git> | v4.27.0 |
-| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::<https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons> | v4.27.0 |
+| <a name="module_eks"></a> [eks](#module\_eks) | git::<https://github.com/aws-ia/terraform-aws-eks-blueprints.git> | v4.32.1 |
+| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::<https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons> | v4.32.1 |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_simphera_instance"></a> [simphera\_instance](#module\_simphera\_instance) | ./modules/simphera_aws_instance | n/a |
 | <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | v3.11.0 |
