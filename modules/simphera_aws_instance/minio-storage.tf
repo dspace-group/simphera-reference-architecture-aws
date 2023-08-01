@@ -25,7 +25,7 @@ resource "aws_iam_role" "minio_iam_role" {
 resource "aws_s3_bucket_policy" "buckets_ssl" {
 
   bucket = aws_s3_bucket.bucket.bucket
-  policy = templatefile("${path.module}/../../templates/bucket_policy.json", { bucket = aws_s3_bucket.bucket.bucket })
+  policy = templatefile("${path.module}/templates/bucket_policy.json", { bucket = aws_s3_bucket.bucket.bucket })
 }
 
 resource "aws_iam_policy" "minio_policy" {
