@@ -19,7 +19,7 @@ module "eks" {
 
 
 module "eks-addons" {
-  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.27.0"
+  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.32.1"
   eks_cluster_id                      = module.eks.eks_cluster_id
   enable_amazon_eks_vpc_cni           = true
   enable_amazon_eks_coredns           = true
