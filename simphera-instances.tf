@@ -3,11 +3,11 @@ module "simphera_instance" {
   for_each                     = var.simpheraInstances
   region                       = var.region
   infrastructurename           = local.infrastructurename
-  k8s_cluster_id               = module.eks.eks_cluster_id
-  k8s_cluster_oidc_arn         = module.eks.eks_oidc_provider_arn
+  k8s_cluster_id               = module.eks.cluster_id
+  k8s_cluster_oidc_arn         = module.eks.oidc_provider_arn
   tags                         = var.tags
-  eks_oidc_issuer_url          = module.eks.eks_oidc_issuer_url
-  eks_oidc_provider_arn        = module.eks.eks_oidc_provider_arn
+  eks_oidc_issuer_url          = module.eks.cluster_oidc_issuer_url
+  eks_oidc_provider_arn        = module.eks.oidc_provider_arn
   name                         = each.value.name
   postgresqlVersion            = each.value.postgresqlVersion
   postgresqlStorage            = each.value.postgresqlStorage

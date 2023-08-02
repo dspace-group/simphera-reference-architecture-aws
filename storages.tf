@@ -63,6 +63,6 @@ resource "kubernetes_storage_class_v1" "efs" {
   ]
 
   depends_on = [
-    module.eks-addons
+    module.eks_blueprints_addons
   ]
 }
