@@ -55,7 +55,7 @@ locals {
       max_size        = var.gpuNodeCountMax
       min_size        = var.gpuNodeCountMin
       disk_size       = var.gpuNodeDiskSize
-      ami_type        = var.amiTypeGpu
+      ami_type        = var.gpuAmiType
       k8s_labels = {
         "purpose" = "gpu"
       }
