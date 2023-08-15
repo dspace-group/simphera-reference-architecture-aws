@@ -208,11 +208,14 @@ variable "maintainance_duration" {
   type        = number
 }
 
-
 variable "cloudwatch_retention" {
   default     = 7
   description = "Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs."
   type        = number
 }
 
-
+variable "ami_type_gpu" {
+  type        = string
+  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group. Valid values are AL2_x86_64, AL2_x86_64_GPU, AL2_ARM_64, CUSTOM, BOTTLEROCKET_ARM_64, BOTTLEROCKET_x86_64."
+  default     = "AL2_x86_64_GPU"
+}
