@@ -91,6 +91,13 @@ variable "gpuNodeDiskSize" {
   description = "The disk size in GiB of the nodes for the gpu job execution"
   default     = 100
 }
+
+variable "gpuAmiType" {
+  type        = string
+  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group."
+  default     = "AL2_x86_64"
+}
+
 variable "licenseServer" {
   type        = bool
   description = "Specifies whether a license server VM will be created."
@@ -208,11 +215,9 @@ variable "maintainance_duration" {
   type        = number
 }
 
-
 variable "cloudwatch_retention" {
   default     = 7
   description = "Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs."
   type        = number
 }
-
 
