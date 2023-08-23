@@ -98,12 +98,6 @@ resource "aws_s3_bucket_policy" "license_server_bucket_ssl" {
   policy = templatefile("${path.module}/templates/bucket_policy.json", { bucket = aws_s3_bucket.license_server_bucket[0].id })
 }
 
-resource "aws_s3_bucket_acl" "license_server_bucket_acl" {
-  count  = var.licenseServer ? 1 : 0
-  bucket = aws_s3_bucket.license_server_bucket[0].id
-  acl    = "private"
-}
-
 resource "aws_iam_instance_profile" "license_server_profile" {
   count = var.licenseServer ? 1 : 0
   name  = local.license_server_instance_profile
