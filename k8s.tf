@@ -49,13 +49,7 @@ module "eks-addons" {
     create_namespace  = true
     dependency_update = true
   }
-  cluster_autoscaler_helm_config = {
-    values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
-      aws_region     = data.aws_region.current.name,
-      eks_cluster_id = module.eks.eks_cluster_id,
-      image_tag      = "v${module.eks.eks_cluster_version}.0"
-    })]
-    dependency_update = true
-  }
-  depends_on = [module.eks.managed_node_groups]
+
+  cluster_autoscaler_helm_config = var.cluster_autoscaler_helm_config
+  depends_on                     = [module.eks.managed_node_groups]
 }
