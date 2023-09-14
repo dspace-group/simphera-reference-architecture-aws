@@ -221,3 +221,9 @@ variable "cloudwatch_retention" {
   type        = number
 }
 
+variable "cluster_autoscaler_helm_config" {
+  default     = {}
+  description = "Cluster Autoscaler Helm Config"
+  type        = any
+}
+
