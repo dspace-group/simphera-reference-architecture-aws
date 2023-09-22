@@ -107,7 +107,7 @@ variable "gpuCustomAmiId" {
 variable "gpuPostUserData" {
   default     = ""
   type        = string
-  description = ""
+  description = "Actions for customization of node groups"
 }
 
 variable "licenseServer" {
