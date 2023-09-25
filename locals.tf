@@ -1,4 +1,13 @@
 
+data "aws_ami" "al2gpu_ami" {
+  owners      = ["amazon"]
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["*amazon-eks-gpu-node-${var.kubernetesVersion}*"]
+  }
+}
+
 locals {
   infrastructurename                        = var.infrastructurename
   log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
@@ -56,7 +65,7 @@ locals {
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
       ami_type               = var.gpuAmiType
-      custom_ami_id          = var.gpuCustomAmiId
+      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
       post_userdata          = var.gpuPostUserData
       k8s_labels = {
