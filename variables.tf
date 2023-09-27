@@ -4,9 +4,10 @@ variable "profile" {
   default     = "default"
 }
 
-variable "account_id" {
-  type        = string
-  description = "The AWS account id to be used to create resources."
+variable "allowed_account_ids" {
+  type        = list(string)
+  description = "The list of account ids in which creation of resources is allowed."
+  default     = []
 }
 
 variable "region" {
