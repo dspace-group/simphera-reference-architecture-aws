@@ -131,7 +131,7 @@ terraform {
 
     #The name of the file to be used inside the container to be used for this terraform state.
     key    = "simphera.tfstate"
-    
+
     #The region of the bucket (same region as your deployment, ie. var.region).
     region = "eu-central-1"
   }
@@ -152,7 +152,7 @@ Create the following [IAM policy for accessing the Terraform state bucket](https
             "Effect": "Allow",
             "Principal": {
                 "AWS": "<your_account_arn>"
-            },            
+            },
             "Action": "s3:ListBucket",
             "Resource": "arn:aws:s3:::terraform-state"
         },
@@ -160,7 +160,7 @@ Create the following [IAM policy for accessing the Terraform state bucket](https
             "Effect": "Allow",
             "Principal": {
                 "AWS": "<your_account_arn>"
-            },            
+            },
             "Action": [
                 "s3:GetObject",
                 "s3:PutObject"
@@ -254,12 +254,12 @@ foreach ($vault in $vaults){
     aws backup delete-recovery-point --profile $profile --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn
   }
   foreach ($rp in $recoverypoints.RecoveryPoints){
-    Do  
-    {  
+    Do
+    {
       Start-Sleep -Seconds 10
       aws backup describe-recovery-point --profile $profile --backup-vault-name $vault --recovery-point-arn $rp.RecoveryPointArn | ConvertFrom-Json
     } while( $LASTEXITCODE -eq 0)
-  }  
+  }
   aws backup delete-backup-vault --profile $profile --backup-vault-name $vault
 }
 ```
@@ -507,7 +507,6 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The AWS account id to be used to create resources. | `string` | n/a | yes |
 | <a name="input_cloudwatch_retention"></a> [cloudwatch\_retention](#input\_cloudwatch\_retention) | Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs. | `number` | `7` | no |
 | <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
 | <a name="input_enable_ingress_nginx"></a> [enable\_ingress\_nginx](#input\_enable\_ingress\_nginx) | Enable Ingress Nginx add-on | `bool` | `false` | no |
@@ -544,6 +543,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 
 | Name | Description |
 |------|-------------|
+| <a name="input_account_id"></a> [account\_id](#input\_account\_id) | The AWS account id used to create resources. |
 | <a name="output_backup_vaults"></a> [backup\_vaults](#output\_backup\_vaults) | Backups vaults from all SIMPHERA instances. |
 | <a name="output_database_endpoints"></a> [database\_endpoints](#output\_database\_endpoints) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_database_identifiers"></a> [database\_identifiers](#output\_database\_identifiers) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
