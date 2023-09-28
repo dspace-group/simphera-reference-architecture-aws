@@ -1,7 +1,7 @@
 module "simphera_instance" {
   source                       = "./modules/simphera_aws_instance"
   for_each                     = var.simpheraInstances
-  region                       = var.region
+  region                       = local.region
   infrastructurename           = local.infrastructurename
   k8s_cluster_id               = module.eks.eks_cluster_id
   k8s_cluster_oidc_arn         = module.eks.eks_oidc_provider_arn

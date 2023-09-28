@@ -3,6 +3,7 @@ locals {
   infrastructurename                        = var.infrastructurename
   log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
   account_id                                = data.aws_caller_identity.current.account_id
+  region                                    = data.aws_region.current.name
   license_server_role                       = "${local.infrastructurename}-license-server-role"
   license_server_policy                     = "${local.infrastructurename}-license-server-policy"
   license_server_bucket_name                = "${local.infrastructurename}-license-server-bucket"
