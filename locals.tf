@@ -24,6 +24,7 @@ locals {
   s3_instance_buckets                       = flatten([for name, instance in module.simphera_instance : instance.s3_buckets])
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
   s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
+  gpuPostUserData                           = "curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nchmod +x NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \n./NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run -s --no-dkms --install-libglvnd"
 
   default_managed_node_pools = {
     "default" = {
@@ -64,10 +65,9 @@ locals {
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
-      ami_type               = var.gpuAmiType
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
-      post_userdata          = var.gpuPostUserData
+      post_userdata          = local.gpuPostUserData
       k8s_labels = {
         "purpose" = "gpu"
       }

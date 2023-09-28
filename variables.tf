@@ -92,22 +92,10 @@ variable "gpuNodeDiskSize" {
   default     = 100
 }
 
-variable "gpuAmiType" {
+variable "gpuNvidiaDriverVersion" {
+  default     = "535.54.03"
   type        = string
-  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group."
-  default     = "AL2_x86_64"
-}
-
-variable "gpuCustomAmiId" {
-  default     = "ami-03e6507af7164d910" # AL2_x86_64_GPU 
-  type        = string
-  description = "The Amazon Machine Image ID."
-}
-
-variable "gpuPostUserData" {
-  default     = ""
-  type        = string
-  description = "Actions for customization of node groups"
+  description = "The NVIDIA driver version for GPU node group."
 }
 
 variable "licenseServer" {
