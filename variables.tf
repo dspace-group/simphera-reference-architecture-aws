@@ -1,3 +1,21 @@
+variable "profile" {
+  type        = string
+  description = "The AWS profile used."
+  default     = "default"
+}
+
+variable "allowed_account_ids" {
+  type        = list(string)
+  description = "The list of account ids in which creation of resources is allowed."
+  default     = []
+}
+
+variable "region" {
+  type        = string
+  description = "The AWS region to be used."
+  default     = "eu-central-1"
+}
+
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."

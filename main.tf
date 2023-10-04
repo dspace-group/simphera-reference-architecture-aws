@@ -21,6 +21,12 @@ terraform {
   }
 }
 
+provider "aws" {
+  region              = var.region
+  allowed_account_ids = var.allowed_account_ids
+  profile             = var.profile
+}
+
 data "aws_caller_identity" "current" {}
 
 data "aws_eks_cluster" "cluster" {

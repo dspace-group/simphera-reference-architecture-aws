@@ -59,7 +59,7 @@ resource "aws_kms_key" "kms_key_cloudwatch_log_group" {
         {
             "Effect": "Allow",
             "Principal": {
-                "Service": "logs.${local.region}.amazonaws.com"
+                "Service": "logs.${var.region}.amazonaws.com"
             },
             "Action": [
                 "kms:Encrypt*",
@@ -71,7 +71,7 @@ resource "aws_kms_key" "kms_key_cloudwatch_log_group" {
             "Resource": "*",
             "Condition": {
                 "ArnLike": {
-                    "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:${local.region}:${local.account_id}:*"
+                    "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:${var.region}:${local.account_id}:*"
                 }
             }
         }
