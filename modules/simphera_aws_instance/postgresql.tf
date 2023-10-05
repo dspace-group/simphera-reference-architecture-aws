@@ -26,7 +26,11 @@ resource "aws_db_instance" "simphera" {
   depends_on = [
     aws_cloudwatch_log_group.db_simphera
   ]
-
+  timeouts {
+    create = "2h"
+    delete = "2h"
+    update = "2h"
+  }
 
 }
 
@@ -57,6 +61,11 @@ resource "aws_db_instance" "keycloak" {
   depends_on = [
     aws_cloudwatch_log_group.db_keycloak
   ]
+  timeouts {
+    create = "2h"
+    delete = "2h"
+    update = "2h"
+  }
 }
 
 
