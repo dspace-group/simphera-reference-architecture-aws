@@ -4,11 +4,6 @@ variable "profile" {
   default     = "default"
 }
 
-variable "account_id" {
-  type        = string
-  description = "The AWS account id to be used to create resources."
-}
-
 variable "region" {
   type        = string
   description = "The AWS region to be used."
