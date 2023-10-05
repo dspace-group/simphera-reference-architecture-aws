@@ -1,0 +1,73 @@
+{
+  "account_id": null,
+  "cloudwatch_retention": 7,
+  "cluster_autoscaler_helm_config": {},
+  "enable_aws_for_fluentbit": false,
+  "enable_ingress_nginx": false,
+  "enable_patching": false,
+  "gpuAmiType": "AL2_x86_64",
+  "gpuNodeCountMax": 12,
+  "gpuNodeCountMin": 0,
+  "gpuNodeDiskSize": 100,
+  "gpuNodePool": false,
+  "gpuNodeSize": [
+    "p3.2xlarge"
+  ],
+  "infrastructurename": "simphera",
+  "install_schedule": "cron(0 3 * * ? *)",
+  "kubernetesVersion": "1.22",
+  "licenseServer": false,
+  "linuxExecutionNodeCountMax": 10,
+  "linuxExecutionNodeCountMin": 0,
+  "linuxExecutionNodeSize": [
+    "m5a.4xlarge",
+    "m5a.8xlarge"
+  ],
+  "linuxNodeCountMax": 12,
+  "linuxNodeCountMin": 1,
+  "linuxNodeSize": [
+    "m5a.4xlarge",
+    "m5a.8xlarge"
+  ],
+  "maintainance_duration": 3,
+  "map_accounts": [],
+  "map_roles": [],
+  "map_users": [],
+  "profile": "default",
+  "region": "eu-central-1",
+  "scan_schedule": "cron(0 0 * * ? *)",
+  "simpheraInstances": {
+    "production": {
+      "backup_retention": 35,
+      "db_instance_type_keycloak": "db.t3.large",
+      "db_instance_type_simphera": "db.t3.large",
+      "enable_backup_service": true,
+      "enable_deletion_protection": true,
+      "k8s_namespace": "simphera",
+      "name": "production",
+      "postgresqlMaxStorage": 100,
+      "postgresqlMaxStorageKeycloak": 100,
+      "postgresqlStorage": 20,
+      "postgresqlStorageKeycloak": 20,
+      "postgresqlVersion": "11",
+      "secretname": "aws-simphera-dev-production"
+    }
+  },
+  "tags": {},
+  "vpcCidr": "10.1.0.0/18",
+  "vpcDatabaseSubnets": [
+    "10.1.24.0/22",
+    "10.1.28.0/22",
+    "10.1.32.0/22"
+  ],
+  "vpcPrivateSubnets": [
+    "10.1.0.0/22",
+    "10.1.4.0/22",
+    "10.1.8.0/22"
+  ],
+  "vpcPublicSubnets": [
+    "10.1.12.0/22",
+    "10.1.16.0/22",
+    "10.1.20.0/22"
+  ]
+}
