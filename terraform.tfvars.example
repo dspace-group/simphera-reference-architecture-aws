@@ -1,13 +1,15 @@
 <!-- BEGIN_TF_DOCS -->
-account_id               = ""
-cloudwatch_retention     = 7
-enable_aws_for_fluentbit = false
-enable_ingress_nginx     = false
-enable_patching          = false
-gpuNodeCountMax          = 12
-gpuNodeCountMin          = 0
-gpuNodeDiskSize          = 100
-gpuNodePool              = false
+account_id                     = ""
+cloudwatch_retention           = 7
+cluster_autoscaler_helm_config = {}
+enable_aws_for_fluentbit       = false
+enable_ingress_nginx           = false
+enable_patching                = false
+gpuAmiType                     = "AL2_x86_64"
+gpuNodeCountMax                = 12
+gpuNodeCountMin                = 0
+gpuNodeDiskSize                = 100
+gpuNodePool                    = false
 gpuNodeSize = [
   "p3.2xlarge"
 ]
