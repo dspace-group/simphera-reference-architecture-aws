@@ -11,7 +11,7 @@ You can install the hook using these commands on Windows:
 
 ```powershell
 choco install python
-pip install pre-commit
+pip install pre-commit==3.4.0
 pre-commit install
 ```
 
