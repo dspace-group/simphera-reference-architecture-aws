@@ -15,7 +15,7 @@ repos:
     hooks:
     -   id: tflint
         name: tflint
-        entry: --entrypoint /src/hooks/tflint.sh ghcr.io/terraform-linters/tflint:v0.48.0
+        entry: --entrypoint /src/hooks/tflint.sh -v tflint:/data ghcr.io/terraform-linters/tflint:v0.48.0
         language: docker_image
 -   repo: local
     hooks:
