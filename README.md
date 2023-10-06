@@ -131,7 +131,7 @@ terraform {
     #The name of the file to be used inside the container to be used for this terraform state.
     key    = "simphera.tfstate"
 
-    #The region of the bucket (same region as your deployment, ie. var.region).
+    #The region of the bucket.
     region = "eu-central-1"
   }
 }
