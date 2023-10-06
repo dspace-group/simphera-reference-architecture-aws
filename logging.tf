@@ -51,7 +51,7 @@ resource "aws_kms_key" "kms_key_cloudwatch_log_group" {
             "Sid": "Enable IAM User Permissions",
             "Effect": "Allow",
             "Principal": {
-                "AWS": "arn:aws:iam::${var.account_id}:root"
+                "AWS": "arn:aws:iam::${local.account_id}:root"
             },
             "Action": "kms:*",
             "Resource": "*"
@@ -71,10 +71,10 @@ resource "aws_kms_key" "kms_key_cloudwatch_log_group" {
             "Resource": "*",
             "Condition": {
                 "ArnLike": {
-                    "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:${var.region}:${var.account_id}:*"
+                    "kms:EncryptionContext:aws:logs:arn": "arn:aws:logs:${var.region}:${local.account_id}:*"
                 }
             }
-        }    
+        }
     ]
 }
 POLICY
