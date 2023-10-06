@@ -1,3 +1,8 @@
+output "account_id" {
+  description = "The AWS account id used for creating resources."
+  value       = local.account_id
+}
+
 output "backup_vaults" {
   description = "Backups vaults from all SIMPHERA instances."
   value       = flatten([for name, instance in module.simphera_instance : instance.backup_vaults])
