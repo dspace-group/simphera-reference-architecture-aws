@@ -75,8 +75,7 @@ If you want to run [AURELION](https://www.dspace.com/en/pub/home/products/sw/exp
 In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the SIMPHERA Reference Architecture for AWS uses p3.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every p3.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
 
 
-
-### Create Security Credentials
+### Create Security Credentials <a name="awsprofile"></a>
 
 You can create [security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) for that IAM user with the AWS console.
 Terraform uses these security credentials to create AWS resources on your behalf.
@@ -209,7 +208,8 @@ The next section describes how you need to adjust your Terraform variables.
 
 ### Adjust Terraform Variables
 
-For your configuration, please make a copy of the file `terraform.tfvars.example`, name it `terraform.tfvars` and open the file in a text editor. This file contains all variables that are configurable including documentation of the variables. Please adapt the values before you deploy the resources.
+For your configuration, please rename the template file `terraform.tfvars.example` to `terraform.tfvars` and open it in a text editor.
+This file contains all variables that are configurable including documentation of the variables. Please adapt the values before you deploy the resources.
 
 ```diff
 simpheraInstances = {
@@ -218,6 +218,15 @@ simpheraInstances = {
     }
 }
 ```
+
+Also rename the file `main.tf.example` to `main.tf` and fill in the name of the [AWS profile you have created before](#awsprofile).
+
+```diff
+provider "aws" {
++  profile = "<profile-name>"
+}
+```
+
 
 ### Apply Terraform Configuration
 

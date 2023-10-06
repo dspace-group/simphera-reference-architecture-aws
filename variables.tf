@@ -1,15 +1,3 @@
-variable "profile" {
-  type        = string
-  description = "The AWS profile used."
-  default     = "default"
-}
-
-variable "region" {
-  type        = string
-  description = "The AWS region to be used."
-  default     = "eu-central-1"
-}
-
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."
