@@ -1,4 +1,3 @@
-stages: [pre-push]
 repos:
 -   repo: local
     hooks:
@@ -12,21 +11,25 @@ repos:
         name: terraform_validate
         entry: "--entrypoint /src/hooks/terraform_validate.sh -v tfvalidate:/.terraform hashicorp/terraform:1.5.2"
         language: docker_image
+    stages: [pre-push]
 -   repo: local
     hooks:
     -   id: tflint
         name: tflint
         entry: --entrypoint /src/hooks/tflint.sh -v tflint:/data ghcr.io/terraform-linters/tflint:v0.48.0
         language: docker_image
+    stages: [pre-push]
 -   repo: local
     hooks:
     -   id: tfsec
         name: tfsec
         entry: --entrypoint /src/hooks/tfsec.sh aquasec/tfsec:v1.28
         language: docker_image                         
+    stages: [pre-push]
 -   repo: local
     hooks:
     -   id: terraform_docs
         name: terraform_docs
         entry: --entrypoint /src/hooks/terraform_docs.sh quay.io/terraform-docs/terraform-docs:0.16.0
         language: docker_image
+    stages: [pre-push]
