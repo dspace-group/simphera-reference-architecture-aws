@@ -7,7 +7,7 @@ data "aws_ami" "al2gpu_ami" {
     values = ["*amazon-eks-gpu-node-${var.kubernetesVersion}*"]
   }
 }
-
+# Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
 locals {
   infrastructurename                        = var.infrastructurename
   log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
