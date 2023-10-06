@@ -1,7 +1,7 @@
 resource "aws_instance" "license_server" {
   count                = var.licenseServer ? 1 : 0
   ami                  = data.aws_ami.amazon_linux_kernel5.id
-  instance_type        = "t3a.large"
+  instance_type        = "t3x.large"
   iam_instance_profile = aws_iam_instance_profile.license_server_profile[0].name
   subnet_id            = module.vpc.private_subnets[0]
 
