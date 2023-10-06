@@ -121,11 +121,3 @@ resource "aws_cloudwatch_log_group" "db_keycloak" {
   kms_key_id        = var.kms_key_cloudwatch
   tags              = var.tags
 }
-
-
-resource "aws_instance" "license_server" {
-
-  ami           = "123"
-  instance_type = "t3a.large"
-
-}
