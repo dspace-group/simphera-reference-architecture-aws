@@ -1,4 +1,5 @@
 
+
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
 

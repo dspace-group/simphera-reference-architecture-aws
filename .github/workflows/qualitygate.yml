@@ -62,26 +62,19 @@ jobs:
         uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: .
-          args: --description
-          output-file: terraform.tfvars.example
-          output-format: tfvars hcl
-          output-method: inject
-          template: |-
-
-            {{ .Content }}
-
+          config-file: tfvars.hcl.terraform-docs.yml
+          #output-file: terraform.tfvars.example
+          #output-format: tfvars hcl
+          #output-method: inject
           git-push: "true"
 
       - name: Terraform-docs Regenerate terraform.json.example
         uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: .
-          output-file: terraform.json.example
-          output-format: tfvars json
-          output-method: inject
-          template: |-
-
-            {{ .Content }}
-
+          config-file: tfvars.json.terraform-docs.yml
+          # output-file: terraform.json.example
+          # output-format: tfvars json
+          # output-method: inject
           git-push: "true"  
 
