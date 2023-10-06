@@ -1,5 +1,4 @@
 {
-  "account_id": null,
   "cloudwatch_retention": 7,
   "cluster_autoscaler_helm_config": {},
   "enable_aws_for_fluentbit": false,
@@ -33,8 +32,6 @@
   "map_accounts": [],
   "map_roles": [],
   "map_users": [],
-  "profile": "default",
-  "region": "eu-central-1",
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
