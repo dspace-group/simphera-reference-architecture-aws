@@ -87,10 +87,10 @@ variable "gpuNodeDiskSize" {
   default     = 100
 }
 
-variable "gpuAmiType" {
+variable "gpuNvidiaDriverVersion" {
+  default     = "535.54.03"
   type        = string
-  description = "Type of Amazon Machine Image (AMI) associated with the EKS Node Group."
-  default     = "AL2_x86_64"
+  description = "The NVIDIA driver version for GPU node group."
 }
 
 variable "licenseServer" {
