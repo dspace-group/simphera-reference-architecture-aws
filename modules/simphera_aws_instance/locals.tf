@@ -8,8 +8,5 @@ locals {
   db_simphera_id           = "${local.instancename}-simphera"
   db_keycloak_id           = "${local.instancename}-keycloak"
   backup_vault_name        = "${local.instancename}-backup-vault"
-  output_backup_vault      = var.enable_backup_service ? local.backup_vault_name : null
 }
-
-data "aws_caller_identity" "current" {}
 
