@@ -15,9 +15,6 @@ enable_ingress_nginx = false
 # Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually.
 enable_patching = false
 
-# Type of Amazon Machine Image (AMI) associated with the EKS Node Group.
-gpuAmiType = "AL2_x86_64"
-
 # The maximum number of nodes for gpu job execution
 gpuNodeCountMax = 12
 
@@ -34,6 +31,9 @@ gpuNodePool = false
 gpuNodeSize = [
   "p3.2xlarge"
 ]
+
+# The NVIDIA driver version for GPU node group.
+gpuNvidiaDriverVersion = "535.54.03"
 
 # The name of the infrastructure. e.g. simphera-infra
 infrastructurename = "simphera"
