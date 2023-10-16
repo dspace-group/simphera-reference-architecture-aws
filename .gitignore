@@ -14,7 +14,6 @@
 # all state-backends
 **/state-backend.tf
 
-*.lock.hcl
 
 **/OLD_*
 
