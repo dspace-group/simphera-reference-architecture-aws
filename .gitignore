@@ -27,3 +27,5 @@ wildcard.key
 
 temp
 terraform.log
+
+tfsec
