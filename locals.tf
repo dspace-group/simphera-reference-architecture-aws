@@ -29,20 +29,22 @@ locals {
 
   default_managed_node_pools = {
     "default" = {
-      node_group_name = "default"
-      instance_types  = var.linuxNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxNodeCountMin
-      max_size        = var.linuxNodeCountMax
-      min_size        = var.linuxNodeCountMin
+      node_group_name          = "default"
+      enable_node_group_prefix = false
+      instance_types           = var.linuxNodeSize
+      subnet_ids               = module.vpc.private_subnets
+      desired_size             = var.linuxNodeCountMin
+      max_size                 = var.linuxNodeCountMax
+      min_size                 = var.linuxNodeCountMin
     },
     "execnodes" = {
-      node_group_name = "execnodes"
-      instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxExecutionNodeCountMin
-      max_size        = var.linuxExecutionNodeCountMax
-      min_size        = var.linuxExecutionNodeCountMin
+      node_group_name          = "execnodes"
+      enable_node_group_prefix = false
+      instance_types           = var.linuxExecutionNodeSize
+      subnet_ids               = module.vpc.private_subnets
+      desired_size             = var.linuxExecutionNodeCountMin
+      max_size                 = var.linuxExecutionNodeCountMax
+      min_size                 = var.linuxExecutionNodeCountMin
       k8s_labels = {
         "purpose" = "execution"
       }
@@ -59,16 +61,17 @@ locals {
 
   gpu_node_pool = {
     "gpuexecnodes" = {
-      node_group_name        = "gpuexecnodes"
-      instance_types         = var.gpuNodeSize
-      subnet_ids             = module.vpc.private_subnets
-      desired_size           = var.gpuNodeCountMin
-      max_size               = var.gpuNodeCountMax
-      min_size               = var.gpuNodeCountMin
-      disk_size              = var.gpuNodeDiskSize
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
-      post_userdata          = local.gpuPostUserData
+      node_group_name          = "gpuexecnodes"
+      enable_node_group_prefix = false
+      instance_types           = var.gpuNodeSize
+      subnet_ids               = module.vpc.private_subnets
+      desired_size             = var.gpuNodeCountMin
+      max_size                 = var.gpuNodeCountMax
+      min_size                 = var.gpuNodeCountMin
+      disk_size                = var.gpuNodeDiskSize
+      custom_ami_id            = data.aws_ami.al2gpu_ami.image_id
+      create_launch_template   = true
+      post_userdata            = local.gpuPostUserData
       k8s_labels = {
         "purpose" = "gpu"
       }
