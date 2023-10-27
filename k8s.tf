@@ -53,3 +53,38 @@ module "eks-addons" {
   cluster_autoscaler_helm_config = var.cluster_autoscaler_helm_config
   depends_on                     = [module.eks.managed_node_groups]
 }
+
+data "aws_eks_node_group" "execnodes" {
+  cluster_name    = local.infrastructurename
+  node_group_name = regex(local.arn_to_nodegroup_name_pattern, module.eks.managed_node_groups[0]["execnodes"]["managed_nodegroup_arn"][0])[0]
+
+}
+
+data "aws_eks_node_group" "gpuexecnodes" {
+  count           = var.gpuNodePool ? 1 : 0
+  cluster_name    = local.infrastructurename
+  node_group_name = regex(local.arn_to_nodegroup_name_pattern, module.eks.managed_node_groups[0]["gpuexecnodes"]["managed_nodegroup_arn"][0])[0]
+}
+
+resource "aws_autoscaling_group_tag" "execnodes" {
+  autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
+
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+    value = "execution"
+
+    propagate_at_launch = true
+  }
+}
+
+resource "aws_autoscaling_group_tag" "gpuexecnodes" {
+  count                  = var.gpuNodePool ? 1 : 0
+  autoscaling_group_name = data.aws_eks_node_group.gpuexecnodes[0].resources[0].autoscaling_groups[0].name
+
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+    value = "gpu"
+
+    propagate_at_launch = true
+  }
+}
