@@ -81,6 +81,4 @@ locals {
       ]
     }
   }
-
-  arn_to_nodegroup_name_pattern = "arn:aws:eks:${local.region}:${local.account_id}:nodegroup\\/${local.infrastructurename}\\/(.+)\\/(?:.+)"
 }
