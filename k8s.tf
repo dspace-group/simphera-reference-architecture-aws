@@ -56,14 +56,14 @@ module "eks-addons" {
 
 data "aws_eks_node_group" "execnodes" {
   cluster_name    = local.infrastructurename
-  node_group_name = regex(local.arn_to_nodegroup_name_pattern, module.eks.managed_node_groups[0]["execnodes"]["managed_nodegroup_arn"][0])[0]
+  node_group_name = replace(module.eks.managed_node_groups[0]["execnodes"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
 
 }
 
 data "aws_eks_node_group" "gpuexecnodes" {
   count           = var.gpuNodePool ? 1 : 0
   cluster_name    = local.infrastructurename
-  node_group_name = regex(local.arn_to_nodegroup_name_pattern, module.eks.managed_node_groups[0]["gpuexecnodes"]["managed_nodegroup_arn"][0])[0]
+  node_group_name = replace(module.eks.managed_node_groups[0]["gpuexecnodes"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
 }
 
 resource "aws_autoscaling_group_tag" "execnodes" {
