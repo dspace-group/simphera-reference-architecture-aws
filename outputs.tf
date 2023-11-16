@@ -18,6 +18,11 @@ output "database_endpoints" {
   value       = flatten([for name, instance in module.simphera_instance : instance.database_endpoints])
 }
 
+output "database_endpoints_map" {
+  description = "Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances."
+  value       = { for name, instance in module.simphera_instance : name => instance.database_endpoints_map }
+}
+
 output "s3_buckets" {
   description = "S3 buckets from all SIMPHERA instances."
   value       = local.s3_buckets

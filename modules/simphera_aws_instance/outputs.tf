@@ -14,6 +14,14 @@ output "database_endpoints" {
   value       = [aws_db_instance.simphera.endpoint, aws_db_instance.keycloak.endpoint]
 }
 
+output "database_endpoints_map" {
+  description = "Endpoints of the SIMPHERA and Keycloak databases created for this SIMPHERA instance."
+  value = {
+    simphera = aws_db_instance.simphera.endpoint
+    keycloak = aws_db_instance.keycloak.endpoint
+  }
+}
+
 output "s3_buckets" {
   description = "S3 buckets created for this SIMPHERA instance."
   value       = [aws_s3_bucket.bucket.bucket]
