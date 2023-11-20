@@ -28,6 +28,11 @@ output "s3_buckets" {
   value       = local.s3_buckets
 }
 
+output "s3_buckets_map" {
+  description = "S3 buckets from all SIMPHERA instances."
+  value       = { for name, instance in module.simphera_instance : name => instance.s3_buckets[0] }
+}
+
 output "eks_cluster_id" {
   description = "Amazon EKS Cluster Name"
   value       = module.eks.eks_cluster_id

@@ -561,4 +561,5 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="output_database_identifiers"></a> [database\_identifiers](#output\_database\_identifiers) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_eks_cluster_id"></a> [eks\_cluster\_id](#output\_eks\_cluster\_id) | Amazon EKS Cluster Name |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | S3 buckets from all SIMPHERA instances. |
+| <a name="output_s3_buckets_map"></a> [s3\_buckets\_map](#output\_s3\_buckets\_map) | S3 buckets from all SIMPHERA instances. |
 <!-- END_TF_DOCS -->

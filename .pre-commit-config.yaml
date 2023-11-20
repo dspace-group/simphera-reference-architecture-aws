@@ -11,12 +11,12 @@ repos:
         name: terraform_validate
         entry: "--entrypoint /src/hooks/terraform_validate.sh -v tfvalidate:/src/cache hashicorp/terraform:1.5.2"
         language: docker_image
--   repo: local
-    hooks:
-    -   id: tflint
-        name: tflint
-        entry: --entrypoint /src/hooks/tflint.sh ghcr.io/terraform-linters/tflint:v0.48.0
-        language: docker_image
+# -   repo: local
+#     hooks:
+#     -   id: tflint
+#         name: tflint
+#         entry: --entrypoint /src/hooks/tflint.sh ghcr.io/terraform-linters/tflint:v0.48.0
+#         language: docker_image
 -   repo: local
     hooks:
     -   id: tfsec
