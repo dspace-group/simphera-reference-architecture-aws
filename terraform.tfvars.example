@@ -46,7 +46,7 @@ infrastructurename = "simphera"
 install_schedule = "cron(0 3 * * ? *)"
 
 # The version of the EKS cluster.
-kubernetesVersion = "1.27"
+kubernetesVersion = "1.28"
 
 # Specifies whether a license server VM will be created.
 licenseServer = false
