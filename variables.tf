@@ -154,7 +154,7 @@ variable "map_roles" {
     groups   = list(string)
   }))
   description = "Additional IAM roles to add to the aws-auth ConfigMap"
-  default = []
+  default     = []
 }
 
 variable "map_users" {
@@ -164,7 +164,7 @@ variable "map_users" {
     groups   = list(string)
   }))
   description = "Additional IAM users to add to the aws-auth ConfigMap"
-  default = []
+  default     = []
 }
 
 variable "simpheraInstances" {
@@ -216,7 +216,7 @@ variable "scan_schedule" {
   default     = "cron(0 0 * * ? *)"
 }
 variable "install_schedule" {
-  type        = string  
+  type        = string
   description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."
   default     = "cron(0 3 * * ? *)"
 }
