@@ -1,4 +1,8 @@
+# AWS profile
+profile = "change-me"
 
+# AWS region
+region = "change-me"
 
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
@@ -42,7 +46,7 @@ infrastructurename = "simphera"
 install_schedule = "cron(0 3 * * ? *)"
 
 # The version of the EKS cluster.
-kubernetesVersion = "1.22"
+kubernetesVersion = "1.27"
 
 # Specifies whether a license server VM will be created.
 licenseServer = false

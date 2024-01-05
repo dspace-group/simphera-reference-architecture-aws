@@ -1,3 +1,15 @@
+variable "profile" {
+  type        = string
+  description = "AWS profile to be used"
+  default     = "my-profile"
+}
+
+variable "region" {
+  type        = string
+  description = "AWS region to be used"
+  default     = "my-region"
+}
+
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."
@@ -77,9 +89,9 @@ variable "gpuNodeDiskSize" {
 }
 
 variable "gpuNvidiaDriverVersion" {
-  default     = "535.54.03"
   type        = string
   description = "The NVIDIA driver version for GPU node group."
+  default     = "535.54.03"
 }
 
 variable "licenseServer" {
@@ -91,7 +103,7 @@ variable "licenseServer" {
 variable "kubernetesVersion" {
   type        = string
   description = "The version of the EKS cluster."
-  default     = "1.22"
+  default     = "1.28"
 }
 variable "vpcCidr" {
   type        = string
@@ -130,28 +142,28 @@ variable "enable_ingress_nginx" {
 }
 
 variable "map_accounts" {
-  description = "Additional AWS account numbers to add to the aws-auth ConfigMap"
   type        = list(string)
+  description = "Additional AWS account numbers to add to the aws-auth ConfigMap"
   default     = []
 }
 
 variable "map_roles" {
-  description = "Additional IAM roles to add to the aws-auth ConfigMap"
   type = list(object({
     rolearn  = string
     username = string
     groups   = list(string)
   }))
+  description = "Additional IAM roles to add to the aws-auth ConfigMap"
   default = []
 }
 
 variable "map_users" {
-  description = "Additional IAM users to add to the aws-auth ConfigMap"
   type = list(object({
     userarn  = string
     username = string
     groups   = list(string)
   }))
+  description = "Additional IAM users to add to the aws-auth ConfigMap"
   default = []
 }
 
@@ -199,31 +211,31 @@ variable "enable_patching" {
 }
 
 variable "scan_schedule" {
-  description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
   type        = string
+  description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
   default     = "cron(0 0 * * ? *)"
 }
 variable "install_schedule" {
+  type        = string  
   description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."
-  type        = string
   default     = "cron(0 3 * * ? *)"
 }
 
 variable "maintainance_duration" {
-  default     = 3
-  description = "How long in hours for the maintenance window."
   type        = number
+  description = "How long in hours for the maintenance window."
+  default     = 3
 }
 
 variable "cloudwatch_retention" {
-  default     = 7
-  description = "Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs."
   type        = number
+  description = "Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs."
+  default     = 7
 }
 
 variable "cluster_autoscaler_helm_config" {
-  default     = {}
-  description = "Cluster Autoscaler Helm Config"
   type        = any
+  description = "Cluster Autoscaler Helm Config"
+  default     = {}
 }
 

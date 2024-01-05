@@ -15,7 +15,7 @@
   "gpuNvidiaDriverVersion": "535.54.03",
   "infrastructurename": "simphera",
   "install_schedule": "cron(0 3 * * ? *)",
-  "kubernetesVersion": "1.22",
+  "kubernetesVersion": "1.28",
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
