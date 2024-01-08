@@ -1,9 +1,3 @@
-# AWS profile
-profile = "change-me"
-
-# AWS region
-region = "change-me"
-
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
 
