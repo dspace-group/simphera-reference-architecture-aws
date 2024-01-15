@@ -50,6 +50,26 @@ variable "postgresqlMaxStorage" {
   }
 }
 
+variable "postgresqlStorageKeycloak" {
+  type        = number
+  description = "PostgreSQL Storage in GiB for Keycloak. The minimum value is 100 GiB and the maximum value is 65.536 GiB"
+  default     = 20
+  validation {
+    condition     = 20 <= var.postgresqlStorageKeycloak && var.postgresqlStorageKeycloak <= 65536
+    error_message = "postgresqlStorageKeycloak must be between 20 and 65536 GiB."
+  }
+}
+
+variable "postgresqlMaxStorageKeycloak" {
+  type        = number
+  description = "The upper limit to which Amazon RDS can automatically scale the storage of the Keycloak database. Must be greater than or equal to postgresqlStorage or 0 to disable Storage Autoscaling."
+  default     = 20
+  validation {
+    condition     = 20 <= var.postgresqlMaxStorageKeycloak && var.postgresqlMaxStorageKeycloak <= 65536
+    error_message = "The variable postgresqlMaxStorageKeycloak must be between 20 and 65536 GiB."
+  }
+}
+
 variable "db_instance_type_keycloak" {
   type        = string
   description = "PostgreSQL database instance type for Keycloak data"
