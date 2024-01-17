@@ -35,7 +35,7 @@ resource "aws_db_instance" "simphera" {
 }
 
 resource "aws_db_instance" "keycloak" {
-  allocated_storage                   = var.postgresqlStorage
+  allocated_storage                   = var.postgresqlStorageKeycloak
   max_allocated_storage               = var.postgresqlMaxStorageKeycloak
   auto_minor_version_upgrade          = true # [RDS.13] RDS automatic minor version upgrades should be enabled
   engine                              = "postgres"
