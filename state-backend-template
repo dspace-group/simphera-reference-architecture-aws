@@ -5,9 +5,12 @@ terraform {
     bucket = "terraform-state"
 
     #The name of the file to be used inside the container to be used for this terraform state.
-    key    = "simphera.tfstate"
-    
+    key = "simphera.tfstate"
+ 
     #The region of the bucket.
     region = "eu-central-1"
+
+    #AWS profile to use
+    profile = "wtc-development"
   }
 }

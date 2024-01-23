@@ -1,10 +1,11 @@
-
-
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
 
 # Cluster Autoscaler Helm Config
-cluster_autoscaler_helm_config = {}
+cluster_autoscaler_helm_config = {
+  # default version (9.21.0) has obsoleted image registry and deployment will fail
+  version = "9.28.0"
+}
 
 # Install FluentBit to send container logs to CloudWatch.
 enable_aws_for_fluentbit = false
@@ -42,7 +43,7 @@ infrastructurename = "simphera"
 install_schedule = "cron(0 3 * * ? *)"
 
 # The version of the EKS cluster.
-kubernetesVersion = "1.22"
+kubernetesVersion = "1.28"
 
 # Specifies whether a license server VM will be created.
 licenseServer = false
@@ -88,20 +89,20 @@ scan_schedule = "cron(0 0 * * ? *)"
 
 # A list containing the individual SIMPHERA instances, such as 'staging' and 'production'.
 simpheraInstances = {
-  "production": {
-    "backup_retention": 35,
-    "db_instance_type_keycloak": "db.t3.large",
-    "db_instance_type_simphera": "db.t3.large",
-    "enable_backup_service": true,
-    "enable_deletion_protection": true,
-    "k8s_namespace": "simphera",
-    "name": "production",
-    "postgresqlMaxStorage": 100,
-    "postgresqlMaxStorageKeycloak": 100,
-    "postgresqlStorage": 20,
-    "postgresqlStorageKeycloak": 20,
-    "postgresqlVersion": "11",
-    "secretname": "aws-simphera-dev-production"
+  "production" : {
+    "backup_retention" : 35,
+    "db_instance_type_keycloak" : "db.t3.large",
+    "db_instance_type_simphera" : "db.t3.large",
+    "enable_backup_service" : true,
+    "enable_deletion_protection" : true,
+    "k8s_namespace" : "simphera",
+    "name" : "production",
+    "postgresqlMaxStorage" : 100,
+    "postgresqlMaxStorageKeycloak" : 100,
+    "postgresqlStorage" : 20,
+    "postgresqlStorageKeycloak" : 20,
+    "postgresqlVersion" : "11",
+    "secretname" : "aws-simphera-dev-production"
   }
 }
 
