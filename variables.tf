@@ -76,6 +76,36 @@ variable "gpuNodeDiskSize" {
   default     = 100
 }
 
+variable "ivsGpuNodePool" {
+  type        = bool
+  description = "Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster"
+  default     = false
+}
+
+variable "ivsGpuNodeSize" {
+  type        = list(string)
+  description = "The machine size of the GPU nodes for IVS jobs"
+  default     = ["g4dn.2xlarge"]
+}
+
+variable "ivsGpuNodeCountMin" {
+  type        = number
+  description = "The minimum number of GPU nodes nodes for IVS jobs"
+  default     = 0
+}
+
+variable "ivsGpuNodeCountMax" {
+  type        = number
+  description = "The maximum number of GPU nodes nodes for IVS jobs"
+  default     = 2
+}
+
+variable "ivsGpuNodeDiskSize" {
+  type        = number
+  description = "The disk size in GiB of the nodes for the IVS gpu job execution"
+  default     = 100
+}
+
 variable "gpuNvidiaDriverVersion" {
   type        = string
   description = "The NVIDIA driver version for GPU node group."

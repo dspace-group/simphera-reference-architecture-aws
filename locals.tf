@@ -54,7 +54,6 @@ locals {
         }
       ]
     }
-
   }
 
   gpu_node_pool = {
@@ -76,6 +75,37 @@ locals {
         {
           key      = "purpose",
           value    = "gpu",
+          "effect" = "NO_SCHEDULE"
+        }
+      ]
+    }
+  }
+
+  ivsgpu_node_pool = {
+    "gpuivsnodes" = {
+      node_group_name        = "gpuivsnodes"
+      instance_types         = var.ivsGpuNodeSize
+      subnet_ids             = module.vpc.private_subnets
+      desired_size           = var.ivsGpuNodeCountMin
+      max_size               = var.ivsGpuNodeCountMax
+      min_size               = var.ivsGpuNodeCountMin
+      disk_size              = var.ivsGpuNodeDiskSize
+      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
+      create_launch_template = true
+      post_userdata          = local.gpuPostUserData
+      k8s_labels = {
+        "product" = "ivs",
+        "purpose" = "gpu"
+      }
+      k8s_taints = [
+        {
+          key      = "purpose",
+          value    = "gpu",
+          "effect" = "NO_SCHEDULE"
+        },
+        {
+          key      = "nvidia.com/gpu",
+          value    = "",
           "effect" = "NO_SCHEDULE"
         }
       ]

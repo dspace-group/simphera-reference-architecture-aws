@@ -5,12 +5,19 @@
   "enable_aws_for_fluentbit": false,
   "enable_ingress_nginx": false,
   "enable_patching": false,
-  "gpuNodeCountMax": 12,
   "gpuNodeCountMin": 0,
+  "gpuNodeCountMax": 12,
   "gpuNodeDiskSize": 100,
   "gpuNodePool": false,
   "gpuNodeSize": [
     "p3.2xlarge"
+  ],
+  "ivsGpuNodeCountMin": 0,
+  "ivsGpuNodeCountMax": 2,
+  "ivsGpuNodeDiskSize": 100,
+  "ivsGpuNodePool": false,
+  "ivsGpuNodeSize": [
+    "g4dn.2xlarge"
   ],
   "gpuNvidiaDriverVersion": "535.54.03",
   "infrastructurename": "simphera",
