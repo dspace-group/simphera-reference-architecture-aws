@@ -16,6 +16,9 @@ enable_ingress_nginx = false
 # Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually.
 enable_patching = false
 
+# Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster
+gpuNodePool = false
+
 # The maximum number of nodes for gpu job execution
 gpuNodeCountMax = 12
 
@@ -25,12 +28,26 @@ gpuNodeCountMin = 0
 # The disk size in GiB of the nodes for the gpu job execution
 gpuNodeDiskSize = 100
 
-# Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster
-gpuNodePool = false
-
 # The machine size of the nodes for the gpu job execution
 gpuNodeSize = [
   "p3.2xlarge"
+]
+
+# Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster
+ivsGpuNodePool = false
+
+# The minimum number of nodes for IVS gpu job execution
+ivsGpuNodeCountMin = 0
+
+# The maximum number of nodes for IVS gpu job execution
+ivsGpuNodeCountMax = 2
+
+# The disk size in GiB of the nodes for the IVS gpu job execution
+ivsGpuNodeDiskSize = 100
+
+# The machine size of the nodes for the IVS gpu job execution
+ivsGpuNodeSize = [
+    "g4dn.2xlarge"
 ]
 
 # The NVIDIA driver version for GPU node group.

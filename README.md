@@ -470,6 +470,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 |------|------|
 | [aws_autoscaling_group_tag.execnodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group_tag) | resource |
 | [aws_autoscaling_group_tag.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group_tag) | resource |
+| [aws_autoscaling_group_tag.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/autoscaling_group_tag) | resource |
 | [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_install_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_scan_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
@@ -510,6 +511,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/caller_identity) | data source |
 | [aws_eks_node_group.execnodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_node_group) | data source |
+| [aws_eks_node_group.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/eks_node_group) | data source |
 | [aws_iam_policy_document.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
@@ -530,6 +532,11 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="input_gpuNvidiaDriverVersion"></a> [gpuNvidiaDriverVersion](#input\_gpuNvidiaDriverVersion) | The NVIDIA driver version for GPU node group. | `string` | `"535.54.03"` | no |
 | <a name="input_infrastructurename"></a> [infrastructurename](#input\_infrastructurename) | The name of the infrastructure. e.g. simphera-infra | `string` | `"simphera"` | no |
 | <a name="input_install_schedule"></a> [install\_schedule](#input\_install\_schedule) | 6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan\_schedule. | `string` | `"cron(0 3 * * ? *)"` | no |
+| <a name="input_ivsGpuNodeCountMax"></a> [ivsGpuNodeCountMax](#input\_ivsGpuNodeCountMax) | The maximum number of GPU nodes nodes for IVS jobs | `number` | `2` | no |
+| <a name="input_ivsGpuNodeCountMin"></a> [ivsGpuNodeCountMin](#input\_ivsGpuNodeCountMin) | The minimum number of GPU nodes nodes for IVS jobs | `number` | `0` | no |
+| <a name="input_ivsGpuNodeDiskSize"></a> [ivsGpuNodeDiskSize](#input\_ivsGpuNodeDiskSize) | The disk size in GiB of the nodes for the IVS gpu job execution | `number` | `100` | no |
+| <a name="input_ivsGpuNodePool"></a> [ivsGpuNodePool](#input\_ivsGpuNodePool) | Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster | `bool` | `false` | no |
+| <a name="input_ivsGpuNodeSize"></a> [ivsGpuNodeSize](#input\_ivsGpuNodeSize) | The machine size of the GPU nodes for IVS jobs | `list(string)` | <pre>[<br>  "g4dn.2xlarge"<br>]</pre> | no |
 | <a name="input_kubernetesVersion"></a> [kubernetesVersion](#input\_kubernetesVersion) | The version of the EKS cluster. | `string` | `"1.28"` | no |
 | <a name="input_licenseServer"></a> [licenseServer](#input\_licenseServer) | Specifies whether a license server VM will be created. | `bool` | `false` | no |
 | <a name="input_linuxExecutionNodeCountMax"></a> [linuxExecutionNodeCountMax](#input\_linuxExecutionNodeCountMax) | The maximum number of Linux nodes for the job execution | `number` | `10` | no |
