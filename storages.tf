@@ -22,7 +22,7 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:ClientWrite",
       "elasticfilesystem:TagResource",
       "elasticfilesystem:CreateAccessPoint",
-      "elasticfilesystem:CreateFileSystem",
+      "elasticfilesystem:CreateFileSystems",
       "elasticfilesystem:CreateMountTarget",
       "elasticfilesystem:CreateTags"
     ]
