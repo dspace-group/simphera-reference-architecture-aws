@@ -17,20 +17,21 @@ data "aws_iam_policy_document" "policy" {
       identifiers = ["*"]
     }
 
-    actions = [
-      "elasticfilesystem:ClientMount",
-      "elasticfilesystem:ClientWrite",
-      "elasticfilesystem:TagResource",
-      "elasticfilesystem:CreateAccessPoint",
-      "elasticfilesystem:CreateFileSystems",
-      "elasticfilesystem:CreateMountTarget",
-      "elasticfilesystem:CreateTags"
-    ]
+    # actions = [
+    #   "elasticfilesystem:ClientMount",
+    #   "elasticfilesystem:ClientWrite",
+    #   "elasticfilesystem:TagResource",
+    #   "elasticfilesystem:CreateAccessPoint",
+    #   "elasticfilesystem:CreateFileSystems",
+    #   "elasticfilesystem:CreateMountTarget",
+    #   "elasticfilesystem:CreateTags"
+    # ]
 
-    resources = [
-      aws_efs_file_system.efs_file_system.arn,
-      kubernetes_storage_class_v1.efs.storage_provisioner
-    ]
+    actions = ["*"]
+
+    #resources = [aws_efs_file_system.efs_file_system.arn]
+
+    resources = ["*"]
 
     condition {
       test     = "Bool"
