@@ -17,21 +17,17 @@ data "aws_iam_policy_document" "policy" {
       identifiers = ["*"]
     }
 
-    # actions = [
-    #   "elasticfilesystem:ClientMount",
-    #   "elasticfilesystem:ClientWrite",
-    #   "elasticfilesystem:TagResource",
-    #   "elasticfilesystem:CreateAccessPoint",
-    #   "elasticfilesystem:CreateFileSystems",
-    #   "elasticfilesystem:CreateMountTarget",
-    #   "elasticfilesystem:CreateTags"
-    # ]
+    actions = [
+      "elasticfilesystem:ClientMount",
+      "elasticfilesystem:ClientWrite",
+      "elasticfilesystem:TagResource",
+      "elasticfilesystem:CreateAccessPoint",
+      "elasticfilesystem:CreateFileSystems",
+      "elasticfilesystem:CreateMountTarget",
+      "elasticfilesystem:CreateTags"
+    ]
 
-    actions = ["*"]
-
-    #resources = [aws_efs_file_system.efs_file_system.arn]
-
-    resources = ["*"]
+    resources = [aws_efs_file_system.efs_file_system.arn]
 
     condition {
       test     = "Bool"
