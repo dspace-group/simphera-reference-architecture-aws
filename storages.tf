@@ -29,7 +29,7 @@ data "aws_iam_policy_document" "policy" {
 
     resources = [
       aws_efs_file_system.efs_file_system.arn,
-      kubernetes_storage_class_v1.efs
+      kubernetes_storage_class_v1.efs.storage_provisioner
     ]
 
     condition {
