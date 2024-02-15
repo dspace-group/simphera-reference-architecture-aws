@@ -27,7 +27,10 @@ data "aws_iam_policy_document" "policy" {
       "elasticfilesystem:CreateTags"
     ]
 
-    resources = [aws_efs_file_system.efs_file_system.arn]
+    resources = [
+      aws_efs_file_system.efs_file_system.arn,
+      kubernetes_storage_class_v1.efs.arn
+    ]
 
     condition {
       test     = "Bool"
