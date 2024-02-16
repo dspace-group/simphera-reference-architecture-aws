@@ -257,3 +257,8 @@ variable "cluster_autoscaler_helm_config" {
   default     = {}
 }
 
+variable "nginx_helm_config" {
+  type        = any
+  description = "nginx Helm Config"
+  default     = {}
+}

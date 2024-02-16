@@ -49,6 +49,7 @@ module "eks-addons" {
     dependency_update = true
   }
 
+  nginx_helm_config              = var.nginx_helm_config
   cluster_autoscaler_helm_config = var.cluster_autoscaler_helm_config
   depends_on                     = [module.eks.managed_node_groups]
 }
