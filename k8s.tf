@@ -44,12 +44,17 @@ module "eks-addons" {
       internal = "false",
       scheme   = "internet-facing",
     })]
+    set = [
+      {
+        name  = "controller.serviceMonitor.enabled"
+        value = "false"
+      }
+    ]
     namespace         = "nginx",
     create_namespace  = true
     dependency_update = true
   }
 
-  nginx_helm_config              = var.nginx_helm_config
   cluster_autoscaler_helm_config = var.cluster_autoscaler_helm_config
   depends_on                     = [module.eks.managed_node_groups]
 }
