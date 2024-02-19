@@ -258,34 +258,7 @@ variable "cluster_autoscaler_helm_config" {
 }
 
 variable "default_managed_node_pools" {
-  type = object
+  type        = object
   description = "Default node groups"
-  default = {
-    "default" = {
-      node_group_name = "default"
-      instance_types  = var.linuxNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxNodeCountMin
-      max_size        = var.linuxNodeCountMax
-      min_size        = var.linuxNodeCountMin
-    },
-    "execnodes" = {
-      node_group_name = "execnodes"
-      instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxExecutionNodeCountMin
-      max_size        = var.linuxExecutionNodeCountMax
-      min_size        = var.linuxExecutionNodeCountMin
-      k8s_labels = {
-        "purpose" = "execution"
-      }
-      k8s_taints = [
-        {
-          key      = "purpose",
-          value    = "execution",
-          "effect" = "NO_SCHEDULE"
-        }
-      ]
-    }
-  }
+  default     = {}
 }
