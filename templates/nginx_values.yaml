@@ -8,9 +8,11 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-internal: "${internal}"
       service.beta.kubernetes.io/aws-load-balancer-target-node-labels: kubernetes.io/os=linux
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
+  {{- if eq "${enable_serviceMonitor}" "true" }}
   metrics:
-    enabled: "${enable_serviceMonitor}"
+    enabled: true
     serviceMonitor:
-      enabled: "${enable_serviceMonitor}"
+      enabled: true
       additionalLabels:
-        release: "prometheus" 
+        release: "prometheus"
+  {{ end }}
