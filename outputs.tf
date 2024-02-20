@@ -27,3 +27,8 @@ output "eks_cluster_id" {
   description = "Amazon EKS Cluster Name"
   value       = module.eks.eks_cluster_id
 }
+
+output "vpc_private_subnets" {
+  description = "List of private subnets of VPC"
+  value       = module.vpc.private_subnets
+}
