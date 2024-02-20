@@ -258,7 +258,7 @@ variable "cluster_autoscaler_helm_config" {
 }
 
 variable "default_managed_node_pools" {
-  type        = map(any)
+  type        = any
   description = "Default node groups"
   default     = {}
 }
