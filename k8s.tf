@@ -41,15 +41,10 @@ module "eks-addons" {
 
   ingress_nginx_helm_config = {
     values = [templatefile("${path.module}/templates/nginx_values.yaml", {
-      internal = "false",
-      scheme   = "internet-facing",
+      internal              = "false",
+      scheme                = "internet-facing",
+      enable_serviceMonitor = var.enable_serviceMonitor
     })]
-    set = [
-      {
-        name  = "controller.metrics.serviceMonitor.enabled"
-        value = var.enable_serviceMonitor
-      }
-    ]
     namespace         = "nginx",
     create_namespace  = true
     dependency_update = true
