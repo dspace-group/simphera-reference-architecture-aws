@@ -1,20 +1,5 @@
-#resource "aws_db_parameter_group" "default" {
-#  name_prefix = "rds-psql"
-#  family      = "postgres16"
-#
-#  parameter {
-#    name  = "log_connections"
-#    value = "1"
-#  }
-#
-#  lifecycle {
-#    create_before_destroy = true
-#  }
-#}
-
 resource "aws_db_instance" "simphera" {
 
-  #parameter_group_name                = aws_db_parameter_group.default.name
   apply_immediately                   = true
   allocated_storage                   = var.postgresqlStorage
   max_allocated_storage               = var.postgresqlMaxStorage
@@ -53,7 +38,6 @@ resource "aws_db_instance" "simphera" {
 
 resource "aws_db_instance" "keycloak" {
 
-  #parameter_group_name                = aws_db_parameter_group.default.name
   apply_immediately                   = true
   allocated_storage                   = var.postgresqlStorageKeycloak
   max_allocated_storage               = var.postgresqlMaxStorageKeycloak
