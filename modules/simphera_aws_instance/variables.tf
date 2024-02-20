@@ -28,7 +28,6 @@ variable "postgresqlApplyImmediately" {
   type        = bool
   description = "Apply PostgreSQL changes immediately (true) or during next maintenance window (false)"
   default     = false
-
 }
 
 variable "postgresqlVersion" {
