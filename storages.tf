@@ -18,13 +18,7 @@ data "aws_iam_policy_document" "policy" {
     }
 
     actions = [
-      "elasticfilesystem:ClientMount",
-      "elasticfilesystem:ClientWrite",
-      "elasticfilesystem:TagResource",
-      "elasticfilesystem:CreateAccessPoint",
-      "elasticfilesystem:CreateFileSystems",
-      "elasticfilesystem:CreateMountTarget",
-      "elasticfilesystem:CreateTags"
+      "elasticfilesystem:*"
     ]
 
     resources = [aws_efs_file_system.efs_file_system.arn]
