@@ -188,6 +188,7 @@ variable "map_users" {
 variable "simpheraInstances" {
   type = map(object({
     name                         = string
+    postgresqlApplyImmediately   = bool
     postgresqlVersion            = string
     postgresqlStorage            = number
     postgresqlMaxStorage         = number
@@ -206,6 +207,7 @@ variable "simpheraInstances" {
   default = {
     "production" = {
       name                         = "production"
+      postgresqlApplyImmediately   = false
       postgresqlVersion            = "11"
       postgresqlStorage            = 20
       postgresqlMaxStorage         = 100

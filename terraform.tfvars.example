@@ -114,6 +114,7 @@ simpheraInstances = {
     "enable_deletion_protection" : true,
     "k8s_namespace" : "simphera",
     "name" : "production",
+    "postgresqlApplyImmediately" : false
     "postgresqlMaxStorage" : 100,
     "postgresqlMaxStorageKeycloak" : 100,
     "postgresqlStorage" : 20,
