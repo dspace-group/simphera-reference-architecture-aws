@@ -33,7 +33,7 @@ variable "postgresqlApplyImmediately" {
 variable "postgresqlVersion" {
   type        = string
   description = "PostgreSQL Server version to deploy"
-  default     = "11"
+  default     = "16"
 }
 
 variable "postgresqlStorage" {
