@@ -46,8 +46,8 @@ module "eks-addons" {
     })]
     set = [
       {
-        name  = "controller.serviceMonitor.enabled"
-        value = "false"
+        name  = "controller.metrics.serviceMonitor.enabled"
+        value = var.enable_serviceMonitor
       }
     ]
     namespace         = "nginx",

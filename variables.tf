@@ -256,3 +256,9 @@ variable "cluster_autoscaler_helm_config" {
   description = "Cluster Autoscaler Helm Config"
   default     = {}
 }
+
+variable "enable_serviceMonitor" {
+  type        = bool
+  description = "Switch to enable the service monitor in the nginx values"
+  default     = true
+}
