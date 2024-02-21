@@ -257,8 +257,8 @@ variable "cluster_autoscaler_helm_config" {
   default     = {}
 }
 
-variable "default_managed_node_pools" {
-  type        = any
-  description = "Default node groups"
-  default     = {}
+variable "team_names" {
+  type        = list(string)
+  description = "list of the name of the teams competing in the iac"
+  default     = ["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8", "Team9", "Team10"]
 }

@@ -27,7 +27,7 @@ locals {
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
   gpuPostUserData = "curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nchmod +x NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \n./NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run -s --no-dkms --install-libglvnd"
 
-  default_managed_node_pools = {
+  default_node_pool = {
     "default" = {
       node_group_name = "default"
       instance_types  = var.linuxNodeSize
@@ -35,21 +35,31 @@ locals {
       desired_size    = var.linuxNodeCountMin
       max_size        = var.linuxNodeCountMax
       min_size        = var.linuxNodeCountMin
-    },
-    "execnodes" = {
-      node_group_name = "execnodes"
+    }
+  }
+
+  exec_node_pools = {
+    for team_name in var.team_names :
+    "${team_name}" => {
+      node_group_name = "execnodes-${team_name}"
       instance_types  = var.linuxExecutionNodeSize
       subnet_ids      = module.vpc.private_subnets
       desired_size    = var.linuxExecutionNodeCountMin
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
       k8s_labels = {
-        "purpose" = "execution"
+        "purpose" = "execution",
+        "team"    = team_name
       }
       k8s_taints = [
         {
           key      = "purpose",
           value    = "execution",
+          "effect" = "NO_SCHEDULE"
+        },
+        {
+          key      = "team",
+          value    = team_name
           "effect" = "NO_SCHEDULE"
         }
       ]
