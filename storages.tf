@@ -18,7 +18,10 @@ data "aws_iam_policy_document" "policy" {
     }
 
     actions = [
-      "elasticfilesystem:*"
+      "elasticfilesystem:ClientMount",
+      "elasticfilesystem:ClientWrite",
+      "elasticfilesystem:TagResource",
+      "elasticfilesystem:CreateAccessPoint"
     ]
 
     resources = [aws_efs_file_system.efs_file_system.arn]
@@ -43,23 +46,23 @@ resource "aws_efs_mount_target" "mount_target" {
   security_groups = [module.eks.cluster_primary_security_group_id]
 }
 
-# resource "kubernetes_storage_class_v1" "efs" {
-#   metadata {
-#     name = "efs"
-#   }
+resource "kubernetes_storage_class_v1" "efs" {
+  metadata {
+    name = "efs"
+  }
 
-#   storage_provisioner = "efs.csi.aws.com"
-#   parameters = {
-#     provisioningMode = "efs-ap" # Dynamic provisioning
-#     fileSystemId     = aws_efs_file_system.efs_file_system.id
-#     directoryPerms   = "700"
-#   }
+  storage_provisioner = "efs.csi.aws.com"
+  parameters = {
+    provisioningMode = "efs-ap" # Dynamic provisioning
+    fileSystemId     = aws_efs_file_system.efs_file_system.id
+    directoryPerms   = "700"
+  }
 
-#   mount_options = [
-#     "iam"
-#   ]
+  mount_options = [
+    "iam"
+  ]
 
-#   depends_on = [
-#     module.eks-addons
-#   ]
-# }
+  depends_on = [
+    module.eks-addons
+  ]
+}
