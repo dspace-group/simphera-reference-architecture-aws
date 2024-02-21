@@ -58,16 +58,17 @@ locals {
 
   gpu_node_pool = {
     "gpuexecnodes" = {
-      node_group_name        = "gpuexecnodes"
-      instance_types         = var.gpuNodeSize
-      subnet_ids             = module.vpc.private_subnets
-      desired_size           = var.gpuNodeCountMin
-      max_size               = var.gpuNodeCountMax
-      min_size               = var.gpuNodeCountMin
-      disk_size              = var.gpuNodeDiskSize
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
-      post_userdata          = local.gpuPostUserData
+      node_group_name                   = "gpuexecnodes"
+      instance_types                    = var.gpuNodeSize
+      cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
+      node_security_group_id            = module.eks.cluster_primary_security_group_id
+      desired_size                      = var.gpuNodeCountMin
+      max_size                          = var.gpuNodeCountMax
+      min_size                          = var.gpuNodeCountMin
+      disk_size                         = var.gpuNodeDiskSize
+      custom_ami_id                     = data.aws_ami.al2gpu_ami.image_id
+      create_launch_template            = true
+      post_userdata                     = local.gpuPostUserData
       k8s_labels = {
         "purpose" = "gpu"
       }
