@@ -61,7 +61,6 @@ locals {
       node_group_name                   = "gpuexecnodes"
       instance_types                    = var.gpuNodeSize
       cluster_primary_security_group_id = module.eks.cluster_primary_security_group_id
-      node_security_group_id            = module.eks.cluster_primary_security_group_id
       desired_size                      = var.gpuNodeCountMin
       max_size                          = var.gpuNodeCountMax
       min_size                          = var.gpuNodeCountMin
