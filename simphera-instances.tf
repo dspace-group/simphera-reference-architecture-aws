@@ -7,6 +7,7 @@ module "simphera_instance" {
   eks_oidc_issuer_url          = module.eks.eks_oidc_issuer_url
   eks_oidc_provider_arn        = module.eks.eks_oidc_provider_arn
   name                         = each.value.name
+  postgresqlApplyImmediately   = each.value.postgresqlApplyImmediately
   postgresqlVersion            = each.value.postgresqlVersion
   postgresqlStorage            = each.value.postgresqlStorage
   postgresqlMaxStorage         = each.value.postgresqlMaxStorage

@@ -24,10 +24,16 @@ variable "name" {
   description = "The name of the SIMPHERA instance. e.g. production"
 }
 
+variable "postgresqlApplyImmediately" {
+  type        = bool
+  description = "Apply PostgreSQL changes immediately (true) or during next maintenance window (false)"
+  default     = false
+}
+
 variable "postgresqlVersion" {
   type        = string
   description = "PostgreSQL Server version to deploy"
-  default     = "11"
+  default     = "16"
 }
 
 variable "postgresqlStorage" {

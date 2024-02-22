@@ -1,8 +1,10 @@
 resource "aws_db_instance" "simphera" {
 
+  apply_immediately                   = var.postgresqlApplyImmediately
   allocated_storage                   = var.postgresqlStorage
   max_allocated_storage               = var.postgresqlMaxStorage
   auto_minor_version_upgrade          = true # [RDS.13] RDS automatic minor version upgrades should be enabled
+  allow_major_version_upgrade         = true
   engine                              = "postgres"
   engine_version                      = var.postgresqlVersion
   instance_class                      = var.db_instance_type_simphera
@@ -35,9 +37,12 @@ resource "aws_db_instance" "simphera" {
 }
 
 resource "aws_db_instance" "keycloak" {
+
+  apply_immediately                   = var.postgresqlApplyImmediately
   allocated_storage                   = var.postgresqlStorageKeycloak
   max_allocated_storage               = var.postgresqlMaxStorageKeycloak
   auto_minor_version_upgrade          = true # [RDS.13] RDS automatic minor version upgrades should be enabled
+  allow_major_version_upgrade         = true
   engine                              = "postgres"
   engine_version                      = var.postgresqlVersion
   instance_class                      = var.db_instance_type_keycloak
