@@ -256,9 +256,3 @@ variable "cluster_autoscaler_helm_config" {
   description = "Cluster Autoscaler Helm Config"
   default     = {}
 }
-
-variable "enable_nginx_metrics" {
-  type        = bool
-  description = "Switch to enable the metrics in the nginx values"
-  default     = false
-}
