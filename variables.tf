@@ -258,4 +258,3 @@ variable "cluster_autoscaler_helm_config" {
   description = "Cluster Autoscaler Helm Config"
   default     = {}
 }
-
