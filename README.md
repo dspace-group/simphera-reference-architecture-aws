@@ -72,7 +72,6 @@ If you want to run [AURELION](https://www.dspace.com/en/pub/home/products/sw/exp
 
 In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the SIMPHERA Reference Architecture for AWS uses p3.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every p3.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
 
-
 ### Create Security Credentials <a name="awsprofile"></a>
 
 You can create [security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) for that IAM user with the AWS console.
@@ -222,7 +221,6 @@ provider "aws" {
 +  profile = "<profile-name>"
 }
 ```
-
 
 ### Apply Terraform Configuration
 
@@ -436,6 +434,14 @@ helm delete simphera -n <namespace> --kubeconfig <path_to_kubeconfig>
 Reinstall the SIMPHERA Quickstart Helmchart so that all Kubernetes pods and jobs will retrieve the new credentials.
 Important: During credentials rotation, SIMPHERA will not be available for a short period.
 
+## List of tools with versions needed for Simphera reference architecture deployment
+
+| Tool name | Version |
+| -- | -- |
+| AWS CLI | >=2.10.0 |
+| Helm | >=3.8.0 |
+| Terraform | >=1.2.9 |
+| kubectl | >=1.27.0 |
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
