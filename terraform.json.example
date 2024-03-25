@@ -54,7 +54,7 @@
       "postgresqlMaxStorageKeycloak": 100,
       "postgresqlStorage": 20,
       "postgresqlStorageKeycloak": 20,
-      "postgresqlVersion": "16",
+      "postgresqlVersion": "14",
       "secretname": "aws-simphera-dev-production"
     }
   },
