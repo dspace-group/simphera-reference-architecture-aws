@@ -1,5 +1,4 @@
-<!-- BEGIN_TF_DOCS -->
-cloudwatch_retention           = 7
+\ncloudwatch_retention           = 7
 cluster_autoscaler_helm_config = {}
 enable_aws_for_fluentbit       = false
 enable_ingress_nginx           = false
@@ -54,7 +53,7 @@ simpheraInstances = {
     "postgresqlMaxStorageKeycloak": 100,
     "postgresqlStorage": 20,
     "postgresqlStorageKeycloak": 20,
-    "postgresqlVersion": "13",
+    "postgresqlVersion": "14",
     "secretname": "aws-simphera-dev-production"
   }
 }
@@ -74,5 +73,4 @@ vpcPublicSubnets = [
   "10.1.12.0/22",
   "10.1.16.0/22",
   "10.1.20.0/22"
-]
-<!-- END_TF_DOCS -->
+]\n
