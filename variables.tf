@@ -1,3 +1,10 @@
+variable "justAtest" {
+  type = string
+  description = "A test variable"
+  default = "99.99"
+
+}
+
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."
