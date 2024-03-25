@@ -208,7 +208,7 @@ variable "simpheraInstances" {
     "production" = {
       name                         = "production"
       postgresqlApplyImmediately   = false
-      postgresqlVersion            = "14"
+      postgresqlVersion            = "16"
       postgresqlStorage            = 20
       postgresqlMaxStorage         = 100
       postgresqlStorageKeycloak    = 20
