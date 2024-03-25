@@ -74,7 +74,6 @@ jobs:
         uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: .
-          #config-file: tfvars.json.terraform-docs.yml
           output-file: terraform.json.example
           output-format: tfvars json
           output-method: replace
