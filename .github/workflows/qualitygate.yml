@@ -66,6 +66,8 @@ jobs:
           output-file: terraform.tfvars.example
           output-format: tfvars hcl
           output-method: replace
+          template: |
+            \n{{ .Content }}\n
           git-push: "true"
 
       - name: Terraform-docs Regenerate terraform.json.example
@@ -76,5 +78,7 @@ jobs:
           output-file: terraform.json.example
           output-format: tfvars json
           output-method: replace
+          template: |
+            \n{{ .Content }}\n
           git-push: "true"  
 
