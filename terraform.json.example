@@ -1,4 +1,4 @@
-\n{
+{
   "cloudwatch_retention": 7,
   "cluster_autoscaler_helm_config": {},
   "enable_aws_for_fluentbit": false,
@@ -75,4 +75,4 @@
     "10.1.16.0/22",
     "10.1.20.0/22"
   ]
-}\n
+}
