@@ -1,7 +1,7 @@
 variable "justAtest" {
-  type = string
+  type        = string
   description = "A test variable"
-  default = "99.99"
+  default     = "99.99"
 
 }
 
