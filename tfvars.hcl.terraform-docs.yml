@@ -1,0 +1,8 @@
+formatter: "tfvars hcl"
+output:
+  file: terraform.tfvars.example
+  mode: replace
+  template : |-
+    {{ .Content }}
+settings:
+  description: true
