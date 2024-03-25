@@ -1,10 +1,3 @@
-variable "justAtest" {
-  type        = string
-  description = "A test variable"
-  default     = "99.99"
-
-}
-
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."
@@ -215,7 +208,7 @@ variable "simpheraInstances" {
     "production" = {
       name                         = "production"
       postgresqlApplyImmediately   = false
-      postgresqlVersion            = "16"
+      postgresqlVersion            = "12"
       postgresqlStorage            = 20
       postgresqlMaxStorage         = 100
       postgresqlStorageKeycloak    = 20
