@@ -63,11 +63,11 @@ jobs:
         with:
           working-dir: .
           config-file: tfvars.hcl.terraform-docs.yml
-          #output-file: terraform.tfvars.example
-          #output-format: tfvars hcl
-          #output-method: replace
-          #template: |
-          #  {{ .Content }}
+          output-file: terraform.tfvars.example
+          output-format: tfvars hcl
+          output-method: replace
+          template: |
+            {{ .Content }}
           git-push: "true"
 
       - name: Terraform-docs Regenerate terraform.json.example
