@@ -56,6 +56,12 @@ variable "postgresqlMaxStorage" {
   }
 }
 
+variable "enableKeycloak" {
+  type        = bool
+  description = "A switch to enable/disable deployment of Keycloak DB"
+  default     = true
+}
+
 variable "postgresqlStorageKeycloak" {
   type        = number
   description = "PostgreSQL Storage in GiB for Keycloak. The minimum value is 100 GiB and the maximum value is 65.536 GiB"
