@@ -13,7 +13,7 @@ module "eks" {
   tags                                   = var.tags
   cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
   cloudwatch_log_group_retention_in_days = var.cloudwatch_retention
-  managed_node_groups                    = merge(local.default_node_pool, local.exec_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  managed_node_groups                    = merge(local.default_node_pool, local.exec_node_pools, var.gpuNodePool ? local.exec_gpu_node_pools : {}, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
 }
 
 
@@ -60,6 +60,12 @@ data "aws_eks_node_group" "execnodes" {
   node_group_name = replace(module.eks.managed_node_groups[0][var.team_names[count.index]]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
 }
 
+data "aws_eks_node_group" "execnodes_gpu" {
+  count           = var.gpuNodePool ? length(var.team_names) : 0
+  cluster_name    = local.infrastructurename
+  node_group_name = replace(module.eks.managed_node_groups[0]["${var.team_names[count.index]}-gpu"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
+}
+
 data "aws_eks_node_group" "gpuexecnodes" {
   count           = var.gpuNodePool ? 1 : 0
   cluster_name    = local.infrastructurename
@@ -79,6 +85,18 @@ resource "aws_autoscaling_group_tag" "execnodes" {
   tag {
     key   = "k8s.io/cluster-autoscaler/node-template/label/team"
     value = var.team_names[count.index]
+
+    propagate_at_launch = true
+  }
+}
+
+resource "aws_autoscaling_group_tag" "execnodes_gpu" {
+  count                  = var.gpuNodePool ? length(var.team_names) : 0
+  autoscaling_group_name = data.aws_eks_node_group.execnodes_gpu[count.index].resources[0].autoscaling_groups[0].name
+
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/label/team"
+    value = "${var.team_names[count.index]}-gpu"
 
     propagate_at_launch = true
   }
