@@ -11,7 +11,7 @@ output "database_identifiers" {
 
 output "database_endpoints" {
   description = "Endpoints of the SIMPHERA and Keycloak databases created for this SIMPHERA instance."
-  value       = [aws_db_instance.simphera.endpoint, aws_db_instance.keycloak.endpoint]
+  value       = [aws_db_instance.simphera.endpoint, aws_db_instance.keycloak[count.index].endpoint]
 }
 
 output "s3_buckets" {
