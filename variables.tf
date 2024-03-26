@@ -193,6 +193,7 @@ variable "simpheraInstances" {
     postgresqlStorage            = number
     postgresqlMaxStorage         = number
     db_instance_type_simphera    = string
+    enable_keycloak              = bool
     postgresqlStorageKeycloak    = number
     postgresqlMaxStorageKeycloak = number
     db_instance_type_keycloak    = string
@@ -211,6 +212,7 @@ variable "simpheraInstances" {
       postgresqlVersion            = "16"
       postgresqlStorage            = 20
       postgresqlMaxStorage         = 100
+      enable_keycloak              = true
       postgresqlStorageKeycloak    = 20
       postgresqlMaxStorageKeycloak = 100
       db_instance_type_keycloak    = "db.t3.large"

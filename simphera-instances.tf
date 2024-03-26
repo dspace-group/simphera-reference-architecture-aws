@@ -11,6 +11,7 @@ module "simphera_instance" {
   postgresqlVersion            = each.value.postgresqlVersion
   postgresqlStorage            = each.value.postgresqlStorage
   postgresqlMaxStorage         = each.value.postgresqlMaxStorage
+  enableKeycloak              = each.value.enable_keycloak
   postgresqlStorageKeycloak    = each.value.postgresqlStorageKeycloak
   postgresqlMaxStorageKeycloak = each.value.postgresqlMaxStorageKeycloak
   db_instance_type_keycloak    = each.value.db_instance_type_keycloak

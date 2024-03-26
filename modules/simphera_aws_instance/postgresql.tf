@@ -38,6 +38,7 @@ resource "aws_db_instance" "simphera" {
 
 resource "aws_db_instance" "keycloak" {
 
+  count                               = var.enableKeycloak ? 1 : 0
   apply_immediately                   = var.postgresqlApplyImmediately
   allocated_storage                   = var.postgresqlStorageKeycloak
   max_allocated_storage               = var.postgresqlMaxStorageKeycloak
