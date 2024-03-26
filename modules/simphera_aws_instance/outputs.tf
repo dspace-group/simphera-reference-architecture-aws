@@ -6,7 +6,7 @@ output "backup_vaults" {
 
 output "database_identifiers" {
   description = "Identifiers of the SIMPHERA and Keycloak databases created for this SIMPHERA instance."
-  value       = [aws_db_instance.simphera.identifier, var.enableKeycloak ? aws_db_instance.keycloak[0].endpoint : ""]
+  value       = [aws_db_instance.simphera.identifier, var.enableKeycloak ? aws_db_instance.keycloak[0].identifier : ""]
 }
 
 output "database_endpoints" {
