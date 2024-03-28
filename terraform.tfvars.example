@@ -1,11 +1,9 @@
+
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
 
 # Cluster Autoscaler Helm Config
-cluster_autoscaler_helm_config = {
-  # default version (9.21.0) has obsoleted image registry and deployment will fail
-  version = "9.28.0"
-}
+cluster_autoscaler_helm_config = {}
 
 # Install FluentBit to send container logs to CloudWatch.
 enable_aws_for_fluentbit = false
@@ -16,9 +14,6 @@ enable_ingress_nginx = false
 # Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually.
 enable_patching = false
 
-# Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster
-gpuNodePool = false
-
 # The maximum number of nodes for gpu job execution
 gpuNodeCountMax = 12
 
@@ -28,26 +23,12 @@ gpuNodeCountMin = 0
 # The disk size in GiB of the nodes for the gpu job execution
 gpuNodeDiskSize = 100
 
+# Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster
+gpuNodePool = false
+
 # The machine size of the nodes for the gpu job execution
 gpuNodeSize = [
   "p3.2xlarge"
-]
-
-# Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster
-ivsGpuNodePool = false
-
-# The minimum number of nodes for IVS gpu job execution
-ivsGpuNodeCountMin = 0
-
-# The maximum number of nodes for IVS gpu job execution
-ivsGpuNodeCountMax = 2
-
-# The disk size in GiB of the nodes for the IVS gpu job execution
-ivsGpuNodeDiskSize = 100
-
-# The machine size of the nodes for the IVS gpu job execution
-ivsGpuNodeSize = [
-    "g4dn.2xlarge"
 ]
 
 # The NVIDIA driver version for GPU node group.
@@ -58,6 +39,23 @@ infrastructurename = "simphera"
 
 # 6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule.
 install_schedule = "cron(0 3 * * ? *)"
+
+# The maximum number of GPU nodes nodes for IVS jobs
+ivsGpuNodeCountMax = 2
+
+# The minimum number of GPU nodes nodes for IVS jobs
+ivsGpuNodeCountMin = 0
+
+# The disk size in GiB of the nodes for the IVS gpu job execution
+ivsGpuNodeDiskSize = 100
+
+# Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster
+ivsGpuNodePool = false
+
+# The machine size of the GPU nodes for IVS jobs
+ivsGpuNodeSize = [
+  "g4dn.2xlarge"
+]
 
 # The version of the EKS cluster.
 kubernetesVersion = "1.28"
@@ -106,21 +104,21 @@ scan_schedule = "cron(0 0 * * ? *)"
 
 # A list containing the individual SIMPHERA instances, such as 'staging' and 'production'.
 simpheraInstances = {
-  "production" : {
-    "backup_retention" : 35,
-    "db_instance_type_keycloak" : "db.t3.large",
-    "db_instance_type_simphera" : "db.t3.large",
-    "enable_backup_service" : true,
-    "enable_deletion_protection" : true,
-    "k8s_namespace" : "simphera",
-    "name" : "production",
-    "postgresqlApplyImmediately" : false
-    "postgresqlMaxStorage" : 100,
-    "postgresqlMaxStorageKeycloak" : 100,
-    "postgresqlStorage" : 20,
-    "postgresqlStorageKeycloak" : 20,
-    "postgresqlVersion" : "16",
-    "secretname" : "aws-simphera-dev-production"
+  "production": {
+    "backup_retention": 35,
+    "db_instance_type_keycloak": "db.t3.large",
+    "db_instance_type_simphera": "db.t3.large",
+    "enable_backup_service": true,
+    "enable_deletion_protection": true,
+    "k8s_namespace": "simphera",
+    "name": "production",
+    "postgresqlApplyImmediately": false,
+    "postgresqlMaxStorage": 100,
+    "postgresqlMaxStorageKeycloak": 100,
+    "postgresqlStorage": 20,
+    "postgresqlStorageKeycloak": 20,
+    "postgresqlVersion": "16",
+    "secretname": "aws-simphera-dev-production"
   }
 }
 
