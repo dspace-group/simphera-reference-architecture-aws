@@ -258,5 +258,7 @@ variable "cloudwatch_retention" {
 variable "cluster_autoscaler_helm_config" {
   type        = any
   description = "Cluster Autoscaler Helm Config"
-  default     = {}
+  default     = {
+    version = "9.28.0"
+  }
 }
