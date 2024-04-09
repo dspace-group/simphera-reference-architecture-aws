@@ -47,6 +47,7 @@
       "db_instance_type_simphera": "db.t3.large",
       "enable_backup_service": true,
       "enable_deletion_protection": true,
+      "enable_keycloak": true,
       "k8s_namespace": "simphera",
       "name": "production",
       "postgresqlApplyImmediately": false,
