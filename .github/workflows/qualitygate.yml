@@ -58,17 +58,17 @@ jobs:
           output-method: inject
           git-push: "true"
 
-      # - name: Terraform-docs Regenerate terraform.tfvars.example
-      #   uses: terraform-docs/gh-actions@v1.0.0
-      #   with:
-      #     working-dir: .
-      #     config-file: tfvars.hcl.terraform-docs.yml
-      #     output-file: terraform.tfvars.example
-      #     output-format: tfvars hcl
-      #     output-method: replace
-      #     template: |
-      #       {{ .Content }}
-      #     git-push: "true"
+      - name: Terraform-docs Regenerate terraform.tfvars.example
+        uses: terraform-docs/gh-actions@v1.0.0
+        with:
+           working-dir: .
+           config-file: tfvars.hcl.terraform-docs.yml
+           output-file: terraform.tfvars.example
+           output-format: tfvars hcl
+           output-method: replace
+           template: |
+             {{ .Content }}
+           git-push: "true"
 
       - name: Terraform-docs Regenerate terraform.json.example
         uses: terraform-docs/gh-actions@v1.0.0

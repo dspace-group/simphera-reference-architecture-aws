@@ -1,6 +1,8 @@
 {
   "cloudwatch_retention": 7,
-  "cluster_autoscaler_helm_config": {},
+  "cluster_autoscaler_helm_config": {
+    "version": "9.28.0"
+  },
   "enable_aws_for_fluentbit": false,
   "enable_ingress_nginx": false,
   "enable_patching": false,
