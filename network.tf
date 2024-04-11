@@ -9,7 +9,6 @@ module "vpc" {
   azs                  = data.aws_availability_zones.available.names
   private_subnets      = var.vpcPrivateSubnets
   public_subnets       = var.vpcPublicSubnets
-  database_subnets     = var.vpcDatabaseSubnets
   enable_nat_gateway   = true
   create_igw           = true
   enable_dns_hostnames = true
@@ -18,10 +17,12 @@ module "vpc" {
   public_subnet_tags = {
     "kubernetes.io/cluster/${local.infrastructurename}" = "shared"
     "kubernetes.io/role/elb"                            = "1"
+    "purpose"                                           = "public"
   }
   private_subnet_tags = {
     "kubernetes.io/cluster/${local.infrastructurename}" = "shared"
     "kubernetes.io/role/internal-elb"                   = "1"
+    "purpose"                                           = "public"
   }
 }
 

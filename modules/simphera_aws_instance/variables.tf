@@ -147,9 +147,9 @@ variable "log_bucket" {
   default     = ""
 }
 
-variable "database_subnet_group_name" {
-  type        = string
-  description = "Name of database subnet group"
+variable "private_subnets" {
+  type        = list(any)
+  description = "List of CIDRs for the private subnets."
 }
 
 variable "cloudwatch_retention" {
