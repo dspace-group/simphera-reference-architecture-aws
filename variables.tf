@@ -141,12 +141,6 @@ variable "vpcPublicSubnets" {
   default     = ["10.1.12.0/22", "10.1.16.0/22", "10.1.20.0/22"]
 }
 
-variable "vpcDatabaseSubnets" {
-  type        = list(any)
-  description = "List of CIDRs for the database subnets."
-  default     = ["10.1.24.0/22", "10.1.28.0/22", "10.1.32.0/22"]
-}
-
 variable "enable_aws_for_fluentbit" {
   type        = bool
   description = "Install FluentBit to send container logs to CloudWatch."
