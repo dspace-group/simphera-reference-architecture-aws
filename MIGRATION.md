@@ -6,7 +6,7 @@ The change was introduced with v0.2.0 of reference architecture.
 
 ##Steps:
 1. Check your existing deployment and make sure everything works etc. (no issues, pods not starting and so on)
-2. Delete "keycloak" and "simphera" databases, making sure that final snapshot is created (it is automatically selected option when deleting DB)
+2. Delete "keycloak" and "simphera" databases, making sure that final snapshot is created. When deleting the databases via the AWS Management Console, the option to create a final snapshot is selected by default.
 3. After DBs are deleted, update DB subnet group, remove DB specific subnets and add VPC private subnets
 4. Restore DBs from snapshots taken, selecting same configuration options as original DBs (names, VPCs, security groups etc.)
 5. Remove old DB subnet group from Terraform state, eg.: terraform state rm module.vpc.aws_db_subnet_group.database[0]
