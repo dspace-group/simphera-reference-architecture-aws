@@ -1,11 +1,11 @@
-data "aws_subnet" "example" {
+data "aws_subnet" "vpc_private_subnet" {
   for_each = toset(var.private_subnets)
   id       = each.value
 }
 
 resource "aws_db_subnet_group" "database" {
   name       = "${var.infrastructurename}-vpc"
-  subnet_ids = [for s in data.aws_subnet.example : s.id]
+  subnet_ids = [for s in data.aws_subnet.vpc_private_subnet : s.id]
 
   tags = {
     Name = "My DB subnet group"
