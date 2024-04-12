@@ -131,13 +131,6 @@ tags = {}
 # The CIDR for the virtual private cluster.
 vpcCidr = "10.1.0.0/18"
 
-# List of CIDRs for the database subnets.
-vpcDatabaseSubnets = [
-  "10.1.24.0/22",
-  "10.1.28.0/22",
-  "10.1.32.0/22"
-]
-
 # List of CIDRs for the private subnets.
 vpcPrivateSubnets = [
   "10.1.0.0/22",
