@@ -1,4 +1,3 @@
-
 data "aws_ami" "al2gpu_ami" {
   owners      = ["amazon"]
   most_recent = true
@@ -7,6 +6,7 @@ data "aws_ami" "al2gpu_ami" {
     values = ["*amazon-eks-gpu-node-${var.kubernetesVersion}*"]
   }
 }
+
 locals {
   infrastructurename                        = var.infrastructurename
   log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
