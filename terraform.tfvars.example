@@ -73,8 +73,13 @@ linuxExecutionNodeCountMin = 0
 
 # The machine size of the Linux nodes for the job execution
 linuxExecutionNodeSize = [
+  "m6a.4xlarge",
   "m5a.4xlarge",
-  "m5a.8xlarge"
+  "m5.4xlarge",
+  "m6i.4xlarge",
+  "m4.4xlarge",
+  "m7i.4xlarge",
+  "m7a.4xlarge"
 ]
 
 # The maximum number of Linux nodes for the regular services
@@ -85,8 +90,13 @@ linuxNodeCountMin = 1
 
 # The machine size of the Linux nodes for the regular services
 linuxNodeSize = [
+  "m6a.4xlarge",
   "m5a.4xlarge",
-  "m5a.8xlarge"
+  "m5.4xlarge",
+  "m6i.4xlarge",
+  "m4.4xlarge",
+  "m7i.4xlarge",
+  "m7a.4xlarge"
 ]
 
 # How long in hours for the maintenance window.
