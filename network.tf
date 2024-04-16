@@ -1,3 +1,4 @@
+
 module "vpc" {
   source               = "terraform-aws-modules/vpc/aws"
   version              = "v3.11.0"
@@ -19,7 +20,7 @@ module "vpc" {
   private_subnet_tags = {
     "kubernetes.io/cluster/${local.infrastructurename}" = "shared"
     "kubernetes.io/role/internal-elb"                   = "1"
-    "purpose"                                           = "public"
+    "purpose"                                           = "private"
   }
 }
 
