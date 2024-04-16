@@ -12,7 +12,7 @@ variable "infrastructurename" {
 
 variable "linuxNodeSize" {
   type        = list(string)
-  description = "The machine size of the Linux nodes for the regular services"
+  description = "The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region"
   default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
@@ -30,7 +30,7 @@ variable "linuxNodeCountMax" {
 
 variable "linuxExecutionNodeSize" {
   type        = list(string)
-  description = "The machine size of the Linux nodes for the job execution"
+  description = "The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region"
   default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
