@@ -71,10 +71,15 @@ linuxExecutionNodeCountMax = 10
 # The minimum number of Linux nodes for the job execution
 linuxExecutionNodeCountMin = 0
 
-# The machine size of the Linux nodes for the job execution
+# The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxExecutionNodeSize = [
+  "m6a.4xlarge",
   "m5a.4xlarge",
-  "m5a.8xlarge"
+  "m5.4xlarge",
+  "m6i.4xlarge",
+  "m4.4xlarge",
+  "m7i.4xlarge",
+  "m7a.4xlarge"
 ]
 
 # The maximum number of Linux nodes for the regular services
@@ -83,10 +88,15 @@ linuxNodeCountMax = 12
 # The minimum number of Linux nodes for the regular services
 linuxNodeCountMin = 1
 
-# The machine size of the Linux nodes for the regular services
+# The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxNodeSize = [
+  "m6a.4xlarge",
   "m5a.4xlarge",
-  "m5a.8xlarge"
+  "m5.4xlarge",
+  "m6i.4xlarge",
+  "m4.4xlarge",
+  "m7i.4xlarge",
+  "m7a.4xlarge"
 ]
 
 # How long in hours for the maintenance window.

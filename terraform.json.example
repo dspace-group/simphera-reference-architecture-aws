@@ -28,14 +28,24 @@
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
   "linuxExecutionNodeSize": [
+    "m6a.4xlarge",
     "m5a.4xlarge",
-    "m5a.8xlarge"
+    "m5.4xlarge",
+    "m6i.4xlarge",
+    "m4.4xlarge",
+    "m7i.4xlarge",
+    "m7a.4xlarge"
   ],
   "linuxNodeCountMax": 12,
   "linuxNodeCountMin": 1,
   "linuxNodeSize": [
+    "m6a.4xlarge",
     "m5a.4xlarge",
-    "m5a.8xlarge"
+    "m5.4xlarge",
+    "m6i.4xlarge",
+    "m4.4xlarge",
+    "m7i.4xlarge",
+    "m7a.4xlarge"
   ],
   "maintainance_duration": 3,
   "map_accounts": [],
