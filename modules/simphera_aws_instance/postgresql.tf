@@ -1,5 +1,5 @@
 resource "aws_db_subnet_group" "database" {
-  name       = "${var.infrastructurename}-vpc"
+  name       = "${local.instancename}-vpc"
   subnet_ids = var.private_subnets
 
   tags = {
