@@ -1,10 +1,7 @@
 resource "aws_db_subnet_group" "database" {
   name       = "${local.instancename}-vpc"
   subnet_ids = var.private_subnets
-
-  tags = {
-    Name = "My DB subnet group"
-  }
+  tags       = var.tags
 }
 
 resource "aws_db_instance" "simphera" {
