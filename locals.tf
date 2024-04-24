@@ -31,7 +31,7 @@ locals {
     "default" = {
       node_group_name = "default"
       instance_types  = var.linuxNodeSize
-      subnet_ids      = module.vpc.private_subnets
+      subnet_ids      = var.vpcId == "" ? module.vpc[0].private_subnets : [for s in data.aws_subnet.private_subnet : s.id]
       desired_size    = var.linuxNodeCountMin
       max_size        = var.linuxNodeCountMax
       min_size        = var.linuxNodeCountMin
@@ -39,7 +39,7 @@ locals {
     "execnodes" = {
       node_group_name = "execnodes"
       instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = module.vpc.private_subnets
+      subnet_ids      = var.vpcId == "" ? module.vpc[0].private_subnets : [for s in data.aws_subnet.private_subnet : s.id]
       desired_size    = var.linuxExecutionNodeCountMin
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
@@ -60,7 +60,7 @@ locals {
     "gpuexecnodes" = {
       node_group_name        = "gpuexecnodes"
       instance_types         = var.gpuNodeSize
-      subnet_ids             = module.vpc.private_subnets
+      subnet_ids             = var.vpcId == "" ? module.vpc[0].private_subnets : [for s in data.aws_subnet.private_subnet : s.id]
       desired_size           = var.gpuNodeCountMin
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
@@ -85,7 +85,7 @@ locals {
     "gpuivsnodes" = {
       node_group_name        = "gpuivsnodes"
       instance_types         = var.ivsGpuNodeSize
-      subnet_ids             = module.vpc.private_subnets
+      subnet_ids             = var.vpcId == "" ? module.vpc[0].private_subnets : [for s in data.aws_subnet.private_subnet : s.id]
       desired_size           = var.ivsGpuNodeCountMin
       max_size               = var.ivsGpuNodeCountMax
       min_size               = var.ivsGpuNodeCountMin

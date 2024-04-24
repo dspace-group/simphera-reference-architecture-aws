@@ -25,5 +25,5 @@ module "simphera_instance" {
   postgresql_security_group_id = module.security_group.security_group_id
   kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
   log_bucket                   = aws_s3_bucket.bucket_logs.id
-  private_subnets              = module.vpc.private_subnets
+  private_subnets              = var.vpcId == "" ? module.vpc[0].private_subnets : [for s in data.aws_subnet.private_subnet : s.id]
 }

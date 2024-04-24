@@ -123,6 +123,13 @@ variable "kubernetesVersion" {
   description = "The version of the EKS cluster."
   default     = "1.28"
 }
+
+variable "vpcId" {
+  type        = string
+  description = "The ID of preconfigured VPC."
+  default     = ""
+}
+
 variable "vpcCidr" {
   type        = string
   description = "The CIDR for the virtual private cluster."

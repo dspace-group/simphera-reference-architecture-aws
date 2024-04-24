@@ -3,7 +3,7 @@ resource "aws_instance" "license_server" {
   ami                  = data.aws_ami.amazon_linux_kernel5.id
   instance_type        = "t3a.large"
   iam_instance_profile = aws_iam_instance_profile.license_server_profile[0].name
-  subnet_id            = module.vpc.private_subnets[0]
+  subnet_id            = var.vpcId == "" ? module.vpc[0].private_subnets : data.aws_subnet.private_subnet[0].id
 
   metadata_options {
     # [EC2.8] EC2 instances should use IMDSv2
