@@ -22,24 +22,25 @@ data "aws_subnets" "private_subnets" {
   }
 }
 
-data "aws_subnets" "public_subnets" {
-  count = var.vpcId == "" ? 0 : 1
-  filter {
-    name   = "vpc-id"
-    values = [var.vpcId]
-  }
-
-  tags = {
-    purpose = "public"
-  }
-}
-
 data "aws_subnet" "private_subnet" {
   for_each = var.vpcId == "" ? toset([]) : toset(data.aws_subnets.private_subnets[0].ids)
   id       = each.value
 }
 
-data "aws_subnet" "public_subnet" {
-  for_each = var.vpcId == "" ? toset([]) : toset(data.aws_subnets.public_subnets[0].ids)
-  id       = each.value
-}
+# Uncomment section below if you're using pre-configured public subnets
+#data "aws_subnets" "public_subnets" {
+#  count = var.vpcId == "" ? 0 : 1
+#  filter {
+#    name   = "vpc-id"
+#    values = [var.vpcId]
+#  }
+#
+#  tags = {
+#    purpose = "public"
+#  }
+#}
+
+#data "aws_subnet" "public_subnet" {
+#  for_each = var.vpcId == "" ? toset([]) : toset(data.aws_subnets.public_subnets[0].ids)
+#  id       = each.value
+#}
