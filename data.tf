@@ -11,7 +11,7 @@ data "aws_vpc" "preconfigured" {
 }
 
 data "aws_subnets" "private_subnets" {
-  count    = var.vpcId == "" ? 0 : 1
+  count = var.vpcId == "" ? 0 : 1
   filter {
     name   = "vpc-id"
     values = [var.vpcId]
@@ -23,7 +23,7 @@ data "aws_subnets" "private_subnets" {
 }
 
 data "aws_subnets" "public_subnets" {
-  count    = var.vpcId == "" ? 0 : 1
+  count = var.vpcId == "" ? 0 : 1
   filter {
     name   = "vpc-id"
     values = [var.vpcId]
