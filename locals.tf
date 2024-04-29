@@ -35,6 +35,7 @@ locals {
       desired_size    = var.linuxNodeCountMin
       max_size        = var.linuxNodeCountMax
       min_size        = var.linuxNodeCountMin
+      disk_size       = var.linuxNodeDiskSize
     },
     "execnodes" = {
       node_group_name = "execnodes"
@@ -43,6 +44,7 @@ locals {
       desired_size    = var.linuxExecutionNodeCountMin
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
+      disk_size       = var.linuxExecutionNodeDiskSize
       k8s_labels = {
         "purpose" = "execution"
       }

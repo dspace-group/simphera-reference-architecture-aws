@@ -28,6 +28,12 @@ variable "linuxNodeCountMax" {
   default     = 12
 }
 
+variable "linuxNodeDiskSize" {
+  type        = number
+  description = "The disk size in GiB of the nodes for the regular services"
+  default     = 200
+}
+
 variable "linuxExecutionNodeSize" {
   type        = list(string)
   description = "The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones."
@@ -44,6 +50,12 @@ variable "linuxExecutionNodeCountMax" {
   type        = number
   description = "The maximum number of Linux nodes for the job execution"
   default     = 10
+}
+
+variable "linuxExecutionNodeDiskSize" {
+  type        = number
+  description = "The disk size in GiB of the nodes for the job execution"
+  default     = 200
 }
 
 variable "gpuNodePool" {
