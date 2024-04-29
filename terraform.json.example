@@ -27,6 +27,7 @@
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
+  "linuxExecutionNodeDiskSize": 200,
   "linuxExecutionNodeSize": [
     "m6a.4xlarge",
     "m5a.4xlarge",
@@ -38,6 +39,7 @@
   ],
   "linuxNodeCountMax": 12,
   "linuxNodeCountMin": 1,
+  "linuxNodeDiskSize": 200,
   "linuxNodeSize": [
     "m6a.4xlarge",
     "m5a.4xlarge",
