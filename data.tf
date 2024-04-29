@@ -8,7 +8,7 @@ data "aws_region" "current" {}
 
 data "aws_vpc" "preconfigured" {
   count = local.create_vpc ? 0 : 1
-  id = var.vpcId
+  id    = var.vpcId
 }
 
 data "aws_subnets" "private_subnets" {
