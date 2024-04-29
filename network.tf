@@ -1,6 +1,6 @@
 
 module "vpc" {
-  count                = var.vpcId == "" ? 1 : 0
+  count                = local.create_vpc ? 1 : 0
   source               = "terraform-aws-modules/vpc/aws"
   version              = "v3.11.0"
   name                 = "${local.infrastructurename}-vpc"
@@ -30,7 +30,7 @@ module "security_group" {
   version     = "~> 4"
   name        = "${var.infrastructurename}-db-sg"
   description = "PostgreSQL security group"
-  vpc_id      = var.vpcId == "" ? module.vpc[0].vpc_id : var.vpcId
+  vpc_id      = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
   tags        = var.tags
   ingress_with_cidr_blocks = [
     {
@@ -38,7 +38,7 @@ module "security_group" {
       to_port     = 5432
       protocol    = "tcp"
       description = "PostgreSQL access from within VPC"
-      cidr_blocks = var.vpcId == "" ? module.vpc[0].vpc_cidr_block : data.aws_vpc.preconfigured.cidr_block
+      cidr_blocks = local.create_vpc ? module.vpc[0].vpc_cidr_block : data.aws_vpc.preconfigured[0].cidr_block
     },
   ]
 }
@@ -46,15 +46,15 @@ module "security_group" {
 # [EC2.6] VPC flow logging should be enabled in all VPCs
 # https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html#fsbp-ec2-6
 resource "aws_flow_log" "flowlog" {
-  count           = var.vpcId == "" ? 1 : 0
+  count           = local.create_vpc ? 1 : 0
   iam_role_arn    = aws_iam_role.flowlogs_role[0].arn
   log_destination = aws_cloudwatch_log_group.flowlogs[0].arn
   traffic_type    = "ALL"
-  vpc_id          = var.vpcId == "" ? module.vpc[0].vpc_id : var.vpcId
+  vpc_id          = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
 }
 
 resource "aws_cloudwatch_log_group" "flowlogs" {
-  count             = var.vpcId == "" ? 1 : 0
+  count             = local.create_vpc ? 1 : 0
   name              = local.flowlogs_cloudwatch_loggroup
   retention_in_days = var.cloudwatch_retention
   kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
@@ -62,7 +62,7 @@ resource "aws_cloudwatch_log_group" "flowlogs" {
 }
 
 resource "aws_iam_role" "flowlogs_role" {
-  count              = var.vpcId == "" ? 1 : 0
+  count              = local.create_vpc ? 1 : 0
   name               = "${local.infrastructurename}-flowlogs-role"
   assume_role_policy = <<EOF
 {
@@ -82,7 +82,7 @@ EOF
 }
 
 resource "aws_iam_policy" "flowlogs_policy" {
-  count  = var.vpcId == "" ? 1 : 0
+  count  = local.create_vpc ? 1 : 0
   name   = "${local.infrastructurename}-flowlogs-policy"
   policy = <<EOF
 {
@@ -105,7 +105,7 @@ EOF
 }
 
 resource "aws_iam_role_policy_attachment" "flowlogs_attachment" {
-  count      = var.vpcId == "" ? 1 : 0
+  count      = local.create_vpc ? 1 : 0
   role       = aws_iam_role.flowlogs_role[0].id
   policy_arn = aws_iam_policy.flowlogs_policy[0].arn
 }
