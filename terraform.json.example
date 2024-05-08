@@ -51,6 +51,7 @@
   "map_accounts": [],
   "map_roles": [],
   "map_users": [],
+  "private_subnet_ids": [],
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
