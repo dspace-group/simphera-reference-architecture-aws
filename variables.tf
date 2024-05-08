@@ -136,10 +136,22 @@ variable "vpcCidr" {
   default     = "10.1.0.0/18"
 }
 
+variable "private_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the private subnets."
+  default     = []
+}
+
 variable "vpcPrivateSubnets" {
   type        = list(any)
   description = "List of CIDRs for the private subnets."
   default     = ["10.1.0.0/22", "10.1.4.0/22", "10.1.8.0/22"]
+}
+
+variable "public_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the public subnets."
+  default     = []
 }
 
 variable "vpcPublicSubnets" {
