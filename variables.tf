@@ -148,11 +148,12 @@ variable "vpcPrivateSubnets" {
   default     = ["10.1.0.0/22", "10.1.4.0/22", "10.1.8.0/22"]
 }
 
-variable "public_subnet_ids" {
-  type        = list(any)
-  description = "List of IDs for the public subnets."
-  default     = []
-}
+# Not used at the moment, possibly in the future
+#variable "public_subnet_ids" {
+#  type        = list(any)
+#  description = "List of IDs for the public subnets."
+#  default     = []
+#}
 
 variable "vpcPublicSubnets" {
   type        = list(any)
