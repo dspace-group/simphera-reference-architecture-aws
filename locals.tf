@@ -9,6 +9,7 @@ data "aws_ami" "al2gpu_ami" {
 
 locals {
   create_vpc                                = var.vpcId == "" ? true : false
+  vpc_id                                    = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
   use_private_subnets_ids                   = length(var.private_subnet_ids) == 0 ? false : true
   infrastructurename                        = var.infrastructurename
   log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"

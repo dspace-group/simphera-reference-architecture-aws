@@ -30,7 +30,7 @@ module "security_group" {
   version     = "~> 4"
   name        = "${var.infrastructurename}-db-sg"
   description = "PostgreSQL security group"
-  vpc_id      = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
+  vpc_id      = local.vpc_id
   tags        = var.tags
   ingress_with_cidr_blocks = [
     {
@@ -50,7 +50,7 @@ resource "aws_flow_log" "flowlog" {
   iam_role_arn    = aws_iam_role.flowlogs_role[0].arn
   log_destination = aws_cloudwatch_log_group.flowlogs[0].arn
   traffic_type    = "ALL"
-  vpc_id          = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
+  vpc_id          = local.vpc_id
 }
 
 resource "aws_cloudwatch_log_group" "flowlogs" {

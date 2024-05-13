@@ -4,7 +4,7 @@ module "eks" {
   source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.32.1"
   cluster_version                        = var.kubernetesVersion
   cluster_name                           = var.infrastructurename
-  vpc_id                                 = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
+  vpc_id                                 = local.vpc_id
   private_subnet_ids                     = local.create_vpc ? module.vpc[0].private_subnets : local.private_subnets
   create_eks                             = true
   map_accounts                           = var.map_accounts
