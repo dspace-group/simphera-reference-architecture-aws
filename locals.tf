@@ -27,7 +27,7 @@ locals {
   s3_instance_buckets                       = flatten([for name, instance in module.simphera_instance : instance.s3_buckets])
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
   s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
-  private_subnets                           = var.vpcId == "" ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
+  private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
   gpuPostUserData = "curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nchmod +x NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \n./NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run -s --no-dkms --install-libglvnd"
 
@@ -35,7 +35,7 @@ locals {
     "default" = {
       node_group_name = "default"
       instance_types  = var.linuxNodeSize
-      subnet_ids      = local.create_vpc ? module.vpc[0].private_subnets : local.private_subnets
+      subnet_ids      = local.private_subnets
       desired_size    = var.linuxNodeCountMin
       max_size        = var.linuxNodeCountMax
       min_size        = var.linuxNodeCountMin
@@ -43,7 +43,7 @@ locals {
     "execnodes" = {
       node_group_name = "execnodes"
       instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = local.create_vpc ? module.vpc[0].private_subnets : local.private_subnets
+      subnet_ids      = local.private_subnets
       desired_size    = var.linuxExecutionNodeCountMin
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
@@ -64,7 +64,7 @@ locals {
     "gpuexecnodes" = {
       node_group_name        = "gpuexecnodes"
       instance_types         = var.gpuNodeSize
-      subnet_ids             = local.create_vpc ? module.vpc[0].private_subnets : local.private_subnets
+      subnet_ids             = local.private_subnets
       desired_size           = var.gpuNodeCountMin
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
@@ -89,7 +89,7 @@ locals {
     "gpuivsnodes" = {
       node_group_name        = "gpuivsnodes"
       instance_types         = var.ivsGpuNodeSize
-      subnet_ids             = local.create_vpc ? module.vpc[0].private_subnets : local.private_subnets
+      subnet_ids             = local.private_subnets
       desired_size           = var.ivsGpuNodeCountMin
       max_size               = var.ivsGpuNodeCountMax
       min_size               = var.ivsGpuNodeCountMin

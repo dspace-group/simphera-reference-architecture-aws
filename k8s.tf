@@ -5,7 +5,7 @@ module "eks" {
   cluster_version                        = var.kubernetesVersion
   cluster_name                           = var.infrastructurename
   vpc_id                                 = local.vpc_id
-  private_subnet_ids                     = local.create_vpc ? module.vpc[0].private_subnets : local.private_subnets
+  private_subnet_ids                     = local.private_subnets
   create_eks                             = true
   map_accounts                           = var.map_accounts
   map_users                              = var.map_users
