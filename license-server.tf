@@ -17,7 +17,17 @@ resource "aws_instance" "license_server" {
       ami,
     ]
   }
-  tags = merge(var.tags, { "Name" = local.license_server, "Patch Group" = local.patchgroupid })
+  tags      = merge(var.tags, { "Name" = local.license_server, "Patch Group" = local.patchgroupid })
+  user_data = <<-EOF
+                #!/bin/bash
+                yum update -y
+                wget -O CodeMeter.rpm "${var.codemeter}"
+                yum -y localinstall CodeMeter.rpm
+                systemctl stop codemeter
+                sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
+                systemctl start codemeter
+                systemctl enable codemeter
+                EOF
 }
 
 data "aws_ami" "amazon_linux_kernel5" {
@@ -25,12 +35,7 @@ data "aws_ami" "amazon_linux_kernel5" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-kernel-5*"]
-  }
-
-  filter {
-    name   = "block-device-mapping.volume-type"
-    values = ["gp2"]
+    values = ["al2023-ami-202*"]
   }
 
   filter {

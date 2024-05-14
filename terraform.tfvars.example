@@ -7,6 +7,9 @@ cluster_autoscaler_helm_config = {
   "version": "9.28.0"
 }
 
+# Download link for codemeter rpm package.
+codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
+
 # Install FluentBit to send container logs to CloudWatch.
 enable_aws_for_fluentbit = false
 
