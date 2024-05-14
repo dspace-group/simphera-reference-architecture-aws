@@ -38,7 +38,7 @@ Charges may apply for the following AWS resources and services:
 | Amazon Simple Storage Service | Binary artifacts are stored in an S3 bucket. | Yes |
 | Amazon Elastic File System | Binary artifacts are stored temporarily in EFS. | Yes |
 | AWS Key Management Service (AWS KMS) | Encryption for Kubernetes secrets is enabled by default. | |
-| Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. ||
+| Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. For additional information, please contact our support team. ||
 | Amazon CloudWatch | Metrics and container logs to CloudWatch. It is recommended to deploy the dSPACE monitoring stack in Kubernetes.||
 
 ## Usage Instructions

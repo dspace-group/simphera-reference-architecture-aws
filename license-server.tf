@@ -26,6 +26,7 @@ resource "aws_instance" "license_server" {
                 systemctl stop codemeter
                 sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
                 systemctl start codemeter
+                systemctl enable codemeter
                 EOF
 }
 
