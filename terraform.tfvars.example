@@ -144,7 +144,7 @@ tags = {}
 # The CIDR for the virtual private cluster.
 vpcCidr = "10.1.0.0/18"
 
-# The ID of preconfigured VPC.
+# The ID of preconfigured VPC. Change from 'null' to use already existing VPC.
 vpcId = ""
 
 # List of CIDRs for the private subnets.
