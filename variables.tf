@@ -126,7 +126,7 @@ variable "kubernetesVersion" {
 
 variable "vpcId" {
   type        = string
-  description = "The ID of preconfigured VPC."
+  description = "The ID of preconfigured VPC. Change from 'null' to use already existing VPC." 
   default     = null
 }
 
