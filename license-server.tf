@@ -1,24 +1,17 @@
 resource "aws_instance" "license_server" {
-  count                = var.licenseServer ? 1 : 0
-  ami                  = data.aws_ami.amazon_linux_kernel5.id
-  instance_type        = "t3a.large"
-  iam_instance_profile = aws_iam_instance_profile.license_server_profile[0].name
-  subnet_id            = module.vpc.private_subnets[0]
-
+  count                  = var.licenseServer ? 1 : 0
+  ami                    = data.aws_ami.amazon_linux_kernel5.id
+  instance_type          = "t3a.large"
+  iam_instance_profile   = aws_iam_instance_profile.license_server_profile[0].name
+  subnet_id              = module.vpc.private_subnets[0]
+  vpc_security_group_ids = [module.security_group_license_server[0].security_group_id]
   metadata_options {
     # [EC2.8] EC2 instances should use IMDSv2
     # https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html#fsbp-ec2-8
     http_endpoint = "enabled"
     http_tokens   = "required" # Require session token for Instance Metadata Service Version 2 (IMDSv2)
   }
-
-  lifecycle {
-    ignore_changes = [
-      ami,
-    ]
-  }
-  tags                   = merge(var.tags, { "Name" = local.license_server, "Patch Group" = local.patchgroupid })
-  user_data              = <<-EOF
+  user_data = <<-EOF
                 #!/bin/bash
                 yum update -y
                 wget -O CodeMeter.rpm "${var.codemeter}"
@@ -28,7 +21,13 @@ resource "aws_instance" "license_server" {
                 systemctl start codemeter
                 systemctl enable codemeter
                 EOF
-  vpc_security_group_ids = [module.security_group_license_server[0].security_group_id]
+
+  lifecycle {
+    ignore_changes = [
+      ami,
+    ]
+  }
+  tags = merge(var.tags, { "Name" = local.license_server, "Patch Group" = local.patchgroupid })
 }
 
 data "aws_ami" "amazon_linux_kernel5" {
