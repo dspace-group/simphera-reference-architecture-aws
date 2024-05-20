@@ -114,6 +114,9 @@ map_users = []
 # List of IDs for the private subnets.
 private_subnet_ids = []
 
+# List of IDs for the public subnets.
+public_subnet_ids = []
+
 # 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule.
 scan_schedule = "cron(0 0 * * ? *)"
 
