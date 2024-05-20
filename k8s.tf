@@ -41,8 +41,9 @@ module "eks-addons" {
 
   ingress_nginx_helm_config = {
     values = [templatefile("${path.module}/templates/nginx_values.yaml", {
-      internal = "false",
-      scheme   = "internet-facing"
+      internal       = "false",
+      scheme         = "internet-facing",
+      public_subnets = join(", ", local.public_subnets)
     })]
     namespace         = "nginx",
     create_namespace  = true

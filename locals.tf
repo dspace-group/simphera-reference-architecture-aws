@@ -8,9 +8,10 @@ data "aws_ami" "al2gpu_ami" {
 }
 
 locals {
-  create_vpc                                = var.vpcId != null ? true : false
+  create_vpc                                = var.vpcId == null ? true : false
   vpc_id                                    = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
   use_private_subnets_ids                   = length(var.private_subnet_ids) == 0 ? false : true
+  use_public_subnet_ids                     = length(var.public_subnet_ids) == 0 ? false : true
   infrastructurename                        = var.infrastructurename
   log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
   account_id                                = data.aws_caller_identity.current.account_id
@@ -28,6 +29,7 @@ locals {
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
   s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
   private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
+  public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
   gpuPostUserData = "curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nchmod +x NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \n./NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run -s --no-dkms --install-libglvnd"
 
