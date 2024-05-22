@@ -6,6 +6,7 @@ preconfigured VPC: if proper tagging is used on subnets, subnet IDs will be
 filtered out from given VPC ID. If no proper tagging is used on subnets, you
 need to supply IDs of preconfigured subnets. If no VPC ID is given, VPC and
 subnets will be created instead (default behaviour).
+- There is now a separate security group for the license server
 - CodeMeter runtime is now automatically installed and license server is
 configured as network server
 - Disk size is now modifiable for not only RDS but all EKS nodes.
