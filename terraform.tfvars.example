@@ -7,6 +7,9 @@ cluster_autoscaler_helm_config = {
   "version": "9.28.0"
 }
 
+# Download link for codemeter rpm package.
+codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
+
 # Install FluentBit to send container logs to CloudWatch.
 enable_aws_for_fluentbit = false
 
@@ -71,6 +74,9 @@ linuxExecutionNodeCountMax = 10
 # The minimum number of Linux nodes for the job execution
 linuxExecutionNodeCountMin = 0
 
+# The disk size in GiB of the nodes for the job execution
+linuxExecutionNodeDiskSize = 200
+
 # The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxExecutionNodeSize = [
   "m6a.4xlarge",
@@ -87,6 +93,9 @@ linuxNodeCountMax = 12
 
 # The minimum number of Linux nodes for the regular services
 linuxNodeCountMin = 1
+
+# The disk size in GiB of the nodes for the regular services
+linuxNodeDiskSize = 200
 
 # The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxNodeSize = [

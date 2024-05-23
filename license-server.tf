@@ -12,6 +12,16 @@ resource "aws_instance" "license_server" {
     http_endpoint = "enabled"
     http_tokens   = "required" # Require session token for Instance Metadata Service Version 2 (IMDSv2)
   }
+  user_data = <<-EOF
+                #!/bin/bash
+                yum update -y
+                wget -O CodeMeter.rpm "${var.codemeter}"
+                yum -y localinstall CodeMeter.rpm
+                systemctl stop codemeter
+                sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
+                systemctl start codemeter
+                systemctl enable codemeter
+                EOF
 
   lifecycle {
     ignore_changes = [
@@ -26,12 +36,7 @@ data "aws_ami" "amazon_linux_kernel5" {
 
   filter {
     name   = "name"
-    values = ["amzn2-ami-kernel-5*"]
-  }
-
-  filter {
-    name   = "block-device-mapping.volume-type"
-    values = ["gp2"]
+    values = ["al2023-ami-202*"]
   }
 
   filter {
@@ -103,4 +108,33 @@ resource "aws_iam_instance_profile" "license_server_profile" {
   count = var.licenseServer ? 1 : 0
   name  = local.license_server_instance_profile
   role  = aws_iam_role.license_server_role[0].name
+}
+
+module "security_group_license_server" {
+  count       = var.licenseServer ? 1 : 0
+  source      = "terraform-aws-modules/security-group/aws"
+  version     = "~> 4"
+  name        = "${var.infrastructurename}-license-server"
+  description = "License server security group"
+  vpc_id      = module.vpc.vpc_id
+  tags        = var.tags
+  ingress_with_source_security_group_id = [
+    {
+      type                     = "ingress"
+      from_port                = 22350
+      to_port                  = 22350
+      protocol                 = "tcp"
+      description              = "Inbound TCP on port 22350 from kubernetes nodes security group"
+      source_security_group_id = module.eks.cluster_primary_security_group_id
+    },
+  ]
+  egress_with_cidr_blocks = [
+    {
+      from_port   = 0
+      to_port     = 0
+      protocol    = "-1"
+      description = "allow all outbound traffic"
+      cidr_blocks = "0.0.0.0/0"
+    },
+  ]
 }
