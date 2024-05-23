@@ -1,2 +1,14 @@
+# Original template for content: https://github.com/terraform-docs/terraform-docs/blob/v0.16.0/format/templates/tfvars_hcl.tmpl
+
+formatter: asciidoc
+content: |
+  {{ if .Module.Inputs -}}
+    {{- range $index, $element := .Module.Inputs }}
+      {{ if $element.Description -}}
+        # {{ tostring $element.Description }}
+      {{ end -}}
+      {{ $element.Name }} = {{ $element.GetValue }}
+    {{ end -}}
+  {{- end -}}
 settings:
   description: true
