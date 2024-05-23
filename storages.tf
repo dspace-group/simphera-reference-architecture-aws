@@ -1,5 +1,5 @@
 locals {
-  storage_subnets = local.create_vpc ? { for index, zone in var.vpcPrivateSubnets : "zone${index}" => module.vpc[0].private_subnets[index] } : (local.use_private_subnets_ids ? { for index, zone in var.private_subnet_ids : "zone-${index}" => var.private_subnet_ids[index] } : { for index, zone in data.aws_subnet.private_subnet : "zone-${index}" => data.aws_subnet.private_subnet[index].id })
+  storage_subnets = { for index, zone in local.private_subnets : "zone${index}" => local.private_subnets[index] }
 }
 
 resource "aws_efs_file_system" "efs_file_system" {

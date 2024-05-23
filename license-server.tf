@@ -116,7 +116,7 @@ module "security_group_license_server" {
   version     = "~> 4"
   name        = "${var.infrastructurename}-license-server"
   description = "License server security group"
-  vpc_id      = local.create_vpc ? module.vpc.vpc_id : var.vpcId
+  vpc_id      = local.vpc_id
   tags        = var.tags
   ingress_with_source_security_group_id = [
     {
