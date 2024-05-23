@@ -268,6 +268,7 @@ variable "scan_schedule" {
   description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
   default     = "cron(0 0 * * ? *)"
 }
+
 variable "install_schedule" {
   type        = string
   description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."
