@@ -236,9 +236,9 @@ Afterwards you can deploy the resources:
 terraform apply
 ```
 
-Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.  
-Installation times may vary, but it is expected to take up to 30 min to complete the deployment.  
-It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.  
+Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
+Installation times may very, but it is expected to take up to 30 min to complete the deployment.
+It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.
 
 ### Destroy Infrastructure
 
@@ -295,7 +295,7 @@ To workaround the bug, you need to need to remove the `eks-addons` module at fir
 terraform destroy -target="module.eks-addons"
 ```
 
-:warning: **It is important that you have completed the preceding steps. Otherwise, the following command will not finish completely, leaving you in a deadlock state.**
+:warning: **It is important that you have completed the preceding steps. Otherwise, the following command will not finish completly, leaving you in a deadlock state.**
 
 To delete the remaining resources, run the following command:
 
