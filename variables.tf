@@ -141,16 +141,35 @@ variable "kubernetesVersion" {
   description = "The version of the EKS cluster."
   default     = "1.28"
 }
+
+variable "vpcId" {
+  type        = string
+  description = "The ID of preconfigured VPC. Change from 'null' to use already existing VPC."
+  default     = null
+}
+
 variable "vpcCidr" {
   type        = string
   description = "The CIDR for the virtual private cluster."
   default     = "10.1.0.0/18"
 }
 
+variable "private_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the private subnets."
+  default     = []
+}
+
 variable "vpcPrivateSubnets" {
   type        = list(any)
   description = "List of CIDRs for the private subnets."
   default     = ["10.1.0.0/22", "10.1.4.0/22", "10.1.8.0/22"]
+}
+
+variable "public_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the public subnets."
+  default     = []
 }
 
 variable "vpcPublicSubnets" {
@@ -249,6 +268,7 @@ variable "scan_schedule" {
   description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
   default     = "cron(0 0 * * ? *)"
 }
+
 variable "install_schedule" {
   type        = string
   description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."

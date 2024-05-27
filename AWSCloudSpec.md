@@ -67,6 +67,19 @@
 
 ## <a name="ServiceVirtualPrivateCloud"></a> ![Amazon Virtual Private Cloud](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/NetworkingContentDelivery/VirtualPrivateCloud.png) Amazon Virtual Private Cloud
 
+### VPC requirements
+
+| Requirement | Description |  Default value | Mandatory? |
+| ----------- | ----------- | -------------- | ---------- |
+| IPv4 CIDR block | Network size ie. number of available IPs in VPC | 10.1.0.0/18 | yes |
+| Availability zones | How many AZs to spread VPC across | 3 (at least 2 for high availability) | yes |
+| Private subnets | How many private subnets to create | 3 (at least 2 for high availability; one per each AZ) | yes |
+| Public subnets | How many public subnets to create | 3 (at least 2 for high availability; one per each AZ) | yes |
+| NAT gateway | Enable/disable NAT in VPC | enable | yes |
+| Single NAT gateway | Controls how many NAT gateways/Elastic IPs to provision | enable | no |
+| Internet gateway | Enable/disable IGW in VPC | enable | yes |
+| DNS hostnames | Determines whether the VPC supports assigning public DNS hostnames to instances with public IP addresses. | enable | yes |
+
 ### <a name="ResourceInternetGateway"></a>![Internet gateway](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/NetworkingContentDelivery/VPCInternetGateway.png) Internet gateway
 | Description |
 | ----------- |
@@ -193,23 +206,44 @@
 
 
 ### <a name="ResourceSubnet"></a>Subnet
-| Name | 
-| ---- | 
-| Public subnet in region 1 zone a | 
-| Public subnet in region 1 zone b | 
+| Name |
+| ---- |
+| Public subnet in region 1 zone a |
+| Public subnet in region 1 zone b |
 | Public subnet in region 1 zone c |
-| Private subnet in region 1 zone a | 
-| Private subnet in region 1 zone b | 
-| Private subnet in region 1 zone c | 
-| Database subnet in region 1 zone a | 
-| Database subnet in region 1 zone b | 
-| Database subnet in region 1 zone c | 
+| Private subnet in region 1 zone a |
+| Private subnet in region 1 zone b |
+| Private subnet in region 1 zone c |
 
+### Private subnets requirements
 
-### <a name="ResourceVirtualPrivateCloud"></a>Virtual Private Cloud
-| Name | Mandatory |
-| ---- | ---------- |
-| Virtual network for SIMPHERA. | Yes |
+| Requirement | Description |  Default value | Mandatory? |
+| ----------- | ----------- | -------------- | ---------- |
+| IPv4 CIDR blocks | Network size, ie number of available IPs per private subnet | 10.1.0.0/22 <br /> 10.1.4.0/22 <br /> 10.1.8.0/22 | yes |
+| Tags | Metadata for organizing your AWS resources | "kubernetes.io/cluster/\<cluster name>" = "shared" <br /> "kubernetes.io/role/elb" = "1" <br /> "purpose" = "private" | yes |
+| Network Access Lists | Allows or denies specific inbound or outbound traffic at the subnet level | Allow all inbound/outbound | yes |
+
+### Public subnets requirements
+
+| Requirement | Description |  Default value | Mandatory? |
+| ----------- | ----------- | -------------- | ---------- |
+| IPv4 CIDR blocks | Network size, ie number of available IPs per public subnet | 10.1.12.0/22 <br /> 10.1.16.0/22 <br /> 10.1.20.0/22 | yes |
+| Tags | Metadata for organizing your AWS resources | "kubernetes.io/cluster/\<cluster name>" = "shared" <br /> "kubernetes.io/role/elb" = "1" <br /> "purpose" = "public" | yes |
+| Network Access Lists | Allows or denies specific inbound or outbound traffic at the subnet level | Allow all inbound/outbound | yes |
+
+### 'Private' route table requirements
+
+| Requirement | Description |  Default value | Mandatory? |
+| ----------- | ----------- | -------------- | ---------- |
+| Routes | Minimum routes for network communication to work | 0.0.0.0/0 to \<NAT gateway> <br /> \<vpcCidrBlock> to local | yes |
+| Subnet associations | Apply route table routes to a particular subnet | Explicit, all private subnets | yes |
+
+### 'Public' route table requirements
+
+| Requirement | Description |  Default value | Mandatory? |
+| ----------- | ----------- | -------------- | ---------- |
+| Routes | Minimum routes for network communication to work | 0.0.0.0/0 to \<Internet gateway> <br /> \<vpcCidrBlock> to local | yes |
+| Subnet associations | Apply route table routes to a particular subnet | Explicit, all public subnets | yes |
 
 ## <a name="ServiceElasticLoadBalancing"></a> ![Elastic Load Balancing](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/NetworkingContentDelivery/ElasticLoadBalancing.png) Elastic Load Balancing
 

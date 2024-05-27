@@ -4,8 +4,8 @@ module "eks" {
   source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.32.1"
   cluster_version                        = var.kubernetesVersion
   cluster_name                           = var.infrastructurename
-  vpc_id                                 = module.vpc.vpc_id
-  private_subnet_ids                     = module.vpc.private_subnets
+  vpc_id                                 = local.vpc_id
+  private_subnet_ids                     = local.private_subnets
   create_eks                             = true
   map_accounts                           = var.map_accounts
   map_users                              = var.map_users
@@ -41,8 +41,9 @@ module "eks-addons" {
 
   ingress_nginx_helm_config = {
     values = [templatefile("${path.module}/templates/nginx_values.yaml", {
-      internal = "false",
-      scheme   = "internet-facing"
+      internal       = "false",
+      scheme         = "internet-facing",
+      public_subnets = join(", ", local.public_subnets)
     })]
     namespace         = "nginx",
     create_namespace  = true

@@ -3,8 +3,9 @@ resource "aws_instance" "license_server" {
   ami                    = data.aws_ami.amazon_linux_kernel5.id
   instance_type          = "t3a.large"
   iam_instance_profile   = aws_iam_instance_profile.license_server_profile[0].name
-  subnet_id              = module.vpc.private_subnets[0]
+  subnet_id              = local.private_subnets[0]
   vpc_security_group_ids = [module.security_group_license_server[0].security_group_id]
+
   metadata_options {
     # [EC2.8] EC2 instances should use IMDSv2
     # https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html#fsbp-ec2-8
@@ -115,7 +116,7 @@ module "security_group_license_server" {
   version     = "~> 4"
   name        = "${var.infrastructurename}-license-server"
   description = "License server security group"
-  vpc_id      = module.vpc.vpc_id
+  vpc_id      = local.vpc_id
   tags        = var.tags
   ingress_with_source_security_group_id = [
     {

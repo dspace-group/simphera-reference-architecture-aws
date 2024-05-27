@@ -54,6 +54,8 @@
   "map_accounts": [],
   "map_roles": [],
   "map_users": [],
+  "private_subnet_ids": [],
+  "public_subnet_ids": [],
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
@@ -76,6 +78,7 @@
   },
   "tags": {},
   "vpcCidr": "10.1.0.0/18",
+  "vpcId": null,
   "vpcPrivateSubnets": [
     "10.1.0.0/22",
     "10.1.4.0/22",
