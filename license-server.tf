@@ -13,15 +13,63 @@ resource "aws_instance" "license_server" {
     http_tokens   = "required" # Require session token for Instance Metadata Service Version 2 (IMDSv2)
   }
   user_data = <<-EOF
-                #!/bin/bash
-                yum update -y
-                wget -O CodeMeter.rpm "${var.codemeter}"
-                yum -y localinstall CodeMeter.rpm
-                systemctl stop codemeter
-                sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
-                systemctl start codemeter
-                systemctl enable codemeter
-                EOF
+#!/bin/bash
+yum update -y
+wget -O CodeMeter.rpm "${var.codemeter}"
+yum -y localinstall CodeMeter.rpm
+systemctl stop codemeter
+sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
+systemctl start codemeter
+systemctl enable codemeter
+
+if ${var.enable_ivs}; then 
+  
+  # Create a download folder
+  mkdir ~/downloads
+  cd ~/downloads
+
+  echo "Downloading RTMaps"
+  # Download RTMaps
+  url='${var.rtMaps}'
+  wget -q $url
+                  
+  filename=`echo $url | awk  -F / '{print $NF}'`
+  echo "Extracting the files"
+  # Extract the files
+  tar -xf $filename
+
+  # Create the folder and copy the license server
+  mkdir -p /opt/rtmaps/license
+  cp -a ~/downloads/rtmaps/license/rlm/ubuntu1804_x86_64/. /opt/rtmaps/license
+
+  # Delete the rest
+  rm -r ~/downloads
+
+  echo "Create the rlm.service"
+  # Create the rlm.service
+  cat <<-EOF1 > /etc/systemd/system/rlm.service
+  [Unit]
+  Description=RLM license server for RTMaps
+  After=syslog.target network.target
+
+  [Service]
+  Type=simple
+  User=ec2-user
+  ExecStart=/opt/rtmaps/license/rlm -dlog /opt/rtmaps/license/rlm.dl
+  ExecStop=/opt/rtmaps/license/rlmutil rlmdown RLM -q
+
+  [Install]
+  WantedBy=default.target
+EOF1
+
+echo "Reload the services"
+# Reload the services
+systemctl daemon-reload
+
+echo "Enable the rlm.service"
+systemctl enable rlm.service
+fi
+EOF
 
   lifecycle {
     ignore_changes = [
