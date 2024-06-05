@@ -16,6 +16,8 @@ enable_aws_for_fluentbit = false
 # Enable Ingress Nginx add-on
 enable_ingress_nginx = false
 
+enable_ivs = false
+
 # Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually.
 enable_patching = false
 
@@ -125,6 +127,9 @@ private_subnet_ids = []
 
 # List of IDs for the public subnets.
 public_subnet_ids = []
+
+# Download link for RTMaps license server.
+rtMaps = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 
 # 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule.
 scan_schedule = "cron(0 0 * * ? *)"
