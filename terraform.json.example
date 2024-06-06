@@ -57,7 +57,7 @@
   "map_users": [],
   "private_subnet_ids": [],
   "public_subnet_ids": [],
-  "rtMaps": "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2",
+  "rtMaps_link": "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2",
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
