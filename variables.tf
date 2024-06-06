@@ -189,7 +189,7 @@ variable "enable_ivs" {
   default = false
 }
 
-variable "rtMaps" {
+variable "rtMaps_link" {
   type        = string
   description = "Download link for RTMaps license server."
   default     = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"

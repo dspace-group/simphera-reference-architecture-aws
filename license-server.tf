@@ -30,7 +30,7 @@ if ${var.enable_ivs}; then
 
   echo "Downloading RTMaps"
   # Download RTMaps
-  url='${var.rtMaps}'
+  url='${var.rtMaps_link}'
   wget -q $url
                   
   filename=`echo $url | awk  -F / '{print $NF}'`
