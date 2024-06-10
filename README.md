@@ -453,7 +453,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.7 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 3.72, < 5.0.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.37.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.4.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.10 |
 
@@ -461,8 +461,8 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.67.0 |
-| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.23.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.53.0 |
+| <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.30.0 |
 
 ## Modules
 
@@ -473,7 +473,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_security_group_license_server"></a> [security\_group\_license\_server](#module\_security\_group\_license\_server) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_simphera_instance"></a> [simphera\_instance](#module\_simphera\_instance) | ./modules/simphera_aws_instance | n/a |
-| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | v3.11.0 |
+| <a name="module_vpc"></a> [vpc](#module\_vpc) | terraform-aws-modules/vpc/aws | v5.8.1 |
 
 ## Resources
 
