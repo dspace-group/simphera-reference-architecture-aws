@@ -31,7 +31,7 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform init
-        run: terraform init -backend=false -upgrade
+        run: terraform init -backend=false 
 
       - name: Terraform validate
         run: terraform validate
