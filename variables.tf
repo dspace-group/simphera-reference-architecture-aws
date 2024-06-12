@@ -313,7 +313,7 @@ variable "enable_ecr_pullthrough_rule" {
 variable "registry_credentials" {
   type        = map(string)
   description = "Data to populate ECR pull-through rule's credentials secret with"
-  default     = {
+  default = {
     username    = ""
     accessToken = ""
   }
