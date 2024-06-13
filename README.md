@@ -1,6 +1,6 @@
 # SIMPHERA Reference Architecture for AWS
 
-This repository contains the reference architecture of the infrastructure needed to deploy dSPACE SIMPHERA to AWS. It does not contain the helm chart needed to deploy SIMPHERA itself, but only the base infrastructure such as Kubernetes, PostgreSQL, storage accounts, etc.
+This repository contains the reference architecture of the infrastructure needed to deploy dSPACE SIMPHERA to AWS. It does not contain the helm chart needed to deploy SIMPHERA itself, but only the base infrastructure such as Kubernetes, PostgreSQL, S3 buckets, etc.
 
 You can use the reference architecture as a starting point for your SIMPHERA installation if you plan to deploy SIMPHERA to AWS. You can use the reference architecture as it is and only have to configure few individual values. If you have special requirements feel free to adapt the architecture to your needs. For example, the reference architecture does not contain any kind of VPN connection to a private, on-premise network because this is highly user specific. But the reference architecture is configured in such a way that the ingress points are available in the public internet.
 
@@ -117,7 +117,8 @@ As mentioned before, Terraform stores the state of the resources it creates with
 The bucket name needs to be globally unique.
 
 After you have created the bucket, you need to link it with Terraform:
-To do so, please make a copy of the file `state-backend-template`, name it `state-backend.tf` and open the file in a text editor. The values have to point to an existing storage account to be used to store the Terraform state:
+To do so, please make a copy of the file `state-backend-template`, name it `state-backend.tf` and open the file in a text editor. With this backend configuration, Terraform stores the state as a given `key` in the given S3 `bucket` you have created before.
+
 
 ```hcl
 terraform {
