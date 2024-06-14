@@ -6,7 +6,7 @@ resource "aws_secretsmanager_secret" "ecr_pullthroughcache_dspacecloudreleases" 
 }
 
 data "aws_secretsmanager_secret" "ecr_pullthroughcache_dspacecloudreleases" {
-  name = "ecr-pullthroughcache/dspacecloudreleases" 
+  name = "ecr-pullthroughcache/dspacecloudreleases"
 }
 
 # Store data inside already created secret
