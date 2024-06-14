@@ -3,6 +3,7 @@ resource "aws_secretsmanager_secret" "ecr_pullthroughcache_dspacecloudreleases" 
   count                   = var.enable_ecr_pullthrough_rule && var.enable_ecr_pullthrough_secret ? 1 : 0
   name                    = "ecr-pullthroughcache/dspacecloudreleases"
   recovery_window_in_days = 7
+  tags                    = var.tags
 }
 
 data "aws_secretsmanager_secret" "ecr_pullthroughcache_dspacecloudreleases" {
@@ -43,6 +44,7 @@ resource "aws_iam_policy" "ecr_policy" {
   name        = "ecr_pullthrough_policy"
   description = "Policy to enable EKS nodes to create ECR pull-through repositories"
   policy      = data.aws_iam_policy_document.eks_node_custom_inline_policy.json
+  tags        = var.tags
 }
 
 
