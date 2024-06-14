@@ -310,6 +310,12 @@ variable "enable_ecr_pullthrough_rule" {
   default     = false
 }
 
+variable "enable_ecr_pullthrough_secret" {
+  type        = bool
+  description = "Specifies if secret storing ECR pull-through credentials will be created"
+  default     = false
+}
+
 variable "registry_credentials" {
   type        = map(string)
   description = "Data to populate ECR pull-through rule's credentials secret with"
