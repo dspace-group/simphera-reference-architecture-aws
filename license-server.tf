@@ -22,8 +22,11 @@ sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
 systemctl start codemeter
 systemctl enable codemeter
 
-if ${var.enable_ivs}; then 
-  
+if ${var.enable_ivs}; then
+
+  # Package is needed by rtmaps
+  yum -y install libxcrypt-compat
+
   # Create a download folder
   mkdir ~/downloads
   cd ~/downloads
@@ -32,7 +35,7 @@ if ${var.enable_ivs}; then
   # Download RTMaps
   url='${var.rtMaps_link}'
   wget -q $url
-                  
+
   filename=`echo $url | awk  -F / '{print $NF}'`
   echo "Extracting the files"
   # Extract the files
