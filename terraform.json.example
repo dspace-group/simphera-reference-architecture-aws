@@ -5,6 +5,8 @@
   },
   "codemeter": "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd",
   "enable_aws_for_fluentbit": false,
+  "enable_ecr_pullthrough_rule": false,
+  "enable_ecr_pullthrough_secret": false,
   "enable_ingress_nginx": false,
   "enable_ivs": false,
   "enable_patching": false,
@@ -57,6 +59,10 @@
   "map_users": [],
   "private_subnet_ids": [],
   "public_subnet_ids": [],
+  "registry_credentials": {
+    "accessToken": "",
+    "username": ""
+  },
   "rtMaps_link": "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2",
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
