@@ -73,7 +73,7 @@ locals {
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
+      custom_ami_id          = "ami-03bd1d16f4bc2fdbf"
       create_launch_template = true
       post_userdata          = local.gpuPostUserData
       k8s_labels = {
