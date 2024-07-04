@@ -65,7 +65,7 @@ locals {
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
-      custom_ami_id          = "ami-022b389f6d4b64999"
+      custom_ami_id          = "ami-05671ab863c5d3f19"
       create_launch_template = true
       post_userdata          = ""
       k8s_labels = {
