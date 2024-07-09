@@ -25,7 +25,15 @@ locals {
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
   s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
-  gpuPostUserData = ""
+  gpuPostUserData = "sudo yum -y install make gcc
+\nsudo yum -y update
+\nsudo yum -y install gcc kernel-devel-$(uname -r)
+\nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/550.90.07/NVIDIA-Linux-x86_64-550.90.07.run 
+\nsudo chmod +x NVIDIA-Linux-x86_64*.run
+\nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd
+\nsudo touch /etc/modprobe.d/nvidia.conf
+\necho "options nvidia NVreg_EnableGpuFirmware=0" | sudo tee --append /etc/modprobe.d/nvidia.conf
+\nsudo reboot"
 
   default_managed_node_pools = {
     "default" = {
@@ -65,9 +73,9 @@ locals {
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
-      custom_ami_id          = "ami-05671ab863c5d3f19"
+      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
-      post_userdata          = ""
+      post_userdata          = local.gpuPostUserData
       k8s_labels = {
         "purpose" = "gpu"
       }
