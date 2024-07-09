@@ -1,10 +1,11 @@
 resource "aws_instance" "license_server" {
-  count                  = var.licenseServer ? 1 : 0
-  ami                    = data.aws_ami.amazon_linux_kernel5.id
-  instance_type          = "t3a.large"
-  iam_instance_profile   = aws_iam_instance_profile.license_server_profile[0].name
-  subnet_id              = local.private_subnets[0]
-  vpc_security_group_ids = [module.security_group_license_server[0].security_group_id]
+  count                   = var.licenseServer ? 1 : 0
+  ami                     = data.aws_ami.amazon_linux_kernel5.id
+  instance_type           = "t3a.large"
+  iam_instance_profile    = aws_iam_instance_profile.license_server_profile[0].name
+  subnet_id               = local.private_subnets[0]
+  disable_api_termination = true
+  vpc_security_group_ids  = [module.security_group_license_server[0].security_group_id]
 
   metadata_options {
     # [EC2.8] EC2 instances should use IMDSv2
