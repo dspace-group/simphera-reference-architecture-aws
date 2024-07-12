@@ -35,7 +35,7 @@ gpuNodePool = false
 
 # The machine size of the nodes for the gpu job execution
 gpuNodeSize = [
-  "p3.2xlarge"
+  "g5.2xlarge"
 ]
 
 # The NVIDIA driver version for GPU node group.
