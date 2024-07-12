@@ -31,7 +31,7 @@ locals {
   private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
-  gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho "options nvidia NVreg_EnableGpuFirmware=0" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
+  gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
 
   default_managed_node_pools = {
     "default" = {
