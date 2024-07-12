@@ -13,7 +13,7 @@
   "gpuNodeDiskSize": 100,
   "gpuNodePool": false,
   "gpuNodeSize": [
-    "p3.2xlarge"
+    "g5.2xlarge"
   ],
   "gpuNvidiaDriverVersion": "535.54.03",
   "infrastructurename": "simphera",
