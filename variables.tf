@@ -79,7 +79,7 @@ variable "gpuNodeCountMax" {
 variable "gpuNodeSize" {
   type        = list(string)
   description = "The machine size of the nodes for the gpu job execution"
-  default     = ["p3.2xlarge"]
+  default     = ["g5.2xlarge"]
 }
 
 variable "gpuNodeDiskSize" {
