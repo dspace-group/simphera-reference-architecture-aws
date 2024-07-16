@@ -13,6 +13,12 @@ codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346
 # Install FluentBit to send container logs to CloudWatch.
 enable_aws_for_fluentbit = false
 
+# Specifies if ECR pull-through rule, and accompanying resources, will be created.
+enable_ecr_pullthrough_rule = false
+
+# Specifies if secret storing ECR pull-through credentials will be created.
+enable_ecr_pullthrough_secret = false
+
 # Enable Ingress Nginx add-on
 enable_ingress_nginx = false
 
@@ -127,6 +133,12 @@ private_subnet_ids = []
 
 # List of IDs for the public subnets.
 public_subnet_ids = []
+
+# Data to populate ECR pull-through rule's credentials secret with.
+registry_credentials = {
+  "accessToken": "",
+  "username": ""
+}
 
 # Download link for RTMaps license server.
 rtMaps_link = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"

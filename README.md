@@ -486,15 +486,18 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_install_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_scan_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
+| [aws_ecr_pull_through_cache_rule.dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ecr_pull_through_cache_rule) | resource |
 | [aws_efs_file_system.efs_file_system](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_file_system) | resource |
 | [aws_efs_file_system_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_file_system_policy) | resource |
 | [aws_efs_mount_target.mount_target](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_mount_target) | resource |
 | [aws_flow_log.flowlog](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/flow_log) | resource |
 | [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.ecr_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.flowlogs_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.license_server_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
 | [aws_iam_role.flowlogs_role](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role) | resource |
 | [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.eks-attach-ecr](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.flowlogs_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.license_server_ssm](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.minio_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
@@ -507,6 +510,8 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_s3_bucket_policy.license_server_bucket_ssl](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.buckets_logs_access](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.bucket_logs_encryption](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [aws_secretsmanager_secret.ecr_pullthroughcache_dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.ecr_credentials](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_ssm_maintenance_window.install](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window) | resource |
 | [aws_ssm_maintenance_window.scan](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window) | resource |
 | [aws_ssm_maintenance_window_target.install](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window_target) | resource |
@@ -524,8 +529,10 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_eks_node_group.execnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
+| [aws_iam_policy_document.eks_node_custom_inline_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/region) | data source |
+| [aws_secretsmanager_secret.ecr_pullthroughcache_dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/secretsmanager_secret) | data source |
 | [aws_subnet.private_subnet](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnet) | data source |
 | [aws_subnet.public_subnet](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnet) | data source |
 | [aws_subnets.private_subnets](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnets) | data source |
@@ -540,6 +547,8 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Config | `any` | <pre>{<br>  "version": "9.28.0"<br>}</pre> | no |
 | <a name="input_codemeter"></a> [codemeter](#input\_codemeter) | Download link for codemeter rpm package. | `string` | `"https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"` | no |
 | <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
+| <a name="input_enable_ecr_pullthrough_rule"></a> [enable\_ecr\_pullthrough\_rule](#input\_enable\_ecr\_pullthrough\_rule) | Specifies if ECR pull-through rule, and accompanying resources, will be created. | `bool` | `false` | no |
+| <a name="input_enable_ecr_pullthrough_secret"></a> [enable\_ecr\_pullthrough\_secret](#input\_enable\_ecr\_pullthrough\_secret) | Specifies if secret storing ECR pull-through credentials will be created. | `bool` | `false` | no |
 | <a name="input_enable_ingress_nginx"></a> [enable\_ingress\_nginx](#input\_enable\_ingress\_nginx) | Enable Ingress Nginx add-on | `bool` | `false` | no |
 | <a name="input_enable_ivs"></a> [enable\_ivs](#input\_enable\_ivs) | n/a | `bool` | `false` | no |
 | <a name="input_enable_patching"></a> [enable\_patching](#input\_enable\_patching) | Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually. | `bool` | `false` | no |
@@ -572,6 +581,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="input_map_users"></a> [map\_users](#input\_map\_users) | Additional IAM users to add to the aws-auth ConfigMap | <pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_private_subnet_ids"></a> [private\_subnet\_ids](#input\_private\_subnet\_ids) | List of IDs for the private subnets. | `list(any)` | `[]` | no |
 | <a name="input_public_subnet_ids"></a> [public\_subnet\_ids](#input\_public\_subnet\_ids) | List of IDs for the public subnets. | `list(any)` | `[]` | no |
+| <a name="input_registry_credentials"></a> [registry\_credentials](#input\_registry\_credentials) | Data to populate ECR pull-through rule's credentials secret with. | `map(string)` | <pre>{<br>  "accessToken": "",<br>  "username": ""<br>}</pre> | no |
 | <a name="input_rtMaps_link"></a> [rtMaps\_link](#input\_rtMaps\_link) | Download link for RTMaps license server. | `string` | `"http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"` | no |
 | <a name="input_scan_schedule"></a> [scan\_schedule](#input\_scan\_schedule) | 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install\_schedule. | `string` | `"cron(0 0 * * ? *)"` | no |
 | <a name="input_simpheraInstances"></a> [simpheraInstances](#input\_simpheraInstances) | A list containing the individual SIMPHERA instances, such as 'staging' and 'production'. | <pre>map(object({<br>    name                         = string<br>    postgresqlApplyImmediately   = bool<br>    postgresqlVersion            = string<br>    postgresqlStorage            = number<br>    postgresqlMaxStorage         = number<br>    db_instance_type_simphera    = string<br>    enable_keycloak              = bool<br>    postgresqlStorageKeycloak    = number<br>    postgresqlMaxStorageKeycloak = number<br>    db_instance_type_keycloak    = string<br>    k8s_namespace                = string<br>    secretname                   = string<br>    enable_backup_service        = bool<br>    backup_retention             = number<br>    enable_deletion_protection   = bool<br><br>  }))</pre> | <pre>{<br>  "production": {<br>    "backup_retention": 35,<br>    "db_instance_type_keycloak": "db.t3.large",<br>    "db_instance_type_simphera": "db.t3.large",<br>    "enable_backup_service": true,<br>    "enable_deletion_protection": true,<br>    "enable_keycloak": true,<br>    "k8s_namespace": "simphera",<br>    "name": "production",<br>    "postgresqlApplyImmediately": false,<br>    "postgresqlMaxStorage": 100,<br>    "postgresqlMaxStorageKeycloak": 100,<br>    "postgresqlStorage": 20,<br>    "postgresqlStorageKeycloak": 20,<br>    "postgresqlVersion": "16",<br>    "secretname": "aws-simphera-dev-production"<br>  }<br>}</pre> | no |
