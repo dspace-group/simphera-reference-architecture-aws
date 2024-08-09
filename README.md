@@ -237,13 +237,13 @@ Afterwards you can deploy the resources:
 terraform apply
 ```
 
-Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.  
-Installation times may very, but it is expected to take up to 30 min to complete the deployment.  
+Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
+Installation times may very, but it is expected to take up to 30 min to complete the deployment.
 Note that `eks-addons` module dependency on managed node group(s) is commented out in `k8s.tf` file. This might increase
-deployment time, as various addons might be provisioned before any actual K8s worker node starts, to complete addon deployment.  
+deployment time, as various addons might be provisioned before any actual K8s worker node starts, to complete addon deployment.
 Default timeout for node/addon deployment is 20 minutes, so please be patient.  If this behaviour creates problems, you can
-always uncomment line `depends_on = [module.eks.managed_node_groups]`.  
-It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.  
+always uncomment line `depends_on = [module.eks.managed_node_groups]`.
+It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.
 
 ### Destroy Infrastructure
 
@@ -283,11 +283,14 @@ foreach ($db in $databases){
 }
 ```
 
-You can remove the S3 buckets like this:
+To delete the S3 buckets that contains both versioned and non-versioned objects, the buckets must first be emptied. The following PowerShell script can be used to erase all objects within the buckets and then delete the buckets.
 
 ```powershell
+$profile = "<profile_name>"
 $buckets = terraform output s3_buckets | ConvertFrom-Json
 foreach ($bucket in $buckets){
+  aws s3api delete-objects --bucket $bucket --profile $profile --delete "$(aws s3api list-object-versions --bucket $bucket --profile $profile --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')"
+  aws s3api delete-objects --bucket $bucket --profile $profile --delete "$(aws s3api list-object-versions --bucket $bucket --profile $profile --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}')"
   aws s3 rb s3://$bucket --force --profile $profile
 }
 ```
