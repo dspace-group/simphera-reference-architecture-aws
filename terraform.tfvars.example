@@ -4,7 +4,7 @@ cloudwatch_retention = 7
 
 # Cluster Autoscaler Helm Config
 cluster_autoscaler_helm_config = {
-  "version": "9.28.0"
+  "version": "9.34.1"
 }
 
 # Download link for codemeter rpm package.
