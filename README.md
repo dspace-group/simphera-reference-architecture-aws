@@ -429,19 +429,6 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 - CloudWatch logs
 - Backup Vault
 
-## Rotating Credentials
-
-Credentials can be manually rotated:
-Open the secret in the Secrets Manager console and change the passwords manually.
-Fill in the placeholders `<namespace>` and the `<path_to_kubeconfig>` and run the following command to remove SIMPHERA from your Kubernetes cluster:
-
-```bash
-helm delete simphera -n <namespace> --kubeconfig <path_to_kubeconfig>
-```
-
-Reinstall the SIMPHERA Quickstart Helmchart so that all Kubernetes pods and jobs will retrieve the new credentials.
-Important: During credentials rotation, SIMPHERA will not be available for a short period.
-
 ## List of tools with versions needed for Simphera reference architecture deployment
 
 | Tool name | Version |
