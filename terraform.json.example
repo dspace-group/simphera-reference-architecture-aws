@@ -1,7 +1,7 @@
 {
   "cloudwatch_retention": 7,
   "cluster_autoscaler_helm_config": {
-    "version": "9.28.0"
+    "version": "9.34.1"
   },
   "codemeter": "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd",
   "enable_aws_for_fluentbit": false,
