@@ -2,10 +2,10 @@
 
 This procedure explains how to migrate AWS RDS databases, deployed with reference architecture, from using separate, private DB subnets to (re-)using
 private subnets already deployed with VPC. This only applies to already existing deployments, new deployments are not affected.
-The change was introduced with v0.2.0 of reference architecture.
+The change was introduced with v0.2.0 of SIMPHERA AWS reference architecture.
 
 ## Steps:
-1. Check your existing deployment and make sure everything works etc. (no issues, pods not starting and so on)
+1. Check your existing deployment and make sure everything works etc.
 2. Delete "keycloak" and "simphera" databases, making sure that final snapshot is created. When deleting the databases via the AWS Management Console, the option to create a final snapshot is selected by default.
 3. After DBs are deleted, update DB subnet group, remove DB specific subnets and add VPC private subnets
 4. Restore DBs from snapshots taken, selecting same configuration options as original DBs (names, VPCs, security groups etc.)
