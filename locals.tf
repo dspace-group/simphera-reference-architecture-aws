@@ -53,11 +53,6 @@ locals {
       }
       k8s_taints = [
         {
-          key      = "purpose",
-          value    = "execution",
-          "effect" = "NO_SCHEDULE"
-        },
-        {
           key      = "team",
           value    = team_name
           "effect" = "NO_SCHEDULE"
@@ -80,11 +75,6 @@ locals {
         "team"    = "${team_name}-gpu"
       }
       k8s_taints = [
-        {
-          key      = "purpose",
-          value    = "execution",
-          "effect" = "NO_SCHEDULE"
-        },
         {
           key      = "team",
           value    = "${team_name}-gpu"
