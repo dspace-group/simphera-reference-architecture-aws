@@ -48,8 +48,7 @@ locals {
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
       k8s_labels = {
-        "purpose" = "execution",
-        "team"    = team_name
+        "team" = team_name
       }
       k8s_taints = [
         {
@@ -71,8 +70,7 @@ locals {
       max_size        = var.linuxExecutionGpuNodeCountMax
       min_size        = var.linuxExecutionGpuNodeCountMin
       k8s_labels = {
-        "purpose" = "execution",
-        "team"    = "${team_name}-gpu"
+        "team" = "${team_name}-gpu"
       }
       k8s_taints = [
         {
