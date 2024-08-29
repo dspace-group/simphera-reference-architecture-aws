@@ -4,7 +4,7 @@ data "aws_ami" "al2gpu_ami" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["*amazon-eks-gpu-node-${var.kubernetesVersion}*"]
+    values = ["amazon-eks-gpu-node-1.28-v20240315"]
   }
 }
 locals {
