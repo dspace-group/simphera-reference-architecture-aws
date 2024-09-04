@@ -60,12 +60,6 @@ data "aws_eks_node_group" "execnodes" {
   node_group_name = replace(module.eks.managed_node_groups[0][var.team_names[count.index]]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
 }
 
-data "aws_eks_node_group" "execnodes_gpu" {
-  count           = var.gpuNodePool ? length(var.team_names) : 0
-  cluster_name    = local.infrastructurename
-  node_group_name = replace(module.eks.managed_node_groups[0]["${var.team_names[count.index]}-gpu"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
-}
-
 data "aws_eks_node_group" "gpuexecnodes" {
   count           = var.gpuNodePool ? 1 : 0
   cluster_name    = local.infrastructurename
@@ -85,18 +79,6 @@ resource "aws_autoscaling_group_tag" "execnodes" {
   tag {
     key   = "k8s.io/cluster-autoscaler/node-template/label/team"
     value = var.team_names[count.index]
-
-    propagate_at_launch = true
-  }
-}
-
-resource "aws_autoscaling_group_tag" "execnodes_gpu" {
-  count                  = var.gpuNodePool ? length(var.team_names) : 0
-  autoscaling_group_name = data.aws_eks_node_group.execnodes_gpu[count.index].resources[0].autoscaling_groups[0].name
-
-  tag {
-    key   = "k8s.io/cluster-autoscaler/node-template/label/team"
-    value = "${var.team_names[count.index]}-gpu"
 
     propagate_at_launch = true
   }
