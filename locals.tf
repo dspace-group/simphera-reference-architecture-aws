@@ -60,27 +60,27 @@ locals {
     }
   }
 
-  exec_gpu_node_pools = {
-    for team_name in var.team_names :
-    "${team_name}-gpu" => {
-      node_group_name = "execnodes-gpu-${team_name}"
-      instance_types  = var.linuxExecutionGpuNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxExecutionGpuNodeCountMin
-      max_size        = var.linuxExecutionGpuNodeCountMax
-      min_size        = var.linuxExecutionGpuNodeCountMin
-      k8s_labels = {
-        "team" = "${team_name}-gpu"
-      }
-      k8s_taints = [
-        {
-          key      = "team",
-          value    = "${team_name}-gpu"
-          "effect" = "NO_SCHEDULE"
-        }
-      ]
-    }
-  }
+  # exec_gpu_node_pools = {
+  #   for team_name in var.team_names :
+  #   "${team_name}-gpu" => {
+  #     node_group_name = "execnodes-gpu-${team_name}"
+  #     instance_types  = var.linuxExecutionGpuNodeSize
+  #     subnet_ids      = module.vpc.private_subnets
+  #     desired_size    = var.linuxExecutionGpuNodeCountMin
+  #     max_size        = var.linuxExecutionGpuNodeCountMax
+  #     min_size        = var.linuxExecutionGpuNodeCountMin
+  #     k8s_labels = {
+  #       "team" = "${team_name}-gpu"
+  #     }
+  #     k8s_taints = [
+  #       {
+  #         key      = "team",
+  #         value    = "${team_name}-gpu"
+  #         "effect" = "NO_SCHEDULE"
+  #       }
+  #     ]
+  #   }
+  # }
 
   gpu_node_pool = {
     "gpuexecnodes" = {
