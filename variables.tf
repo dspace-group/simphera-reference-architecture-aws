@@ -46,24 +46,6 @@ variable "linuxExecutionNodeCountMax" {
   default     = 4
 }
 
-variable "linuxExecutionGpuNodeSize" {
-  type        = list(string)
-  description = "The machine size of the Linux nodes for the job execution"
-  default     = ["g5.2xlarge", "g5.2xlarge"]
-}
-
-variable "linuxExecutionGpuNodeCountMin" {
-  type        = number
-  description = "The minimum number of Linux nodes for the job execution"
-  default     = 0
-}
-
-variable "linuxExecutionGpuNodeCountMax" {
-  type        = number
-  description = "The maximum number of Linux nodes for the job execution"
-  default     = 2
-}
-
 variable "gpuNodePool" {
   type        = bool
   description = "Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster"
