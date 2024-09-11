@@ -5,8 +5,8 @@ content: |
   {{ if .Module.Inputs -}}
     {{- range $index, $element := .Module.Inputs }}
       {{ if $element.Description -}}
-        {{ if gt (len $element.Description) 350 }}
-          {{- range $value := (tostring $element.Description | split ". ") }}# {{ $value }}.
+        {{ if gt (len $element.Description) 120 }}
+          {{- range $value := (tostring $element.Description | split ". ") }}# {{ trimSuffix "." $value }}.
         {{ end -}}
         {{ else -}}
           # {{ tostring $element.Description }}
