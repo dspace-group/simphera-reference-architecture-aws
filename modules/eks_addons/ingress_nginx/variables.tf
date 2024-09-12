@@ -1,3 +1,13 @@
+# variable "version" {
+#   description = ""
+#   type        = string
+# }
+
+# variable "repository" {
+#   description = ""
+#   type        = string
+# }
+
 variable "helm_config" {
   description = "Ingress NGINX Helm Configuration"
   type        = any

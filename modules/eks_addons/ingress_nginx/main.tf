@@ -12,7 +12,7 @@ resource "kubernetes_namespace_v1" "this" {
 }
 
 module "helm_addon" {
-  source = "../helm-addon"
+  source = "../helm_addon"
 
   helm_config = merge(
     {
