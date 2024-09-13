@@ -5,7 +5,7 @@ data "aws_availability_zones" "available" {
 data "aws_caller_identity" "current" {}
 
 data "aws_region" "current" {}
-
+data "aws_partition" "current" {}
 data "aws_vpc" "preconfigured" {
   count = local.create_vpc ? 0 : 1
   id    = var.vpcId

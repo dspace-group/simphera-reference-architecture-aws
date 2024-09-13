@@ -7,9 +7,9 @@ module "ingress_nginx" {
     aws_eks_cluster_endpoint       = module.eks.eks_cluster_endpoint
     aws_partition_id               = data.aws_partition.current.partition
     aws_region_name                = data.aws_region.current.name
-    eks_cluster_id                 = data.aws_eks_cluster.eks_cluster.id
-    eks_oidc_issuer_url            = replace(data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer, "https://", "")
-    eks_oidc_provider_arn          = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${replace(data.aws_eks_cluster.eks_cluster.identity[0].oidc[0].issuer, "https://", "")}"
+    eks_cluster_id                 = data.aws_eks_cluster.cluster.id
+    eks_oidc_issuer_url            = replace(data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer, "https://", "")
+    eks_oidc_provider_arn          = "arn:${data.aws_partition.current.partition}:iam::${data.aws_caller_identity.current.account_id}:oidc-provider/${replace(data.aws_eks_cluster.cluster.identity[0].oidc[0].issuer, "https://", "")}"
     tags                           = var.tags
   }
 
