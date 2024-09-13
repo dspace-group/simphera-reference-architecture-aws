@@ -178,6 +178,19 @@ variable "vpcPublicSubnets" {
   default     = ["10.1.12.0/22", "10.1.16.0/22", "10.1.20.0/22"]
 }
 
+variable "ecr_pullthrough_cache_rule_config" {
+  type = object({
+    enable = bool
+    exist  = bool
+  })
+
+  description = "Specifies if ECR pull through cache rule and accompanying resources will be created. Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster. When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR. If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes. Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created"
+  default = {
+    enable = false
+    exist  = false
+  }
+}
+
 variable "enable_aws_for_fluentbit" {
   type        = bool
   description = "Install FluentBit to send container logs to CloudWatch."
@@ -301,5 +314,5 @@ variable "cloudwatch_retention" {
 variable "cluster_autoscaler_helm_config" {
   type        = any
   description = "Cluster Autoscaler Helm Config"
-  default     = { "version" : "9.28.0" }
+  default     = { "version" : "9.34.1" }
 }

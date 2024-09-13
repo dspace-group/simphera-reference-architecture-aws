@@ -4,11 +4,21 @@ cloudwatch_retention = 7
 
 # Cluster Autoscaler Helm Config
 cluster_autoscaler_helm_config = {
-  "version": "9.28.0"
+  "version": "9.34.1"
 }
 
 # Download link for codemeter rpm package.
 codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
+
+# Specifies if ECR pull through cache rule and accompanying resources will be created.
+# Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster.
+# When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR.
+# If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes.
+# Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created.
+ecr_pullthrough_cache_rule_config = {
+  "enable": false,
+  "exist": false
+}
 
 # Install FluentBit to send container logs to CloudWatch.
 enable_aws_for_fluentbit = false
@@ -18,7 +28,9 @@ enable_ingress_nginx = false
 
 enable_ivs = false
 
-# Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually.
+# Scans license server EC2 instance and EKS nodes for updates.
+# Installs patches on license server automatically.
+# EKS nodes need to be updated manually.
 enable_patching = false
 
 # The maximum number of nodes for gpu job execution
@@ -79,7 +91,9 @@ linuxExecutionNodeCountMin = 0
 # The disk size in GiB of the nodes for the job execution
 linuxExecutionNodeDiskSize = 200
 
-# The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
+# The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region.
+# The list is ordered by priority where the first instance type gets the highest priority.
+# Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxExecutionNodeSize = [
   "m6a.4xlarge",
   "m5a.4xlarge",
@@ -99,7 +113,9 @@ linuxNodeCountMin = 1
 # The disk size in GiB of the nodes for the regular services
 linuxNodeDiskSize = 200
 
-# The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
+# The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region.
+# The list is ordered by priority where the first instance type gets the highest priority.
+# Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxNodeSize = [
   "m6a.4xlarge",
   "m5a.4xlarge",

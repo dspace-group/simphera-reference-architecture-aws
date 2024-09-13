@@ -5,10 +5,15 @@ content: |
   {{ if .Module.Inputs -}}
     {{- range $index, $element := .Module.Inputs }}
       {{ if $element.Description -}}
-        # {{ tostring $element.Description }}
+        {{ if gt (len $element.Description) 120 }}
+          {{- range $value := (tostring $element.Description | split ". ") }}# {{ trimSuffix "." $value }}.
+        {{ end -}}
+        {{ else -}}
+          # {{ tostring $element.Description }}
+        {{ end -}}
       {{ end -}}
-      {{ $element.Name }} = {{ $element.GetValue }}
-    {{ end -}}
+      {{- $element.Name }} = {{ $element.GetValue }}
+    {{ end }}
   {{- end -}}
 settings:
   description: true

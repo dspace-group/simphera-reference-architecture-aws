@@ -237,13 +237,13 @@ Afterwards you can deploy the resources:
 terraform apply
 ```
 
-Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.  
-Installation times may very, but it is expected to take up to 30 min to complete the deployment.  
+Terraform automatically loads the variables from your `terraform.tfvars` variable definition file.
+Installation times may very, but it is expected to take up to 30 min to complete the deployment.
 Note that `eks-addons` module dependency on managed node group(s) is commented out in `k8s.tf` file. This might increase
-deployment time, as various addons might be provisioned before any actual K8s worker node starts, to complete addon deployment.  
+deployment time, as various addons might be provisioned before any actual K8s worker node starts, to complete addon deployment.
 Default timeout for node/addon deployment is 20 minutes, so please be patient.  If this behaviour creates problems, you can
-always uncomment line `depends_on = [module.eks.managed_node_groups]`.  
-It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.  
+always uncomment line `depends_on = [module.eks.managed_node_groups]`.
+It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.
 
 ### Destroy Infrastructure
 
@@ -283,11 +283,14 @@ foreach ($db in $databases){
 }
 ```
 
-You can remove the S3 buckets like this:
+To delete the S3 buckets that contains both versioned and non-versioned objects, the buckets must first be emptied. The following PowerShell script can be used to erase all objects within the buckets and then delete the buckets.
 
 ```powershell
+$profile = "<profile_name>"
 $buckets = terraform output s3_buckets | ConvertFrom-Json
 foreach ($bucket in $buckets){
+  aws s3api delete-objects --bucket $bucket --profile $profile --delete "$(aws s3api list-object-versions --bucket $bucket --profile $profile --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')"
+  aws s3api delete-objects --bucket $bucket --profile $profile --delete "$(aws s3api list-object-versions --bucket $bucket --profile $profile --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}')"
   aws s3 rb s3://$bucket --force --profile $profile
 }
 ```
@@ -426,19 +429,6 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 - CloudWatch logs
 - Backup Vault
 
-## Rotating Credentials
-
-Credentials can be manually rotated:
-Open the secret in the Secrets Manager console and change the passwords manually.
-Fill in the placeholders `<namespace>` and the `<path_to_kubeconfig>` and run the following command to remove SIMPHERA from your Kubernetes cluster:
-
-```bash
-helm delete simphera -n <namespace> --kubeconfig <path_to_kubeconfig>
-```
-
-Reinstall the SIMPHERA Quickstart Helmchart so that all Kubernetes pods and jobs will retrieve the new credentials.
-Important: During credentials rotation, SIMPHERA will not be available for a short period.
-
 ## List of tools with versions needed for Simphera reference architecture deployment
 
 | Tool name | Version |
@@ -457,6 +447,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 5.37.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.4.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.10 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0.0 |
 
 ## Providers
 
@@ -464,6 +455,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | 5.37.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.30.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
 ## Modules
 
@@ -486,15 +478,18 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_install_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_scan_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
+| [aws_ecr_pull_through_cache_rule.dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ecr_pull_through_cache_rule) | resource |
 | [aws_efs_file_system.efs_file_system](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_file_system) | resource |
 | [aws_efs_file_system_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_file_system_policy) | resource |
 | [aws_efs_mount_target.mount_target](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_mount_target) | resource |
 | [aws_flow_log.flowlog](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/flow_log) | resource |
 | [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.ecr_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.flowlogs_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
 | [aws_iam_policy.license_server_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
 | [aws_iam_role.flowlogs_role](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role) | resource |
 | [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.eks-attach-ecr](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.flowlogs_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.license_server_ssm](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.minio_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
@@ -507,6 +502,8 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_s3_bucket_policy.license_server_bucket_ssl](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.buckets_logs_access](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.bucket_logs_encryption](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [aws_secretsmanager_secret.ecr_pullthroughcache_dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.ecr_credentials](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_ssm_maintenance_window.install](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window) | resource |
 | [aws_ssm_maintenance_window.scan](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window) | resource |
 | [aws_ssm_maintenance_window_target.install](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window_target) | resource |
@@ -517,6 +514,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_ssm_patch_baseline.production](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_patch_baseline) | resource |
 | [aws_ssm_patch_group.patch_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_patch_group) | resource |
 | [kubernetes_storage_class_v1.efs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class_v1) | resource |
+| [random_string.policy_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
 | [aws_ami.al2gpu_ami](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/ami) | data source |
 | [aws_ami.amazon_linux_kernel5](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/ami) | data source |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/availability_zones) | data source |
@@ -524,6 +522,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | [aws_eks_node_group.execnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
+| [aws_iam_policy_document.eks_node_custom_inline_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_iam_policy_document.policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/iam_policy_document) | data source |
 | [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/region) | data source |
 | [aws_subnet.private_subnet](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnet) | data source |
@@ -537,8 +536,9 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cloudwatch_retention"></a> [cloudwatch\_retention](#input\_cloudwatch\_retention) | Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs. | `number` | `7` | no |
-| <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Config | `any` | <pre>{<br>  "version": "9.28.0"<br>}</pre> | no |
+| <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Config | `any` | <pre>{<br>  "version": "9.34.1"<br>}</pre> | no |
 | <a name="input_codemeter"></a> [codemeter](#input\_codemeter) | Download link for codemeter rpm package. | `string` | `"https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"` | no |
+| <a name="input_ecr_pullthrough_cache_rule_config"></a> [ecr\_pullthrough\_cache\_rule\_config](#input\_ecr\_pullthrough\_cache\_rule\_config) | Specifies if ECR pull through cache rule and accompanying resources will be created. Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster. When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR. If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes. Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created | <pre>object({<br>    enable = bool<br>    exist  = bool<br>  })</pre> | <pre>{<br>  "enable": false,<br>  "exist": false<br>}</pre> | no |
 | <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
 | <a name="input_enable_ingress_nginx"></a> [enable\_ingress\_nginx](#input\_enable\_ingress\_nginx) | Enable Ingress Nginx add-on | `bool` | `false` | no |
 | <a name="input_enable_ivs"></a> [enable\_ivs](#input\_enable\_ivs) | n/a | `bool` | `false` | no |
@@ -590,5 +590,6 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="output_database_endpoints"></a> [database\_endpoints](#output\_database\_endpoints) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_database_identifiers"></a> [database\_identifiers](#output\_database\_identifiers) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_eks_cluster_id"></a> [eks\_cluster\_id](#output\_eks\_cluster\_id) | Amazon EKS Cluster Name |
+| <a name="output_pullthrough_cache_prefix"></a> [pullthrough\_cache\_prefix](#output\_pullthrough\_cache\_prefix) | n/a |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | S3 buckets from all SIMPHERA instances. |
 <!-- END_TF_DOCS -->
