@@ -25,5 +25,5 @@ module "ingress_nginx" {
   }
   # repository = "https://kubernetes.github.io/ingress-nginx"
   # version    = "4.1.4"
-
+  depends_on = [module.eks.eks_cluster_arn]
 }
