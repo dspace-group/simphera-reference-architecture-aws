@@ -208,12 +208,6 @@ variable "rtMaps_link" {
   default     = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 }
 
-# variable "enable_ingress_nginx" {
-#   type        = bool
-#   description = "Enable Ingress Nginx add-on"
-#   default     = false
-# }
-
 variable "map_accounts" {
   type        = list(string)
   description = "Additional AWS account numbers to add to the aws-auth ConfigMap"
