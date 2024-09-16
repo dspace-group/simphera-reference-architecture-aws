@@ -7,7 +7,6 @@ resource "kubernetes_namespace_v1" "this" {
 }
 
 resource "helm_release" "ingress_nginx" {
-  count                      = var.manage_via_gitops ? 0 : 1
   name                       = var.helm_config["name"]
   repository                 = try(var.helm_config["repository"], null)
   chart                      = var.helm_config["chart"]
