@@ -316,9 +316,3 @@ variable "cluster_autoscaler_helm_config" {
   description = "Cluster Autoscaler Helm Config"
   default     = { "version" : "9.34.1" }
 }
-
-variable "eks_addons_depends_on_mngd_node_groups" {
-  description = "Apply depends_on to eks-addons resource"
-  type        = bool
-  default     = false
-}
