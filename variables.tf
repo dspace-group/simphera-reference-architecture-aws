@@ -208,11 +208,11 @@ variable "rtMaps_link" {
   default     = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 }
 
-variable "enable_ingress_nginx" {
-  type        = bool
-  description = "Enable Ingress Nginx add-on"
-  default     = false
-}
+# variable "enable_ingress_nginx" {
+#   type        = bool
+#   description = "Enable Ingress Nginx add-on"
+#   default     = false
+# }
 
 variable "map_accounts" {
   type        = list(string)
@@ -239,7 +239,27 @@ variable "map_users" {
   description = "Additional IAM users to add to the aws-auth ConfigMap"
   default     = []
 }
-
+variable "ingress_nginx_config" {
+  type = object({
+    enable             = bool
+    helm_repository    = string
+    helm_version       = string
+    container_registry = string
+    internal           = string
+    scheme             = string
+    cert_arn           = string
+  })
+  description = "TODO" #TODO: Add description
+  default = {
+    enable             = false
+    helm_repository    = "https://kubernetes.github.io/ingress-nginx"
+    helm_version       = "4.1.4"
+    container_registry = "registry.k8s.io"
+    internal           = "false"
+    scheme             = "internet-facing"
+    cert_arn           = ""
+  }
+}
 variable "simpheraInstances" {
   type = map(object({
     name                         = string
