@@ -14,16 +14,6 @@ locals {
   }
 }
 
-module "chart_values" {
-  count  = var.ingress_nginx_config.enable ? 1 : 0
-  source = "./modules/merge_yaml"
-  merge_list = [
-    file("${path.module}/templates/ingress_nginx_base_values.yaml"),
-    yamlencode(var.ingress_nginx_config.chart_values),
-    yamlencode(local.subnet_annotations)
-  ]
-}
-
 resource "kubernetes_namespace_v1" "this" {
   count = try(local.helm_config.create_namespace, true) && local.helm_config.namespace != "kube-system" ? 1 : 0
 
@@ -42,8 +32,12 @@ resource "helm_release" "ingress_nginx" {
   description       = "The NGINX HelmChart Ingress Controller deployment configuration"
   create_namespace  = local.helm_config.create_namespace
   dependency_update = true
-  values            = [module.chart_values[0].merged_values]
-  timeout           = 1200
+  values = [
+    file("${path.module}/templates/ingress_nginx_base_values.yaml"),
+    yamlencode(var.ingress_nginx_config.chart_values),
+    yamlencode(local.subnet_annotations)
+  ]
+  timeout = 1200
 
   depends_on = [module.eks.eks_cluster_arn]
 }

@@ -239,10 +239,6 @@ variable "ingress_nginx_config" {
     helm_repository = string
     helm_version    = string
     chart_values    = map(any)
-    # container_registry = string
-    # internal           = string
-    # scheme             = string
-    # cert_arn           = string
   })
   description = "TODO" #TODO: Add description
   default = {
@@ -253,12 +249,10 @@ variable "ingress_nginx_config" {
       controller = {
         images = {
           registry = "registry.k8s.io"
-
         }
         service = {
           annotations = {
-            "service.beta.kubernetes.io/aws-load-balancer-scheme"   = "internet-facing"
-            "service.beta.kubernetes.io/aws-load-balancer-internal" = "false"
+            "service.beta.kubernetes.io/aws-load-balancer-scheme" = "internet-facing"
           }
         }
       }
