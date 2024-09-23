@@ -240,7 +240,7 @@ variable "ingress_nginx_config" {
     helm_version    = string
     chart_values    = map(any)
   })
-  description = "TODO" #TODO: Add description
+  description = "Input configuration for ingress-nginx service deployed with helm release. By setting key 'enabled' to 'true', ingress-nginx service will be deployed. 'helm_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of an ingress-nginx chart."
   default = {
     enable          = false
     helm_repository = "https://kubernetes.github.io/ingress-nginx"
