@@ -1,13 +1,4 @@
 locals {
-  subnet_annotations = {
-    controller = {
-      service = {
-        annotations = {
-          "service.beta.kubernetes.io/aws-load-balancer-subnets" = "${join(", ", local.public_subnets)}"
-        }
-      }
-    }
-  }
   helm_config = {
     namespace        = "nginx"
     create_namespace = true
@@ -33,9 +24,10 @@ resource "helm_release" "ingress_nginx" {
   create_namespace  = local.helm_config.create_namespace
   dependency_update = true
   values = [
-    file("${path.module}/templates/ingress_nginx_base_values.yaml"),
+    templatefile("${path.module}/templates/nginx_values.yaml", {
+      public_subnets = join(", ", local.public_subnets)
+    }),
     yamlencode(var.ingress_nginx_config.chart_values),
-    yamlencode(local.subnet_annotations)
   ]
   timeout = 1200
 
