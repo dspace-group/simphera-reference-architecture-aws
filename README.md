@@ -286,12 +286,23 @@ foreach ($db in $databases){
 To delete the S3 buckets that contains both versioned and non-versioned objects, the buckets must first be emptied. The following PowerShell script can be used to erase all objects within the buckets and then delete the buckets.
 
 ```powershell
-$profile = "<profile_name>"
+$aws_profile = "<profile_name>"
 $buckets = terraform output s3_buckets | ConvertFrom-Json
-foreach ($bucket in $buckets){
-  aws s3api delete-objects --bucket $bucket --profile $profile --delete "$(aws s3api list-object-versions --bucket $bucket --profile $profile --query='{Objects: Versions[].{Key:Key,VersionId:VersionId}}')"
-  aws s3api delete-objects --bucket $bucket --profile $profile --delete "$(aws s3api list-object-versions --bucket $bucket --profile $profile --query='{Objects: DeleteMarkers[].{Key:Key,VersionId:VersionId}}')"
-  aws s3 rb s3://$bucket --force --profile $profile
+foreach ($bucket in $buckets) {
+    Write-Output "Deleting bucket: $bucket" 
+    $deleteObjDict = @{}
+    $deleteObj = New-Object System.Collections.ArrayList
+    aws s3api list-object-versions --bucket $bucket --profile $aws_profile --query '[Versions[*].{ Key:Key , VersionId:VersionId} , DeleteMarkers[*].{ Key:Key , VersionId:VersionId}]' --output json `
+    | ConvertFrom-Json | ForEach-Object { $_ } | ForEach-Object { $deleteObj.add($_) } | Out-Null
+    $n = [math]::Ceiling($deleteObj.Count / 100)
+    for ($i = 0; $i -lt $n; $i++) {
+        $deleteObjDict["Objects"] = $deleteObj[(0 + $i * 100)..(100 * ($i + 1))]
+        $deleteObjDict["Objects"] = $deleteObjDict["Objects"] | Where-Object { $_ -ne $null }
+        $deleteStuff = $deleteObjDict | ConvertTo-Json
+        aws s3api delete-objects --bucket $bucket --profile $aws_profile --delete $deleteStuff | Out-Null
+    }
+    aws s3 rb s3://$bucket --force --profile $aws_profile
+    Write-Output "$bucket bucket deleted"
 }
 ```
 
