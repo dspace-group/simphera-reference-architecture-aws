@@ -38,7 +38,7 @@ locals {
       {
         # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
         #     https://github.com/kubernetes/autoscaler/blob/19fe7aba7ec4007084ccea82221b8a52bac42b34/charts/cluster-autoscaler/values.yaml#L23
-        name  = "autoDiscovery.tags"
+        name  = "autoDiscovery.tags[2]"
         value = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
       }
     ]
