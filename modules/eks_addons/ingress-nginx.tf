@@ -1,22 +1,27 @@
 resource "kubernetes_namespace_v1" "ingress_nginx" {
-  count = try(var.ingress_nginx_helm_config.create_namespace, true) && var.ingress_nginx_helm_config.namespace != "kube-system" && var.enable_ingress_nginx ? 1 : 0
+  count = var.ingress_nginx_config.enable ? 1 : 0
 
   metadata {
-    name = var.ingress_nginx_helm_config.namespace
+    name = "nginx"
   }
 }
 
 resource "helm_release" "ingress_nginx" {
-  count = var.enable_ingress_nginx ? 1 : 0
+  count = var.ingress_nginx_config.enable ? 1 : 0
 
-  namespace         = var.ingress_nginx_helm_config.namespace
-  name              = var.ingress_nginx_helm_config.name
-  chart             = var.ingress_nginx_helm_config.chart
-  repository        = var.ingress_nginx_helm_config.repository
-  version           = var.ingress_nginx_helm_config.version
-  description       = var.ingress_nginx_helm_config.description
-  create_namespace  = var.ingress_nginx_helm_config.create_namespace
-  dependency_update = var.ingress_nginx_helm_config.dependency_update
-  values            = var.ingress_nginx_helm_config.values
-  timeout           = 1200
+  namespace         = "nginx"
+  name              = "ingress-nginx"
+  chart             = "ingress-nginx"
+  repository        = var.ingress_nginx_config.helm_repository
+  version           = var.ingress_nginx_config.helm_version
+  description       = "The NGINX HelmChart Ingress Controller deployment configuration"
+  create_namespace  = true
+  dependency_update = true
+  values = [
+    templatefile("${path.module}/templates/nginx_values.yaml", {
+      public_subnets = join(", ", var.ingress_nginx_config.subnets_ids)
+    }),
+    yamlencode(var.ingress_nginx_config.chart_values)
+  ]
+  timeout = 1200
 }

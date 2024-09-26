@@ -1,20 +1,10 @@
-variable "enable_ingress_nginx" {
-  description = "Enable Ingress Nginx helm release creation"
-  type        = bool
-  default     = false
-}
-
-variable "ingress_nginx_helm_config" {
-  description = "Helm Configuration for Ingress Nginx"
+variable "ingress_nginx_config" {
+  description = "Ingress Nginx configuration"
   type = object({
-    namespace         = string
-    name              = string
-    chart             = string
-    repository        = string
-    version           = string
-    description       = string
-    create_namespace  = bool
-    dependency_update = bool
-    values            = list(string)
+    enable          = bool
+    helm_repository = string
+    helm_version    = string
+    chart_values    = map(any)
+    subnets_ids     = list(string)
   })
 }
