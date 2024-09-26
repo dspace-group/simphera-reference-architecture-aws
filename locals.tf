@@ -34,14 +34,12 @@ locals {
   gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
   cluster_autoscaler_helm_config = {
     version = "9.37.0"
-    set_list = [
+    set = [
       {
         # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
         #     https://github.com/kubernetes/autoscaler/blob/19fe7aba7ec4007084ccea82221b8a52bac42b34/charts/cluster-autoscaler/values.yaml#L23
-        name = "autoDiscovery.tags"
-        value = [
-          "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-        ]
+        name  = "autoDiscovery.tags"
+        value = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
       }
     ]
   }
