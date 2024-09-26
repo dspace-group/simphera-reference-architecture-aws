@@ -208,12 +208,6 @@ variable "rtMaps_link" {
   default     = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 }
 
-variable "enable_ingress_nginx" {
-  type        = bool
-  description = "Enable Ingress Nginx add-on"
-  default     = false
-}
-
 variable "map_accounts" {
   type        = list(string)
   description = "Additional AWS account numbers to add to the aws-auth ConfigMap"
@@ -238,6 +232,33 @@ variable "map_users" {
   }))
   description = "Additional IAM users to add to the aws-auth ConfigMap"
   default     = []
+}
+
+variable "ingress_nginx_config" {
+  type = object({
+    enable          = bool
+    helm_repository = string
+    helm_version    = string
+    chart_values    = map(any)
+  })
+  description = "Input configuration for ingress-nginx service deployed with helm release. By setting key 'enabled' to 'true', ingress-nginx service will be deployed. 'helm_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of an ingress-nginx chart."
+  default = {
+    enable          = false
+    helm_repository = "https://kubernetes.github.io/ingress-nginx"
+    helm_version    = "4.1.4"
+    chart_values = {
+      controller = {
+        images = {
+          registry = "registry.k8s.io"
+        }
+        service = {
+          annotations = {
+            "service.beta.kubernetes.io/aws-load-balancer-scheme" = "internet-facing"
+          }
+        }
+      }
+    }
+  }
 }
 
 variable "simpheraInstances" {
