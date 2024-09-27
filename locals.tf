@@ -36,16 +36,19 @@ locals {
   cluster_autoscaler_helm_config = {
     version = "9.37.0"
     # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
-    set_list = [
-      # Helm value array can only be fully replaced, there is no mechanism to just append values to the list of default tags.
-      # Thus, we manually add the default values from
-      #   https://github.com/kubernetes/autoscaler/blob/19fe7aba7ec4007084ccea82221b8a52bac42b34/charts/cluster-autoscaler/values.yaml#L23
-      # here as well:
-      "k8s.io/cluster-autoscaler/enabled",
-      "k8s.io/cluster-autoscaler/${var.infrastructurename}",
-      # and now our additional value(s)
-      "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-    ]
+    set_list = {
+      name = "autoDiscovery.tags"
+      values = [
+        # Helm value array can only be fully replaced, there is no mechanism to just append values to the list of default tags.
+        # Thus, we manually add the default values from
+        #   https://github.com/kubernetes/autoscaler/blob/19fe7aba7ec4007084ccea82221b8a52bac42b34/charts/cluster-autoscaler/values.yaml#L23
+        # here as well:
+        "k8s.io/cluster-autoscaler/enabled",
+        "k8s.io/cluster-autoscaler/${var.infrastructurename}",
+        # and now our additional value(s)
+        "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+      ]
+    }
   }
 
   default_managed_node_pools = {
