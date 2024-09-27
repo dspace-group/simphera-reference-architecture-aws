@@ -46,6 +46,9 @@ locals {
     "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
   ]
   cluster_autoscaler_helm_config = {
+    # NOTE: This version needs to be updated at least on kubernetes version changes (variables.tf: 'kubernetesVersion').
+    #       See https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#releases
+    #       to determine the correct version.
     version = "9.37.0"
 
     set = [
