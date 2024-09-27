@@ -51,7 +51,7 @@ locals {
     set = [
       {
         name  = "autoDiscovery.tags"
-        value = local.cluster_autoscaler_autodiscovery_tags
+        value = "{${join(",", local.cluster_autoscaler_autodiscovery_tags)}}"
       }
     ]
   }
