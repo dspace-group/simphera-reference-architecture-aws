@@ -48,10 +48,12 @@ locals {
   cluster_autoscaler_helm_config = {
     version = "9.37.0"
 
-    set = {
-      name  = "autoDiscovery.tags"
-      value = join(", ", local.cluster_autoscaler_autodiscovery_tags)
-    }
+    set = [
+      {
+        name  = "autoDiscovery.tags"
+        value = join(",", local.cluster_autoscaler_autodiscovery_tags)
+      }
+    ]
   }
 
   default_managed_node_pools = {
