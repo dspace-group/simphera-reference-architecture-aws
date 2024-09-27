@@ -4,7 +4,7 @@ variable "ingress_nginx_config" {
     enable          = bool
     helm_repository = string
     helm_version    = string
-    chart_values    = map(any)
+    chart_values    = string
     subnets_ids     = list(string)
   })
 }

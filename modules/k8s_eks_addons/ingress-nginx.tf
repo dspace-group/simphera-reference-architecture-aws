@@ -15,13 +15,12 @@ resource "helm_release" "ingress_nginx" {
   repository        = var.ingress_nginx_config.helm_repository
   version           = var.ingress_nginx_config.helm_version
   description       = "The NGINX HelmChart Ingress Controller deployment configuration"
-  create_namespace  = true
   dependency_update = true
   values = [
     templatefile("${path.module}/templates/nginx_values.yaml", {
       public_subnets = join(", ", var.ingress_nginx_config.subnets_ids)
     }),
-    yamlencode(var.ingress_nginx_config.chart_values)
+    var.ingress_nginx_config.chart_values
   ]
   timeout = 1200
 }
