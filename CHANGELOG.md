@@ -17,6 +17,7 @@ efficient EC2 instance type is selected first.
 - RDS DB subnet group is now using VPC private subnets, instead of separate,
 private DB subnets. Please check MIGRATION.md document on procedure how to
 migrate existing deployments.
+- Enabled usage of pull through cache in ECR
 
 ## v0.1.0
 
