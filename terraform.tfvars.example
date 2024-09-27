@@ -54,25 +54,11 @@ gpuNvidiaDriverVersion = "535.54.03"
 infrastructurename = "simphera"
 
 # Input configuration for ingress-nginx service deployed with helm release.
-# By setting key 'enabled' to 'true', ingress-nginx service will be deployed.
+# By setting key 'enable' to 'true', ingress-nginx service will be deployed.
 # 'helm_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm_version' is its respective version of a chart.
 # 'chart_values' is used for changing default values.yaml of an ingress-nginx chart.
 ingress_nginx_config = {
-  "chart_values": {
-    "controller": {
-      "images": {
-        "registry": "registry.k8s.io"
-      },
-      "service": {
-        "annotations": {
-          "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"
-        }
-      }
-    }
-  },
-  "enable": false,
-  "helm_repository": "https://kubernetes.github.io/ingress-nginx",
-  "helm_version": "4.1.4"
+  "enable": false
 }
 
 # 6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule.
