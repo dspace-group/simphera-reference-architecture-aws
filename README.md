@@ -454,7 +454,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1.7 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 5.37.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.4.1 |
 | <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.10 |
@@ -474,7 +474,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 |------|--------|---------|
 | <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.32.1 |
 | <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons | v4.32.1 |
-| <a name="module_eks_addons"></a> [eks\_addons](#module\_eks\_addons) | ./modules/eks_addons | n/a |
+| <a name="module_k8s_eks_addons"></a> [k8s\_eks\_addons](#module\_k8s\_eks\_addons) | ./modules/k8s_eks_addons | n/a |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_security_group_license_server"></a> [security\_group\_license\_server](#module\_security\_group\_license\_server) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_simphera_instance"></a> [simphera\_instance](#module\_simphera\_instance) | ./modules/simphera_aws_instance | n/a |
@@ -561,7 +561,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="input_gpuNodeSize"></a> [gpuNodeSize](#input\_gpuNodeSize) | The machine size of the nodes for the gpu job execution | `list(string)` | <pre>[<br>  "g5.2xlarge"<br>]</pre> | no |
 | <a name="input_gpuNvidiaDriverVersion"></a> [gpuNvidiaDriverVersion](#input\_gpuNvidiaDriverVersion) | The NVIDIA driver version for GPU node group. | `string` | `"535.54.03"` | no |
 | <a name="input_infrastructurename"></a> [infrastructurename](#input\_infrastructurename) | The name of the infrastructure. e.g. simphera-infra | `string` | `"simphera"` | no |
-| <a name="input_ingress_nginx_config"></a> [ingress\_nginx\_config](#input\_ingress\_nginx\_config) | Input configuration for ingress-nginx service deployed with helm release. By setting key 'enabled' to 'true', ingress-nginx service will be deployed. 'helm\_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm\_version' is its respective version of a chart. 'chart\_values' is used for changing default values.yaml of an ingress-nginx chart. | <pre>object({<br>    enable          = bool<br>    helm_repository = string<br>    helm_version    = string<br>    chart_values    = map(any)<br>  })</pre> | <pre>{<br>  "chart_values": {<br>    "controller": {<br>      "images": {<br>        "registry": "registry.k8s.io"<br>      },<br>      "service": {<br>        "annotations": {<br>          "service.beta.kubernetes.io/aws-load-balancer-scheme": "internet-facing"<br>        }<br>      }<br>    }<br>  },<br>  "enable": false,<br>  "helm_repository": "https://kubernetes.github.io/ingress-nginx",<br>  "helm_version": "4.1.4"<br>}</pre> | no |
+| <a name="input_ingress_nginx_config"></a> [ingress\_nginx\_config](#input\_ingress\_nginx\_config) | Input configuration for ingress-nginx service deployed with helm release. By setting key 'enable' to 'true', ingress-nginx service will be deployed. 'helm\_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm\_version' is its respective version of a chart. 'chart\_values' is used for changing default values.yaml of an ingress-nginx chart. | <pre>object({<br>    enable          = bool<br>    helm_repository = optional(string, "https://kubernetes.github.io/ingress-nginx")<br>    helm_version    = optional(string, "4.1.4")<br>    chart_values = optional(string, <<-YAML<br>controller:<br>  images:<br>    registry: "registry.k8s.io"<br>  service:<br>    annotations:<br>      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing<br>YAML<br>    )<br>  })</pre> | <pre>{<br>  "enable": false<br>}</pre> | no |
 | <a name="input_install_schedule"></a> [install\_schedule](#input\_install\_schedule) | 6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan\_schedule. | `string` | `"cron(0 3 * * ? *)"` | no |
 | <a name="input_ivsGpuNodeCountMax"></a> [ivsGpuNodeCountMax](#input\_ivsGpuNodeCountMax) | The maximum number of GPU nodes nodes for IVS jobs | `number` | `2` | no |
 | <a name="input_ivsGpuNodeCountMin"></a> [ivsGpuNodeCountMin](#input\_ivsGpuNodeCountMin) | The minimum number of GPU nodes nodes for IVS jobs | `number` | `0` | no |
