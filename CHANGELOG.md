@@ -15,7 +15,7 @@ compatible with k8s and workload (e.g. cpu type, cpu and memory requests;
 16 Cores, 64 GiB). The list is ordered in such a way, so that the most cost
 efficient EC2 instance type is selected first.
 - RDS DB subnet group is now using VPC private subnets, instead of separate,
-private DB subnets. Please check MIGRATION.md document on procedure how to
+private DB subnets. Please check MAINTENANCE.md document on procedure how to
 migrate existing deployments.
 - Enabled usage of pull through cache in ECR
 
