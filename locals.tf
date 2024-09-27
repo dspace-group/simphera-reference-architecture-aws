@@ -33,7 +33,7 @@ locals {
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
   gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
   # https://github.com/aws-ia/terraform-aws-eks-blueprints/blob/8a06a6e7006e4bed5630bd49c7434d76c59e0b5e/modules/kubernetes-addons/variables.tf#L183
-  cluster_autoscaler_autodiscovery_tags = ["k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"]
+  #cluster_autoscaler_autodiscovery_tags = ["k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"]
   cluster_autoscaler_helm_config = {
     version = "9.37.0"
     # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
@@ -42,9 +42,7 @@ locals {
       <<EOF
       autoDiscovery:
         tags:
-      EOF
-      ] + [for item in local.cluster_autoscaler_autodiscovery_tags : <<EOF
-      - ${item}
+        - k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage
       EOF
     ]
   }
