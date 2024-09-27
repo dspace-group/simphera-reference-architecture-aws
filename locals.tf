@@ -32,15 +32,19 @@ locals {
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
   gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
+  # https://github.com/aws-ia/terraform-aws-eks-blueprints/blob/8a06a6e7006e4bed5630bd49c7434d76c59e0b5e/modules/kubernetes-addons/variables.tf#L183
+  cluster_autoscaler_autodiscovery_tags = ["k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"]
   cluster_autoscaler_helm_config = {
     version = "9.37.0"
-    set = [
-      {
-        # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
-        #     https://github.com/kubernetes/autoscaler/blob/19fe7aba7ec4007084ccea82221b8a52bac42b34/charts/cluster-autoscaler/values.yaml#L23
-        name  = "autoDiscovery.tags[2]"
-        value = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-      }
+    # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
+    #     https://github.com/kubernetes/autoscaler/blob/19fe7aba7ec4007084ccea82221b8a52bac42b34/charts/cluster-autoscaler/values.yaml#L23
+    values.autoDiscovery = [
+      <<EOF
+      tags:
+      EOF
+      ] + [for item in local.cluster_autoscaler_autodiscovery_tags : <<EOF
+      - ${item}
+      EOF
     ]
   }
 
