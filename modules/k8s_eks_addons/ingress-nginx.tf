@@ -9,7 +9,7 @@ resource "kubernetes_namespace_v1" "ingress_nginx" {
 resource "helm_release" "ingress_nginx" {
   count = var.ingress_nginx_config.enable ? 1 : 0
 
-  namespace         = "nginx"
+  namespace         = kubernetes_namespace_v1.ingress_nginx[0].metadata[0].name
   name              = "ingress-nginx"
   chart             = "ingress-nginx"
   repository        = var.ingress_nginx_config.helm_repository
