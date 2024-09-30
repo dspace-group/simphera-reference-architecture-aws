@@ -48,3 +48,25 @@ To update your CA certificate by applying maintenance:
 2. In the navigation pane, choose Certificate update. The Databases requiring certificate update page appears.
 3. Choose the DB instance that you want to update. You can schedule the certificate rotation for your next maintenance window by choosing Schedule. Apply the rotation immediately by choosing Apply now.
 4. You are prompted to confirm the CA certificate rotation. Pick rds-ca-rsa2048-g1 and click Schedule/Confirm.
+
+# Migrate ingress-nginx addon to the module
+To migrate from terraform-aws-eks-blueprint addon ingress-nginx to custom module `modules/k8s_eks_addons/ingress-nginx.tf` follow steps:
+
+1. Enable ingress-nginx in terraform.tfvars
+2. create 'move.tf' in repository root
+3. Add following code:
+```
+moved {
+  from = module.eks-addons.module.ingress_nginx[0].module.helm_addon.helm_release.helm_addon[0]
+  to   = module.k8s_eks_addons.helm_release.ingress_nginx[0]
+}
+moved {
+  from = module.eks-addons.module.ingress_nginx[0].kubernetes_namespace_v1.this[0]
+  to   = module.k8s_eks_addons.kubernetes_namespace_v1.ingress_nginx[0]
+}
+```
+4. Run command:
+```
+terraform apply
+```
+5. Remove `move.tf` file
