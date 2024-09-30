@@ -28,7 +28,6 @@ module "eks-addons" {
   enable_aws_load_balancer_controller  = false
   enable_cluster_autoscaler            = true
   enable_aws_for_fluentbit             = var.enable_aws_for_fluentbit
-  enable_ingress_nginx                 = var.enable_ingress_nginx
   tags                                 = var.tags
   aws_for_fluentbit_helm_config = {
     values = [templatefile("${path.module}/templates/fluentbit_values.yaml", {
@@ -36,17 +35,6 @@ module "eks-addons" {
       log_group_name       = local.log_group_name,
       service_account_name = "aws-for-fluent-bit-sa"
     })]
-    dependency_update = true
-  }
-
-  ingress_nginx_helm_config = {
-    values = [templatefile("${path.module}/templates/nginx_values.yaml", {
-      internal       = "false",
-      scheme         = "internet-facing",
-      public_subnets = join(", ", local.public_subnets)
-    })]
-    namespace         = "nginx",
-    create_namespace  = true
     dependency_update = true
   }
 

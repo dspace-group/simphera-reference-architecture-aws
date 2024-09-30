@@ -1,3 +1,6 @@
+## v0.3.0
+- replaced terraform-aws-eks-blueprint addon ingress-nginx with module `modules/k8s_eks_addons/ingress-nginx.tf`
+
 ## v0.2.0
 
 - added option to use preconfigured VPC and subnets, in case of customers who
