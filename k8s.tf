@@ -38,17 +38,6 @@ module "eks-addons" {
     dependency_update = true
   }
 
-  ingress_nginx_helm_config = {
-    values = [templatefile("${path.module}/templates/nginx_values.yaml", {
-      internal       = "false",
-      scheme         = "internet-facing",
-      public_subnets = join(", ", local.public_subnets)
-    })]
-    namespace         = "nginx",
-    create_namespace  = true
-    dependency_update = true
-  }
-
   cluster_autoscaler_helm_config = merge(local.cluster_autoscaler_helm_config, var.cluster_autoscaler_helm_config)
   #depends_on                     = [module.eks.managed_node_groups]
 }
