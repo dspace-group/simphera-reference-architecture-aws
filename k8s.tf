@@ -38,7 +38,7 @@ module "eks-addons" {
     dependency_update = true
   }
 
-  cluster_autoscaler_helm_config = var.cluster_autoscaler_helm_config
+  cluster_autoscaler_helm_config = merge(local.cluster_autoscaler_helm_config, var.cluster_autoscaler_helm_config)
   #depends_on                     = [module.eks.managed_node_groups]
 }
 
@@ -67,6 +67,19 @@ resource "aws_autoscaling_group_tag" "execnodes" {
   tag {
     key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
     value = "execution"
+
+    propagate_at_launch = true
+  }
+}
+
+# see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
+#     https://github.com/kubernetes/autoscaler/issues/1869#issuecomment-518530724
+resource "aws_autoscaling_group_tag" "execnodes_node-template_resources_ephemeral-storage" {
+  autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
+
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+    value = "${var.linuxExecutionNodeDiskSize}G"
 
     propagate_at_launch = true
   }

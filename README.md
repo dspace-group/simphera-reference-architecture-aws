@@ -485,6 +485,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | Name | Type |
 |------|------|
 | [aws_autoscaling_group_tag.execnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
+| [aws_autoscaling_group_tag.execnodes_node-template_resources_ephemeral-storage](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_autoscaling_group_tag.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_autoscaling_group_tag.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
@@ -548,7 +549,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cloudwatch_retention"></a> [cloudwatch\_retention](#input\_cloudwatch\_retention) | Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs. | `number` | `7` | no |
-| <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Config | `any` | <pre>{<br>  "version": "9.34.1"<br>}</pre> | no |
+| <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Config | `any` | `{}` | no |
 | <a name="input_codemeter"></a> [codemeter](#input\_codemeter) | Download link for codemeter rpm package. | `string` | `"https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"` | no |
 | <a name="input_ecr_pullthrough_cache_rule_config"></a> [ecr\_pullthrough\_cache\_rule\_config](#input\_ecr\_pullthrough\_cache\_rule\_config) | Specifies if ECR pull through cache rule and accompanying resources will be created. Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster. When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR. If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes. Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created | <pre>object({<br>    enable = bool<br>    exist  = bool<br>  })</pre> | <pre>{<br>  "enable": false,<br>  "exist": false<br>}</pre> | no |
 | <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
@@ -568,7 +569,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="input_ivsGpuNodeDiskSize"></a> [ivsGpuNodeDiskSize](#input\_ivsGpuNodeDiskSize) | The disk size in GiB of the nodes for the IVS gpu job execution | `number` | `100` | no |
 | <a name="input_ivsGpuNodePool"></a> [ivsGpuNodePool](#input\_ivsGpuNodePool) | Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster | `bool` | `false` | no |
 | <a name="input_ivsGpuNodeSize"></a> [ivsGpuNodeSize](#input\_ivsGpuNodeSize) | The machine size of the GPU nodes for IVS jobs | `list(string)` | <pre>[<br>  "g4dn.2xlarge"<br>]</pre> | no |
-| <a name="input_kubernetesVersion"></a> [kubernetesVersion](#input\_kubernetesVersion) | The version of the EKS cluster. | `string` | `"1.28"` | no |
+| <a name="input_kubernetesVersion"></a> [kubernetesVersion](#input\_kubernetesVersion) | The kubernetes version of the EKS cluster. | `string` | `"1.30"` | no |
 | <a name="input_licenseServer"></a> [licenseServer](#input\_licenseServer) | Specifies whether a license server VM will be created. | `bool` | `false` | no |
 | <a name="input_linuxExecutionNodeCountMax"></a> [linuxExecutionNodeCountMax](#input\_linuxExecutionNodeCountMax) | The maximum number of Linux nodes for the job execution | `number` | `10` | no |
 | <a name="input_linuxExecutionNodeCountMin"></a> [linuxExecutionNodeCountMin](#input\_linuxExecutionNodeCountMin) | The minimum number of Linux nodes for the job execution | `number` | `0` | no |

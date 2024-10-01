@@ -3,9 +3,7 @@
 cloudwatch_retention = 7
 
 # Cluster Autoscaler Helm Config
-cluster_autoscaler_helm_config = {
-  "version": "9.34.1"
-}
+cluster_autoscaler_helm_config = {}
 
 # Download link for codemeter rpm package.
 codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
@@ -81,8 +79,8 @@ ivsGpuNodeSize = [
   "g4dn.2xlarge"
 ]
 
-# The version of the EKS cluster.
-kubernetesVersion = "1.28"
+# The kubernetes version of the EKS cluster.
+kubernetesVersion = "1.30"
 
 # Specifies whether a license server VM will be created.
 licenseServer = false
