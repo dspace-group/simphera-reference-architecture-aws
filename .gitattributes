@@ -1,0 +1,36 @@
+###############################################################################
+# Set default behavior to automatically normalize line endings.
+###############################################################################
+# Do not attempt any end-of-line conversion upon checkin or checkout.
+* -text
+###############################################################################
+# Convert these files to LF on checkin or checkout.
+###############################################################################
+*.[sS][hH] eol=LF
+*.[mM][dD] eol=LF
+*.[pP][sS]1 eol=LF
+*.[tT][fF] eol=LF
+*.[hH][cC][lL] eol=LF
+*.[yY][mM][lL] eol=LF
+*.[yY][aA][mM][lL] eol=LF
+*.[jJ][sS][oO][nN] eol=LF
+*.tf.example eol=LF
+*.json.example eol=LF
+*.tfvars.example eol=LF
+LICENSE eol=LF
+state-backend-template eol=LF
+###############################################################################
+# Convert these files to CRLF on checkin or checkout.
+###############################################################################
+###############################################################################
+# Define file name extensions for git lfs handling
+###############################################################################
+###############################################################################
+# behavior for image files
+#
+# image files are treated as binary by default.
+###############################################################################
+#*.jpg   binary
+*.png   binary
+#*.gif   binary
+###############################################################################
