@@ -2,8 +2,11 @@
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
 
-# Cluster Autoscaler Helm Config
-cluster_autoscaler_helm_config = {}
+# Input configuration for cluster-autoscaler deployed with helm release.
+# By setting key 'enable' to 'true', cluster-autoscaler release will be deployed.
+# 'helm_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of a cluster-autoscaler chart.
+cluster_autoscaler_config = {}
 
 # Download link for codemeter rpm package.
 codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
