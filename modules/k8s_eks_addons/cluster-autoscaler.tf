@@ -146,7 +146,7 @@ resource "aws_iam_role" "cluster_autoscaler" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "Federated" : var.addon_context.eks_oidc_provider_arn
+          "Federated" : "arn:${var.addon_context.aws_partition_id}:iam::${var.addon_context.aws_caller_identity_account_id}:oidc-provider/${var.addon_context.eks_oidc_issuer_url}"
         },
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
