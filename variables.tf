@@ -331,3 +331,12 @@ variable "cluster_autoscaler_helm_config" {
   description = "Cluster Autoscaler Helm Config"
   default     = {}
 }
+
+variable "coredns_config" {
+  type = object({
+    enable                                          = optional(bool, true)
+    cluster_proportional_autoscaler_helm_repository = optional(string, "https://kubernetes-sigs.github.io/cluster-proportional-autoscaler")
+    cluster_proportional_autoscaler_helm_version    = optional(string, "1.0.1")
+  })
+  description = ""
+}

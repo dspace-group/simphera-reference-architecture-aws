@@ -8,3 +8,12 @@ variable "ingress_nginx_config" {
     subnets_ids     = list(string)
   })
 }
+variable "coredns_config" {
+  type = object({
+    enable                                          = bool
+    cluster_proportional_autoscaler_helm_repository = string
+    cluster_proportional_autoscaler_helm_version    = string
+  })
+  description = ""
+
+}
