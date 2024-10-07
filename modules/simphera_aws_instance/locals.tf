@@ -9,4 +9,3 @@ locals {
   db_keycloak_id           = "${local.instancename}-keycloak"
   backup_vault_name        = "${local.instancename}-backup-vault"
 }
-
