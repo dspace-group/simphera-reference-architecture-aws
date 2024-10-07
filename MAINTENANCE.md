@@ -70,3 +70,40 @@ moved {
 terraform apply
 ```
 5. Remove `move.tf` file
+
+# Migrate cluster-autoscaler addon to the module
+To migrate from terraform-aws-eks-blueprint addon cluster-autoscaler to custom module `modules/k8s_eks_addons/cluster-autoscaler.tf` follow steps:
+
+1. create 'move.tf' in repository root
+2. Add following code:
+```
+moved {
+  from = module.eks-addons.module.cluster_autoscaler[0].data.aws_iam_policy_document.cluster_autoscaler
+  to   = module.k8s_eks_addons.data.aws_iam_policy_document.cluster_autoscaler[0]
+}
+moved {
+  from = module.eks-addons.module.cluster_autoscaler[0].aws_iam_policy.cluster_autoscaler
+  to   = module.k8s_eks_addons.aws_iam_policy.cluster_autoscaler[0]
+}
+moved {
+  from = module.eks-addons.module.cluster_autoscaler[0].module.helm_addon.helm_release.addon[0]
+  to   = module.k8s_eks_addons.helm_release.cluster_autoscaler[0]
+}
+moved {
+  from = module.eks-addons.module.cluster_autoscaler[0].module.helm_addon.module.irsa[0].aws_iam_role.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role.cluster_autoscaler[0]
+}
+moved {
+  from = module.eks-addons.module.cluster_autoscaler[0].module.helm_addon.module.irsa[0].aws_iam_role_policy_attachment.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role_policy_attachment.cluster_autoscaler[0]
+}
+moved {
+  from = module.eks-addons.module.cluster_autoscaler[0].module.helm_addon.module.irsa[0].kubernetes_service_account_v1.irsa[0]
+  to   = module.k8s_eks_addons.kubernetes_service_account_v1.cluster_autoscaler[0]
+}
+```
+3. Run command:
+```
+terraform apply
+```
+4. Remove `move.tf` file

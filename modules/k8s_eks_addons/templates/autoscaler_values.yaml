@@ -2,12 +2,15 @@ awsRegion: ${aws_region}
 
 autoDiscovery:
   clusterName: ${eks_cluster_id}
+  tags:
+    - k8s.io/cluster-autoscaler/enabled
+    - k8s.io/cluster-autoscaler/${infrastructurename}
+    - k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage
 extraArgs:
   aws-use-static-instance-list: true
 
 image:
   tag: ${image_tag}
-
 
 resources:
   limits:
@@ -16,6 +19,3 @@ resources:
   requests:
     cpu: 200m
     memory: 512Mi
-
-nodeSelector:
-  kubernetes.io/os: linux
