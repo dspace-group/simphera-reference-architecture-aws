@@ -4,7 +4,7 @@ autoDiscovery:
   clusterName: ${eks_cluster_id}
   tags:
     - k8s.io/cluster-autoscaler/enabled
-    - k8s.io/cluster-autoscaler/${infrastructurename}
+    - k8s.io/cluster-autoscaler/${cluster_id}
     - k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage
 extraArgs:
   aws-use-static-instance-list: true
