@@ -6,19 +6,19 @@
 ###############################################################################
 # Convert these files to LF on checkin or checkout.
 ###############################################################################
-*.[sS][hH] eol=LF
-*.[mM][dD] eol=LF
-*.[pP][sS]1 eol=LF
-*.[tT][fF] eol=LF
-*.[hH][cC][lL] eol=LF
-*.[yY][mM][lL] eol=LF
-*.[yY][aA][mM][lL] eol=LF
-*.[jJ][sS][oO][nN] eol=LF
-*.tf.example eol=LF
-*.json.example eol=LF
-*.tfvars.example eol=LF
-LICENSE eol=LF
-state-backend-template eol=LF
+*.[sS][hH] text eol=lf
+*.[mM][dD] text eol=lf
+*.[pP][sS]1 text eol=lf
+*.[tT][fF] text eol=lf
+*.[hH][cC][lL] text eol=lf
+*.[yY][mM][lL] text eol=lf
+*.[yY][aA][mM][lL] text eol=lf
+*.[jJ][sS][oO][nN] text eol=lf
+*.tf.example text eol=lf
+*.json.example text eol=lf
+*.tfvars.example text eol=lf
+LICENSE text eol=lf
+state-backend-template text eol=lf
 ###############################################################################
 # Convert these files to CRLF on checkin or checkout.
 ###############################################################################
