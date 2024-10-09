@@ -90,10 +90,10 @@ resource "helm_release" "cluster_autoscaler" {
   version    = var.cluster_autoscaler_config.helm_version
   timeout    = 1200
   values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
-    aws_region     = var.addon_context.aws_region_name
-    eks_cluster_id = var.addon_context.eks_cluster_id
-    image_tag      = "v${var.addon_context.eks_cluster_version}.0"
-    cluster_id     = var.addon_context.eks_cluster_id
+    aws_region      = var.addon_context.aws_region_name
+    eks_cluster_id  = var.addon_context.eks_cluster_id
+    image_tag       = "v${var.addon_context.eks_cluster_version}.0"
+    service_account = local.service_account
     }),
     var.cluster_autoscaler_config.chart_values
   ]

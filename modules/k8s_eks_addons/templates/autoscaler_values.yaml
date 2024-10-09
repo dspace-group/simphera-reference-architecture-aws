@@ -4,7 +4,7 @@ autoDiscovery:
   clusterName: ${eks_cluster_id}
   tags:
     - k8s.io/cluster-autoscaler/enabled
-    - k8s.io/cluster-autoscaler/${cluster_id}
+    - k8s.io/cluster-autoscaler/${eks_cluster_id}
     - k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage
 extraArgs:
   aws-use-static-instance-list: true
@@ -19,3 +19,8 @@ resources:
   requests:
     cpu: 200m
     memory: 512Mi
+
+rbac:
+  serviceAccount:
+    name: ${service_account}
+    create: false
