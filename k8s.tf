@@ -1,5 +1,4 @@
 
-
 module "eks" {
   source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.32.1"
   cluster_version                        = var.kubernetesVersion
