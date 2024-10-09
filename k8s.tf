@@ -97,6 +97,18 @@ resource "aws_autoscaling_group_tag" "gpuexecnodes" {
   }
 }
 
+resource "aws_autoscaling_group_tag" "gpuexecnodes_node-template_resources_ephemeral-storage" {
+  count                  = var.gpuNodePool ? 1 : 0
+  autoscaling_group_name = data.aws_eks_node_group.gpuexecnodes.resources[0].autoscaling_groups[0].name
+
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+    value = "${var.gpuNodeDiskSize}G"
+
+    propagate_at_launch = true
+  }
+}
+
 resource "aws_autoscaling_group_tag" "gpuivsnodes" {
   count                  = var.ivsGpuNodePool ? 1 : 0
   autoscaling_group_name = data.aws_eks_node_group.gpuivsnodes[0].resources[0].autoscaling_groups[0].name
