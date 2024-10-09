@@ -100,27 +100,6 @@ resource "helm_release" "cluster_autoscaler" {
   description       = "Cluster AutoScaler helm Chart deployment configuration."
   dependency_update = true
 
-
-  dynamic "set" {
-    iterator = each_item
-    for_each = [
-      {
-        name  = "rbac.serviceAccount.create"
-        value = "false"
-      },
-      {
-        name  = "rbac.serviceAccount.name"
-        value = local.service_account
-      }
-    ]
-
-    content {
-      name  = each_item.value.name
-      value = each_item.value.value
-      type  = try(each_item.value.type, null)
-    }
-  }
-
   depends_on = [aws_iam_role.cluster_autoscaler]
 }
 
