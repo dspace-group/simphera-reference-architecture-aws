@@ -484,9 +484,11 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 | Name | Type |
 |------|------|
+| [aws_autoscaling_group_tag.default_node-template_resources_ephemeral-storage](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_autoscaling_group_tag.execnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_autoscaling_group_tag.execnodes_node-template_resources_ephemeral-storage](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_autoscaling_group_tag.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
+| [aws_autoscaling_group_tag.gpuexecnodes_node-template_resources_ephemeral-storage](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_autoscaling_group_tag.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
 | [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_install_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
@@ -532,6 +534,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | [aws_ami.amazon_linux_kernel5](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/ami) | data source |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/availability_zones) | data source |
 | [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/caller_identity) | data source |
+| [aws_eks_node_group.default](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.execnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
 | [aws_eks_node_group.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
