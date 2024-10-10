@@ -1,4 +1,3 @@
-
 module "vpc" {
   count                = local.create_vpc ? 1 : 0
   source               = "terraform-aws-modules/vpc/aws"
