@@ -326,8 +326,16 @@ variable "cloudwatch_retention" {
   default     = 7
 }
 
-variable "cluster_autoscaler_helm_config" {
-  type        = any
-  description = "Cluster Autoscaler Helm Config"
+variable "cluster_autoscaler_config" {
+  type = object({
+    enable          = optional(bool, true)
+    helm_repository = optional(string, "https://kubernetes.github.io/autoscaler")
+    helm_version    = optional(string, "9.37.0")
+    chart_values = optional(string, <<-YAML
+
+    YAML
+    )
+  })
+  description = "Input configuration for cluster-autoscaler deployed with helm release. By setting key 'enable' to 'true', cluster-autoscaler release will be deployed. 'helm_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a cluster-autoscaler chart."
   default     = {}
 }

@@ -33,13 +33,6 @@ locals {
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
   gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
 
-  cluster_autoscaler_helm_config = {
-    # NOTE: This version needs to be updated at least on kubernetes version changes (variables.tf: 'kubernetesVersion').
-    #       See https://github.com/kubernetes/autoscaler/tree/master/cluster-autoscaler#releases
-    #       to determine the correct version.
-    version = "9.37.0"
-  }
-
   default_managed_node_pools = {
     "default" = {
       node_group_name = "default"

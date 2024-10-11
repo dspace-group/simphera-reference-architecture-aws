@@ -1,4 +1,3 @@
-
 module "eks" {
   source                                 = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git?ref=v4.32.1"
   cluster_version                        = var.kubernetesVersion
@@ -25,7 +24,6 @@ module "eks-addons" {
   enable_aws_efs_csi_driver            = true
   enable_amazon_eks_aws_ebs_csi_driver = true
   enable_aws_load_balancer_controller  = false
-  enable_cluster_autoscaler            = true
   enable_aws_for_fluentbit             = var.enable_aws_for_fluentbit
   tags                                 = var.tags
   aws_for_fluentbit_helm_config = {
@@ -37,7 +35,6 @@ module "eks-addons" {
     dependency_update = true
   }
 
-  cluster_autoscaler_helm_config = merge(local.cluster_autoscaler_helm_config, var.cluster_autoscaler_helm_config)
   #depends_on                     = [module.eks.managed_node_groups]
 }
 
