@@ -339,3 +339,10 @@ variable "cluster_autoscaler_config" {
   description = "Input configuration for cluster-autoscaler deployed with helm release. By setting key 'enable' to 'true', cluster-autoscaler release will be deployed. 'helm_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a cluster-autoscaler chart."
   default     = {}
 }
+
+variable "coredns_config" {
+  type = object({
+    enable = optional(bool, true)
+  })
+  description = ""
+}

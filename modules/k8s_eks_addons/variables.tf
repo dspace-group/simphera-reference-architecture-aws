@@ -24,3 +24,10 @@ variable "cluster_autoscaler_config" {
   })
 }
 
+variable "coredns_config" {
+  type = object({
+    enable = bool
+  })
+  description = ""
+
+}
