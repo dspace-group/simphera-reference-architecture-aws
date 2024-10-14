@@ -17,9 +17,9 @@ data "aws_eks_addon_version" "coredns" {
   kubernetes_version = var.addon_context.eks_cluster_version
 }
 
-# data "aws_eks_cluster_auth" "coredns" {
-#   name = time_sleep.coredns[0].triggers["eks_cluster_id"]
-# }
+data "aws_eks_cluster_auth" "coredns" {
+  name = var.addon_context.eks_cluster_id
+}
 
 resource "aws_eks_addon" "coredns" {
   count = var.coredns_config.enable ? 1 : 0
@@ -34,17 +34,43 @@ resource "aws_eks_addon" "coredns" {
 
 }
 
-# resource "helm_release" "coredns_cluster_proportional_autoscaler" {
-#   count       = var.coredns_config.enable ? 1 : 0
-#   name        = "cluster-proportional-autoscaler"
-#   repository  = var.coredns_config.cluster_proportional_autoscaler_helm_repository
-#   chart       = "cluster-proportional-autoscaler"
-#   version     = var.coredns_config.cluster_proportional_autoscaler_helm_version
-#   namespace   = "kube-system"
-#   description = "Cluster Proportional Autoscaler Helm Chart"
-#   timeout     = 1200
-#   values = [
-#     file("${path.module}/templates/coredns_cluster_proportional_autoscaler.yaml")
-#   ]
-#   dependency_update = true
-# }
+locals {
+  kubeconfig = yamlencode({
+    apiVersion      = "v1"
+    kind            = "Config"
+    current-context = "terraform"
+    clusters = [{
+      name = var.addon_context.eks_cluster_id
+      cluster = {
+        server = var.addon_context.eks_cluster_endpoint
+      }
+    }]
+    contexts = [{
+      name = "terraform"
+      context = {
+        cluster = var.addon_context.eks_cluster_id
+        user    = "terraform"
+      }
+    }]
+    users = [{
+      name = "terraform"
+      user = {
+        token = data.aws_eks_cluster_auth.coredns.token
+      }
+    }]
+  })
+}
+resource "null_resource" "add_hosts_to_corefile" {
+  depends_on = [aws_eks_addon.coredns]
+  triggers   = {}
+  provisioner "local-exec" {
+    interpreter = ["PowerShell", "-File"]
+    environment = {
+      KUBECONFIG = base64encode(local.kubeconfig)
+    }
+
+    command = <<-EOT
+      ${path.module}/scipts/update_corefile.ps1 -cluster ${var.addon_context.eks_cluster_id} -simphera_fqdn a.b.c.d -kubeconfig <(echo $KUBECONFIG | base64 -d)
+    EOT
+  }
+}
