@@ -342,7 +342,12 @@ variable "cluster_autoscaler_config" {
 
 variable "coredns_config" {
   type = object({
-    enable = optional(bool, true)
+    enable             = optional(bool, true)
+    add_corefile_hosts = optional(bool, false)
+    corefile_hosts     = optional(list(string), [])
   })
-  description = ""
+  description = "Input configuration for AWS EKS add-on coredns. By setting key 'enable' to 'true', coredns add-on is deployed. By setting key 'add_corefile_hosts' to 'true', coredns's Corefile will be updated with hosts block. In hosts block, each item from 'corefile_hosts' will be connected to the ingress-nginx-controller cluster IP."
+  default = {
+    enable = true
+  }
 }

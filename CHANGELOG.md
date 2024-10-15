@@ -1,6 +1,7 @@
 ## v0.3.0
 - replaced terraform-aws-eks-blueprint addon ingress-nginx with module `modules/k8s_eks_addons/ingress-nginx.tf`
 - replaced terraform-aws-eks-blueprint addon cluster-autoscaler with module `modules/k8s_eks_addons/cluster-autoscaler.tf`
+- replaced terraform-aws-eks-blueprint addon coredns with module `modules/k8s_eks_addons/coredns.tf`
 
 ## v0.2.0
 
