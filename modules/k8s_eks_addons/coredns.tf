@@ -17,6 +17,6 @@ resource "aws_eks_addon" "coredns" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   configuration_values        = var.coredns_config.configuration_values
-  tags                        = merge(var.addon_context.tags)
+  tags                        = var.addon_context.tags
 
 }
