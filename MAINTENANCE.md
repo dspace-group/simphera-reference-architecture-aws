@@ -107,3 +107,24 @@ moved {
 terraform apply
 ```
 4. Remove `move.tf` file
+
+# Migrate coredns addon to the module
+To migrate from terraform-aws-eks-blueprint addon cluster-autoscaler to custom module `modules/k8s_eks_addons/coredns.tf` follow steps:
+
+1. create 'move.tf' in repository root
+2. Add following code:
+```
+moved {
+  from = module.eks-addons.module.aws_coredns[0].data.aws_eks_addon_version.this
+  to   = module.k8s_eks_addons.data.aws_eks_addon_version.coredns[0]
+}
+moved {
+  from = module.eks-addons.module.aws_coredns[0].aws_eks_addon.coredns[0]
+  to   = module.k8s_eks_addons.aws_eks_addon.coredns[0]
+}
+```
+3. Run command:
+```
+terraform apply
+```
+4. Remove `move.tf` file

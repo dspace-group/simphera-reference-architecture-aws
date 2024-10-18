@@ -24,3 +24,10 @@ variable "cluster_autoscaler_config" {
   })
 }
 
+variable "coredns_config" {
+  type = object({
+    enable               = optional(bool, true)
+    configuration_values = optional(string, null)
+  })
+  description = "Input configuration for AWS EKS add-on coredns."
+}

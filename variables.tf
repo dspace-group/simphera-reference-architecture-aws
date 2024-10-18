@@ -339,3 +339,14 @@ variable "cluster_autoscaler_config" {
   description = "Input configuration for cluster-autoscaler deployed with helm release. By setting key 'enable' to 'true', cluster-autoscaler release will be deployed. 'helm_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a cluster-autoscaler chart."
   default     = {}
 }
+
+variable "coredns_config" {
+  type = object({
+    enable               = optional(bool, true)
+    configuration_values = optional(string, null)
+  })
+  description = "Input configuration for AWS EKS add-on coredns. By setting key 'enable' to 'true', coredns add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = true
+  }
+}
