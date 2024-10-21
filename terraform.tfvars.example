@@ -11,6 +11,14 @@ cluster_autoscaler_config = {}
 # Download link for codemeter rpm package.
 codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
 
+# Input configuration for AWS EKS add-on coredns.
+# By setting key 'enable' to 'true', coredns add-on is deployed.
+# Key 'configuration_values' is used to change add-on configuration.
+# Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
+coredns_config = {
+  "enable": true
+}
+
 # Specifies if ECR pull through cache rule and accompanying resources will be created.
 # Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster.
 # When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR.
