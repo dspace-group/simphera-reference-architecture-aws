@@ -31,3 +31,11 @@ variable "coredns_config" {
   })
   description = "Input configuration for AWS EKS add-on coredns."
 }
+
+variable "efs_csi_driver_config" {
+  type = object({
+    enable               = optional(bool, true)
+    configuration_values = optional(string, null)
+  })
+  description = "Input configuration for AWS EKS add-on efs csi."
+}
