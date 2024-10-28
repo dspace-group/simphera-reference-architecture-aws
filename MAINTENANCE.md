@@ -137,11 +137,11 @@ To migrate from terraform-aws-eks-blueprint addon kube_proxy to custom module `m
 ```
 moved {
   from = module.eks-addons.module.aws_kube_proxy[0].data.aws_eks_addon_version.this
-  to   = module.k8s_eks_addons.data.aws_eks_addon_version.kube-proxy
+  to   = module.k8s_eks_addons.data.aws_eks_addon_version.kube_proxy
 }
 moved {
   from = module.eks-addons.module.aws_kube_proxy[0].aws_eks_addon.kube_proxy
-  to   = module.k8s_eks_addons.aws_eks_addon.kube-proxy
+  to   = module.k8s_eks_addons.aws_eks_addon.kube_proxy
 }
 ```
 3. Run command:
