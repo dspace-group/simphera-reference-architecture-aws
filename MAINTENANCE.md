@@ -128,3 +128,25 @@ moved {
 terraform apply
 ```
 4. Remove `move.tf` file
+
+# Migrate kube_proxy addon to the module
+To migrate from terraform-aws-eks-blueprint addon kube_proxy to custom module `modules/k8s_eks_addons/kube-proxy.tf` follow steps:
+
+1. create 'move.tf' in repository root
+2. Add following code:
+```
+moved {
+  from = module.eks-addons.module.aws_kube_proxy[0].data.aws_eks_addon_version.this
+  to   = module.k8s_eks_addons.data.aws_eks_addon_version.kube_proxy
+}
+moved {
+  from = module.eks-addons.module.aws_kube_proxy[0].aws_eks_addon.kube_proxy
+  to   = module.k8s_eks_addons.aws_eks_addon.kube_proxy
+}
+```
+3. Run command:
+```
+terraform apply
+```
+4. Remove `move.tf` file
+
