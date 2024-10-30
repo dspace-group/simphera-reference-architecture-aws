@@ -430,6 +430,17 @@ aws backup start-restore-job `
 
 Alternatively, you can [restore the S3 data via the AWS console](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
 
+## GPU node pool 
+
+:warning: In case using the GPU node pool, it is important to make some manual adjustements after creation of the infrastructure has finished.
+
+Action: Add the security group of the "execnodes" node pool to the autoscaling launch template of the "gpuexecnodes":
+
+1. Copy the security group ID of the "execnodes" auto scaling group.
+2. Create a new launch template version for the "gpuexecnodes" node pool.
+3. Add the copied security group ID to the list of security group ids.
+4. Configure the new launch template version as default for the "gpuexecnodes" node pool.
+
 ## Encryption
 
 Encryption is enabled at all AWS resources that are created by Terraform:
