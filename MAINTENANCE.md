@@ -150,3 +150,34 @@ terraform apply
 ```
 4. Remove `move.tf` file
 
+# Migrate ebs_csi addon to the module
+To migrate from terraform-aws-eks-blueprint addon ebs_csi to custom module `modules/k8s_eks_addons/ebs-csi.tf` follow steps:
+
+1. create 'move.tf' in repository root
+2. Add following code:
+```
+moved {
+  from =  module.eks-addons.module.aws_ebs_csi_driver[0].data.aws_eks_addon_version.this
+  to   = module.k8s_eks_addons.data.aws_eks_addon_version.aws_ebs_csi_driver
+}
+moved {
+  from = module.eks-addons.module.aws_ebs_csi_driver[0].aws_eks_addon.aws_ebs_csi_driver[0]
+  to   = module.k8s_eks_addons.aws_eks_addon.aws_ebs_csi_driver
+}
+moved {
+  from = module.eks-addons.module.aws_ebs_csi_driver[0].module.irsa_addon[0].aws_iam_role.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role.ebs_csi_driver_role
+}
+moved {
+  from = module.eks-addons.module.aws_ebs_csi_driver[0].module.irsa_addon[0].aws_iam_role_policy_attachment.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role_policy_attachment.ebs_csi_driver_policy_attachment
+}
+
+```
+3. Run command:
+```
+terraform apply
+```
+4. Remove `move.tf` file
+
+
