@@ -19,14 +19,6 @@ coredns_config = {
   "enable": true
 }
 
-# Input configuration for AWS EKS add-on efs csi driver.
-# By setting key 'enable' to 'true', efs csi driver add-on is deployed.
-# Key 'configuration_values' is used to change add-on configuration.
-# Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
-efs_csi_driver_config = {
-  "enable": true
-}
-
 # Specifies if ECR pull through cache rule and accompanying resources will be created.
 # Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster.
 # When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR.

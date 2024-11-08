@@ -5,9 +5,6 @@
   "coredns_config": {
     "enable": true
   },
-  "efs_csi_driver_config": {
-    "enable": true
-  },
   "ecr_pullthrough_cache_rule_config": {
     "enable": false,
     "exist": false
