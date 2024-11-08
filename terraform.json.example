@@ -9,9 +9,6 @@
     "enable": false,
     "exist": false
   },
-  "efs_csi_driver_config": {
-    "enable": true
-  },
   "enable_aws_for_fluentbit": false,
   "enable_ivs": false,
   "enable_patching": false,

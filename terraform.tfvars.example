@@ -29,14 +29,6 @@ ecr_pullthrough_cache_rule_config = {
   "exist": false
 }
 
-# Input configuration for AWS EKS add-on efs csi driver.
-# By setting key 'enable' to 'true', efs csi driver add-on is deployed.
-# Key 'configuration_values' is used to change add-on configuration.
-# Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
-efs_csi_driver_config = {
-  "enable": true
-}
-
 # Install FluentBit to send container logs to CloudWatch.
 enable_aws_for_fluentbit = false
 
