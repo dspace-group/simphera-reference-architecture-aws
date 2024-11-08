@@ -16,14 +16,13 @@ module "eks" {
 
 
 module "eks-addons" {
-  source                               = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.32.1"
-  eks_cluster_id                       = module.eks.eks_cluster_id
-  enable_amazon_eks_vpc_cni            = true
-  enable_amazon_eks_kube_proxy         = true
-  enable_amazon_eks_aws_ebs_csi_driver = true
-  enable_aws_load_balancer_controller  = false
-  enable_aws_for_fluentbit             = var.enable_aws_for_fluentbit
-  tags                                 = var.tags
+  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.32.1"
+  eks_cluster_id                      = module.eks.eks_cluster_id
+  enable_amazon_eks_vpc_cni           = true
+  enable_aws_load_balancer_controller = false
+  enable_aws_for_fluentbit            = var.enable_aws_for_fluentbit
+  tags                                = var.tags
+
   aws_for_fluentbit_helm_config = {
     values = [templatefile("${path.module}/templates/fluentbit_values.yaml", {
       aws_region           = data.aws_region.current.name,
