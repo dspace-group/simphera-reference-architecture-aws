@@ -1,7 +1,7 @@
 locals {
-  aws_efs_csi_addon_name = "aws-efs-csi-driver"
+  aws_efs_csi_addon_name      = "aws-efs-csi-driver"
   aws_efs_csi_namespace       = "kube-system"
-  aws_efs_csi_service_account = "${local.aws_efs_csi_addon_name}-sa"
+  aws_efs_csi_service_account = "efs-csi-controller-sa"
 }
 
 data "aws_eks_addon_version" "aws_efs_csi_driver" {
@@ -18,16 +18,6 @@ resource "aws_eks_addon" "aws_efs_csi_driver" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   tags                        = var.addon_context.tags
-}
-
-resource "kubernetes_service_account" "efs_csi_driver_sa" {
-  metadata {
-    name      = local.aws_efs_csi_service_account
-    namespace = local.aws_efs_csi_namespace
-    annotations = {
-      "eks.amazonaws.com/role-arn" = aws_iam_role.efs_csi_driver_role.arn
-    }
-  }
 }
 
 resource "aws_iam_role" "efs_csi_driver_role" {
