@@ -5,15 +5,17 @@ locals {
 }
 
 data "aws_eks_addon_version" "aws-mountpoint-s3-csi-driver" {
+  count              = var.s3_csi_config.enable ? 1 : 0
   addon_name         = local.aws_s3_csi_addon_name
   kubernetes_version = var.addon_context.eks_cluster_version
 }
 
 resource "aws_eks_addon" "aws-mountpoint-s3-csi-driver" {
+  count                       = var.s3_csi_config.enable ? 1 : 0
   cluster_name                = var.addon_context.eks_cluster_id
   addon_name                  = local.aws_s3_csi_addon_name
-  addon_version               = data.aws_eks_addon_version.aws-mountpoint-s3-csi-driver.version
-  # service_account_role_arn    = aws_iam_role.s3_csi_driver_role.arn
+  addon_version               = data.aws_eks_addon_version.aws-mountpoint-s3-csi-driver[0].version
+  # service_account_role_arn    = aws_iam_role.s3_csi_driver_role[0].arn
   preserve                    = true
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
@@ -21,6 +23,7 @@ resource "aws_eks_addon" "aws-mountpoint-s3-csi-driver" {
 }
 
 # resource "aws_iam_role" "s3_csi_driver_role" {
+#   count       = var.s3_csi_config.enable ? 1 : 0
 #   name        = format("%s-%s-%s", var.addon_context.eks_cluster_id, trimsuffix(local.aws_s3_csi_service_account, "-sa"), "irsa")
 #   description = "AWS IAM Role for the Kubernetes service account ${local.aws_s3_csi_service_account}."
 
@@ -49,6 +52,7 @@ resource "aws_eks_addon" "aws-mountpoint-s3-csi-driver" {
 # }
 
 # resource "aws_iam_role_policy_attachment" "s3_csi_driver_policy_attachment" {
+#   count      = var.s3_csi_config.enable ? 1 : 0
 #   policy_arn = "arn:aws:iam::aws:policy/service-role/Amazons3CSIDriverPolicy"
-#   role       = aws_iam_role.s3_csi_driver_role.name
+#   role       = aws_iam_role.s3_csi_driver_role[0].name
 # }
