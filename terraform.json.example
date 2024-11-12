@@ -5,9 +5,6 @@
   "coredns_config": {
     "enable": true
   },
-  s3_csi_config = {
-    "enable": true
-  }
   "ecr_pullthrough_cache_rule_config": {
     "enable": false,
     "exist": false
@@ -68,6 +65,9 @@
   "private_subnet_ids": [],
   "public_subnet_ids": [],
   "rtMaps_link": "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2",
+  "s3_csi_config": {
+    "enable": true
+  },
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
