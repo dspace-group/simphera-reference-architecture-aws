@@ -285,8 +285,8 @@ variable "simpheraInstances" {
       enable_keycloak              = true
       postgresqlStorageKeycloak    = 20
       postgresqlMaxStorageKeycloak = 100
-      db_instance_type_keycloak    = "db.t3.large"
-      db_instance_type_simphera    = "db.t3.large"
+      db_instance_type_keycloak    = "db.t4g.large"
+      db_instance_type_simphera    = "db.t4g.large"
       k8s_namespace                = "simphera"
       secretname                   = "aws-simphera-dev-production"
       enable_backup_service        = true

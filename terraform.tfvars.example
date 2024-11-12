@@ -168,8 +168,8 @@ scan_schedule = "cron(0 0 * * ? *)"
 simpheraInstances = {
   "production": {
     "backup_retention": 35,
-    "db_instance_type_keycloak": "db.t3.large",
-    "db_instance_type_simphera": "db.t3.large",
+    "db_instance_type_keycloak": "db.t4g.large",
+    "db_instance_type_simphera": "db.t4g.large",
     "enable_backup_service": true,
     "enable_deletion_protection": true,
     "enable_keycloak": true,
