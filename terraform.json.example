@@ -5,6 +5,9 @@
   "coredns_config": {
     "enable": true
   },
+  s3_csi_config = {
+    "enable": true
+  }
   "ecr_pullthrough_cache_rule_config": {
     "enable": false,
     "exist": false

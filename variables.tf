@@ -350,3 +350,14 @@ variable "coredns_config" {
     enable = true
   }
 }
+
+variable "s3_csi_config" {
+  type = object({
+    enable               = optional(bool, true)
+    configuration_values = optional(string, null)
+  })
+  description = "Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver. By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = true
+  }
+}
