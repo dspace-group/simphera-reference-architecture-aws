@@ -19,14 +19,6 @@ coredns_config = {
   "enable": true
 }
 
-# Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver.
-# By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed.
-# Key 'configuration_values' is used to change add-on configuration.
-# Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
-s3_csi_config = {
-  "enable": true
-}
-
 # Specifies if ECR pull through cache rule and accompanying resources will be created.
 # Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster.
 # When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR.
@@ -168,6 +160,14 @@ public_subnet_ids = []
 
 # Download link for RTMaps license server.
 rtMaps_link = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
+
+# Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver.
+# By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed.
+# Key 'configuration_values' is used to change add-on configuration.
+# Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
+s3_csi_config = {
+  "enable": true
+}
 
 # 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule.
 scan_schedule = "cron(0 0 * * ? *)"
