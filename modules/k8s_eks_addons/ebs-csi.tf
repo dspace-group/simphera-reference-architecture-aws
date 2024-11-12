@@ -1,7 +1,8 @@
 locals {
-  aws_ebs_csi_addon_name      = "aws-ebs-csi-driver"
-  aws_ebs_csi_namespace       = "kube-system"
-  aws_ebs_csi_service_account = "${local.aws_ebs_csi_addon_name}-sa"
+  aws_ebs_csi_addon_name = "aws-ebs-csi-driver"
+  aws_ebs_csi_namespace  = "kube-system"
+  # This service account is automatically created by the add-on.
+  aws_ebs_csi_service_account = "ebs-csi-controller-sa"
 }
 
 data "aws_eks_addon_version" "aws_ebs_csi_driver" {
@@ -18,17 +19,9 @@ resource "aws_eks_addon" "aws_ebs_csi_driver" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   tags                        = var.addon_context.tags
+  configuration_values        = file("${path.module}/templates/ebs_values.yaml")
 }
 
-resource "kubernetes_service_account" "ebs_csi_driver_sa" {
-  metadata {
-    name      = local.aws_ebs_csi_service_account
-    namespace = local.aws_ebs_csi_namespace
-    annotations = {
-      "eks.amazonaws.com/role-arn" = aws_iam_role.ebs_csi_driver_role.arn
-    }
-  }
-}
 resource "aws_iam_role" "ebs_csi_driver_role" {
   name        = format("%s-%s-%s", var.addon_context.eks_cluster_id, trimsuffix(local.aws_ebs_csi_service_account, "-sa"), "irsa")
   description = "AWS IAM Role for the Kubernetes service account ${local.aws_ebs_csi_service_account}."
