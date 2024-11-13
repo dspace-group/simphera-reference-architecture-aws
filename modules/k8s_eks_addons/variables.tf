@@ -34,7 +34,7 @@ variable "coredns_config" {
 
 variable "s3_csi_config" {
   type = object({
-    enable               = optional(bool, true)
+    enable               = optional(bool, false)
     configuration_values = optional(string, null)
   })
   description = "Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver."
