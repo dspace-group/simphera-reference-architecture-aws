@@ -353,7 +353,7 @@ variable "coredns_config" {
 
 variable "s3_csi_config" {
   type = object({
-    enable               = optional(bool, false)
+    enable = optional(bool, false)
     configuration_values = optional(string, <<-YAML
 node:
     tolerateAllTaints: true
