@@ -48,9 +48,6 @@ resource "aws_iam_role" "aws_vpc_cni_role" {
   tags = var.addon_context.tags
 }
 
-
-
-
 resource "aws_iam_role_policy_attachment" "aws_vpc_cni_policy_attachment" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
   role       = aws_iam_role.aws_vpc_cni_role.name
