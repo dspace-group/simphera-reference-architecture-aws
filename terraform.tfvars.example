@@ -167,10 +167,6 @@ rtMaps_link = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_re
 # Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
 s3_csi_config = {
   "enable": false
-  "configuration_values": <<-YAML
-  node:
-    tolerateAllTaints: true
-  YAML
 }
 
 # 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule.
