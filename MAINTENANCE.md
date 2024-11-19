@@ -223,4 +223,33 @@ terraform apply
 ```
 4. Remove `move.tf` file
 
+# Migrate vpc_cni addon to the module
+To migrate from terraform-aws-eks-blueprint addon vpc_cni to custom module `modules/k8s_eks_addons/vpc-cni.tf` follow steps:
+
+1. create 'move.tf' in repository root
+2. Add following code:
+```
+moved {
+  from = module.eks-addons.module.aws_vpc_cni[0].data.aws_eks_addon_version.this
+  to   = module.k8s_eks_addons.data.aws_eks_addon_version.aws_vpc_cni
+}
+moved {
+  from = module.eks-addons.module.aws_vpc_cni[0].aws_eks_addon.vpc_cni
+  to   = module.k8s_eks_addons.aws_eks_addon.aws_vpc_cni
+}
+moved {
+  from = module.eks-addons.module.aws_vpc_cni[0].module.irsa_addon[0].aws_iam_role.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role.aws_vpc_cni_role
+}
+moved {
+  from = module.eks-addons.module.aws_vpc_cni[0].module.irsa_addon[0].aws_iam_role_policy_attachment.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role_policy_attachment.aws_vpc_cni_policy_attachment
+}
+
+```
+3. Run command:
+```
+terraform apply
+```
+4. Remove `move.tf` file
 

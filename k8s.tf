@@ -18,7 +18,6 @@ module "eks" {
 module "eks-addons" {
   source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.32.1"
   eks_cluster_id                      = module.eks.eks_cluster_id
-  enable_amazon_eks_vpc_cni           = true
   enable_aws_load_balancer_controller = false
   enable_aws_for_fluentbit            = var.enable_aws_for_fluentbit
   tags                                = var.tags
