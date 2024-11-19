@@ -1,9 +1,10 @@
 module "k8s_eks_addons" {
   source = "./modules/k8s_eks_addons"
 
-  ingress_nginx_config      = merge(var.ingress_nginx_config, { subnets_ids = local.public_subnets })
-  cluster_autoscaler_config = var.cluster_autoscaler_config
-  coredns_config            = var.coredns_config
+  ingress_nginx_config                = merge(var.ingress_nginx_config, { subnets_ids = local.public_subnets })
+  cluster_autoscaler_config           = var.cluster_autoscaler_config
+  coredns_config                      = var.coredns_config
+  aws_load_balancer_controller_config = var.aws_load_balancer_controller_config
 
   addon_context = {
     aws_caller_identity_account_id = data.aws_caller_identity.current.account_id

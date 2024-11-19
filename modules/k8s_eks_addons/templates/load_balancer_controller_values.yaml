@@ -1,0 +1,8 @@
+clusterName: ${eks_cluster_id}
+region: ${aws_region}
+image:
+  repository: ${repository}
+rbac:
+  serviceAccount:
+    name: ${service_account}
+    create: false

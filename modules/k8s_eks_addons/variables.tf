@@ -31,3 +31,13 @@ variable "coredns_config" {
   })
   description = "Input configuration for AWS EKS add-on coredns."
 }
+
+variable "aws_load_balancer_controller_config" {
+  description = "AWS Load Balancer Controller configuration."
+  type = object({
+    enable          = bool
+    helm_repository = string
+    helm_version    = string
+    chart_values    = string
+  })
+}
