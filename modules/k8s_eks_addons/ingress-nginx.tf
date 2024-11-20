@@ -1,7 +1,3 @@
-# locals {
-#   aws_load_balancer_type = var.aws_load_balancer_controller_config.enable ? "external" : "nlb"
-#   chart_values           = var.aws_load_balancer_controller_config.enable ? var.aws_load_balancer_controller_config.chart_values : var.ingress_nginx_config.chart_values
-# }
 resource "kubernetes_namespace_v1" "ingress_nginx" {
   count = var.ingress_nginx_config.enable ? 1 : 0
 
@@ -22,11 +18,10 @@ resource "helm_release" "ingress_nginx" {
   dependency_update = true
   values = [
     templatefile("${path.module}/templates/nginx_values.yaml", {
-      public_subnets = join(", ", var.ingress_nginx_config.subnets_ids)
-      #aws_load_balancer_type = local.aws_load_balancer_type
+      public_subnets         = join(", ", var.ingress_nginx_config.subnets_ids)
+      protocol               = var.aws_load_balancer_controller_config.enable ? "ssl" : "tcp"
       aws_load_balancer_type = var.aws_load_balancer_controller_config.enable ? "external" : "nlb"
     }),
-    #local.chart_values
     var.aws_load_balancer_controller_config.enable ? var.aws_load_balancer_controller_config.chart_values : var.ingress_nginx_config.chart_values
   ]
   timeout = 1200

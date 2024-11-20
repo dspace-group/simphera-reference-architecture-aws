@@ -351,9 +351,24 @@ variable "coredns_config" {
   }
 }
 
+variable "s3_csi_config" {
+  type = object({
+    enable = optional(bool, false)
+    configuration_values = optional(string, <<-YAML
+node:
+    tolerateAllTaints: true
+YAML
+    )
+  })
+  description = "Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver. By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = false
+  }
+}
+
 variable "aws_load_balancer_controller_config" {
   type = object({
-    enable          = optional(bool, true)
+    enable          = optional(bool, false)
     helm_repository = optional(string, "https://aws.github.io/eks-charts")
     helm_version    = optional(string, "1.4.5")
     chart_values = optional(string, <<-YAML
@@ -369,19 +384,4 @@ YAML
   })
   description = "Input configuration for load_balancer_controller deployed with helm release. By setting key 'enable' to 'true', load_balancer_controller release will be deployed. 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart."
   default     = {}
-}
-
-variable "s3_csi_config" {
-  type = object({
-    enable = optional(bool, false)
-    configuration_values = optional(string, <<-YAML
-node:
-    tolerateAllTaints: true
-YAML
-    )
-  })
-  description = "Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver. By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
-  default = {
-    enable = false
-  }
 }

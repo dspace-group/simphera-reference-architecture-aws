@@ -6,3 +6,7 @@ rbac:
   serviceAccount:
     name: ${service_account}
     create: false
+
+serviceAccount:
+  create: false
+  name: ${service_account}

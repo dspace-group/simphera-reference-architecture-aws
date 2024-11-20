@@ -19,6 +19,14 @@ coredns_config = {
   "enable": true
 }
 
+# Input configuration for aws-load-balancer-controller deployed with helm release.
+# By setting key 'enable' to 'true', aws-load-balancer-controller release will be deployed.
+# 'helm_repository' is an URL for the repository of aws-load-balancer-controller helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of a aws-load-balancer-controller chart.
+aws_load_balancer_controller_config = {
+  "enable" : true
+}
+
 # Specifies if ECR pull through cache rule and accompanying resources will be created.
 # Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster.
 # When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR.
