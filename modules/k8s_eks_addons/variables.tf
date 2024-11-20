@@ -41,6 +41,7 @@ variable "aws_load_balancer_controller_config" {
     chart_values    = string
   })
 }
+
 variable "s3_csi_config" {
   type = object({
     enable               = optional(bool, false)
