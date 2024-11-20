@@ -181,11 +181,6 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
       "elasticloadbalancing:RemoveTags",
     ]
 
-    condition {
-      test     = "Null"
-      variable = "aws:ResourceTag/ingress.k8s.aws/cluster"
-      values   = ["false"]
-    }
   }
 
   statement {
