@@ -10,9 +10,10 @@
 **/*.tfvars
 !common/config_template.tfvars
 !instance/config_template.tfvars
+!terraform.tfvars
 
 # all state-backends
-**/state-backend.tf
+# **/state-backend.tf
 
 
 **/OLD_*
