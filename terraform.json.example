@@ -1,4 +1,5 @@
 {
+  "aws_load_balancer_controller_config": {},
   "cloudwatch_retention": 7,
   "cluster_autoscaler_config": {},
   "codemeter": "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd",
@@ -9,7 +10,6 @@
     "enable": false,
     "exist": false
   },
-  "enable_aws_for_fluentbit": false,
   "enable_ivs": false,
   "enable_patching": false,
   "gpuNodeCountMax": 12,
