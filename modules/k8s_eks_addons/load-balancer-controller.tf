@@ -403,7 +403,7 @@ resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller" {
 }
 
 
-resource "helm_release" "aws-load-balancer-controller" {
+resource "helm_release" "aws_load_balancer_controller" {
   count = var.aws_load_balancer_controller_config.enable ? 1 : 0
 
   name       = local.aws_load_balancer_controller_name
@@ -423,5 +423,5 @@ resource "helm_release" "aws-load-balancer-controller" {
   description       = "AWS load balancer controller helm chart deployment configuration for ingress resources"
   dependency_update = true
 
-  depends_on = [aws_iam_role.aws_load_balancer_controller]
+  depends_on = [helm_release.cluster_autoscaler]
 }

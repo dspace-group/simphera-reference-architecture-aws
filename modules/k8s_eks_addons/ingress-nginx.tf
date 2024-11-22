@@ -24,5 +24,6 @@ resource "helm_release" "ingress_nginx" {
     }),
     var.aws_load_balancer_controller_config.enable ? var.aws_load_balancer_controller_config.chart_values : var.ingress_nginx_config.chart_values
   ]
-  timeout = 1200
+  timeout    = 1200
+  depends_on = [helm_release.aws_load_balancer_controller, kubernetes_namespace_v1.ingress_nginx]
 }

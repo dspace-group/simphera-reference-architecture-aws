@@ -306,17 +306,7 @@ foreach ($bucket in $buckets) {
 }
 ```
 
-The remaining infrastructure resources can be deleted via Terraform.
-Due to a bug, Terraform is not able to properly [plan the removal of resources in the right order](https://github.com/aws-ia/terraform-aws-eks-blueprints/issues/353) which leads to a deadlock.
-To workaround the bug, you need to need to remove the `eks-addons` module at first:
-
-```sh
-terraform destroy -target="module.eks-addons"
-```
-
-:warning: **It is important that you have completed the preceding steps. Otherwise, the following command will not finish completly, leaving you in a deadlock state.**
-
-To delete the remaining resources, run the following command:
+The remaining infrastructure resources can be deleted via Terraform by running the following command.
 
 ```sh
 terraform destroy
