@@ -191,12 +191,6 @@ variable "ecr_pullthrough_cache_rule_config" {
   }
 }
 
-variable "enable_aws_for_fluentbit" {
-  type        = bool
-  description = "Install FluentBit to send container logs to CloudWatch."
-  default     = false
-}
-
 variable "enable_ivs" {
   type    = bool
   default = false
