@@ -352,7 +352,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
 resource "aws_iam_policy" "aws_load_balancer_controller" {
   count       = var.aws_load_balancer_controller_config.enable ? 1 : 0
   name        = "${var.addon_context.eks_cluster_id}-aws-load-balancer-controller-irsa"
-  description = "AWS Load Balancer Controller ntroller IAM policy"
+  description = "AWS Load Balancer Controller IAM policy"
   policy      = data.aws_iam_policy_document.aws_load_balancer_controller[0].json
   tags        = var.addon_context.tags
 }
@@ -418,10 +418,7 @@ resource "helm_release" "aws_load_balancer_controller" {
     repository      = "${local.amazon_container_image_registry_uris[var.addon_context.aws_region_name]}/amazon/aws-load-balancer-controller"
     service_account = local.aws_load_balancer_controller_service_account
     }),
-    var.aws_load_balancer_controller_config.chart_values
   ]
   description       = "AWS load balancer controller helm chart deployment configuration for ingress resources"
   dependency_update = true
-
-  depends_on = [helm_release.cluster_autoscaler]
 }

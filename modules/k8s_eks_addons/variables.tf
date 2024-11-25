@@ -6,11 +6,12 @@ variable "addon_context" {
 variable "ingress_nginx_config" {
   description = "Ingress Nginx configuration"
   type = object({
-    enable          = bool
-    helm_repository = string
-    helm_version    = string
-    chart_values    = string
-    subnets_ids     = list(string)
+    enable               = bool
+    helm_repository      = string
+    helm_version         = string
+    chart_values         = string
+    aws_lbc_chart_values = string
+    subnets_ids          = list(string)
   })
 }
 
@@ -38,7 +39,6 @@ variable "aws_load_balancer_controller_config" {
     enable          = bool
     helm_repository = string
     helm_version    = string
-    chart_values    = string
   })
 }
 

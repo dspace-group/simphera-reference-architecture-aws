@@ -22,8 +22,8 @@ resource "helm_release" "ingress_nginx" {
       protocol               = var.aws_load_balancer_controller_config.enable ? "ssl" : "tcp"
       aws_load_balancer_type = var.aws_load_balancer_controller_config.enable ? "external" : "nlb"
     }),
-    var.aws_load_balancer_controller_config.enable ? var.aws_load_balancer_controller_config.chart_values : var.ingress_nginx_config.chart_values
+    var.aws_load_balancer_controller_config.enable ? var.ingress_nginx_config.aws_lbc_chart_values : var.ingress_nginx_config.chart_values
   ]
   timeout    = 1200
-  depends_on = [helm_release.aws_load_balancer_controller, kubernetes_namespace_v1.ingress_nginx]
+  depends_on = [helm_release.aws_load_balancer_controller]
 }

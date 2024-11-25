@@ -242,6 +242,16 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
 YAML
     )
+    aws_lbc_chart_values = optional(string, <<-YAML
+controller:
+  images:
+    registry: "registry.k8s.io"
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
+YAML
+    )
   })
   description = "Input configuration for ingress-nginx service deployed with helm release. By setting key 'enable' to 'true', ingress-nginx service will be deployed. 'helm_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of an ingress-nginx chart."
   default = {
@@ -365,16 +375,6 @@ variable "aws_load_balancer_controller_config" {
     enable          = optional(bool, false)
     helm_repository = optional(string, "https://aws.github.io/eks-charts")
     helm_version    = optional(string, "1.4.5")
-    chart_values = optional(string, <<-YAML
-controller:
-  images:
-    registry: "registry.k8s.io"
-  service:
-    annotations:
-      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
-      service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip
-YAML
-    )
   })
   description = "Input configuration for load_balancer_controller deployed with helm release. By setting key 'enable' to 'true', load_balancer_controller release will be deployed. 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart."
   default     = {}
