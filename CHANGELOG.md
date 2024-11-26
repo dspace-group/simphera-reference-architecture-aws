@@ -8,7 +8,7 @@
 - replaced terraform-aws-eks-blueprint addon ebs-csi-driver with module `modules/k8s_eks_addons/ebs-csi.tf`
 - replaced terraform-aws-eks-blueprint addon vpc-cni with module `modules/k8s_eks_addons/vpc-cni.tf`
 - added addon aws-mountpoint-s3-csi-driver with module `modules/k8s_eks_addons/s3-csi.tf`
-- replaced terraform-aws-eks-blueprint addon aws-load-balancer-controller with module `modules/k8s_eks_addons/ aws-load-balancer-controller.tf`
+- replaced terraform-aws-eks-blueprint addon aws-load-balancer-controller with module `modules/k8s_eks_addons/aws-load-balancer-controller.tf`
 
 ## v0.2.0
 

@@ -7,6 +7,7 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-target-node-labels: kubernetes.io/os=linux
       service.beta.kubernetes.io/aws-load-balancer-subnets: "${public_subnets}"
       service.beta.kubernetes.io/aws-load-balancer-type: "${aws_load_balancer_type}"
+      ${aws_load_target-type}
   metrics:
     enabled: true
     port: 10254

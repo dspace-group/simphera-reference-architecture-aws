@@ -21,8 +21,9 @@ resource "helm_release" "ingress_nginx" {
       public_subnets         = join(", ", var.ingress_nginx_config.subnets_ids)
       protocol               = var.aws_load_balancer_controller_config.enable ? "ssl" : "tcp"
       aws_load_balancer_type = var.aws_load_balancer_controller_config.enable ? "external" : "nlb"
+      aws_load_target-type   = var.aws_load_balancer_controller_config.enable ? "service.beta.kubernetes.io/aws-load-balancer-nlb-target-type: ip" : ""
     }),
-    var.aws_load_balancer_controller_config.enable ? var.ingress_nginx_config.aws_lbc_chart_values : var.ingress_nginx_config.chart_values
+    var.ingress_nginx_config.chart_values
   ]
   timeout    = 1200
   depends_on = [helm_release.aws_load_balancer_controller]
