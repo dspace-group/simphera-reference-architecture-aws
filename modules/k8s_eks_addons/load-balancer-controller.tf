@@ -418,6 +418,7 @@ resource "helm_release" "aws_load_balancer_controller" {
     repository      = "${local.amazon_container_image_registry_uris[var.addon_context.aws_region_name]}/amazon/aws-load-balancer-controller"
     service_account = local.aws_load_balancer_controller_service_account
     }),
+    var.aws_load_balancer_controller_config.chart_values
   ]
   description       = "AWS load balancer controller helm chart deployment configuration for ingress resources"
   dependency_update = true
