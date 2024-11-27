@@ -1,4 +1,12 @@
 
+# Input configuration for load_balancer_controller deployed with helm release.
+# By setting key 'enable' to 'true', load_balancer_controller release will be deployed.
+# 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart.
+aws_load_balancer_controller_config = {
+  "enable": false
+}
+
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
 
@@ -28,9 +36,6 @@ ecr_pullthrough_cache_rule_config = {
   "enable": false,
   "exist": false
 }
-
-# Install FluentBit to send container logs to CloudWatch.
-enable_aws_for_fluentbit = false
 
 enable_ivs = false
 
