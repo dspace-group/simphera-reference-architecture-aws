@@ -3,7 +3,7 @@ data "aws_ami" "al2gpu_ami" {
   most_recent = true
   filter {
     name   = "name"
-    values = ["*amazon-eks-gpu-node-${var.kubernetesVersion}*"]
+    values = ["*ubuntu-eks/k8s_${var.kubernetesVersion}/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server*"]
   }
 }
 
@@ -30,7 +30,6 @@ locals {
   private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
-  gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
 
   default_managed_node_pools = {
     "default" = {
@@ -74,7 +73,12 @@ locals {
       disk_size              = var.gpuNodeDiskSize
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
-      post_userdata          = local.gpuPostUserData
+      block_device_mappings = [{
+        device_name           = "/dev/sda1"
+        volume_type           = "gp2"
+        volume_size           = 128
+        delete_on_termination = true
+      }]
       k8s_labels = {
         "purpose" = "gpu"
       }
@@ -99,7 +103,12 @@ locals {
       disk_size              = var.ivsGpuNodeDiskSize
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
-      post_userdata          = local.gpuPostUserData
+      block_device_mappings = [{
+        device_name           = "/dev/sda1"
+        volume_type           = "gp2"
+        volume_size           = 128
+        delete_on_termination = true
+      }]
       k8s_labels = {
         "product" = "ivs",
         "purpose" = "gpu"
