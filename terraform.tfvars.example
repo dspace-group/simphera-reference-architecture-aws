@@ -61,9 +61,6 @@ gpuNodeSize = [
   "g5.2xlarge"
 ]
 
-# The NVIDIA driver version for GPU node group.
-gpuNvidiaDriverVersion = "535.54.03"
-
 # The name of the infrastructure. e.g. simphera-infra
 infrastructurename = "simphera"
 
