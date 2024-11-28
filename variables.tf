@@ -118,12 +118,6 @@ variable "ivsGpuNodeDiskSize" {
   default     = 100
 }
 
-variable "gpuNvidiaDriverVersion" {
-  type        = string
-  description = "The NVIDIA driver version for GPU node group."
-  default     = "535.54.03"
-}
-
 variable "licenseServer" {
   type        = bool
   description = "Specifies whether a license server VM will be created."
