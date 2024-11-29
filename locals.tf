@@ -13,7 +13,6 @@ locals {
   use_private_subnets_ids                   = length(var.private_subnet_ids) == 0 ? false : true
   use_public_subnet_ids                     = length(var.public_subnet_ids) == 0 ? false : true
   infrastructurename                        = var.infrastructurename
-  log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
   account_id                                = data.aws_caller_identity.current.account_id
   region                                    = data.aws_region.current.name
   license_server_role                       = "${local.infrastructurename}-license-server-role"

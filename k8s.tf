@@ -14,26 +14,6 @@ module "eks" {
   managed_node_groups                    = merge(local.default_managed_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
 }
 
-
-module "eks-addons" {
-  source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.32.1"
-  eks_cluster_id                      = module.eks.eks_cluster_id
-  enable_aws_load_balancer_controller = false
-  enable_aws_for_fluentbit            = var.enable_aws_for_fluentbit
-  tags                                = var.tags
-
-  aws_for_fluentbit_helm_config = {
-    values = [templatefile("${path.module}/templates/fluentbit_values.yaml", {
-      aws_region           = data.aws_region.current.name,
-      log_group_name       = local.log_group_name,
-      service_account_name = "aws-for-fluent-bit-sa"
-    })]
-    dependency_update = true
-  }
-
-  #depends_on                     = [module.eks.managed_node_groups]
-}
-
 data "aws_eks_node_group" "default" {
   cluster_name    = local.infrastructurename
   node_group_name = replace(module.eks.managed_node_groups[0]["default"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")

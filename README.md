@@ -306,17 +306,7 @@ foreach ($bucket in $buckets) {
 }
 ```
 
-The remaining infrastructure resources can be deleted via Terraform.
-Due to a bug, Terraform is not able to properly [plan the removal of resources in the right order](https://github.com/aws-ia/terraform-aws-eks-blueprints/issues/353) which leads to a deadlock.
-To workaround the bug, you need to need to remove the `eks-addons` module at first:
-
-```sh
-terraform destroy -target="module.eks-addons"
-```
-
-:warning: **It is important that you have completed the preceding steps. Otherwise, the following command will not finish completly, leaving you in a deadlock state.**
-
-To delete the remaining resources, run the following command:
+The remaining infrastructure resources can be deleted via Terraform by running the following command.
 
 ```sh
 terraform destroy
@@ -473,7 +463,6 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.32.1 |
-| <a name="module_eks-addons"></a> [eks-addons](#module\_eks-addons) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons | v4.32.1 |
 | <a name="module_k8s_eks_addons"></a> [k8s\_eks\_addons](#module\_k8s\_eks\_addons) | ./modules/k8s_eks_addons | n/a |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_security_group_license_server"></a> [security\_group\_license\_server](#module\_security\_group\_license\_server) | terraform-aws-modules/security-group/aws | ~> 4 |
@@ -552,12 +541,12 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_aws_load_balancer_controller_config"></a> [aws\_load\_balancer\_controller\_config](#input\_aws\_load\_balancer\_controller\_config) | Input configuration for load\_balancer\_controller deployed with helm release. By setting key 'enable' to 'true', load\_balancer\_controller release will be deployed. 'helm\_repository' is an URL for the repository of load\_balancer\_controller helm chart, where 'helm\_version' is its respective version of a chart. 'chart\_values' is used for changing default values.yaml of a load\_balancer\_controller chart. | <pre>object({<br>    enable          = optional(bool, false)<br>    helm_repository = optional(string, "https://aws.github.io/eks-charts")<br>    helm_version    = optional(string, "1.4.5")<br>    chart_values = optional(string, <<-YAML<br><br>    YAML<br>    )<br>  })</pre> | <pre>{<br>  "enable": false<br>}</pre> | no |
 | <a name="input_cloudwatch_retention"></a> [cloudwatch\_retention](#input\_cloudwatch\_retention) | Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs. | `number` | `7` | no |
 | <a name="input_cluster_autoscaler_config"></a> [cluster\_autoscaler\_config](#input\_cluster\_autoscaler\_config) | Input configuration for cluster-autoscaler deployed with helm release. By setting key 'enable' to 'true', cluster-autoscaler release will be deployed. 'helm\_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm\_version' is its respective version of a chart. 'chart\_values' is used for changing default values.yaml of a cluster-autoscaler chart. | <pre>object({<br>    enable          = optional(bool, true)<br>    helm_repository = optional(string, "https://kubernetes.github.io/autoscaler")<br>    helm_version    = optional(string, "9.37.0")<br>    chart_values = optional(string, <<-YAML<br><br>    YAML<br>    )<br>  })</pre> | `{}` | no |
 | <a name="input_codemeter"></a> [codemeter](#input\_codemeter) | Download link for codemeter rpm package. | `string` | `"https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"` | no |
 | <a name="input_coredns_config"></a> [coredns\_config](#input\_coredns\_config) | Input configuration for AWS EKS add-on coredns. By setting key 'enable' to 'true', coredns add-on is deployed. Key 'configuration\_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/). | <pre>object({<br>    enable               = optional(bool, true)<br>    configuration_values = optional(string, null)<br>  })</pre> | <pre>{<br>  "enable": true<br>}</pre> | no |
 | <a name="input_ecr_pullthrough_cache_rule_config"></a> [ecr\_pullthrough\_cache\_rule\_config](#input\_ecr\_pullthrough\_cache\_rule\_config) | Specifies if ECR pull through cache rule and accompanying resources will be created. Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster. When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR. If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes. Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created | <pre>object({<br>    enable = bool<br>    exist  = bool<br>  })</pre> | <pre>{<br>  "enable": false,<br>  "exist": false<br>}</pre> | no |
-| <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
 | <a name="input_enable_ivs"></a> [enable\_ivs](#input\_enable\_ivs) | n/a | `bool` | `false` | no |
 | <a name="input_enable_patching"></a> [enable\_patching](#input\_enable\_patching) | Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually. | `bool` | `false` | no |
 | <a name="input_gpuNodeCountMax"></a> [gpuNodeCountMax](#input\_gpuNodeCountMax) | The maximum number of nodes for gpu job execution | `number` | `12` | no |
