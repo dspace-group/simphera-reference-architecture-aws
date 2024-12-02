@@ -369,3 +369,51 @@ variable "aws_load_balancer_controller_config" {
     enable = false
   }
 }
+
+variable "gpu_operator_config" {
+  type = object({
+    enable          = optional(bool, true)
+    helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")
+    helm_version    = optional(string, "v24.9.0")
+    chart_values = optional(string, <<-YAML
+operator:
+  defaultRuntime: containerd
+
+dcgmExporter:
+  enabled: false
+
+driver:
+  enabled: true
+  version: "550.90.07"
+
+validator:
+  driver:
+    env:
+    - name: DISABLE_DEV_CHAR_SYMLINK_CREATION
+      value: "true"
+
+toolkit:
+  enabled: true
+
+daemonsets:
+  tolerations:
+  - key: purpose
+    value: gpu
+    operator: Equal
+    effect: NoSchedule
+
+node-feature-discovery:
+  worker:
+    tolerations:
+    - key: purpose
+      value: gpu
+      operator: Equal
+      effect: NoSchedule
+YAML
+    )
+  })
+  description = "Input configuration for GPU operator deployed with helm release. By setting key 'enable' to 'true', GPU operator will be deployed. 'helm_repository' is an URL for the repository of GPU operator helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of an GPU operator chart."
+  default = {
+    enable = false
+  }
+}
