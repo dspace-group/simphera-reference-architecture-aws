@@ -13,4 +13,9 @@ resource "helm_release" "gpu_operator" {
     var.gpu_operator_config.chart_values
   ]
   timeout = 1200
+  set {
+    name  = "driver.version"
+    value = var.gpu_operator_config.driver_version
+  }
+
 }
