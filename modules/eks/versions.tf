@@ -5,22 +5,12 @@ terraform {
     aws = {
       source  = "hashicorp/aws"
       version = ">= 5.60.0"
-      # minimum version of 5.37.0 is required to enable ECR pull-through functionality.
     }
     kubernetes = {
       source  = "hashicorp/kubernetes"
       version = ">= 2.10"
     }
 
-    helm = {
-      source  = "hashicorp/helm"
-      version = ">= 2.4.1"
-    }
-
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 3.0.0"
-    }
     kubectl = {
       source  = "gavinbunney/kubectl"
       version = "= 1.14.0"

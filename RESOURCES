@@ -1,0 +1,40 @@
+module.eks.module.aws_eks.aws_eks_cluster.this[0]
+module.eks.module.aws_eks.aws_iam_role.this[0]
+module.eks.module.aws_eks.aws_iam_role_policy_attachment.this["arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"]
+module.eks.module.aws_eks.aws_iam_role_policy_attachment.this["arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"]
+module.eks.module.kms[0].aws_kms_key.this
+module.eks.module.kms[0].aws_kms_alias.this
+??module.eks.kubernetes_config_map.aws_auth[0]
+??module.eks.module.aws_eks.aws_iam_openid_connect_provider.oidc_provider[0]
+
+module.eks.module.aws_eks.aws_security_group.cluster[0]
+module.eks.module.aws_eks.aws_security_group_rule.cluster["egress_nodes_443"]
+module.eks.module.aws_eks.aws_security_group_rule.cluster["egress_nodes_kubelet"]
+module.eks.module.aws_eks.aws_security_group_rule.cluster["ingress_nodes_443"]
+module.eks.module.aws_eks.aws_security_group.node[0]
+module.eks.module.aws_eks.aws_security_group_rule.node["egress_cluster_443"]
+module.eks.module.aws_eks.aws_security_group_rule.node["egress_https"]
+module.eks.module.aws_eks.aws_security_group_rule.node["egress_ntp_tcp"]
+module.eks.module.aws_eks.aws_security_group_rule.node["egress_ntp_udp"]
+module.eks.module.aws_eks.aws_security_group_rule.node["egress_self_coredns_tcp"]
+module.eks.module.aws_eks.aws_security_group_rule.node["egress_self_coredns_udp"]
+module.eks.module.aws_eks.aws_security_group_rule.node["ingress_cluster_443"]
+module.eks.module.aws_eks.aws_security_group_rule.node["ingress_cluster_kubelet"]
+module.eks.module.aws_eks.aws_security_group_rule.node["ingress_self_coredns_tcp"]
+module.eks.module.aws_eks.aws_security_group_rule.node["ingress_self_coredns_udp"]
+
+module.eks.module.aws_eks.aws_ec2_tag.cluster_primary_security_group["created"]
+module.eks.module.aws_eks.aws_ec2_tag.cluster_primary_security_group["created_by"]
+// module.eks.module.aws_eks.module.kms.data.aws_caller_identity.current
+// module.eks.module.aws_eks.module.kms.data.aws_partition.current
+// module.eks.data.aws_caller_identity.current
+// module.eks.data.aws_eks_cluster.cluster[0]
+// module.eks.data.aws_iam_policy_document.eks_key
+// module.eks.data.aws_iam_session_context.current
+// module.eks.data.aws_partition.current
+// module.eks.data.aws_region.current
+// module.eks.data.http.eks_cluster_readiness[0]
+// module.eks.module.aws_eks.data.aws_caller_identity.current
+// module.eks.module.aws_eks.data.aws_iam_policy_document.assume_role_policy[0]
+// module.eks.module.aws_eks.data.aws_partition.current
+// module.eks.module.aws_eks.data.tls_certificate.this[0]
