@@ -19,10 +19,10 @@ data "aws_eks_node_group" "default" {
 
 }
 
-# data "aws_eks_node_group" "execnodes" {
-#   cluster_name    = local.infrastructurename
-#   node_group_name = replace(module.eks.managed_node_groups[0]["execnodes"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
-# }
+data "aws_eks_node_group" "execnodes" {
+  cluster_name    = local.infrastructurename
+  node_group_name = replace(module.eks.managed_node_groups[0]["execnodes"].nodegroup_id, "${local.infrastructurename}:", "")
+}
 
 # data "aws_eks_node_group" "gpuexecnodes" {
 #   count           = var.gpuNodePool ? 1 : 0
@@ -47,29 +47,29 @@ resource "aws_autoscaling_group_tag" "default_node-template_resources_ephemeral-
   }
 }
 
-# resource "aws_autoscaling_group_tag" "execnodes" {
-#   autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
+resource "aws_autoscaling_group_tag" "execnodes" {
+  autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
 
-#   tag {
-#     key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
-#     value = "execution"
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+    value = "execution"
 
-#     propagate_at_launch = true
-#   }
-# }
+    propagate_at_launch = true
+  }
+}
 
 # # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
 # #     https://github.com/kubernetes/autoscaler/issues/1869#issuecomment-518530724
-# resource "aws_autoscaling_group_tag" "execnodes_node-template_resources_ephemeral-storage" {
-#   autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
+resource "aws_autoscaling_group_tag" "execnodes_node-template_resources_ephemeral-storage" {
+  autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
 
-#   tag {
-#     key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-#     value = "${var.linuxExecutionNodeDiskSize}G"
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+    value = "${var.linuxExecutionNodeDiskSize}G"
 
-#     propagate_at_launch = true
-#   }
-# }
+    propagate_at_launch = true
+  }
+}
 
 # resource "aws_autoscaling_group_tag" "gpuexecnodes" {
 #   count                  = var.gpuNodePool ? 1 : 0
