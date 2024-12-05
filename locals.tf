@@ -34,13 +34,14 @@ locals {
 
   default_managed_node_pools = [
     {
-      node_group_name = "default"
-      instance_types  = var.linuxNodeSize
-      subnet_ids      = local.private_subnets
-      desired_size    = var.linuxNodeCountMin
-      max_size        = var.linuxNodeCountMax
-      min_size        = var.linuxNodeCountMin
-      disk_size       = var.linuxNodeDiskSize
+      node_group_name        = "default"
+      instance_types         = var.linuxNodeSize
+      subnet_ids             = local.private_subnets
+      desired_size           = var.linuxNodeCountMin
+      max_size               = var.linuxNodeCountMax
+      min_size               = var.linuxNodeCountMin
+      disk_size              = var.linuxNodeDiskSize
+      create_launch_template = true
     },
     # "execnodes" = {
     #   node_group_name = "execnodes"
