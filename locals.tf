@@ -59,10 +59,7 @@ locals {
           "effect" = "NO_SCHEDULE"
         }
       ]
-    }
-  }
-
-  gpu_node_pool = {
+    },
     "gpuexecnodes" = {
       node_group_name        = "gpuexecnodes"
       instance_types         = var.gpuNodeSize
@@ -91,6 +88,10 @@ locals {
       ]
     }
   }
+
+  # gpu_node_pool = {
+
+  # }
 
   ivsgpu_node_pool = {
     "gpuivsnodes" = {
