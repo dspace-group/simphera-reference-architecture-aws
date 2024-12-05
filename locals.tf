@@ -59,7 +59,10 @@ locals {
           "effect" = "NO_SCHEDULE"
         }
       ]
-    },
+    }
+  }
+
+  gpu_node_pool = {
     "gpuexecnodes" = {
       node_group_name        = "gpuexecnodes"
       instance_types         = var.gpuNodeSize
@@ -69,7 +72,7 @@ locals {
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
+      create_launch_template = false
       block_device_mappings = [{
         device_name           = "/dev/sda1"
         volume_type           = "gp2"
@@ -88,10 +91,6 @@ locals {
       ]
     }
   }
-
-  # gpu_node_pool = {
-
-  # }
 
   ivsgpu_node_pool = {
     "gpuivsnodes" = {
