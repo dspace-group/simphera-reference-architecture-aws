@@ -6,6 +6,9 @@ locals {
     aws_partition_id               = data.aws_partition.current.id
     aws_caller_identity_account_id = data.aws_caller_identity.current.account_id
     aws_region_name                = data.aws_region.current.name
+    aws_partition_dns_suffix       = data.aws_partition.current.dns_suffix
   }
+  cluster_ca_base64 = aws_eks_cluster.eks.certificate_authority[0].data
+  cluster_endpoint  = aws_eks_cluster.eks.endpoint
 
 }
