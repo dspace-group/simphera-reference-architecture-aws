@@ -1,12 +1,12 @@
 resource "aws_launch_template" "managed_node_groups" {
-  name                   = "${var.node_group_context.eks_cluster_id}-${var.node_group_config["node_group_name"]}"
+  name                   = "${var.node_group_context.eks_cluster_id}-${local.node_group_config["node_group_name"]}"
   description            = "Launch Template for EKS Managed Node Groups"
-  update_default_version = var.node_group_config["update_default_version"]
+  update_default_version = local.node_group_config["update_default_version"]
 
   user_data = local.userdata_base64
 
   dynamic "block_device_mappings" {
-    for_each = var.node_group_config["block_device_mappings"]
+    for_each = local.node_group_config["block_device_mappings"]
 
     content {
       device_name = try(block_device_mappings.value.device_name, null)
@@ -25,21 +25,21 @@ resource "aws_launch_template" "managed_node_groups" {
 
   ebs_optimized = true
 
-  image_id = var.node_group_config["custom_ami_id"]
+  image_id = local.node_group_config["custom_ami_id"]
 
   monitoring {
-    enabled = var.node_group_config["enable_monitoring"]
+    enabled = local.node_group_config["enable_monitoring"]
   }
 
   dynamic "metadata_options" {
-    for_each = try(var.node_group_config.enable_metadata_options, true) ? [1] : []
+    for_each = try(local.node_group_config.enable_metadata_options, true) ? [1] : []
 
     content {
-      http_endpoint               = try(var.node_group_config.http_endpoint, "enabled")
-      http_tokens                 = try(var.node_group_config.http_tokens, "required") #tfsec:ignore:aws-autoscaling-enforce-http-token-imds
-      http_put_response_hop_limit = try(var.node_group_config.http_put_response_hop_limit, 2)
-      http_protocol_ipv6          = try(var.node_group_config.http_protocol_ipv6, null)
-      instance_metadata_tags      = try(var.node_group_config.instance_metadata_tags, null)
+      http_endpoint               = try(local.node_group_config.http_endpoint, "enabled")
+      http_tokens                 = try(local.node_group_config.http_tokens, "required") #tfsec:ignore:aws-autoscaling-enforce-http-token-imds
+      http_put_response_hop_limit = try(local.node_group_config.http_put_response_hop_limit, 2)
+      http_protocol_ipv6          = try(local.node_group_config.http_protocol_ipv6, null)
+      instance_metadata_tags      = try(local.node_group_config.instance_metadata_tags, null)
     }
   }
 
@@ -47,12 +47,12 @@ resource "aws_launch_template" "managed_node_groups" {
     for_each = toset(["instance", "volume", "network-interface"])
     content {
       resource_type = tag_specifications.key
-      tags          = merge(var.node_group_context.tags, var.node_group_config["launch_template_tags"])
+      tags          = merge(var.node_group_context.tags, local.node_group_config["launch_template_tags"])
     }
   }
 
   network_interfaces {
-    # associate_public_ip_address = var.node_group_config["public_ip"]
+    # associate_public_ip_address = local.node_group_config["public_ip"]
     security_groups = var.node_group_context.worker_security_group_ids
   }
 

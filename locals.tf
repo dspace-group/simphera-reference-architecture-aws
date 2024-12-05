@@ -32,8 +32,8 @@ locals {
   # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
   gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
 
-  default_managed_node_pools = [
-    {
+  default_managed_node_pools = {
+    "default" : {
       node_group_name        = "default"
       instance_types         = var.linuxNodeSize
       subnet_ids             = local.private_subnets
@@ -63,7 +63,7 @@ locals {
     #     }
     #   ]
     # }
-  ]
+  }
 
   gpu_node_pool = {
     # "gpuexecnodes" = {

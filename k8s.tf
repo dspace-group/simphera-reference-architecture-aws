@@ -15,7 +15,7 @@ module "eks" {
 
 data "aws_eks_node_group" "default" {
   cluster_name    = local.infrastructurename
-  node_group_name = replace(module.eks.managed_node_groups[0].nodegroup_id, "${local.infrastructurename}:", "")
+  node_group_name = replace(module.eks.managed_node_groups[0]["default"].nodegroup_id, "${local.infrastructurename}:", "")
 
 }
 
