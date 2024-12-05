@@ -81,7 +81,7 @@ locals {
     # VPC Config
     vpc_id             = var.vpc_id
     private_subnet_ids = var.private_subnet_ids
-    public_subnet_ids  = var.public_subnet_ids
+    # public_subnet_ids  = var.public_subnet_ids
 
     # Worker Security Group
     worker_security_group_ids = aws_security_group.node.id

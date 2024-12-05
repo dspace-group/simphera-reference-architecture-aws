@@ -1,27 +1,27 @@
 resource "aws_eks_node_group" "managed_ng" {
-  cluster_name           = var.context.eks_cluster_id
-  node_group_name        = local.managed_node_group["enable_node_group_prefix"] == false ? local.managed_node_group["node_group_name"] : null
-  node_group_name_prefix = local.managed_node_group["enable_node_group_prefix"] == true ? format("%s-", local.managed_node_group["node_group_name"]) : null
+  cluster_name           = var.node_group_context.eks_cluster_id
+  node_group_name        = var.node_group_config["enable_node_group_prefix"] == false ? var.node_group_config["node_group_name"] : null
+  node_group_name_prefix = var.node_group_config["enable_node_group_prefix"] == true ? format("%s-", var.node_group_config["node_group_name"]) : null
 
-  node_role_arn   = local.managed_node_group["create_iam_role"] == true ? aws_iam_role.managed_ng[0].arn : local.managed_node_group["iam_role_arn"]
-  subnet_ids      = length(local.managed_node_group["subnet_ids"]) == 0 ? (local.managed_node_group["subnet_type"] == "public" ? var.context.public_subnet_ids : var.context.private_subnet_ids) : local.managed_node_group["subnet_ids"]
-  release_version = try(local.managed_node_group["release_version"], "") == "" || local.managed_node_group["custom_ami_id"] != "" ? null : local.managed_node_group["release_version"]
+  node_role_arn   = var.node_group_config["create_iam_role"] == true ? aws_iam_role.managed_ng.arn : var.node_group_config["iam_role_arn"]
+  subnet_ids      = length(var.node_group_config["subnet_ids"]) == 0 ? (var.node_group_config["subnet_type"] == "public" ? var.node_group_context.public_subnet_ids : var.node_group_context.private_subnet_ids) : var.node_group_config["subnet_ids"]
+  release_version = try(var.node_group_config["release_version"], "") == "" || var.node_group_config["custom_ami_id"] != "" ? null : var.node_group_config["release_version"]
 
-  ami_type             = local.managed_node_group["custom_ami_id"] != "" ? null : local.managed_node_group["ami_type"]
-  capacity_type        = local.managed_node_group["capacity_type"]
-  disk_size            = local.managed_node_group["create_launch_template"] == true ? null : local.managed_node_group["disk_size"]
-  instance_types       = local.managed_node_group["instance_types"]
-  force_update_version = local.managed_node_group["force_update_version"]
-  version              = local.managed_node_group["custom_ami_id"] != "" ? null : var.context.cluster_version
+  ami_type             = var.node_group_config["custom_ami_id"] != "" ? null : var.node_group_config["ami_type"]
+  capacity_type        = var.node_group_config["capacity_type"]
+  disk_size            = var.node_group_config["create_launch_template"] == true ? null : var.node_group_config["disk_size"]
+  instance_types       = var.node_group_config["instance_types"]
+  force_update_version = var.node_group_config["force_update_version"]
+  version              = var.node_group_config["custom_ami_id"] != "" ? null : var.node_group_context.cluster_version
 
   scaling_config {
-    desired_size = local.managed_node_group["desired_size"]
-    max_size     = local.managed_node_group["max_size"]
-    min_size     = local.managed_node_group["min_size"]
+    desired_size = var.node_group_config["desired_size"]
+    max_size     = var.node_group_config["max_size"]
+    min_size     = var.node_group_config["min_size"]
   }
 
   dynamic "update_config" {
-    for_each = local.managed_node_group["update_config"]
+    for_each = var.node_group_config["update_config"]
     content {
       max_unavailable            = try(update_config.value["max_unavailable"], null)
       max_unavailable_percentage = try(update_config.value["max_unavailable_percentage"], null)
@@ -34,9 +34,9 @@ resource "aws_eks_node_group" "managed_ng" {
   }
 
   dynamic "launch_template" {
-    for_each = local.managed_node_group["create_launch_template"] == true ? [{
-      id      = aws_launch_template.managed_node_groups[0].id
-      version = aws_launch_template.managed_node_groups[0].default_version
+    for_each = var.node_group_config["create_launch_template"] == true ? [{
+      id      = aws_launch_template.managed_node_groups.id
+      version = aws_launch_template.managed_node_groups.default_version
     }] : []
     content {
       id      = launch_template.value["id"]
@@ -45,15 +45,15 @@ resource "aws_eks_node_group" "managed_ng" {
   }
 
   dynamic "remote_access" {
-    for_each = local.managed_node_group["remote_access"] == true ? [1] : []
+    for_each = var.node_group_config["remote_access"] == true ? [1] : []
     content {
-      ec2_ssh_key               = local.managed_node_group["ec2_ssh_key"]
-      source_security_group_ids = local.managed_node_group["ssh_security_group_id"]
+      ec2_ssh_key               = var.node_group_config["ec2_ssh_key"]
+      source_security_group_ids = var.node_group_config["ssh_security_group_id"]
     }
   }
 
   dynamic "taint" {
-    for_each = local.managed_node_group["k8s_taints"]
+    for_each = var.node_group_config["k8s_taints"]
     content {
       key    = taint.value["key"]
       value  = taint.value["value"]
@@ -61,12 +61,12 @@ resource "aws_eks_node_group" "managed_ng" {
     }
   }
 
-  labels = local.managed_node_group["k8s_labels"]
+  labels = var.node_group_config["k8s_labels"]
 
 
 
   dynamic "timeouts" {
-    for_each = local.managed_node_group["timeouts"]
+    for_each = var.node_group_config["timeouts"]
     content {
       create = timeouts.value["create"]
       update = timeouts.value["update"]

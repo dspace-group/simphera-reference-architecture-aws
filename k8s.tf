@@ -3,11 +3,13 @@ module "eks" {
   cluster_version = var.kubernetesVersion
   cluster_name    = var.infrastructurename
   vpc_id          = local.vpc_id
-  subnet_ids      = local.private_subnets
-  map_accounts    = var.map_accounts
-  map_users       = var.map_users
-  map_roles       = var.map_roles
-  tags            = var.tags
+  # subnet_ids         = local.private_subnets
+  private_subnet_ids = local.private_subnets
+  # public_subnet_ids  = local.public_subnets
+  map_accounts = var.map_accounts
+  map_users    = var.map_users
+  map_roles    = var.map_roles
+  tags         = var.tags
 }
 
 # module "eks-addons" {

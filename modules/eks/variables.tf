@@ -20,18 +20,18 @@ variable "vpc_id" {
   type = string
 }
 
-variable "subnet_ids" {
-  description = "A list of subnet IDs where the nodes/node groups will be provisioned. "
-  type        = list(string)
-}
+# variable "subnet_ids" {
+#   description = "A list of subnet IDs where the nodes/node groups will be provisioned. "
+#   type        = list(string)
+# }
 variable "private_subnet_ids" {
   description = "A list of subnet IDs where the nodes/node groups will be provisioned. "
   type        = list(string)
 }
-variable "public_subnet_ids" {
-  description = "A list of subnet IDs where the nodes/node groups will be provisioned. "
-  type        = list(string)
-}
+# variable "public_subnet_ids" {
+#   description = "A list of subnet IDs where the nodes/node groups will be provisioned. "
+#   type        = list(string)
+# }
 
 #-------------------------------
 # aws-auth Config Map
