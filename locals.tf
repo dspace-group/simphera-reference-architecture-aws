@@ -72,7 +72,7 @@ locals {
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
+      create_launch_template = false
       block_device_mappings = [{
         device_name           = "/dev/sda1"
         volume_type           = "gp2"
