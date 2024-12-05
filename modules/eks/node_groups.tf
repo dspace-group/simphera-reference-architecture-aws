@@ -84,7 +84,7 @@ locals {
     # public_subnet_ids  = var.public_subnet_ids
 
     # Worker Security Group
-    worker_security_group_ids = aws_security_group.node.id
+    worker_security_group_ids = [aws_security_group.node.id]
 
     # Data sources
     aws_partition_dns_suffix = local.context.aws_partition_dns_suffix
@@ -102,12 +102,12 @@ locals {
   node_groups_configurations = [for ng in var.managed_node_groups : merge(local.default_managed_ng, ng)]
 }
 module "aws_eks_managed_node_groups" {
-  source = "./modules/managed-node-groups"
+  source = "./modules/managed-node-group"
 
-  count = length(local.node_groups_configurations) - 1
+  count = length(local.node_groups_configurations)
 
-  node_group_config = local.node_groups_configurations[count.index]
-  context           = local.node_group_context
+  node_group_config  = local.node_groups_configurations[count.index]
+  node_group_context = local.node_group_context
 
   depends_on = [kubernetes_config_map.aws_auth]
 }

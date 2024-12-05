@@ -32,14 +32,14 @@ resource "aws_launch_template" "managed_node_groups" {
   }
 
   dynamic "metadata_options" {
-    for_each = try(var.managed_ng.enable_metadata_options, true) ? [1] : []
+    for_each = try(var.node_group_config.enable_metadata_options, true) ? [1] : []
 
     content {
-      http_endpoint               = try(var.managed_ng.http_endpoint, "enabled")
-      http_tokens                 = try(var.managed_ng.http_tokens, "required") #tfsec:ignore:aws-autoscaling-enforce-http-token-imds
-      http_put_response_hop_limit = try(var.managed_ng.http_put_response_hop_limit, 2)
-      http_protocol_ipv6          = try(var.managed_ng.http_protocol_ipv6, null)
-      instance_metadata_tags      = try(var.managed_ng.instance_metadata_tags, null)
+      http_endpoint               = try(var.node_group_config.http_endpoint, "enabled")
+      http_tokens                 = try(var.node_group_config.http_tokens, "required") #tfsec:ignore:aws-autoscaling-enforce-http-token-imds
+      http_put_response_hop_limit = try(var.node_group_config.http_put_response_hop_limit, 2)
+      http_protocol_ipv6          = try(var.node_group_config.http_protocol_ipv6, null)
+      instance_metadata_tags      = try(var.node_group_config.instance_metadata_tags, null)
     }
   }
 

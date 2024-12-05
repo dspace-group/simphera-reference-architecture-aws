@@ -64,7 +64,7 @@ variable "map_users" {
 
 variable "managed_node_groups" {
   description = "Managed node groups configuration"
-  type        = list(map)
+  type        = list(any)
   default     = []
 }
 ######

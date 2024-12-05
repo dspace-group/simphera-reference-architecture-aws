@@ -34,14 +34,4 @@ locals {
       "k8s.io/cluster-autoscaler/enabled"                                  = "TRUE"
       "managed-by"                                                         = "terraform"
   })
-  managed_node_group_aws_auth_config_map = [
-    for node in var.node_group_config : {
-      rolearn : try(node.iam_role_arn, "arn:${var.node_group_context.aws_partition_id}:iam::${var.node_group_context.aws_caller_identity_account_id}:role/${var.node_group_context.eks_cluster_id}-${node.node_group_name}")
-      username : "system:node:{{EC2PrivateDNSName}}"
-      groups : [
-        "system:bootstrappers",
-        "system:nodes"
-      ]
-    }
-  ]
 }

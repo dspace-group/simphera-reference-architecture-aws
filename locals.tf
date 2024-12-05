@@ -43,14 +43,15 @@ locals {
       disk_size              = var.linuxNodeDiskSize
       create_launch_template = true
     },
-    # "execnodes" = {
-    #   node_group_name = "execnodes"
-    #   instance_types  = var.linuxExecutionNodeSize
-    #   subnet_ids      = local.private_subnets
-    #   desired_size    = var.linuxExecutionNodeCountMin
-    #   max_size        = var.linuxExecutionNodeCountMax
-    #   min_size        = var.linuxExecutionNodeCountMin
-    #   disk_size       = var.linuxExecutionNodeDiskSize
+    # {
+    #   node_group_name        = "execnodes"
+    #   instance_types         = var.linuxExecutionNodeSize
+    #   subnet_ids             = local.private_subnets
+    #   desired_size           = var.linuxExecutionNodeCountMin
+    #   max_size               = var.linuxExecutionNodeCountMax
+    #   min_size               = var.linuxExecutionNodeCountMin
+    #   disk_size              = var.linuxExecutionNodeDiskSize
+    #   create_launch_template = true
     #   k8s_labels = {
     #     "purpose" = "execution"
     #   }

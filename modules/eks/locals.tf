@@ -10,5 +10,14 @@ locals {
   }
   cluster_ca_base64 = aws_eks_cluster.eks.certificate_authority[0].data
   cluster_endpoint  = aws_eks_cluster.eks.endpoint
-
+  managed_node_group_aws_auth_config_map = [
+    for node in var.managed_node_groups : {
+      rolearn : try(node.iam_role_arn, "arn:${local.context.aws_partition_id}:iam::${local.context.aws_caller_identity_account_id}:role/${aws_eks_cluster.eks.id}-${node.node_group_name}")
+      username : "system:node:{{EC2PrivateDNSName}}"
+      groups : [
+        "system:bootstrappers",
+        "system:nodes"
+      ]
+    }
+  ]
 }

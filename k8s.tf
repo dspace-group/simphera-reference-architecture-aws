@@ -6,41 +6,22 @@ module "eks" {
   # subnet_ids         = local.private_subnets
   private_subnet_ids = local.private_subnets
   # public_subnet_ids  = local.public_subnets
-  map_accounts = var.map_accounts
-  map_users    = var.map_users
-  map_roles    = var.map_roles
-  tags         = var.tags
+  managed_node_groups = local.default_managed_node_pools
+  map_accounts        = var.map_accounts
+  map_users           = var.map_users
+  map_roles           = var.map_roles
+  tags                = var.tags
 }
 
-# module "eks-addons" {
-#   source                              = "git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git//modules/kubernetes-addons?ref=v4.32.1"
-#   eks_cluster_id                      = module.eks.eks_cluster_id
-#   enable_aws_load_balancer_controller = false
-#   enable_aws_for_fluentbit            = var.enable_aws_for_fluentbit
-#   tags                                = var.tags
+data "aws_eks_node_group" "default" {
+  cluster_name    = local.infrastructurename
+  node_group_name = replace(module.eks.managed_node_groups[0].nodegroup_id, "${local.infrastructurename}:", "")
 
-#   aws_for_fluentbit_helm_config = {
-#     values = [templatefile("${path.module}/templates/fluentbit_values.yaml", {
-#       aws_region           = data.aws_region.current.name,
-#       log_group_name       = local.log_group_name,
-#       service_account_name = "aws-for-fluent-bit-sa"
-#     })]
-#     dependency_update = true
-#   }
-
-#   #depends_on                     = [module.eks.managed_node_groups]
-# }
-
-# data "aws_eks_node_group" "default" {
-#   cluster_name    = local.infrastructurename
-#   node_group_name = replace(module.eks.managed_node_groups[0]["default"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
-
-# }
+}
 
 # data "aws_eks_node_group" "execnodes" {
 #   cluster_name    = local.infrastructurename
 #   node_group_name = replace(module.eks.managed_node_groups[0]["execnodes"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
-
 # }
 
 # data "aws_eks_node_group" "gpuexecnodes" {
@@ -55,16 +36,16 @@ module "eks" {
 #   node_group_name = replace(module.eks.managed_node_groups[0]["gpuivsnodes"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
 # }
 
-# resource "aws_autoscaling_group_tag" "default_node-template_resources_ephemeral-storage" {
-#   autoscaling_group_name = data.aws_eks_node_group.default.resources[0].autoscaling_groups[0].name
+resource "aws_autoscaling_group_tag" "default_node-template_resources_ephemeral-storage" {
+  autoscaling_group_name = data.aws_eks_node_group.default.resources[0].autoscaling_groups[0].name
 
-#   tag {
-#     key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-#     value = "${var.linuxNodeDiskSize}G"
+  tag {
+    key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+    value = "${var.linuxNodeDiskSize}G"
 
-#     propagate_at_launch = true
-#   }
-# }
+    propagate_at_launch = true
+  }
+}
 
 # resource "aws_autoscaling_group_tag" "execnodes" {
 #   autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
