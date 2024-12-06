@@ -1,7 +1,7 @@
 resource "helm_release" "gpu_operator" {
   count = var.gpu_operator_config.enable ? 1 : 0
 
-  namespace         = "gpu-operator"
+  namespace         = "kube-system"
   name              = "gpu-operator"
   chart             = "gpu-operator"
   create_namespace  = true

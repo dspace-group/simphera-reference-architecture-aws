@@ -75,7 +75,7 @@ locals {
       create_launch_template = true
       block_device_mappings = [{
         device_name           = "/dev/sda1"
-        volume_type           = "gp2"
+        volume_type           = "gp3"
         volume_size           = 128
         delete_on_termination = true
       }]
@@ -105,7 +105,7 @@ locals {
       create_launch_template = true
       block_device_mappings = [{
         device_name           = "/dev/sda1"
-        volume_type           = "gp2"
+        volume_type           = "gp3"
         volume_size           = 128
         delete_on_termination = true
       }]
