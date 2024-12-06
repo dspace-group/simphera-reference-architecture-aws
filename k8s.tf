@@ -11,7 +11,8 @@ module "eks" {
   tags                                   = var.tags
   cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
   cloudwatch_log_group_retention_in_days = var.cloudwatch_retention
-  managed_node_groups                    = merge(local.default_managed_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  managed_node_groups                    = merge(local.default_managed_node_pools, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  self_managed_node_groups               = merge(var.gpuNodePool ? local.self_managed_node_pools : {})
 }
 
 data "aws_eks_node_group" "default" {

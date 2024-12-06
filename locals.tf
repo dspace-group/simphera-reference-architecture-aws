@@ -62,36 +62,6 @@ locals {
     }
   }
 
-  gpu_node_pool = {
-    "gpuexecnodes" = {
-      node_group_name        = "gpuexecnodes"
-      instance_types         = var.gpuNodeSize
-      subnet_ids             = local.private_subnets
-      desired_size           = var.gpuNodeCountMin
-      max_size               = var.gpuNodeCountMax
-      min_size               = var.gpuNodeCountMin
-      disk_size              = var.gpuNodeDiskSize
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
-      block_device_mappings = [{
-        device_name           = "/dev/sda1"
-        volume_type           = "gp2"
-        volume_size           = 128
-        delete_on_termination = true
-      }]
-      k8s_labels = {
-        "purpose" = "gpu"
-      }
-      k8s_taints = [
-        {
-          key      = "purpose",
-          value    = "gpu",
-          "effect" = "NO_SCHEDULE"
-        }
-      ]
-    }
-  }
-
   ivsgpu_node_pool = {
     "gpuivsnodes" = {
       node_group_name        = "gpuivsnodes"
@@ -122,6 +92,36 @@ locals {
         {
           key      = "nvidia.com/gpu",
           value    = "",
+          "effect" = "NO_SCHEDULE"
+        }
+      ]
+    }
+  }
+
+  self_managed_node_groups = {
+    "gpuexecnodes" = {
+      node_group_name        = "gpuexecnodes"
+      instance_types         = var.gpuNodeSize
+      subnet_ids             = local.private_subnets
+      desired_size           = var.gpuNodeCountMin
+      max_size               = var.gpuNodeCountMax
+      min_size               = var.gpuNodeCountMin
+      disk_size              = var.gpuNodeDiskSize
+      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
+      create_launch_template = true
+      block_device_mappings = [{
+        device_name           = "/dev/sda1"
+        volume_type           = "gp2"
+        volume_size           = 128
+        delete_on_termination = true
+      }]
+      k8s_labels = {
+        "purpose" = "gpu"
+      }
+      k8s_taints = [
+        {
+          key      = "purpose",
+          value    = "gpu",
           "effect" = "NO_SCHEDULE"
         }
       ]
