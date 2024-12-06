@@ -98,7 +98,7 @@ locals {
     }
   }
 
-  self_managed_node_groups = {
+  self_managed_node_pools = {
     "gpuexecnodes" = {
       node_group_name        = "gpuexecnodes"
       instance_types         = var.gpuNodeSize
