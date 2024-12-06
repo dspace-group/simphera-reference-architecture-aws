@@ -21,7 +21,9 @@
   "gpuNodeSize": [
     "g5.2xlarge"
   ],
-  "gpu_operator_config": null,
+  "gpu_operator_config": {
+    "enable": false
+  },
   "infrastructurename": "simphera",
   "ingress_nginx_config": {
     "enable": false
