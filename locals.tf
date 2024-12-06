@@ -107,6 +107,7 @@ locals {
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
       disk_size              = var.gpuNodeDiskSize
+      launch_template_os     = "ubuntu"
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
       block_device_mappings = [{
