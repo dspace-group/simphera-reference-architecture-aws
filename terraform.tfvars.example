@@ -65,17 +65,7 @@ gpuNodeSize = [
 # By setting key 'enable' to 'true', GPU operator will be deployed.
 # 'helm_repository' is an URL for the repository of the GPU operator helm chart, where 'helm_version' is its respective version of a chart.
 # 'chart_values' is used for changing default values.yaml of the GPU operator chart.
-gpu_operator_config = {
-  type = object({
-    enable          = optional(bool, true)
-    helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")
-    helm_version    = optional(string, "v24.9.0")
-    driver_version  = optional(string, "550.90.07")
-    chart_values = optional(string, <<-YAML
-YAML
-    )
-  })
-}
+gpu_operator_config = 
 
 # The name of the infrastructure. e.g. simphera-infra
 infrastructurename = "simphera"
