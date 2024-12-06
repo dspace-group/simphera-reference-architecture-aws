@@ -30,7 +30,7 @@ data "aws_eks_node_group" "execnodes" {
 data "aws_eks_node_group" "gpuexecnodes" {
   count           = var.gpuNodePool ? 1 : 0
   cluster_name    = local.infrastructurename
-  node_group_name = replace(module.eks.managed_node_groups[0]["gpuexecnodes"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
+  node_group_name = replace(module.eks.self_managed_node_groups[0]["gpuexecnodes"]["managed_nodegroup_id"][0], "${local.infrastructurename}:", "")
 }
 
 data "aws_eks_node_group" "gpuivsnodes" {
