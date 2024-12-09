@@ -1,9 +1,11 @@
 variable "cluster_name" {
-  type = string
+  description = "Name of the EKS cluster that will be created"
+  type        = string
 }
 
 variable "cluster_version" {
-  type = string
+  description = "Kubernetes version of EKS cluster that will be created"
+  type        = string
 }
 
 variable "cluster_timeouts" {
@@ -17,7 +19,8 @@ variable "cluster_timeouts" {
 }
 
 variable "vpc_id" {
-  type = string
+  description = "ID of the VPC in which EKS will be created"
+  type        = string
 }
 
 variable "subnet_ids" {
@@ -25,9 +28,6 @@ variable "subnet_ids" {
   type        = list(string)
 }
 
-#-------------------------------
-# aws-auth Config Map
-#-------------------------------
 variable "map_accounts" {
   description = "Additional AWS account numbers to add to the aws-auth ConfigMap"
   type        = list(string)
@@ -53,7 +53,7 @@ variable "map_users" {
   }))
   default = []
 }
-######
+
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
