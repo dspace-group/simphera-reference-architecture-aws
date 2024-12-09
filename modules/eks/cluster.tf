@@ -38,6 +38,6 @@ resource "aws_eks_cluster" "eks" {
 
   depends_on = [
     aws_iam_role_policy_attachment.cluster_role,
-    aws_cloudwatch_log_group.cluster
+    # aws_cloudwatch_log_group.cluster
   ]
 }
