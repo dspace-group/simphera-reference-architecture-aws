@@ -20,24 +20,24 @@ resource "aws_iam_role" "cluster_role" {
   permissions_boundary  = null
   force_detach_policies = true
 
-  ## cloudwatch related inline_policy
-  # dynamic "inline_policy" {
-  #   for_each = [1]
-  #   content {
-  #     name = local.cluster_iam_role_name
+  # cloudwatch related inline_policy
+  dynamic "inline_policy" {
+    for_each = [1]
+    content {
+      name = local.cluster_iam_role_name
 
-  #     policy = jsonencode({
-  #       Version = "2012-10-17"
-  #       Statement = [
-  #         {
-  #           Action   = ["logs:CreateLogGroup"]
-  #           Effect   = "Deny"
-  #           Resource = aws_cloudwatch_log_group.this[0].arn??
-  #         },
-  #       ]
-  #     })
-  #   }
-  # }
+      policy = jsonencode({
+        Version = "2012-10-17"
+        Statement = [
+          {
+            Action   = ["logs:CreateLogGroup"]
+            Effect   = "Deny"
+            Resource = aws_cloudwatch_log_group.cluster.arn
+          },
+        ]
+      })
+    }
+  }
 
   tags = var.tags
 }

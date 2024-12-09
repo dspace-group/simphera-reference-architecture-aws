@@ -8,3 +8,17 @@ output "eks_cluster_id" {
   value       = aws_eks_cluster.eks.id
 }
 
+output "eks_oidc_issuer" {
+  description = ""
+  value       = aws_eks_cluster.eks.identity[0].oidc[0].issuer
+}
+
+output "eks_oidc_issuer_url" {
+  description = "The URL on the EKS cluster OIDC Issuer"
+  value       = split("//", aws_eks_cluster.eks.identity[0].oidc[0].issuer)[1]
+}
+
+output "eks_oidc_provider_arn" {
+  description = ""
+  value       = aws_iam_openid_connect_provider.oidc_provider.arn
+}
