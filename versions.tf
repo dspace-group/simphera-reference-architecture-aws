@@ -4,7 +4,7 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "= 5.78.0"
+      version = "= 5.60.0"
       # minimum version 5.60.0 is required due to argument requirements for the aws_eks_cluster resource.
     }
 
@@ -20,7 +20,7 @@ terraform {
 
     random = {
       source  = "hashicorp/random"
-      version = ">= 3.6.2"
+      version = "= 3.6.2"
     }
   }
 }
