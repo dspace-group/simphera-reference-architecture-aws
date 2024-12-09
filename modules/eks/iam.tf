@@ -4,11 +4,6 @@ locals {
   policy_arn_prefix            = "arn:${data.aws_partition.current.partition}:iam::aws:policy"
 
   cluster_encryption_policy_name = "${local.cluster_iam_role_name}-ClusterEncryption"
-
-  cluster_encryption_config = {
-    provider_key_arn = aws_kms_key.cluster.id
-    resources        = ["secrets"]
-  }
 }
 
 resource "aws_iam_role" "cluster_role" {
