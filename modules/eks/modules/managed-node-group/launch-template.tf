@@ -36,7 +36,7 @@ resource "aws_launch_template" "managed_node_groups" {
 
     content {
       http_endpoint               = try(local.node_group_config.http_endpoint, "enabled")
-      http_tokens                 = try(local.node_group_config.http_tokens, "required") #tfsec:ignore:aws-autoscaling-enforce-http-token-imds
+      http_tokens                 = try(local.node_group_config.http_tokens, "required")
       http_put_response_hop_limit = try(local.node_group_config.http_put_response_hop_limit, 2)
       http_protocol_ipv6          = try(local.node_group_config.http_protocol_ipv6, null)
       instance_metadata_tags      = try(local.node_group_config.instance_metadata_tags, null)
@@ -52,7 +52,6 @@ resource "aws_launch_template" "managed_node_groups" {
   }
 
   network_interfaces {
-    # associate_public_ip_address = local.node_group_config["public_ip"]
     security_groups = var.node_group_context.worker_security_group_ids
   }
 

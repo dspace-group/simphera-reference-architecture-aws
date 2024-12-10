@@ -13,6 +13,11 @@ output "eks_cluster_version" {
   value       = aws_eks_cluster.eks.version
 }
 
+output "eks_cluster_arn" {
+  description = ""
+  value       = aws_eks_cluster.eks.arn
+}
+
 output "managed_node_groups" {
   value = module.aws_eks_managed_node_groups[*]
 }

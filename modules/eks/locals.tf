@@ -7,6 +7,33 @@ locals {
   cluster_encryption_policy_name = "${local.cluster_iam_role_name}-ClusterEncryption"
   cluster_ca_base64              = aws_eks_cluster.eks.certificate_authority[0].data
   cluster_endpoint               = aws_eks_cluster.eks.endpoint
+  node_group_context = {
+    # EKS Cluster Config
+    eks_cluster_id    = aws_eks_cluster.eks.id
+    cluster_ca_base64 = local.cluster_ca_base64
+    cluster_endpoint  = local.cluster_endpoint
+    cluster_version   = var.cluster_version
+    # VPC Config
+    vpc_id             = var.vpc_id
+    private_subnet_ids = var.private_subnet_ids
+    # public_subnet_ids  = var.public_subnet_ids
+
+    # Worker Security Group
+    worker_security_group_ids = [aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id]
+
+    # Data sources
+    aws_partition_dns_suffix = local.dns_suffix
+    aws_partition_id         = data.aws_partition.current.id
+
+    iam_role_path                 = null
+    iam_role_permissions_boundary = null
+
+    # Service IPv4/IPv6 CIDR range
+    service_ipv6_cidr = null
+    service_ipv4_cidr = null
+
+    tags = var.tags
+  }
   managed_node_group_aws_auth_config_map = [
     for node in var.managed_node_groups : {
       rolearn : try(node.iam_role_arn, "arn:${data.aws_partition.current.id}:iam::${data.aws_caller_identity.current.account_id}:role/${aws_eks_cluster.eks.id}-${node.node_group_name}")

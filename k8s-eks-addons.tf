@@ -13,7 +13,7 @@ module "k8s_eks_addons" {
     aws_region_name                = data.aws_region.current.name
     eks_cluster_id                 = module.eks.eks_cluster_id
     eks_cluster_version            = module.eks.eks_cluster_version
-    eks_oidc_issuer_url            = replace(module.eks.eks_oidc_issuer, "https://", "")
+    eks_oidc_issuer_url            = replace(module.eks.eks_oidc_issuer_url, "https://", "")
     tags                           = var.tags
   }
 
