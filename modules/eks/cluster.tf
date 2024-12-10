@@ -6,7 +6,6 @@ resource "aws_eks_cluster" "eks" {
   bootstrap_self_managed_addons = false
 
   vpc_config {
-    security_group_ids      = [local.cluster_security_group_id]
     subnet_ids              = var.private_subnet_ids
     endpoint_private_access = false
     endpoint_public_access  = true
@@ -39,8 +38,6 @@ resource "aws_eks_cluster" "eks" {
 
   depends_on = [
     aws_iam_role_policy_attachment.cluster_role,
-    aws_security_group_rule.cluster,
-    aws_security_group_rule.node,
-    # aws_cloudwatch_log_group.this
+    # aws_cloudwatch_log_group.cluster
   ]
 }

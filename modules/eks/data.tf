@@ -31,20 +31,20 @@ data "aws_iam_policy_document" "eks_key" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:${local.context.aws_partition_id}:iam::${local.context.aws_caller_identity_account_id}:root"
+        "arn:${data.aws_partition.current.id}:iam::${data.aws_caller_identity.current.account_id}:root"
       ]
     }
 
     condition {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
-      values   = [local.context.aws_caller_identity_account_id]
+      values   = [data.aws_caller_identity.current.account_id]
     }
 
     condition {
       test     = "StringEquals"
       variable = "kms:ViaService"
-      values   = ["eks.${local.context.aws_region_name}.amazonaws.com"]
+      values   = ["eks.${data.aws_region.current.name}.amazonaws.com"]
     }
   }
 
@@ -62,7 +62,7 @@ data "aws_iam_policy_document" "eks_key" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:${local.context.aws_partition_id}:iam::${local.context.aws_caller_identity_account_id}:root"
+        "arn:${data.aws_partition.current.id}:iam::${data.aws_caller_identity.current.account_id}:root"
       ]
     }
   }
@@ -101,8 +101,6 @@ data "aws_iam_policy_document" "eks_key" {
     }
   }
 
-  # Permission to allow AWS services that are integrated with AWS KMS to use the CMK,
-  # particularly services that use grants.
   statement {
     sid    = "Allow attachment of persistent resources"
     effect = "Allow"
@@ -138,4 +136,8 @@ data "aws_iam_policy_document" "assume_role_policy" {
       identifiers = ["eks.${local.dns_suffix}"]
     }
   }
+}
+
+data "tls_certificate" "cluster_certificate" {
+  url = aws_eks_cluster.eks.identity[0].oidc[0].issuer
 }

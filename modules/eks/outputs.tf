@@ -7,20 +7,22 @@ output "eks_cluster_id" {
   description = "The name/id of the EKS cluster. Will block on cluster creation until the cluster is really ready"
   value       = aws_eks_cluster.eks.id
 }
-output "eks_oidc_issuer" {
-  description = ""
-  value       = aws_eks_cluster.eks.identity[0].oidc[0].issuer
-}
 
 output "eks_cluster_version" {
   description = ""
   value       = aws_eks_cluster.eks.version
 }
-output "eks_cluster_arn" {
-  description = ""
-  value       = aws_eks_cluster.eks.arn
-}
 
 output "managed_node_groups" {
   value = module.aws_eks_managed_node_groups[*]
+}
+
+output "eks_oidc_issuer_url" {
+  description = "The URL on the EKS cluster OIDC Issuer"
+  value       = split("//", aws_eks_cluster.eks.identity[0].oidc[0].issuer)[1]
+}
+
+output "eks_oidc_provider_arn" {
+  description = ""
+  value       = aws_iam_openid_connect_provider.oidc_provider.arn
 }
