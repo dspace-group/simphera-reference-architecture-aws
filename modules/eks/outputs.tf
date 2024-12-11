@@ -9,7 +9,7 @@ output "eks_cluster_id" {
 }
 
 output "eks_oidc_issuer" {
-  description = ""
+  description = "The OpenID Connect identity provider issuer"
   value       = aws_eks_cluster.eks.identity[0].oidc[0].issuer
 }
 
@@ -19,6 +19,6 @@ output "eks_oidc_issuer_url" {
 }
 
 output "eks_oidc_provider_arn" {
-  description = ""
+  description = "The ARN of the OIDC Provider"
   value       = aws_iam_openid_connect_provider.oidc_provider.arn
 }
