@@ -4,23 +4,23 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "= 5.37.0"
-      # minimum version of 5.37.0 is required to enable ECR pull-through functionality.
+      version = "= 5.60.0"
+      # minimum version 5.60.0 is required due to argument requirements for the aws_eks_cluster resource.
     }
+
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.10"
+      version = "= 2.30.0"
     }
 
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.4.1"
+      version = "= 2.13.2"
     }
 
     random = {
       source  = "hashicorp/random"
-      version = ">= 3.0.0"
+      version = "= 3.6.2"
     }
-
   }
 }
