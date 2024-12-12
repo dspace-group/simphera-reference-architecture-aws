@@ -6,6 +6,7 @@
 # coredns_config                      = var.coredns_config
 # s3_csi_config                       = var.s3_csi_config
 # aws_load_balancer_controller_config = var.aws_load_balancer_controller_config
+# gpu_operator_config                 = var.gpu_operator_config
 
 #   addon_context = {
 #     aws_caller_identity_account_id = data.aws_caller_identity.current.account_id
