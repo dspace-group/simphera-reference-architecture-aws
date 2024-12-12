@@ -49,3 +49,14 @@ variable "s3_csi_config" {
   })
   description = "Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver."
 }
+
+variable "gpu_operator_config" {
+  description = "GPU operator configuration"
+  type = object({
+    enable          = bool
+    helm_repository = string
+    helm_version    = string
+    chart_values    = string
+    driver_version  = string
+  })
+}

@@ -118,12 +118,6 @@ variable "ivsGpuNodeDiskSize" {
   default     = 100
 }
 
-variable "gpuNvidiaDriverVersion" {
-  type        = string
-  description = "The NVIDIA driver version for GPU node group."
-  default     = "535.54.03"
-}
-
 variable "licenseServer" {
   type        = bool
   description = "Specifies whether a license server VM will be created."
@@ -371,6 +365,54 @@ variable "aws_load_balancer_controller_config" {
     )
   })
   description = "Input configuration for load_balancer_controller deployed with helm release. By setting key 'enable' to 'true', load_balancer_controller release will be deployed. 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart."
+  default = {
+    enable = false
+  }
+}
+
+variable "gpu_operator_config" {
+  type = object({
+    enable          = optional(bool, true)
+    helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")
+    helm_version    = optional(string, "v24.9.0")
+    driver_version  = optional(string, "550.90.07")
+    chart_values = optional(string, <<-YAML
+operator:
+  defaultRuntime: containerd
+
+dcgmExporter:
+  enabled: false
+
+driver:
+  enabled: true
+
+validator:
+  driver:
+    env:
+    - name: DISABLE_DEV_CHAR_SYMLINK_CREATION
+      value: "true"
+
+toolkit:
+  enabled: true
+
+daemonsets:
+  tolerations:
+  - key: purpose
+    value: gpu
+    operator: Equal
+    effect: NoSchedule
+
+node-feature-discovery:
+  worker:
+    tolerations:
+    - key: purpose
+      value: gpu
+      operator: Equal
+      effect: NoSchedule
+YAML
+    )
+  })
+  description = "Input configuration for the GPU operator chart deployed with helm release. By setting key 'enable' to 'true', GPU operator will be deployed. 'helm_repository' is an URL for the repository of the GPU operator helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of the GPU operator chart."
   default = {
     enable = false
   }
