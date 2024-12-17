@@ -59,3 +59,28 @@ variable "tags" {
   type        = map(string)
   default     = {}
 }
+
+variable "create_cloudwatch_log_group" {
+  description = "Determines whether a log group is created for the cluster logs. If not, AWS will automatically create one if logging is enabled"
+  type        = bool
+  default     = true
+}
+
+variable "cloudwatch_log_group_retention_in_days" {
+  description = "Number of days to retain log events. Default retention - 90 days"
+  type        = number
+  default     = 90
+}
+
+variable "cloudwatch_log_group_kms_key_id" {
+  description = "If a KMS Key ARN is set, this key will be used to encrypt the corresponding log group. Please be sure that the KMS Key has an appropriate key policy (https://docs.aws.amazon.com/AmazonCloudWatch/latest/logs/encrypt-log-data-kms.html)"
+  type        = string
+  default     = null
+}
+
+variable "cluster_enabled_log_types" {
+  description = "A list of the desired control plane logs to enable. For more information, see Amazon EKS Control Plane Logging documentation (https://docs.aws.amazon.com/eks/latest/userguide/control-plane-logs.html)"
+  type        = list(string)
+  default     = ["audit", "api", "authenticator"]
+}
+

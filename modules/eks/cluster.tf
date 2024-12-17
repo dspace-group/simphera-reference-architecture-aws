@@ -2,7 +2,7 @@ resource "aws_eks_cluster" "eks" {
   name                          = var.cluster_name
   role_arn                      = aws_iam_role.cluster_role.arn
   version                       = var.cluster_version
-  enabled_cluster_log_types     = []
+  enabled_cluster_log_types     = var.cluster_enabled_log_types
   bootstrap_self_managed_addons = false
 
   vpc_config {
@@ -38,6 +38,6 @@ resource "aws_eks_cluster" "eks" {
 
   depends_on = [
     aws_iam_role_policy_attachment.cluster_role,
-    # aws_cloudwatch_log_group.cluster
+    aws_cloudwatch_log_group.log_group
   ]
 }
