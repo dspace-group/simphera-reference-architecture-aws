@@ -29,26 +29,35 @@ locals {
   s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
   private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
-  # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
 
   default_managed_node_pools = {
     "default" = {
-      node_group_name = "default"
-      instance_types  = var.linuxNodeSize
-      subnet_ids      = local.private_subnets
-      desired_size    = var.linuxNodeCountMin
-      max_size        = var.linuxNodeCountMax
-      min_size        = var.linuxNodeCountMin
-      disk_size       = var.linuxNodeDiskSize
+      node_group_name        = "default"
+      instance_types         = var.linuxNodeSize
+      subnet_ids             = local.private_subnets
+      desired_size           = var.linuxNodeCountMin
+      max_size               = var.linuxNodeCountMax
+      min_size               = var.linuxNodeCountMin
+      disk_size              = var.linuxNodeDiskSize
+      create_launch_template = true
+      autoscaling_group_tags = [
+        {
+          key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+          value = "${var.linuxNodeDiskSize}G"
+
+          propagate_at_launch = true
+        }
+      ]
     },
     "execnodes" = {
-      node_group_name = "execnodes"
-      instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = local.private_subnets
-      desired_size    = var.linuxExecutionNodeCountMin
-      max_size        = var.linuxExecutionNodeCountMax
-      min_size        = var.linuxExecutionNodeCountMin
-      disk_size       = var.linuxExecutionNodeDiskSize
+      node_group_name        = "execnodes"
+      instance_types         = var.linuxExecutionNodeSize
+      subnet_ids             = local.private_subnets
+      desired_size           = var.linuxExecutionNodeCountMin
+      max_size               = var.linuxExecutionNodeCountMax
+      min_size               = var.linuxExecutionNodeCountMin
+      disk_size              = var.linuxExecutionNodeDiskSize
+      create_launch_template = true
       k8s_labels = {
         "purpose" = "execution"
       }
@@ -57,6 +66,20 @@ locals {
           key      = "purpose",
           value    = "execution",
           "effect" = "NO_SCHEDULE"
+        }
+      ]
+      autoscaling_group_tags = [
+        {
+          key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+          value = "execution"
+
+          propagate_at_launch = true
+        },
+        {
+          key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+          value = "${var.linuxExecutionNodeDiskSize}G"
+
+          propagate_at_launch = true
         }
       ]
     }
@@ -89,6 +112,20 @@ locals {
           "effect" = "NO_SCHEDULE"
         }
       ]
+      autoscaling_group_tags = [
+        {
+          key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+          value = "gpu"
+
+          propagate_at_launch = true
+        },
+        {
+          key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+          value = "${var.gpuNodeDiskSize}G"
+
+          propagate_at_launch = true
+        }
+      ]
     }
   }
 
@@ -106,7 +143,7 @@ locals {
       block_device_mappings = [{
         device_name           = "/dev/sda1"
         volume_type           = "gp3"
-        volume_size           = 128
+        volume_size           = var.ivsGpuNodeDiskSize
         delete_on_termination = true
       }]
       k8s_labels = {
@@ -125,6 +162,15 @@ locals {
           "effect" = "NO_SCHEDULE"
         }
       ]
+      # autoscaling_group_tags = [
+      #   {
+      #     key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+      #     value = "gpu"
+
+      #     propagate_at_launch = true
+      #   }
+      # ]
     }
   }
+  managed_node_pools = merge(local.default_managed_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
 }

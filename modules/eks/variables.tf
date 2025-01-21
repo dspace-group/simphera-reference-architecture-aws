@@ -18,13 +18,9 @@ variable "cluster_timeouts" {
   }
 }
 
-variable "vpc_id" {
-  description = "ID of the VPC in which EKS will be created"
-  type        = string
-}
 
 variable "subnet_ids" {
-  description = "A list of subnet IDs where the nodes/node groups will be provisioned. If `control_plane_subnet_ids` is not provided, the EKS cluster control plane (ENIs) will be provisioned in these subnets"
+  description = "A list of subnet IDs where the nodes/node groups will be provisioned. "
   type        = list(string)
 }
 
@@ -52,6 +48,12 @@ variable "map_users" {
     groups   = list(string)
   }))
   default = []
+}
+
+variable "managed_node_groups" {
+  description = "Managed node groups configuration"
+  type        = any
+  default     = {}
 }
 
 variable "tags" {
