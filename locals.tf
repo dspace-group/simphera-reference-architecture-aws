@@ -30,7 +30,7 @@ locals {
   private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
 
-  default_managed_node_pools = {
+  default_node_pools = {
     "default" = {
       node_group_name        = "default"
       instance_types         = var.linuxNodeSize
@@ -170,5 +170,5 @@ locals {
       ]
     }
   }
-  managed_node_pools = merge(local.default_managed_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  node_pools = merge(local.default_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
 }
