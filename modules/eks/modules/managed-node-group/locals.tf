@@ -42,13 +42,12 @@ locals {
     ami_type                 = "AL2_x86_64"
     subnet_type              = "private"
     subnet_ids               = []
-
-    create_iam_role = true
-    iam_role_arn    = null
-    desired_size    = 0
-    max_size        = 0
-    min_size        = 0
-    disk_size       = 50
+    create_iam_role          = true
+    iam_role_arn             = null
+    desired_size             = 0
+    max_size                 = 0
+    min_size                 = 0
+    disk_size                = 50
     update_config = [{
       max_unavailable            = 1
       max_unavailable_percentage = null
@@ -69,7 +68,6 @@ locals {
       update = "2h"
       delete = "30m"
     }]
-
     custom_ami_id          = ""
     create_launch_template = false
     enable_monitoring      = true
@@ -89,7 +87,6 @@ locals {
       iops                  = 3000
       throughput            = 125
     }]
-
     format_mount_nvme_disk = false
   }
   node_group_config = merge(local.default_managed_ng, var.node_group_config)

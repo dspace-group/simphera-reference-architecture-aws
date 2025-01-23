@@ -42,9 +42,8 @@ locals {
       create_launch_template = true
       autoscaling_group_tags = [
         {
-          key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-          value = "${var.linuxNodeDiskSize}G"
-
+          key                 = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+          value               = "${var.linuxNodeDiskSize}G"
           propagate_at_launch = true
         }
       ]
@@ -70,21 +69,18 @@ locals {
       ]
       autoscaling_group_tags = [
         {
-          key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
-          value = "execution"
-
+          key                 = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+          value               = "execution"
           propagate_at_launch = true
         },
         {
-          key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-          value = "${var.linuxExecutionNodeDiskSize}G"
-
+          key                 = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+          value               = "${var.linuxExecutionNodeDiskSize}G"
           propagate_at_launch = true
         }
       ]
     }
   }
-
   gpu_node_pool = {
     "gpuexecnodes" = {
       node_group_name        = "gpuexecnodes"
@@ -114,21 +110,18 @@ locals {
       ]
       autoscaling_group_tags = [
         {
-          key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
-          value = "gpu"
-
+          key                 = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+          value               = "gpu"
           propagate_at_launch = true
         },
         {
-          key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-          value = "${var.gpuNodeDiskSize}G"
-
+          key                 = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
+          value               = "${var.gpuNodeDiskSize}G"
           propagate_at_launch = true
         }
       ]
     }
   }
-
   ivsgpu_node_pool = {
     "gpuivsnodes" = {
       node_group_name        = "gpuivsnodes"
@@ -162,14 +155,13 @@ locals {
           "effect" = "NO_SCHEDULE"
         }
       ]
-      # autoscaling_group_tags = [
-      #   {
-      #     key   = "k8s.io/cluster-autoscaler/node-template/label/purpose"
-      #     value = "gpu"
-
-      #     propagate_at_launch = true
-      #   }
-      # ]
+      autoscaling_group_tags = [
+        {
+          key                 = "k8s.io/cluster-autoscaler/node-template/label/purpose"
+          value               = "gpu"
+          propagate_at_launch = true
+        }
+      ]
     }
   }
   managed_node_pools = merge(local.default_managed_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})

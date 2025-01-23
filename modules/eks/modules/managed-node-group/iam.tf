@@ -13,7 +13,6 @@ resource "aws_iam_instance_profile" "managed_ng" {
   role = aws_iam_role.managed_ng.name
   path = var.node_group_context.iam_role_path
   tags = var.node_group_context.tags
-
   lifecycle {
     create_before_destroy = true
   }

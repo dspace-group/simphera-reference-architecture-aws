@@ -18,9 +18,8 @@ variable "cluster_timeouts" {
   }
 }
 
-
 variable "subnet_ids" {
-  description = "A list of subnet IDs where the nodes/node groups will be provisioned. "
+  description = "A list of subnet IDs where the nodes/node groups will be provisioned."
   type        = list(string)
 }
 
