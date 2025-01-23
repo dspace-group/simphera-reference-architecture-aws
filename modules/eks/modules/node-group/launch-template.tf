@@ -1,4 +1,4 @@
-resource "aws_launch_template" "managed_node_groups" {
+resource "aws_launch_template" "node_group" {
   name                   = "${var.node_group_context.eks_cluster_id}-${local.node_group_config["node_group_name"]}"
   description            = "Launch Template for EKS Managed Node Groups"
   update_default_version = local.node_group_config["update_default_version"]

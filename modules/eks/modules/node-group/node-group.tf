@@ -29,8 +29,8 @@ resource "aws_eks_node_group" "node_group" {
   }
   dynamic "launch_template" {
     for_each = local.node_group_config["create_launch_template"] == true ? [{
-      id      = aws_launch_template.managed_node_groups.id
-      version = aws_launch_template.managed_node_groups.default_version
+      id      = aws_launch_template.node_group.id
+      version = aws_launch_template.node_group.default_version
     }] : []
     content {
       id      = launch_template.value["id"]

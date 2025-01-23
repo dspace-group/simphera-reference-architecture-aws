@@ -33,6 +33,6 @@ output "eks_oidc_provider_arn" {
   value       = aws_iam_openid_connect_provider.oidc_provider.arn
 }
 
-output "managed_node_groups" {
+output "node_groups" {
   value = module.node_group[*]
 }

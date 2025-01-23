@@ -27,7 +27,7 @@ locals {
     tags = var.tags
   }
   managed_node_group_aws_auth_config_map = [
-    for node in var.managed_node_groups : {
+    for node in var.node_groups : {
       rolearn : try(node.iam_role_arn, "arn:${data.aws_partition.current.id}:iam::${data.aws_caller_identity.current.account_id}:role/${aws_eks_cluster.eks.id}-${node.node_group_name}")
       username : "system:node:{{EC2PrivateDNSName}}"
       groups : [

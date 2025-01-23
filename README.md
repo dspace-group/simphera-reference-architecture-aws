@@ -242,7 +242,7 @@ Installation times may very, but it is expected to take up to 30 min to complete
 Note that `eks-addons` module dependency on managed node group(s) is commented out in `k8s.tf` file. This might increase
 deployment time, as various addons might be provisioned before any actual K8s worker node starts, to complete addon deployment.
 Default timeout for node/addon deployment is 20 minutes, so please be patient.  If this behaviour creates problems, you can
-always uncomment line `depends_on = [module.eks.managed_node_groups]`.
+always uncomment line `depends_on = [module.eks.node_groups]`.
 It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.
 
 ### Destroy Infrastructure

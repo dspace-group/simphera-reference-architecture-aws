@@ -49,7 +49,7 @@ variable "map_users" {
   default = []
 }
 
-variable "managed_node_groups" {
+variable "node_groups" {
   description = "Managed node groups configuration"
   type        = any
   default     = {}

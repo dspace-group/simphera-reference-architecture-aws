@@ -58,7 +58,7 @@ resource "aws_iam_policy" "ecr_policy" {
 
 # Attach IAM policy to cluster role(s)
 resource "aws_iam_role_policy_attachment" "eks-attach-ecr" {
-  for_each   = var.ecr_pullthrough_cache_rule_config.enable ? module.eks.managed_node_groups[0] : {}
+  for_each   = var.ecr_pullthrough_cache_rule_config.enable ? module.eks.node_groups[0] : {}
   role       = each.value["managed_nodegroup_iam_role_name"][0]
   policy_arn = aws_iam_policy.ecr_policy[0].arn
 }
