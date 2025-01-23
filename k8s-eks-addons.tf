@@ -18,5 +18,5 @@ module "k8s_eks_addons" {
     tags                           = var.tags
   }
 
-  depends_on = [module.eks.eks_cluster_arn, module.vpc]
+  depends_on = [module.eks.eks_cluster_arn]
 }

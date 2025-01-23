@@ -38,8 +38,12 @@ locals {
       desired_size           = var.linuxNodeCountMin
       max_size               = var.linuxNodeCountMax
       min_size               = var.linuxNodeCountMin
-      disk_size              = var.linuxNodeDiskSize
       create_launch_template = true
+      block_device_mappings = [{
+        volume_type           = "gp3"
+        volume_size           = var.linuxExecutionNodeDiskSize
+        delete_on_termination = true
+      }]
       autoscaling_group_tags = [
         {
           key                 = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
@@ -55,8 +59,12 @@ locals {
       desired_size           = var.linuxExecutionNodeCountMin
       max_size               = var.linuxExecutionNodeCountMax
       min_size               = var.linuxExecutionNodeCountMin
-      disk_size              = var.linuxExecutionNodeDiskSize
       create_launch_template = true
+      block_device_mappings = [{
+        volume_type           = "gp3"
+        volume_size           = var.linuxExecutionNodeDiskSize
+        delete_on_termination = true
+      }]
       k8s_labels = {
         "purpose" = "execution"
       }
@@ -89,13 +97,12 @@ locals {
       desired_size           = var.gpuNodeCountMin
       max_size               = var.gpuNodeCountMax
       min_size               = var.gpuNodeCountMin
-      disk_size              = var.gpuNodeDiskSize
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
       block_device_mappings = [{
         device_name           = "/dev/sda1"
         volume_type           = "gp3"
-        volume_size           = 128
+        volume_size           = var.gpuNodeDiskSize
         delete_on_termination = true
       }]
       k8s_labels = {
@@ -130,7 +137,6 @@ locals {
       desired_size           = var.ivsGpuNodeCountMin
       max_size               = var.ivsGpuNodeCountMax
       min_size               = var.ivsGpuNodeCountMin
-      disk_size              = var.ivsGpuNodeDiskSize
       custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
       create_launch_template = true
       block_device_mappings = [{
