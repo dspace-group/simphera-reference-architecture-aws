@@ -40,6 +40,7 @@ locals {
       min_size               = var.linuxNodeCountMin
       create_launch_template = true
       block_device_mappings = [{
+        device_name           = "/dev/xvda"
         volume_type           = "gp3"
         volume_size           = var.linuxExecutionNodeDiskSize
         delete_on_termination = true
@@ -61,6 +62,7 @@ locals {
       min_size               = var.linuxExecutionNodeCountMin
       create_launch_template = true
       block_device_mappings = [{
+        device_name           = "/dev/xvda"
         volume_type           = "gp3"
         volume_size           = var.linuxExecutionNodeDiskSize
         delete_on_termination = true
