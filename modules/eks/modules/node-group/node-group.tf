@@ -1,4 +1,4 @@
-resource "aws_eks_node_group" "managed_ng" {
+resource "aws_eks_node_group" "node_group" {
   cluster_name           = var.node_group_context.eks_cluster_id
   node_group_name        = local.node_group_config["enable_node_group_prefix"] == false ? local.node_group_config["node_group_name"] : null
   node_group_name_prefix = local.node_group_config["enable_node_group_prefix"] == true ? format("%s-", local.node_group_config["node_group_name"]) : null
