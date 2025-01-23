@@ -48,7 +48,7 @@ resource "aws_launch_template" "node_group" {
   }
   tags = var.node_group_context.tags
   depends_on = [
-    aws_iam_role.managed_ng,
-    aws_iam_role_policy_attachment.managed_ng
+    aws_iam_rolenode_group,
+    aws_iam_role_policy_attachmentnode_group
   ]
 }

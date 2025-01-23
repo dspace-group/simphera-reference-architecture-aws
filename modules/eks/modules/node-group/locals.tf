@@ -34,7 +34,7 @@ locals {
       "k8s.io/cluster-autoscaler/enabled"                                  = "TRUE"
       "managed-by"                                                         = "terraform"
   })
-  default_managed_ng = {
+  default_node_group = {
     node_group_name          = "m5_on_demand"
     enable_node_group_prefix = true
     instance_types           = ["m5.large"]
@@ -89,5 +89,5 @@ locals {
     }]
     format_mount_nvme_disk = false
   }
-  node_group_config = merge(local.default_managed_ng, var.node_group_config)
+  node_group_config = merge(local.default_node_group, var.node_group_config)
 }
