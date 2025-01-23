@@ -64,7 +64,7 @@ resource "aws_eks_node_group" "node_group" {
   tags = local.common_tags
   depends_on = [
     aws_iam_role.node_group,
-    aws_iam_instance_profilenode_group,
+    aws_iam_instance_profile.node_group,
     aws_iam_role_policy_attachment.node_group
   ]
 }
