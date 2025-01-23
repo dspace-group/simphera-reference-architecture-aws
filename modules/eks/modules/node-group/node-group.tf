@@ -2,7 +2,7 @@ resource "aws_eks_node_group" "managed_ng" {
   cluster_name           = var.node_group_context.eks_cluster_id
   node_group_name        = local.node_group_config["enable_node_group_prefix"] == false ? local.node_group_config["node_group_name"] : null
   node_group_name_prefix = local.node_group_config["enable_node_group_prefix"] == true ? format("%s-", local.node_group_config["node_group_name"]) : null
-  node_role_arn          = local.node_group_config["create_iam_role"] == true ? aws_iam_role.managed_ng.arn : local.node_group_config["iam_role_arn"]
+  node_role_arn          = local.node_group_config["create_iam_role"] == true ? aws_iam_role.node_group.arn : local.node_group_config["iam_role_arn"]
   subnet_ids             = length(local.node_group_config["subnet_ids"]) == 0 ? (local.node_group_config["subnet_type"] == "public" ? var.node_group_context.public_subnet_ids : var.node_group_context.private_subnet_ids) : local.node_group_config["subnet_ids"]
   release_version        = try(local.node_group_config["release_version"], "") == "" || local.node_group_config["custom_ami_id"] != "" ? null : local.node_group_config["release_version"]
   ami_type               = local.node_group_config["custom_ami_id"] != "" ? null : local.node_group_config["ami_type"]
@@ -74,7 +74,7 @@ resource "aws_autoscaling_group_tag" "managed_nodegroup" {
     for index, tag in try(local.node_group_config["autoscaling_group_tags"], []) :
     index => tag
   }
-  autoscaling_group_name = aws_eks_node_group.managed_ng.resources[0].autoscaling_groups[0].name
+  autoscaling_group_name = aws_eks_node_group.node_group.resources[0].autoscaling_groups[0].name
   tag {
     key   = each.value.key
     value = each.value.value

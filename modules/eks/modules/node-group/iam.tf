@@ -10,7 +10,7 @@ resource "aws_iam_role" "managed_ng" {
 
 resource "aws_iam_instance_profile" "managed_ng" {
   name = "${var.node_group_context.eks_cluster_id}-${local.node_group_config["node_group_name"]}"
-  role = aws_iam_role.managed_ng.name
+  role = aws_iam_role.node_group.name
   path = var.node_group_context.iam_role_path
   tags = var.node_group_context.tags
   lifecycle {
@@ -21,5 +21,5 @@ resource "aws_iam_instance_profile" "managed_ng" {
 resource "aws_iam_role_policy_attachment" "managed_ng" {
   for_each   = local.eks_worker_policies
   policy_arn = each.key
-  role       = aws_iam_role.managed_ng.id
+  role       = aws_iam_role.node_group.id
 }

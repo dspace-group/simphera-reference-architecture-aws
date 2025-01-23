@@ -34,5 +34,5 @@ output "eks_oidc_provider_arn" {
 }
 
 output "managed_node_groups" {
-  value = module.aws_eks_managed_node_groups[*]
+  value = module.node_group[*]
 }
