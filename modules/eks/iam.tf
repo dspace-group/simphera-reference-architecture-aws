@@ -18,7 +18,7 @@ resource "aws_iam_role" "cluster_role" {
           {
             Action   = ["logs:CreateLogGroup"]
             Effect   = "Deny"
-            Resource = aws_cloudwatch_log_group.cluster.arn
+            Resource = aws_cloudwatch_log_group.log_group[0].arn
           },
         ]
       })
