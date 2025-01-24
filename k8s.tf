@@ -9,5 +9,6 @@ module "eks" {
   map_roles                              = var.map_roles
   cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
   cloudwatch_log_group_retention_in_days = var.cloudwatch_retention
+  aws_context                            = local.aws_context
   tags                                   = var.tags
 }

@@ -85,3 +85,14 @@ variable "cluster_enabled_log_types" {
   default     = ["audit", "api", "authenticator"]
 }
 
+variable "aws_context" {
+  description = "Object containing data about AWS, e.g. aws_caller_identity, aws_partition etc."
+  type = object({
+    caller_identity_account_id = string
+    partition_dns_suffix       = string
+    partition_id               = string
+    partition                  = string
+    region_name                = string
+    iam_issuer_arn             = string
+  })
+}

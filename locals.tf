@@ -173,4 +173,12 @@ locals {
     }
   }
   node_pools = merge(local.default_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  aws_context = {
+    caller_identity_account_id = data.aws_caller_identity.current.account_id
+    partition_dns_suffix       = data.aws_partition.current.dns_suffix
+    partition_id               = data.aws_partition.current.id
+    partition                  = data.aws_partition.current.partition
+    region_name                = data.aws_region.current.name
+    iam_issuer_arn             = data.aws_iam_session_context.current.issuer_arn
+  }
 }
