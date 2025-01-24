@@ -15,8 +15,8 @@ locals {
   userdata_base64 = base64encode(
     templatefile("${path.module}/templates/userdata-${local.node_group_config["launch_template_os"]}.tpl", local.userdata_params)
   )
-  policy_arn_prefix = "arn:${var.node_group_context.aws_partition_id}:iam::aws:policy"
-  ec2_principal     = "ec2.${var.node_group_context.aws_partition_dns_suffix}"
+  policy_arn_prefix = "arn:${var.node_group_context.aws_context.partition_id}:iam::aws:policy"
+  ec2_principal     = "ec2.${var.node_group_context.aws_context.partition_dns_suffix}"
   eks_worker_policies = { for k, v in toset(concat([
     "${local.policy_arn_prefix}/AmazonEKSWorkerNodePolicy",
     "${local.policy_arn_prefix}/AmazonEKS_CNI_Policy",

@@ -51,8 +51,7 @@ variable "map_users" {
 
 variable "node_groups" {
   description = "Managed node groups configuration"
-  type        = any
-  default     = {}
+  type        = map(any)
 }
 
 variable "tags" {
