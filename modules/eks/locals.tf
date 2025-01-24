@@ -15,8 +15,7 @@ locals {
     worker_security_group_ids = [aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id]
 
     # Data sources
-    aws_partition_dns_suffix      = local.dns_suffix
-    aws_partition_id              = var.aws_context.partition_id
+    aws_context                   = var.aws_context
     iam_role_path                 = null
     iam_role_permissions_boundary = null
 
