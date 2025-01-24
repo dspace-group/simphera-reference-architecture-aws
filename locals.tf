@@ -32,41 +32,20 @@ locals {
 
   default_node_pools = {
     "default" = {
-      node_group_name        = "default"
-      instance_types         = var.linuxNodeSize
-      subnet_ids             = local.private_subnets
-      desired_size           = var.linuxNodeCountMin
-      max_size               = var.linuxNodeCountMax
-      min_size               = var.linuxNodeCountMin
-      create_launch_template = true
-      block_device_mappings = [{
-        device_name           = "/dev/xvda"
-        volume_type           = "gp3"
-        volume_size           = var.linuxExecutionNodeDiskSize
-        delete_on_termination = true
-      }]
-      autoscaling_group_tags = [
-        {
-          key                 = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-          value               = "${var.linuxNodeDiskSize}G"
-          propagate_at_launch = true
-        }
-      ]
+      node_group_name = "default"
+      instance_types  = var.linuxNodeSize
+      subnet_ids      = local.private_subnets
+      max_size        = var.linuxNodeCountMax
+      min_size        = var.linuxNodeCountMin
+      volume_size     = var.linuxExecutionNodeDiskSize
     },
     "execnodes" = {
-      node_group_name        = "execnodes"
-      instance_types         = var.linuxExecutionNodeSize
-      subnet_ids             = local.private_subnets
-      desired_size           = var.linuxExecutionNodeCountMin
-      max_size               = var.linuxExecutionNodeCountMax
-      min_size               = var.linuxExecutionNodeCountMin
-      create_launch_template = true
-      block_device_mappings = [{
-        device_name           = "/dev/xvda"
-        volume_type           = "gp3"
-        volume_size           = var.linuxExecutionNodeDiskSize
-        delete_on_termination = true
-      }]
+      node_group_name = "execnodes"
+      instance_types  = var.linuxExecutionNodeSize
+      subnet_ids      = local.private_subnets
+      max_size        = var.linuxExecutionNodeCountMax
+      min_size        = var.linuxExecutionNodeCountMin
+      volume_size     = var.linuxExecutionNodeDiskSize
       k8s_labels = {
         "purpose" = "execution"
       }
@@ -77,36 +56,19 @@ locals {
           "effect" = "NO_SCHEDULE"
         }
       ]
-      autoscaling_group_tags = [
-        {
-          key                 = "k8s.io/cluster-autoscaler/node-template/label/purpose"
-          value               = "execution"
-          propagate_at_launch = true
-        },
-        {
-          key                 = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-          value               = "${var.linuxExecutionNodeDiskSize}G"
-          propagate_at_launch = true
-        }
-      ]
     }
   }
   gpu_node_pool = {
     "gpuexecnodes" = {
-      node_group_name        = "gpuexecnodes"
-      instance_types         = var.gpuNodeSize
-      subnet_ids             = local.private_subnets
-      desired_size           = var.gpuNodeCountMin
-      max_size               = var.gpuNodeCountMax
-      min_size               = var.gpuNodeCountMin
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
-      block_device_mappings = [{
-        device_name           = "/dev/sda1"
-        volume_type           = "gp3"
-        volume_size           = var.gpuNodeDiskSize
-        delete_on_termination = true
-      }]
+      node_group_name   = "gpuexecnodes"
+      instance_types    = var.gpuNodeSize
+      subnet_ids        = local.private_subnets
+      max_size          = var.gpuNodeCountMax
+      min_size          = var.gpuNodeCountMin
+      custom_ami_id     = data.aws_ami.al2gpu_ami.image_id
+      block_device_name = "/dev/sda1"
+      volume_size       = var.gpuNodeDiskSize
+
       k8s_labels = {
         "purpose" = "gpu"
       }
@@ -117,36 +79,20 @@ locals {
           "effect" = "NO_SCHEDULE"
         }
       ]
-      autoscaling_group_tags = [
-        {
-          key                 = "k8s.io/cluster-autoscaler/node-template/label/purpose"
-          value               = "gpu"
-          propagate_at_launch = true
-        },
-        {
-          key                 = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"
-          value               = "${var.gpuNodeDiskSize}G"
-          propagate_at_launch = true
-        }
-      ]
     }
   }
   ivsgpu_node_pool = {
     "gpuivsnodes" = {
-      node_group_name        = "gpuivsnodes"
-      instance_types         = var.ivsGpuNodeSize
-      subnet_ids             = local.private_subnets
-      desired_size           = var.ivsGpuNodeCountMin
-      max_size               = var.ivsGpuNodeCountMax
-      min_size               = var.ivsGpuNodeCountMin
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
-      block_device_mappings = [{
-        device_name           = "/dev/sda1"
-        volume_type           = "gp3"
-        volume_size           = var.ivsGpuNodeDiskSize
-        delete_on_termination = true
-      }]
+      node_group_name = "gpuivsnodes"
+      instance_types  = var.ivsGpuNodeSize
+      subnet_ids      = local.private_subnets
+      max_size        = var.ivsGpuNodeCountMax
+      min_size        = var.ivsGpuNodeCountMin
+      custom_ami_id   = data.aws_ami.al2gpu_ami.image_id
+
+      block_device_name = "/dev/sda1"
+      volume_type       = "gp3"
+      volume_size       = var.ivsGpuNodeDiskSize
       k8s_labels = {
         "product" = "ivs",
         "purpose" = "gpu"
@@ -161,13 +107,6 @@ locals {
           key      = "nvidia.com/gpu",
           value    = "",
           "effect" = "NO_SCHEDULE"
-        }
-      ]
-      autoscaling_group_tags = [
-        {
-          key                 = "k8s.io/cluster-autoscaler/node-template/label/purpose"
-          value               = "gpu"
-          propagate_at_launch = true
         }
       ]
     }

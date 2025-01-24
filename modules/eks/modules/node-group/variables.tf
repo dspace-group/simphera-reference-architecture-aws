@@ -12,15 +12,30 @@ variable "node_group_context" {
       partition_id         = string
 
     })
-    iam_role_path                 = string
-    iam_role_permissions_boundary = string
-    service_ipv6_cidr             = string
-    service_ipv4_cidr             = string
-    tags                          = map(string)
+    tags = map(string)
   })
 }
 
+# variable "node_group_config" {
+#   description = "Node group configuration"
+#   type        = any
+# }
+
 variable "node_group_config" {
-  description = "Node group configuration"
-  type        = any
+  type = object({
+    node_group_name   = string
+    instance_types    = list(string)
+    subnet_ids        = list(string)
+    max_size          = number
+    min_size          = number
+    custom_ami_id     = optional(string, null)
+    block_device_name = optional(string, "/dev/xvda")
+    volume_size       = number
+    k8s_labels        = map(string)
+    k8s_taints = list(object({
+      key    = string
+      value  = string
+      effect = string
+    }))
+  })
 }

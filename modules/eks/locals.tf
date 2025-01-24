@@ -19,15 +19,11 @@ locals {
     iam_role_path                 = null
     iam_role_permissions_boundary = null
 
-    # Service IPv4/IPv6 CIDR range
-    service_ipv6_cidr = null
-    service_ipv4_cidr = null
-
     tags = var.tags
   }
   managed_node_group_aws_auth_config_map = [
     for node in var.node_groups : {
-      rolearn : try(node.iam_role_arn, "arn:${var.aws_context.partition_id}:iam::${var.aws_context.caller_identity_account_id}:role/${aws_eks_cluster.eks.id}-${node.node_group_name}")
+      rolearn : "arn:${var.aws_context.partition_id}:iam::${var.aws_context.caller_identity_account_id}:role/${aws_eks_cluster.eks.id}-${node.node_group_name}"
       username : "system:node:{{EC2PrivateDNSName}}"
       groups : [
         "system:bootstrappers",

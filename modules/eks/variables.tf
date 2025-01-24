@@ -49,10 +49,10 @@ variable "map_users" {
   default = []
 }
 
-variable "node_groups" {
-  description = "Managed node groups configuration"
-  type        = any
-}
+# variable "node_groups" {
+#   description = "Managed node groups configuration"
+#   type        = any
+# }
 
 variable "tags" {
   description = "A map of tags to add to all resources"
@@ -94,4 +94,23 @@ variable "aws_context" {
     region_name                = string
     iam_issuer_arn             = string
   })
+}
+
+variable "node_groups" {
+  type = map(object({
+    node_group_name   = string
+    instance_types    = list(string)
+    subnet_ids        = list(string)
+    max_size          = number
+    min_size          = number
+    custom_ami_id     = optional(string, null)
+    block_device_name = optional(string, "/dev/xvda")
+    volume_size       = number
+    k8s_labels        = map(string)
+    k8s_taints = list(object({
+      key    = string
+      value  = string
+      effect = string
+    }))
+  }))
 }
