@@ -103,14 +103,14 @@ variable "node_groups" {
     subnet_ids        = list(string)
     max_size          = number
     min_size          = number
-    custom_ami_id     = optional(string, null)
+    custom_ami_id     = optional(string, "")
     block_device_name = optional(string, "/dev/xvda")
     volume_size       = number
-    k8s_labels        = map(string)
-    k8s_taints = list(object({
+    k8s_labels        = optional(map(string), {})
+    k8s_taints = optional(list(object({
       key    = string
       value  = string
       effect = string
-    }))
+    })), [])
   }))
 }

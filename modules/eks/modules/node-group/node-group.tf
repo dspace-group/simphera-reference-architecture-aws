@@ -3,7 +3,7 @@ resource "aws_eks_node_group" "node_group" {
   node_group_name_prefix = format("%s-", var.node_group_config.node_group_name)
   node_role_arn          = aws_iam_role.node_group.arn
   subnet_ids             = var.node_group_config.subnet_ids
-  ami_type               = var.node_group_config.custom_ami_id != null ? null : "AL2_x86_64"
+  ami_type               = var.node_group_config.custom_ami_id != "" ? null : "AL2_x86_64"
   capacity_type          = "ON_DEMAND"
   instance_types         = var.node_group_config.instance_types
   version                = var.node_group_config.custom_ami_id != "" ? null : var.node_group_context.cluster_version
@@ -49,8 +49,8 @@ resource "aws_autoscaling_group_tag" "labels" {
   for_each               = var.node_group_config.k8s_labels
   autoscaling_group_name = aws_eks_node_group.node_group.resources[0].autoscaling_groups[0].name
   tag {
-    key                 = "k8s.io/cluster-autoscaler/node-template/label/${each.value.key}"
-    value               = each.value.value
+    key                 = "k8s.io/cluster-autoscaler/node-template/label/${each.key}"
+    value               = each.value
     propagate_at_launch = true
   }
 }

@@ -31,11 +31,11 @@ variable "node_group_config" {
     custom_ami_id     = optional(string, null)
     block_device_name = optional(string, "/dev/xvda")
     volume_size       = number
-    k8s_labels        = map(string)
-    k8s_taints = list(object({
+    k8s_labels        = optional(map(string), {})
+    k8s_taints = optional(list(object({
       key    = string
       value  = string
       effect = string
-    }))
+    })), [])
   })
 }
