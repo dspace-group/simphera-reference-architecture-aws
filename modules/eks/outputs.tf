@@ -13,11 +13,6 @@ output "eks_cluster_version" {
   value       = aws_eks_cluster.eks.version
 }
 
-output "eks_cluster_arn" {
-  description = ""
-  value       = aws_eks_cluster.eks.arn
-}
-
 output "eks_oidc_issuer" {
   description = "The OpenID Connect identity provider issuer"
   value       = aws_eks_cluster.eks.identity[0].oidc[0].issuer

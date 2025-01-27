@@ -127,7 +127,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 
     principals {
       type        = "Service"
-      identifiers = ["eks.${local.dns_suffix}"]
+      identifiers = ["eks.${var.aws_context.partition_dns_suffix}"]
     }
   }
 }
