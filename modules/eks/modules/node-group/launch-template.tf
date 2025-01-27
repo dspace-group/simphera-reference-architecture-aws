@@ -22,7 +22,6 @@ resource "aws_launch_template" "node_group" {
     ebs {
       delete_on_termination = true
       encrypted             = true
-      kms_key_id            = null
       volume_size           = var.node_group_config.volume_size
       volume_type           = "gp3"
       iops                  = 3000
@@ -38,10 +37,8 @@ resource "aws_launch_template" "node_group" {
     http_endpoint               = "enabled"
     http_tokens                 = "required"
     http_put_response_hop_limit = 2
-    http_protocol_ipv6          = null
-    instance_metadata_tags      = null
   }
-  dynamic "tag_specifications" { # ??
+  dynamic "tag_specifications" {
     for_each = toset(["instance", "volume", "network-interface"])
     content {
       resource_type = tag_specifications.key

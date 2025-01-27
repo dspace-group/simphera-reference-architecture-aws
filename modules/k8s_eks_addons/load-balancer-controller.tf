@@ -132,7 +132,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
   statement {
     sid       = ""
     effect    = "Allow"
-    resources = ["arn:${var.addon_context.aws_partition_id}:ec2:*:*:security-group/*"]
+    resources = ["arn:${var.addon_context.aws_context.partition_id}:ec2:*:*:security-group/*"]
     actions   = ["ec2:CreateTags"]
 
     condition {
@@ -151,7 +151,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
   statement {
     sid       = ""
     effect    = "Allow"
-    resources = ["arn:${var.addon_context.aws_partition_id}:ec2:*:*:security-group/*"]
+    resources = ["arn:${var.addon_context.aws_context.partition_id}:ec2:*:*:security-group/*"]
 
     actions = [
       "ec2:CreateTags",
@@ -170,9 +170,9 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
     effect = "Allow"
 
     resources = [
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:loadbalancer/app/*/*",
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:loadbalancer/net/*/*",
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:targetgroup/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:loadbalancer/app/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:loadbalancer/net/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:targetgroup/*/*",
     ]
 
     actions = [
@@ -186,7 +186,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
   statement {
     sid       = ""
     effect    = "Allow"
-    resources = ["arn:${var.addon_context.aws_partition_id}:ec2:*:*:security-group/*"]
+    resources = ["arn:${var.addon_context.aws_context.partition_id}:ec2:*:*:security-group/*"]
 
     actions = [
       "ec2:CreateTags",
@@ -259,9 +259,9 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
     effect = "Allow"
 
     resources = [
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:loadbalancer/app/*/*",
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:loadbalancer/net/*/*",
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:targetgroup/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:loadbalancer/app/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:loadbalancer/net/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:targetgroup/*/*",
     ]
 
     actions = [
@@ -287,10 +287,10 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
     effect = "Allow"
 
     resources = [
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:listener/net/*/*/*",
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:listener/app/*/*/*",
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:listener-rule/net/*/*/*",
-      "arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:listener-rule/app/*/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:listener/net/*/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:listener/app/*/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:listener-rule/net/*/*/*",
+      "arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:listener-rule/app/*/*/*",
     ]
 
     actions = [
@@ -325,7 +325,7 @@ data "aws_iam_policy_document" "aws_load_balancer_controller" {
   statement {
     sid       = ""
     effect    = "Allow"
-    resources = ["arn:${var.addon_context.aws_partition_id}:elasticloadbalancing:*:*:targetgroup/*/*"]
+    resources = ["arn:${var.addon_context.aws_context.partition_id}:elasticloadbalancing:*:*:targetgroup/*/*"]
 
     actions = [
       "elasticloadbalancing:DeregisterTargets",
@@ -378,7 +378,7 @@ resource "aws_iam_role" "aws_load_balancer_controller" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "Federated" : "arn:${var.addon_context.aws_partition_id}:iam::${var.addon_context.aws_caller_identity_account_id}:oidc-provider/${var.addon_context.eks_oidc_issuer_url}"
+          "Federated" : "arn:${var.addon_context.aws_context.partition_id}:iam::${var.addon_context.aws_context.caller_identity_account_id}:oidc-provider/${var.addon_context.eks_oidc_issuer_url}"
         },
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
@@ -413,9 +413,9 @@ resource "helm_release" "aws_load_balancer_controller" {
   version    = var.aws_load_balancer_controller_config.helm_version
   timeout    = 1200
   values = [templatefile("${path.module}/templates/load_balancer_controller_values.yaml", {
-    aws_region      = var.addon_context.aws_region_name
+    aws_region      = var.addon_context.aws_context.region_name
     eks_cluster_id  = var.addon_context.eks_cluster_id
-    repository      = "${local.amazon_container_image_registry_uris[var.addon_context.aws_region_name]}/amazon/aws-load-balancer-controller"
+    repository      = "${local.amazon_container_image_registry_uris[var.addon_context.aws_context.region_name]}/amazon/aws-load-balancer-controller"
     service_account = local.aws_load_balancer_controller_service_account
     }),
     var.aws_load_balancer_controller_config.chart_values

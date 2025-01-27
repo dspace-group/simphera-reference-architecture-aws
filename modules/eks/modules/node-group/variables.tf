@@ -16,11 +16,6 @@ variable "node_group_context" {
   })
 }
 
-# variable "node_group_config" {
-#   description = "Node group configuration"
-#   type        = any
-# }
-
 variable "node_group_config" {
   type = object({
     node_group_name   = string

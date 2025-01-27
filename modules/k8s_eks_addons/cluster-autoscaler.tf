@@ -41,7 +41,7 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
   statement {
     sid       = ""
     effect    = "Allow"
-    resources = ["arn:${var.addon_context.aws_partition_id}:autoscaling:${var.addon_context.aws_region_name}:${var.addon_context.aws_caller_identity_account_id}:autoScalingGroup:*"]
+    resources = ["arn:${var.addon_context.aws_context.partition_id}:autoscaling:${var.addon_context.aws_context.region_name}:${var.addon_context.aws_context.caller_identity_account_id}:autoScalingGroup:*"]
 
     actions = [
       "autoscaling:SetDesiredCapacity",
@@ -58,7 +58,7 @@ data "aws_iam_policy_document" "cluster_autoscaler" {
   statement {
     sid       = ""
     effect    = "Allow"
-    resources = ["arn:${var.addon_context.aws_partition_id}:eks:${var.addon_context.aws_region_name}:${var.addon_context.aws_caller_identity_account_id}:nodegroup/${var.addon_context.eks_cluster_id}/*"]
+    resources = ["arn:${var.addon_context.aws_context.partition_id}:eks:${var.addon_context.aws_context.region_name}:${var.addon_context.aws_context.caller_identity_account_id}:nodegroup/${var.addon_context.eks_cluster_id}/*"]
 
     actions = [
       "eks:DescribeNodegroup",
@@ -90,7 +90,7 @@ resource "helm_release" "cluster_autoscaler" {
   version    = var.cluster_autoscaler_config.helm_version
   timeout    = 1200
   values = [templatefile("${path.module}/templates/autoscaler_values.yaml", {
-    aws_region      = var.addon_context.aws_region_name
+    aws_region      = var.addon_context.aws_context.region_name
     eks_cluster_id  = var.addon_context.eks_cluster_id
     image_tag       = "v${var.addon_context.eks_cluster_version}.0"
     service_account = local.service_account
@@ -125,7 +125,7 @@ resource "aws_iam_role" "cluster_autoscaler" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "Federated" : "arn:${var.addon_context.aws_partition_id}:iam::${var.addon_context.aws_caller_identity_account_id}:oidc-provider/${var.addon_context.eks_oidc_issuer_url}"
+          "Federated" : "arn:${var.addon_context.aws_context.partition_id}:iam::${var.addon_context.aws_context.caller_identity_account_id}:oidc-provider/${var.addon_context.eks_oidc_issuer_url}"
         },
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {

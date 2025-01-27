@@ -49,11 +49,6 @@ variable "map_users" {
   default = []
 }
 
-# variable "node_groups" {
-#   description = "Managed node groups configuration"
-#   type        = any
-# }
-
 variable "tags" {
   description = "A map of tags to add to all resources"
   type        = map(string)
