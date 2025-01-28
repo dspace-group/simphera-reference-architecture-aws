@@ -20,7 +20,7 @@ output "eks_oidc_issuer" {
 
 output "eks_oidc_issuer_url" {
   description = "The URL on the EKS cluster OIDC Issuer"
-  value       = split("//", aws_eks_cluster.eks.identity[0].oidc[0].issuer)[1]
+  value       = local.eks_oidc_issuer_url
 }
 
 output "eks_oidc_provider_arn" {
