@@ -11,8 +11,6 @@ locals {
 
     # Data sources
     aws_context = var.aws_context
-
-    tags = var.tags
   }
   managed_node_group_aws_auth_config_map = [
     for node in var.node_groups : {
