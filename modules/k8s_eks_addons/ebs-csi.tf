@@ -18,7 +18,7 @@ resource "aws_eks_addon" "aws_ebs_csi_driver" {
   preserve                    = true
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
-  tags                        = var.addon_context.tags
+  tags                        = var.tags
   configuration_values        = file("${path.module}/templates/ebs_values.yaml")
 }
 
@@ -47,7 +47,7 @@ resource "aws_iam_role" "ebs_csi_driver_role" {
 
   force_detach_policies = true
 
-  tags = var.addon_context.tags
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "ebs_csi_driver_policy_attachment" {

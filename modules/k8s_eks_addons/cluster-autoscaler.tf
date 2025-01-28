@@ -78,7 +78,7 @@ resource "aws_iam_policy" "cluster_autoscaler" {
   description = "Cluster Autoscaler IAM policy"
   policy      = data.aws_iam_policy_document.cluster_autoscaler[0].json
 
-  tags = var.addon_context.tags
+  tags = var.tags
 }
 
 resource "helm_release" "cluster_autoscaler" {
@@ -139,7 +139,7 @@ resource "aws_iam_role" "cluster_autoscaler" {
   })
   force_detach_policies = true
 
-  tags = var.addon_context.tags
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "cluster_autoscaler" {

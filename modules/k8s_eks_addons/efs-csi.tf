@@ -17,7 +17,7 @@ resource "aws_eks_addon" "aws_efs_csi_driver" {
   preserve                    = true
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
-  tags                        = var.addon_context.tags
+  tags                        = var.tags
 }
 
 resource "aws_iam_role" "efs_csi_driver_role" {
@@ -45,7 +45,7 @@ resource "aws_iam_role" "efs_csi_driver_role" {
 
   force_detach_policies = true
 
-  tags = var.addon_context.tags
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "efs_csi_driver_policy_attachment" {

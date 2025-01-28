@@ -354,7 +354,7 @@ resource "aws_iam_policy" "aws_load_balancer_controller" {
   name        = "${var.addon_context.eks_cluster_id}-aws-load-balancer-controller-irsa"
   description = "AWS Load Balancer Controller IAM policy"
   policy      = data.aws_iam_policy_document.aws_load_balancer_controller[0].json
-  tags        = var.addon_context.tags
+  tags        = var.tags
 }
 
 resource "kubernetes_service_account_v1" "aws_load_balancer_controller" {
@@ -392,7 +392,7 @@ resource "aws_iam_role" "aws_load_balancer_controller" {
   })
   force_detach_policies = true
 
-  tags = var.addon_context.tags
+  tags = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "aws_load_balancer_controller" {
