@@ -7,7 +7,6 @@ module "k8s_eks_addons" {
   s3_csi_config                       = var.s3_csi_config
   aws_load_balancer_controller_config = var.aws_load_balancer_controller_config
   gpu_operator_config                 = var.gpu_operator_config
-
   addon_context = {
     aws_context         = local.aws_context
     eks_cluster_id      = module.eks.eks_cluster_id
@@ -15,4 +14,6 @@ module "k8s_eks_addons" {
     eks_oidc_issuer_url = replace(module.eks.eks_oidc_issuer_url, "https://", "")
     tags                = var.tags
   }
+
+  depends_on = [module.eks.eks_cluster_id]
 }
