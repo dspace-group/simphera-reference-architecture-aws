@@ -9,10 +9,6 @@ locals {
     cluster_endpoint  = aws_eks_cluster.eks.endpoint
     cluster_version   = var.cluster_version
 
-    # VPC Config
-    private_subnet_ids        = var.subnet_ids
-    worker_security_group_ids = [aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id]
-
     # Data sources
     aws_context = var.aws_context
 

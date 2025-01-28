@@ -10,9 +10,9 @@ locals {
     )) : k => v
   }
   common_tags = merge(
-    var.node_group_context.tags,
+    var.tags,
     {
-      Name                                                                 = "${var.node_group_context.eks_cluster_id}-${var.node_group_config.node_group_name}"
+      Name                                                                 = "${var.node_group_context.eks_cluster_id}-${var.node_group_name}"
       "kubernetes.io/cluster/${var.node_group_context.eks_cluster_id}"     = "owned"
       "k8s.io/cluster-autoscaler/${var.node_group_context.eks_cluster_id}" = "owned"
       "k8s.io/cluster-autoscaler/enabled"                                  = "TRUE"
