@@ -29,5 +29,6 @@ output "eks_oidc_provider_arn" {
 }
 
 output "node_groups" {
-  value = module.node_group[*]
+  description = "Outputs from EKS Managed node groups"
+  value       = module.node_group[*]
 }
