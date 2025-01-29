@@ -37,6 +37,12 @@ resource "aws_eks_cluster" "eks" {
     delete = var.cluster_timeouts["delete"]
   }
 
+  lifecycle {
+    ignore_changes = [
+      bootstrap_self_managed_addons,
+    ]
+  }
+
   depends_on = [
     aws_iam_role_policy_attachment.cluster_role,
     aws_cloudwatch_log_group.log_group
