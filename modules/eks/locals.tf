@@ -12,7 +12,7 @@ locals {
     # Data sources
     aws_context = var.aws_context
   }
-  managed_node_group_aws_auth_config_map = [
+  node_group_aws_auth_config_map = [
     for node in var.node_groups : {
       rolearn : "arn:${var.aws_context.partition_id}:iam::${var.aws_context.caller_identity_account_id}:role/${aws_eks_cluster.eks.id}-${node.node_group_name}"
       username : "system:node:{{EC2PrivateDNSName}}"
