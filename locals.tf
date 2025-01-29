@@ -37,7 +37,7 @@ locals {
       subnet_ids      = local.private_subnets
       max_size        = var.linuxNodeCountMax
       min_size        = var.linuxNodeCountMin
-      volume_size     = var.linuxExecutionNodeDiskSize
+      volume_size     = var.linuxNodeDiskSize
     },
     "execnodes" = {
       node_group_name = "execnodes"
