@@ -292,3 +292,27 @@ terraform apply
 ```
 4. Remove `move.tf` file
 
+# Migrate from v0.3.0 to v0.4.0
+By removing terraform blueprints for the deployment of EKS, terraform state has been changed significantly. Some resources are no longer necessary, some new are introduced, and some of them are changed, but most of the resources are moved.
+For successful migration to the new release you should use "moved" block to minimize recreation of the resources. Since EKS will be replaced, you will get authorization issues for the EKS.
+
+1. In your `providers.tf`, for data block `aws_eks_cluster` and `aws_eks_cluster_auth` change value of argument `name` with hardcoded name of your EKS. This change can be reverted uppon successfull migration.
+
+
+2. Create `move.tf` file, and according to the flags you have (`variables.tf`), add following moved blocks (flags mostly affect node groups and their related resources):
+```
+```
+
+3. Run init command:
+```
+terraform init
+```
+
+4. Run apply command:
+```
+terraform apply
+```
+
+5. Remove `move.tf` file.
+
+
