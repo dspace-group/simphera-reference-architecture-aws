@@ -42,3 +42,11 @@ resource "aws_eks_cluster" "eks" {
     aws_cloudwatch_log_group.log_group
   ]
 }
+
+resource "aws_ec2_tag" "cluster_primary_security_group" {
+  for_each = { for k, v in var.tags : k => v if k != "Name" }
+
+  resource_id = aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id
+  key         = each.key
+  value       = each.value
+}

@@ -15,8 +15,8 @@ terraform {
       version = "= 4.0.5"
     }
     http = {
-      source  = "hashicorp/http"
-      version = "= 3.4.3"
+      source  = "terraform-aws-modules/http"
+      version = "2.4.1"
     }
   }
 }
