@@ -92,6 +92,12 @@
       "secretname": "aws-simphera-dev-production"
     }
   },
+  "ivsInstances": {
+  "production" : {
+    "dataBucketName" : "demo-ivs",
+    "rawdataBucketName" : "demo-ivs-rawdata"
+  }
+  },
   "tags": {},
   "vpcCidr": "10.1.0.0/18",
   "vpcId": null,
