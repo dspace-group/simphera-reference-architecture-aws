@@ -18,13 +18,8 @@ variable "cluster_timeouts" {
   }
 }
 
-variable "vpc_id" {
-  description = "ID of the VPC in which EKS will be created"
-  type        = string
-}
-
 variable "subnet_ids" {
-  description = "A list of subnet IDs where the nodes/node groups will be provisioned. If `control_plane_subnet_ids` is not provided, the EKS cluster control plane (ENIs) will be provisioned in these subnets"
+  description = "A list of subnet IDs where the nodes/node groups will be provisioned and where the EKS cluster control plane (ENIs) will be provisioned"
   type        = list(string)
 }
 
@@ -84,3 +79,33 @@ variable "cluster_enabled_log_types" {
   default     = ["audit", "api", "authenticator"]
 }
 
+variable "aws_context" {
+  description = "Object containing data about AWS, e.g. aws_caller_identity, aws_partition etc."
+  type = object({
+    caller_identity_account_id = string
+    partition_dns_suffix       = string
+    partition_id               = string
+    partition                  = string
+    region_name                = string
+    iam_issuer_arn             = string
+  })
+}
+
+variable "node_groups" {
+  type = map(object({
+    node_group_name   = string
+    instance_types    = list(string)
+    subnet_ids        = list(string)
+    max_size          = number
+    min_size          = number
+    custom_ami_id     = optional(string, "")
+    block_device_name = optional(string, "/dev/xvda")
+    volume_size       = number
+    k8s_labels        = optional(map(string), {})
+    k8s_taints = optional(list(object({
+      key    = string
+      value  = string
+      effect = string
+    })), [])
+  }))
+}

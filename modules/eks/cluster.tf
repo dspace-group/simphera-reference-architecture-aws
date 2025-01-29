@@ -8,8 +8,9 @@ resource "aws_eks_cluster" "eks" {
   vpc_config {
     subnet_ids              = var.subnet_ids
     endpoint_private_access = false
-    endpoint_public_access  = true
-    public_access_cidrs     = ["0.0.0.0/0"]
+    endpoint_public_access  = true          #tfsec:ignore:aws-eks-no-public-cluster-access
+    public_access_cidrs     = ["0.0.0.0/0"] #tfsec:ignore:aws-eks-no-public-cluster-access-to-cidr
+    # desired behaviour is to have a public access to the cluster
   }
 
   kubernetes_network_config {

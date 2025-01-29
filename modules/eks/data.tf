@@ -1,9 +1,3 @@
-data "aws_caller_identity" "current" {}
-data "aws_partition" "current" {}
-data "aws_region" "current" {}
-data "aws_iam_session_context" "current" {
-  arn = data.aws_caller_identity.current.arn
-}
 data "aws_eks_cluster" "cluster" {
   name = aws_eks_cluster.eks.id
 }
@@ -31,20 +25,20 @@ data "aws_iam_policy_document" "eks_key" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:${data.aws_partition.current.id}:iam::${data.aws_caller_identity.current.account_id}:root"
+        "arn:${var.aws_context.partition_id}:iam::${var.aws_context.caller_identity_account_id}:root"
       ]
     }
 
     condition {
       test     = "StringEquals"
       variable = "kms:CallerAccount"
-      values   = [data.aws_caller_identity.current.account_id]
+      values   = [var.aws_context.caller_identity_account_id]
     }
 
     condition {
       test     = "StringEquals"
       variable = "kms:ViaService"
-      values   = ["eks.${data.aws_region.current.name}.amazonaws.com"]
+      values   = ["eks.${var.aws_context.region_name}.amazonaws.com"]
     }
   }
 
@@ -62,7 +56,7 @@ data "aws_iam_policy_document" "eks_key" {
     principals {
       type = "AWS"
       identifiers = [
-        "arn:${data.aws_partition.current.id}:iam::${data.aws_caller_identity.current.account_id}:root"
+        "arn:${var.aws_context.partition_id}:iam::${var.aws_context.caller_identity_account_id}:root"
       ]
     }
   }
@@ -77,7 +71,7 @@ data "aws_iam_policy_document" "eks_key" {
 
     principals {
       type        = "AWS"
-      identifiers = [data.aws_iam_session_context.current.issuer_arn]
+      identifiers = [var.aws_context.iam_issuer_arn]
     }
   }
 
@@ -133,7 +127,7 @@ data "aws_iam_policy_document" "assume_role_policy" {
 
     principals {
       type        = "Service"
-      identifiers = ["eks.${local.dns_suffix}"]
+      identifiers = ["eks.${var.aws_context.partition_dns_suffix}"]
     }
   }
 }

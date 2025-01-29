@@ -13,7 +13,7 @@ resource "kubernetes_config_map" "aws_auth" {
   data = {
     mapRoles = yamlencode(
       distinct(concat(
-        # local.managed_node_group_aws_auth_config_map,
+        local.node_group_aws_auth_config_map,
         var.map_roles,
       ))
     )
