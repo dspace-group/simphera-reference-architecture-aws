@@ -68,7 +68,6 @@ locals {
       custom_ami_id     = data.aws_ami.al2gpu_ami.image_id
       block_device_name = "/dev/sda1"
       volume_size       = var.gpuNodeDiskSize
-
       k8s_labels = {
         "purpose" = "gpu"
       }
@@ -83,15 +82,13 @@ locals {
   }
   ivsgpu_node_pool = {
     "gpuivsnodes" = {
-      node_group_name = "gpuivsnodes"
-      instance_types  = var.ivsGpuNodeSize
-      subnet_ids      = local.private_subnets
-      max_size        = var.ivsGpuNodeCountMax
-      min_size        = var.ivsGpuNodeCountMin
-      custom_ami_id   = data.aws_ami.al2gpu_ami.image_id
-
+      node_group_name   = "gpuivsnodes"
+      instance_types    = var.ivsGpuNodeSize
+      subnet_ids        = local.private_subnets
+      max_size          = var.ivsGpuNodeCountMax
+      min_size          = var.ivsGpuNodeCountMin
+      custom_ami_id     = data.aws_ami.al2gpu_ami.image_id
       block_device_name = "/dev/sda1"
-      volume_type       = "gp3"
       volume_size       = var.ivsGpuNodeDiskSize
       k8s_labels = {
         "product" = "ivs",
