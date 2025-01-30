@@ -48,7 +48,7 @@ provider "registry.terraform.io/hashicorp/helm" {
 
 provider "registry.terraform.io/hashicorp/http" {
   version     = "3.4.3"
-  constraints = ">= 2.2.0"
+  constraints = ">= 2.2.0, 3.4.3"
   hashes = [
     "h1:WUwrzNfcBamA4mm3Stzt6+GcwTosQv2T0CEmZefPBAo=",
     "h1:px8fHJV07bg+jAZYKO/tCkLPf4vaTkU+oCh6AXT2GJs=",
