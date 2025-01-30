@@ -100,6 +100,14 @@ ivsGpuNodeSize = [
   "g4dn.2xlarge"
 ]
 
+# A list containing the individual IVS instances, such as 'staging' and 'production'.
+ivsInstances = {
+  "production": {
+    "dataBucketName": "demo-ivs",
+    "rawdataBucketName": "demo-ivs-rawdata"
+  }
+}
+
 # The kubernetes version of the EKS cluster.
 kubernetesVersion = "1.30"
 

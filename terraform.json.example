@@ -36,6 +36,12 @@
   "ivsGpuNodeSize": [
     "g4dn.2xlarge"
   ],
+  "ivsInstances": {
+    "production": {
+      "dataBucketName": "demo-ivs",
+      "rawdataBucketName": "demo-ivs-rawdata"
+    }
+  },
   "kubernetesVersion": "1.30",
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
@@ -91,12 +97,6 @@
       "postgresqlVersion": "16",
       "secretname": "aws-simphera-dev-production"
     }
-  },
-  "ivsInstances": {
-  "production" : {
-    "dataBucketName" : "demo-ivs",
-    "rawdataBucketName" : "demo-ivs-rawdata"
-  }
   },
   "tags": {},
   "vpcCidr": "10.1.0.0/18",
