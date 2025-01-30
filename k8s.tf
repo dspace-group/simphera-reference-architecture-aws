@@ -12,6 +12,9 @@ module "eks" {
   cloudwatch_log_group_kms_key_id        = aws_kms_key.kms_key_cloudwatch_log_group.arn
   cloudwatch_log_group_retention_in_days = var.cloudwatch_retention
   managed_node_groups                    = merge(local.default_managed_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  # only primary cluster securty group is used for node groups
+  create_node_security_group    = false
+  create_cluster_security_group = false
 }
 
 data "aws_eks_node_group" "default" {
