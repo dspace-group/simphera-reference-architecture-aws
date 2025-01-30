@@ -12,8 +12,8 @@ resource "aws_s3_bucket" "rawdata_bucket" {
 
 
 resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
-  for_each = var.managedNodeGroups
-  role     = each.value["managed_nodegroup_iam_role_name"][0]
+  for_each = toset(var.nodeRoleNames)
+  role     = each.value
   name     = "s3-access-policy"
   policy   = <<EOF
 {

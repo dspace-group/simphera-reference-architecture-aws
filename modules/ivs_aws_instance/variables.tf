@@ -15,7 +15,7 @@ variable "rawdataBucketName" {
   description = "The name of the raw data bucket."
 }
 
-variable "managedNodeGroups" {
-  type        = map(any)
-  description = "EKS managed node groups configuration."
+variable "nodeRoleNames" {
+  type        = list(string)
+  description = "The names of IAM roles assigned to EKS cluster nodes."
 }
