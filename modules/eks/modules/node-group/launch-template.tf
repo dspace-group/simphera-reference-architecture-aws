@@ -42,7 +42,7 @@ resource "aws_launch_template" "node_group" {
     for_each = toset(["instance", "volume", "network-interface"])
     content {
       resource_type = tag_specifications.key
-      tags          = var.tags
+      tags          = local.common_tags
     }
   }
   network_interfaces {
