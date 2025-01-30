@@ -26,7 +26,7 @@ resource "aws_eks_cluster" "eks" {
   }
   access_config {
     authentication_mode                         = "CONFIG_MAP"
-    bootstrap_cluster_creator_admin_permissions = true
+    bootstrap_cluster_creator_admin_permissions = false
   }
   tags = var.tags
 
@@ -37,8 +37,22 @@ resource "aws_eks_cluster" "eks" {
     delete = var.cluster_timeouts["delete"]
   }
 
+  lifecycle {
+    ignore_changes = [
+      bootstrap_self_managed_addons,
+    ]
+  }
+
   depends_on = [
     aws_iam_role_policy_attachment.cluster_role,
     aws_cloudwatch_log_group.log_group
   ]
+}
+
+resource "aws_ec2_tag" "cluster_primary_security_group" {
+  for_each = { for k, v in var.tags : k => v if k != "Name" }
+
+  resource_id = aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id
+  key         = each.key
+  value       = each.value
 }
