@@ -308,11 +308,14 @@ For successful migration to the new release you should use "moved" block to mini
 terraform init
 ```
 
-4. Run apply command:
+4. Remove state for data that has changed provider:
+```
+terraform state rm "module.eks.data.http.eks_cluster_readiness[0]"
+```
+
+5. Run apply command:
 ```
 terraform apply
 ```
 
-5. Remove `move.tf` file.
-
-
+6. Remove `move.tf` file.
