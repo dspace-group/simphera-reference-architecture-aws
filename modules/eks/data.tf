@@ -3,9 +3,9 @@ data "aws_eks_cluster" "cluster" {
 }
 
 data "http" "eks_cluster_readiness" {
-  url            = join("/", [data.aws_eks_cluster.cluster.endpoint, "healthz"])
-  ca_certificate = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
-  timeout        = 600000
+  url                = join("/", [data.aws_eks_cluster.cluster.endpoint, "healthz"])
+  ca_cert_pem        = base64decode(data.aws_eks_cluster.cluster.certificate_authority[0].data)
+  request_timeout_ms = 600000
 }
 
 data "aws_iam_policy_document" "eks_key" {
