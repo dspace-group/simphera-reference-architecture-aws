@@ -463,6 +463,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_eks"></a> [eks](#module\_eks) | ./modules/eks | n/a |
+| <a name="module_ivs_instance"></a> [ivs\_instance](#module\_ivs\_instance) | ./modules/ivs_aws_instance | n/a |
 | <a name="module_k8s_eks_addons"></a> [k8s\_eks\_addons](#module\_k8s\_eks\_addons) | ./modules/k8s_eks_addons | n/a |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
 | <a name="module_security_group_license_server"></a> [security\_group\_license\_server](#module\_security\_group\_license\_server) | terraform-aws-modules/security-group/aws | ~> 4 |
