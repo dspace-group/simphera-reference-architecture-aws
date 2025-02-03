@@ -1,4 +1,3 @@
-
 locals {
   default_role_name   = module.eks.managed_node_groups[0]["default"]["managed_nodegroup_iam_role_name"][0]
   execnodes_role_name = module.eks.managed_node_groups[0]["execnodes"]["managed_nodegroup_iam_role_name"][0]
