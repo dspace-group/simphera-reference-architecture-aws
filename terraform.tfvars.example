@@ -104,7 +104,7 @@ ivsGpuNodeSize = [
 ivsInstances = {
   "production": {
     "dataBucketName": "demo-ivs",
-    "rawdataBucketName": "demo-ivs-rawdata"
+    "rawDataBucketName": "demo-ivs-rawdata"
   }
 }
 
