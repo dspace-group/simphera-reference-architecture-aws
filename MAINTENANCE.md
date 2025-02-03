@@ -295,9 +295,9 @@ terraform apply
 # Migrate from v0.3.0 to v0.4.0
 By removing terraform blueprints for the deployment of EKS, terraform state has been changed significantly. Some resources are no longer necessary, some new are introduced, and some of them are changed, but most of the resources are moved.
 For successful migration to the new release you should use "moved" block to minimize recreation of the resources. Since EKS will be replaced, you will get authorization issues for the EKS.
+For quicker migration, it is suggested to scale down all of the node groups in AWS portal to 0 (minimum and desired node count).
 
 1. In your `providers.tf`, for data block `aws_eks_cluster` and `aws_eks_cluster_auth` change value of argument `name` with hardcoded name of your EKS. This change can be reverted uppon successfull migration.
-
 
 2. Create `move.tf` file, and according to the flags you have (`variables.tf`), add following moved blocks (flags mostly affect node groups and their related resources):
 ```terraform
@@ -558,9 +558,14 @@ terraform init
 terraform state rm "module.eks.data.http.eks_cluster_readiness[0]"
 ```
 
-5. Run apply command:
+5. Add cloudwatch log group to the state:
+```
+terraform import "module.eks.aws_cloudwatch_log_group.log_group[0]" "/aws/eks/YOUR_CLUSTER_NAME/cluster"
+```
+
+6. Run apply command:
 ```
 terraform apply
 ```
 
-6. Remove `move.tf` file.
+7. Remove `move.tf` file.
