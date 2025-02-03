@@ -39,7 +39,7 @@
   "ivsInstances": {
     "production": {
       "dataBucketName": "demo-ivs",
-      "rawdataBucketName": "demo-ivs-rawdata"
+      "rawDataBucketName": "demo-ivs-rawdata"
     }
   },
   "kubernetesVersion": "1.30",

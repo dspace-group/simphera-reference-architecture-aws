@@ -287,13 +287,13 @@ variable "simpheraInstances" {
 variable "ivsInstances" {
   type = map(object({
     dataBucketName    = string
-    rawdataBucketName = string
+    rawDataBucketName = string
   }))
   description = "A list containing the individual IVS instances, such as 'staging' and 'production'."
   default = {
     "production" = {
       dataBucketName    = "demo-ivs"
-      rawdataBucketName = "demo-ivs-rawdata"
+      rawDataBucketName = "demo-ivs-rawdata"
     }
   }
 }

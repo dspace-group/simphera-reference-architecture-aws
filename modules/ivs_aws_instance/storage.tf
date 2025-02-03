@@ -3,13 +3,10 @@ resource "aws_s3_bucket" "data_bucket" {
   tags   = var.tags
 }
 
-
 resource "aws_s3_bucket" "rawdata_bucket" {
-  bucket = var.rawdataBucketName
+  bucket = var.rawDataBucketName
   tags   = var.tags
 }
-
-
 
 resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
   for_each = toset(var.nodeRoleNames)

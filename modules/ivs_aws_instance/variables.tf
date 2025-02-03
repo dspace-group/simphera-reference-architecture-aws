@@ -9,8 +9,7 @@ variable "dataBucketName" {
   description = "The name of the data bucket."
 }
 
-
-variable "rawdataBucketName" {
+variable "rawDataBucketName" {
   type        = string
   description = "The name of the raw data bucket."
 }
