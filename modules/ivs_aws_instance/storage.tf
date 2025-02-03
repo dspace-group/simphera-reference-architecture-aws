@@ -61,4 +61,3 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
 }
 EOF
 }
-
