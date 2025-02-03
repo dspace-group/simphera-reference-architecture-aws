@@ -284,6 +284,20 @@ variable "simpheraInstances" {
   }
 }
 
+variable "ivsInstances" {
+  type = map(object({
+    dataBucketName    = string
+    rawDataBucketName = string
+  }))
+  description = "A list containing the individual IVS instances, such as 'staging' and 'production'."
+  default = {
+    "production" = {
+      dataBucketName    = "demo-ivs"
+      rawDataBucketName = "demo-ivs-rawdata"
+    }
+  }
+}
+
 variable "enable_patching" {
   type        = bool
   description = "Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually."
