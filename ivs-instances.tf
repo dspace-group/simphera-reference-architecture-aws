@@ -10,4 +10,3 @@ module "ivs_instance" {
     contains(keys(module.eks.node_groups[0]), "gpuivsnodes") ? module.eks.node_groups[0]["gpuivsnodes"].nodegroup_role_id : null
   ])
 }
-
