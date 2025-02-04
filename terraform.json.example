@@ -36,6 +36,12 @@
   "ivsGpuNodeSize": [
     "g4dn.2xlarge"
   ],
+  "ivsInstances": {
+    "production": {
+      "dataBucketName": "demo-ivs",
+      "rawDataBucketName": "demo-ivs-rawdata"
+    }
+  },
   "kubernetesVersion": "1.30",
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
