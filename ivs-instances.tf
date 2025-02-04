@@ -7,7 +7,7 @@ module "ivs_instance" {
   nodeRoleNames = compact([
     module.eks.managed_node_groups[0]["default"]["managed_nodegroup_iam_role_name"][0],
     module.eks.managed_node_groups[0]["execnodes"]["managed_nodegroup_iam_role_name"][0],
-    contains(keys(module.eks.managed_node_groups[0]), "ivsgpu_node_pool") ? module.eks.managed_node_groups[0]["ivsgpu_node_pool"]["managed_nodegroup_iam_role_name"][0] : null
+    contains(keys(module.eks.managed_node_groups[0]), "gpuivsnodes") ? module.eks.managed_node_groups[0]["gpuivsnodes"]["managed_nodegroup_iam_role_name"][0] : null
   ])
 }
 
