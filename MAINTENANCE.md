@@ -162,6 +162,14 @@ moved {
   from = module.eks-addons.module.aws_efs_csi_driver[0].aws_eks_addon.aws_efs_csi_driver[0]
   to   = module.k8s_eks_addons.aws_eks_addon.aws_efs_csi_driver[0]
 }
+moved {
+  from = module.eks-addons.module.aws_efs_csi_driver[0].module.helm_addon.module.irsa[0].aws_iam_role.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role.efs_csi_driver_role
+}
+moved {
+  from = module.eks-addons.module.aws_efs_csi_driver[0].module.helm_addon.module.irsa[0].aws_iam_role_policy_attachment.irsa[0]
+  to   = module.k8s_eks_addons.aws_iam_role_policy_attachment.efs_csi_driver_policy_attachment[0]
+}
 ```
 
 3. Run command:
