@@ -301,7 +301,7 @@ terraform apply
 4. Remove `move.tf` file
 
 # Migrate from v0.3.0 to v0.4.0
-By removing terraform blueprints for the deployment of EKS, terraform state has been changed significantly. Some resources are no longer necessary, some new are introduced, and some of them are changed, but most of the resources are moved.
+By removing terraform blueprints for the deployment of EKS, terraform state has been changed significantly.
 For successful migration to the new release you should use "moved" block to minimize recreation of the resources.
 For quicker migration, it is suggested to scale down all of the node groups in AWS portal to 0 (minimum and desired node count).
 
