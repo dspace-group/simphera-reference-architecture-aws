@@ -242,7 +242,7 @@ Installation times may very, but it is expected to take up to 30 min to complete
 Note that `eks-addons` module dependency on managed node group(s) is commented out in `k8s.tf` file. This might increase
 deployment time, as various addons might be provisioned before any actual K8s worker node starts, to complete addon deployment.
 Default timeout for node/addon deployment is 20 minutes, so please be patient.  If this behaviour creates problems, you can
-always uncomment line `depends_on = [module.eks.managed_node_groups]`.
+always uncomment line `depends_on = [module.eks.node_groups]`.
 It is recommended to use AWS `admin` account, or ask your AWS administrator to assign necessary IAM roles and permissions to your user.
 
 ### Destroy Infrastructure
@@ -445,16 +445,16 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 5.37.0 |
-| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.4.1 |
-| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | >= 2.10 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.0.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | = 5.60.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | = 2.13.2 |
+| <a name="requirement_kubernetes"></a> [kubernetes](#requirement\_kubernetes) | = 2.30.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | = 3.6.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.37.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | 5.60.0 |
 | <a name="provider_kubernetes"></a> [kubernetes](#provider\_kubernetes) | 2.30.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.6.2 |
 
@@ -462,7 +462,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_eks"></a> [eks](#module\_eks) | git::https://github.com/aws-ia/terraform-aws-eks-blueprints.git | v4.32.1 |
+| <a name="module_eks"></a> [eks](#module\_eks) | ./modules/eks | n/a |
 | <a name="module_ivs_instance"></a> [ivs\_instance](#module\_ivs\_instance) | ./modules/ivs_aws_instance | n/a |
 | <a name="module_k8s_eks_addons"></a> [k8s\_eks\_addons](#module\_k8s\_eks\_addons) | ./modules/k8s_eks_addons | n/a |
 | <a name="module_security_group"></a> [security\_group](#module\_security\_group) | terraform-aws-modules/security-group/aws | ~> 4 |
@@ -474,69 +474,60 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 | Name | Type |
 |------|------|
-| [aws_autoscaling_group_tag.default_node-template_resources_ephemeral-storage](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
-| [aws_autoscaling_group_tag.execnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
-| [aws_autoscaling_group_tag.execnodes_node-template_resources_ephemeral-storage](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
-| [aws_autoscaling_group_tag.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
-| [aws_autoscaling_group_tag.gpuexecnodes_node-template_resources_ephemeral-storage](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
-| [aws_autoscaling_group_tag.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/autoscaling_group_tag) | resource |
-| [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
-| [aws_cloudwatch_log_group.ssm_install_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
-| [aws_cloudwatch_log_group.ssm_scan_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/cloudwatch_log_group) | resource |
-| [aws_ecr_pull_through_cache_rule.dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ecr_pull_through_cache_rule) | resource |
-| [aws_efs_file_system.efs_file_system](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_file_system) | resource |
-| [aws_efs_file_system_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_file_system_policy) | resource |
-| [aws_efs_mount_target.mount_target](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/efs_mount_target) | resource |
-| [aws_flow_log.flowlog](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/flow_log) | resource |
-| [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_instance_profile) | resource |
-| [aws_iam_policy.ecr_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.flowlogs_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
-| [aws_iam_policy.license_server_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_policy) | resource |
-| [aws_iam_role.flowlogs_role](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role) | resource |
-| [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role) | resource |
-| [aws_iam_role_policy_attachment.eks-attach-ecr](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.flowlogs_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.license_server_ssm](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_iam_role_policy_attachment.minio_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/iam_role_policy_attachment) | resource |
-| [aws_instance.license_server](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/instance) | resource |
-| [aws_kms_key.kms_key_cloudwatch_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/kms_key) | resource |
-| [aws_s3_bucket.bucket_logs](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket.license_server_bucket](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket) | resource |
-| [aws_s3_bucket_logging.logging](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_logging) | resource |
-| [aws_s3_bucket_policy.buckets_logs_ssl](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_policy) | resource |
-| [aws_s3_bucket_policy.license_server_bucket_ssl](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_policy) | resource |
-| [aws_s3_bucket_public_access_block.buckets_logs_access](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_public_access_block) | resource |
-| [aws_s3_bucket_server_side_encryption_configuration.bucket_logs_encryption](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
-| [aws_secretsmanager_secret.ecr_pullthroughcache_dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/secretsmanager_secret) | resource |
-| [aws_secretsmanager_secret_version.ecr_credentials](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/secretsmanager_secret_version) | resource |
-| [aws_ssm_maintenance_window.install](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window) | resource |
-| [aws_ssm_maintenance_window.scan](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window) | resource |
-| [aws_ssm_maintenance_window_target.install](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window_target) | resource |
-| [aws_ssm_maintenance_window_target.scan](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window_target) | resource |
-| [aws_ssm_maintenance_window_target.scan_eks_nodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window_target) | resource |
-| [aws_ssm_maintenance_window_task.install](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window_task) | resource |
-| [aws_ssm_maintenance_window_task.scan](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_maintenance_window_task) | resource |
-| [aws_ssm_patch_baseline.production](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_patch_baseline) | resource |
-| [aws_ssm_patch_group.patch_group](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/resources/ssm_patch_group) | resource |
-| [kubernetes_storage_class_v1.efs](https://registry.terraform.io/providers/hashicorp/kubernetes/latest/docs/resources/storage_class_v1) | resource |
-| [random_string.policy_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/string) | resource |
-| [aws_ami.al2gpu_ami](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/ami) | data source |
-| [aws_ami.amazon_linux_kernel5](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/ami) | data source |
-| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/availability_zones) | data source |
-| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/caller_identity) | data source |
-| [aws_eks_node_group.default](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
-| [aws_eks_node_group.execnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
-| [aws_eks_node_group.gpuexecnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
-| [aws_eks_node_group.gpuivsnodes](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/eks_node_group) | data source |
-| [aws_iam_policy_document.eks_node_custom_inline_policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_iam_policy_document.policy](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/iam_policy_document) | data source |
-| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/partition) | data source |
-| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/region) | data source |
-| [aws_subnet.private_subnet](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnet) | data source |
-| [aws_subnet.public_subnet](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnet) | data source |
-| [aws_subnets.private_subnets](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnets) | data source |
-| [aws_subnets.public_subnets](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/subnets) | data source |
-| [aws_vpc.preconfigured](https://registry.terraform.io/providers/hashicorp/aws/5.37.0/docs/data-sources/vpc) | data source |
+| [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_log_group.ssm_install_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/cloudwatch_log_group) | resource |
+| [aws_cloudwatch_log_group.ssm_scan_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/cloudwatch_log_group) | resource |
+| [aws_ecr_pull_through_cache_rule.dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ecr_pull_through_cache_rule) | resource |
+| [aws_efs_file_system.efs_file_system](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/efs_file_system) | resource |
+| [aws_efs_file_system_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/efs_file_system_policy) | resource |
+| [aws_efs_mount_target.mount_target](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/efs_mount_target) | resource |
+| [aws_flow_log.flowlog](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/flow_log) | resource |
+| [aws_iam_instance_profile.license_server_profile](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_instance_profile) | resource |
+| [aws_iam_policy.ecr_policy](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.flowlogs_policy](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_policy) | resource |
+| [aws_iam_policy.license_server_policy](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_policy) | resource |
+| [aws_iam_role.flowlogs_role](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_role) | resource |
+| [aws_iam_role.license_server_role](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_role) | resource |
+| [aws_iam_role_policy_attachment.eks-attach-ecr](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.flowlogs_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.license_server_ssm](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_iam_role_policy_attachment.minio_policy_attachment](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/iam_role_policy_attachment) | resource |
+| [aws_instance.license_server](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/instance) | resource |
+| [aws_kms_key.kms_key_cloudwatch_log_group](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/kms_key) | resource |
+| [aws_s3_bucket.bucket_logs](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket.license_server_bucket](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_logging.logging](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/s3_bucket_logging) | resource |
+| [aws_s3_bucket_policy.buckets_logs_ssl](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/s3_bucket_policy) | resource |
+| [aws_s3_bucket_policy.license_server_bucket_ssl](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/s3_bucket_policy) | resource |
+| [aws_s3_bucket_public_access_block.buckets_logs_access](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/s3_bucket_public_access_block) | resource |
+| [aws_s3_bucket_server_side_encryption_configuration.bucket_logs_encryption](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
+| [aws_secretsmanager_secret.ecr_pullthroughcache_dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.ecr_credentials](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/secretsmanager_secret_version) | resource |
+| [aws_ssm_maintenance_window.install](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_maintenance_window) | resource |
+| [aws_ssm_maintenance_window.scan](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_maintenance_window) | resource |
+| [aws_ssm_maintenance_window_target.install](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_maintenance_window_target) | resource |
+| [aws_ssm_maintenance_window_target.scan](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_maintenance_window_target) | resource |
+| [aws_ssm_maintenance_window_target.scan_eks_nodes](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_maintenance_window_target) | resource |
+| [aws_ssm_maintenance_window_task.install](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_maintenance_window_task) | resource |
+| [aws_ssm_maintenance_window_task.scan](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_maintenance_window_task) | resource |
+| [aws_ssm_patch_baseline.production](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_patch_baseline) | resource |
+| [aws_ssm_patch_group.patch_group](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/resources/ssm_patch_group) | resource |
+| [kubernetes_storage_class_v1.efs](https://registry.terraform.io/providers/hashicorp/kubernetes/2.30.0/docs/resources/storage_class_v1) | resource |
+| [random_string.policy_suffix](https://registry.terraform.io/providers/hashicorp/random/3.6.2/docs/resources/string) | resource |
+| [aws_ami.al2gpu_ami](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/ami) | data source |
+| [aws_ami.amazon_linux_kernel5](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/ami) | data source |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/availability_zones) | data source |
+| [aws_caller_identity.current](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/caller_identity) | data source |
+| [aws_iam_policy_document.eks_node_custom_inline_policy](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_policy_document.policy](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/iam_policy_document) | data source |
+| [aws_iam_session_context.current](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/iam_session_context) | data source |
+| [aws_partition.current](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/partition) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/region) | data source |
+| [aws_subnet.private_subnet](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/subnet) | data source |
+| [aws_subnet.public_subnet](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/subnet) | data source |
+| [aws_subnets.private_subnets](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/subnets) | data source |
+| [aws_subnets.public_subnets](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/subnets) | data source |
+| [aws_vpc.preconfigured](https://registry.terraform.io/providers/hashicorp/aws/5.60.0/docs/data-sources/vpc) | data source |
 
 ## Inputs
 

@@ -300,3 +300,280 @@ terraform apply
 ```
 4. Remove `move.tf` file
 
+# Migrate from v0.3.0 to v0.4.0
+By removing terraform blueprints for the deployment of EKS, terraform state has been changed significantly.
+For successful migration to the new release you should use "moved" block to minimize recreation of the resources.
+For quicker migration, it is suggested to scale down all of the node groups in AWS portal to 0 (minimum and desired node count).
+
+1. In your `providers.tf`, for data block `aws_eks_cluster` and `aws_eks_cluster_auth` change value of argument `name` with hardcoded name of your EKS. This change can be reverted uppon successfull migration.
+
+2. Create `move.tf` file, and according to the flags you have (`variables.tf`), add following moved blocks (flags mostly affect node groups and their related resources):
+```terraform
+moved {
+  from = module.eks.module.kms[0].aws_kms_alias.this
+  to   = module.eks.aws_kms_alias.cluster
+}
+
+moved {
+  from = module.eks.module.aws_eks.aws_iam_role_policy_attachment.this["arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"]
+  to   = module.eks.aws_iam_role_policy_attachment.cluster_role["arn:aws:iam::aws:policy/AmazonEKSClusterPolicy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks.aws_iam_role_policy_attachment.this["arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"]
+  to   = module.eks.aws_iam_role_policy_attachment.cluster_role["arn:aws:iam::aws:policy/AmazonEKSVPCResourceController"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["default"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+  to   = module.eks.module.node_group["default"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["default"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+  to   = module.eks.module.node_group["default"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["default"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+  to   = module.eks.module.node_group["default"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["default"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+  to   = module.eks.module.node_group["default"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["execnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+  to   = module.eks.module.node_group["execnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["execnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+  to   = module.eks.module.node_group["execnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["execnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+  to   = module.eks.module.node_group["execnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["execnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+  to   = module.eks.module.node_group["execnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"]
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_iam_role_policy_attachment.managed_ng["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_iam_role_policy_attachment.node_group["arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"]
+}
+
+moved {
+  from = module.eks.module.aws_eks.aws_eks_cluster.this[0]
+  to   = module.eks.aws_eks_cluster.eks
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["default"].aws_iam_instance_profile.managed_ng[0]
+  to   = module.eks.module.node_group["default"].aws_iam_instance_profile.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["execnodes"].aws_iam_instance_profile.managed_ng[0]
+  to   = module.eks.module.node_group["execnodes"].aws_iam_instance_profile.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_iam_instance_profile.managed_ng[0]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_iam_instance_profile.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_iam_instance_profile.managed_ng[0]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_iam_instance_profile.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_launch_template.managed_node_groups[0]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_launch_template.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_launch_template.managed_node_groups[0]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_launch_template.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks.aws_iam_openid_connect_provider.oidc_provider[0]
+  to   = module.eks.aws_iam_openid_connect_provider.oidc_provider
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["default"].aws_eks_node_group.managed_ng
+  to   = module.eks.module.node_group["default"].aws_eks_node_group.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["execnodes"].aws_eks_node_group.managed_ng
+  to   = module.eks.module.node_group["execnodes"].aws_eks_node_group.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_eks_node_group.managed_ng
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_eks_node_group.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_eks_node_group.managed_ng
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_eks_node_group.node_group
+}
+
+moved {
+  from = module.eks.module.kms[0].aws_kms_key.this
+  to   = module.eks.aws_kms_key.cluster
+}
+
+moved {
+  from = module.eks.kubernetes_config_map.aws_auth[0]
+  to   = module.eks.kubernetes_config_map.aws_auth
+}
+
+moved {
+  from = module.eks.module.aws_eks.aws_iam_role.this[0]
+  to   = module.eks.aws_iam_role.cluster_role
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["default"].aws_iam_role.managed_ng[0]
+  to   = module.eks.module.node_group["default"].aws_iam_role.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["execnodes"].aws_iam_role.managed_ng[0]
+  to   = module.eks.module.node_group["execnodes"].aws_iam_role.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuexecnodes"].aws_iam_role.managed_ng[0]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_iam_role.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks_managed_node_groups["gpuivsnodes"].aws_iam_role.managed_ng[0]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_iam_role.node_group
+}
+
+moved {
+  from = module.eks.module.aws_eks.aws_ec2_tag.cluster_primary_security_group["created"]
+  to   = module.eks.aws_ec2_tag.cluster_primary_security_group["created"]
+}
+
+moved {
+  from = module.eks.module.aws_eks.aws_ec2_tag.cluster_primary_security_group["created_by"]
+  to   = module.eks.aws_ec2_tag.cluster_primary_security_group["created_by"]
+}
+
+moved {
+  from = aws_autoscaling_group_tag.default_node-template_resources_ephemeral-storage
+  to   = module.eks.module.node_group["default"].aws_autoscaling_group_tag.ephemeral_storage
+}
+
+moved {
+  from = aws_autoscaling_group_tag.execnodes
+  to   = module.eks.module.node_group["execnodes"].aws_autoscaling_group_tag.labels["purpose"]
+}
+
+moved {
+  from = aws_autoscaling_group_tag.execnodes_node-template_resources_ephemeral-storage
+  to   = module.eks.module.node_group["execnodes"].aws_autoscaling_group_tag.ephemeral_storage
+}
+
+moved {
+  from = aws_autoscaling_group_tag.gpuexecnodes[0]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_autoscaling_group_tag.labels["purpose"]
+}
+
+moved {
+  from = aws_autoscaling_group_tag.gpuexecnodes_node-template_resources_ephemeral-storage[0]
+  to   = module.eks.module.node_group["gpuexecnodes"].aws_autoscaling_group_tag.ephemeral_storage
+}
+
+moved {
+  from = aws_autoscaling_group_tag.gpuivsnodes[0]
+  to   = module.eks.module.node_group["gpuivsnodes"].aws_autoscaling_group_tag.labels["purpose"]
+}
+
+moved {
+  from = module.k8s_eks_addons.aws_eks_addon.aws_vpc_cni
+  to   = module.eks.aws_eks_addon.aws_vpc_cni
+}
+
+moved {
+  from = module.k8s_eks_addons.aws_iam_role.aws_vpc_cni_role
+  to   = module.eks.aws_iam_role.aws_vpc_cni_role
+
+}
+
+moved {
+  from = module.k8s_eks_addons.aws_iam_role_policy_attachment.aws_vpc_cni_policy_attachment
+  to   = module.eks.aws_iam_role_policy_attachment.aws_vpc_cni_policy_attachment
+}
+```
+
+3. Run init command:
+```
+terraform init
+```
+
+4. Remove state for data that has changed provider:
+```
+terraform state rm "module.eks.data.http.eks_cluster_readiness[0]"
+```
+
+5. Add cloudwatch log group to the state:
+```
+terraform import "module.eks.aws_cloudwatch_log_group.log_group[0]" "/aws/eks/YOUR_CLUSTER_NAME/cluster"
+```
+
+6. Run apply command:
+```
+terraform apply
+```
+
+7. Remove `move.tf` file.

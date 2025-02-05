@@ -1,6 +1,7 @@
 ## v0.4.0
 
 - Implemented initial support for IVS.
+- replaced terraform-aws-eks-blueprints for the `eks` module with custom implementation of module `modules/eks`
 
 ## v0.3.0
 
