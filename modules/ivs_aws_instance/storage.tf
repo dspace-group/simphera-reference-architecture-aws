@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "rawdata_bucket" {
 }
 
 resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
-  for_each = toset(var.nodeRoleNames)
+  for_each = var.nodeRoleNames
   role     = each.value
   name     = "s3-access-policy"
   policy   = <<EOF

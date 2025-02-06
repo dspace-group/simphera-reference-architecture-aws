@@ -15,6 +15,6 @@ variable "rawDataBucketName" {
 }
 
 variable "nodeRoleNames" {
-  type        = list(string)
+  type        = map(string)
   description = "The names of IAM roles assigned to EKS cluster nodes."
 }
