@@ -4,11 +4,5 @@ module "ivs_instance" {
   tags              = var.tags
   dataBucketName    = each.value.dataBucketName
   rawDataBucketName = each.value.rawDataBucketName
-  nodeRoleNames = merge(
-    {
-      default   = module.eks.node_groups[0]["default"].nodegroup_role_id
-      execnodes = module.eks.node_groups[0]["execnodes"].nodegroup_role_id
-    },
-    var.ivsGpuNodePool ? { gpuivsnodes = module.eks.node_groups[0]["gpuivsnodes"].nodegroup_role_id } : {}
-  )
+  nodeRoleNames     = local.ivs_node_groups_roles
 }
