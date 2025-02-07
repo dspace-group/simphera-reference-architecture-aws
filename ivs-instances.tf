@@ -4,9 +4,5 @@ module "ivs_instance" {
   tags              = var.tags
   dataBucketName    = each.value.dataBucketName
   rawDataBucketName = each.value.rawDataBucketName
-  nodeRoleNames = compact([
-    module.eks.node_groups[0]["default"].nodegroup_role_id,
-    module.eks.node_groups[0]["execnodes"].nodegroup_role_id,
-    contains(keys(module.eks.node_groups[0]), "gpuivsnodes") ? module.eks.node_groups[0]["gpuivsnodes"].nodegroup_role_id : null
-  ])
+  nodeRoleNames     = local.ivs_node_groups_roles
 }
