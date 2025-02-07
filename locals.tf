@@ -117,9 +117,4 @@ locals {
     region_name                = data.aws_region.current.name
     iam_issuer_arn             = data.aws_iam_session_context.current.issuer_arn
   }
-
-  ivs_managed_nodegroup_role_Names = {
-    default   = module.eks.node_groups[0]["default"].nodegroup_role_id
-    execnodes = module.eks.node_groups[0]["execnodes"].nodegroup_role_id
-  }
 }
