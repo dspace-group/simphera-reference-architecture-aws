@@ -288,6 +288,15 @@ variable "ivsInstances" {
   type = map(object({
     dataBucketName    = string
     rawDataBucketName = string
+    opensearch = optional(object({
+      enabled                 = optional(bool, false)
+      engine_version          = optional(string, "OpenSearch_2.17")
+      instance_type           = optional(string, "m7g.medium.search")
+      instance_count          = optional(number, 1)
+      master_user_secret_name = optional(string, null)
+      }),
+      {}
+    )
   }))
   description = "A list containing the individual IVS instances, such as 'staging' and 'production'."
   default = {
@@ -415,6 +424,10 @@ daemonsets:
     value: gpu
     operator: Equal
     effect: NoSchedule
+  - key: nvidia.com/gpu
+    value: ""
+    operator: Exists
+    effect: NoSchedule
 
 node-feature-discovery:
   worker:
@@ -422,6 +435,10 @@ node-feature-discovery:
     - key: purpose
       value: gpu
       operator: Equal
+      effect: NoSchedule
+    - key: nvidia.com/gpu
+      value: ""
+      operator: Exists
       effect: NoSchedule
 YAML
     )

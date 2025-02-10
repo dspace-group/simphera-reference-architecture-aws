@@ -18,3 +18,21 @@ variable "nodeRoleNames" {
   type        = map(string)
   description = "The names of IAM roles assigned to EKS cluster nodes."
 }
+variable "aws_context" {
+  type = object({
+    caller_identity_account_id = string
+    region_name                = string
+  })
+}
+variable "opensearch" {
+  type = object({
+    enabled                 = bool
+    subnet_ids              = list(string)
+    domain_name             = string
+    engine_version          = string
+    instance_type           = string
+    instance_count          = number
+    master_user_secret_name = string
+    security_group_ids      = list(string)
+  })
+}
