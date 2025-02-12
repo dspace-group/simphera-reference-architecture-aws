@@ -1,5 +1,5 @@
 ## v0.5.0
-- Implemented deyploment of an OpenSearch Domain for usage in IVS
+- Implemented deployment of an OpenSearch Domain for usage in IVS
 
 ## v0.4.0
 
