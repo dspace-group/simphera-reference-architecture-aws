@@ -1,8 +1,7 @@
 resource "aws_opensearch_domain" "opensearch" {
-  count          = var.opensearch.enabled ? 1 : 0
+  count          = var.opensearch.enable ? 1 : 0
   domain_name    = var.opensearch.domain_name
-  engine_version = var.opensearch.engine_version #https://docs.aws.amazon.com/opensearch-service/latest/developerguide/features-by-version.html
-
+  engine_version = var.opensearch.engine_version
   advanced_security_options {
     enabled                        = true
     internal_user_database_enabled = true
@@ -31,15 +30,8 @@ resource "aws_opensearch_domain" "opensearch" {
         availability_zone_count = var.opensearch.instance_count < 3 ? var.opensearch.instance_count : 3
       }
     }
-    # dedicated_master_enabled = false # Whether dedicated main nodes are enabled for the cluster.
-    # dedicated_master_count   = 1     #(Optional) Number of dedicated main nodes in the cluster.
-    # dedicated_master_type    = ""    #(Optional) Instance type of the dedicated main nodes in the cluster.
-    # cold_storage_options {
-    #   enabled = false
-    #   # Defaults to false. Master and ultrawarm nodes must be enabled for cold storage.
-    # }
   }
-  ebs_options { # this is used if instance_type support ebs storage, most of them does https://aws.amazon.com/opensearch-service/pricing/
+  ebs_options { # this is used if instance_type supports ebs storage, most of instance types do https://aws.amazon.com/opensearch-service/pricing/
     ebs_enabled = true
     volume_type = "gp3"
     volume_size = "100" #?
@@ -53,11 +45,4 @@ resource "aws_opensearch_domain" "opensearch" {
   }
   access_policies = data.aws_iam_policy_document.access[0].json
   tags            = var.tags
-
 }
-
-
-# Enable dedicated master nodes? https://docs.aws.amazon.com/opensearch-service/latest/developerguide/managedomains-dedicatedmasternodes.html
-# enable warm storage?
-# enable cold storage?
-# Enable dedicated coordinator nodes? https://docs.aws.amazon.com/opensearch-service/latest/developerguide/Dedicated-coordinator-nodes.html

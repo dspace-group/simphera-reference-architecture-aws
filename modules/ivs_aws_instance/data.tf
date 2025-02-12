@@ -1,5 +1,5 @@
 data "aws_iam_policy_document" "access" {
-  count = var.opensearch.enabled ? 1 : 0
+  count = var.opensearch.enable ? 1 : 0
   statement {
     effect = "Allow"
 

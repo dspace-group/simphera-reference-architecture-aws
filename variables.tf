@@ -289,7 +289,7 @@ variable "ivsInstances" {
     dataBucketName    = string
     rawDataBucketName = string
     opensearch = optional(object({
-      enabled                 = optional(bool, false)
+      enable                  = optional(bool, false)
       engine_version          = optional(string, "OpenSearch_2.17")
       instance_type           = optional(string, "m7g.medium.search")
       instance_count          = optional(number, 1)
@@ -298,11 +298,14 @@ variable "ivsInstances" {
       {}
     )
   }))
-  description = "A list containing the individual IVS instances, such as 'staging' and 'production'."
+  description = "A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'."
   default = {
     "production" = {
       dataBucketName    = "demo-ivs"
       rawDataBucketName = "demo-ivs-rawdata"
+      opensearch = {
+        enable = false
+      }
     }
   }
 }

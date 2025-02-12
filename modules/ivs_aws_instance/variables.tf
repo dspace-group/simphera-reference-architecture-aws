@@ -26,7 +26,7 @@ variable "aws_context" {
 }
 variable "opensearch" {
   type = object({
-    enabled                 = bool
+    enable                  = bool
     subnet_ids              = list(string)
     domain_name             = string
     engine_version          = string
@@ -35,4 +35,5 @@ variable "opensearch" {
     master_user_secret_name = string
     security_group_ids      = list(string)
   })
+  description = "Input variables for configuring an AWS's OpenSearch domain"
 }
