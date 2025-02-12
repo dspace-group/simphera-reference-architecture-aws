@@ -43,6 +43,6 @@ resource "aws_opensearch_domain" "opensearch" {
 
     security_group_ids = var.opensearch.security_group_ids
   }
-  access_policies = data.aws_iam_policy_document.access[0].json
+  access_policies = data.aws_iam_policy_document.opensearch_access[0].json
   tags            = var.tags
 }
