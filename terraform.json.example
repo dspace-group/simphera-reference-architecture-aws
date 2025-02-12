@@ -39,6 +39,9 @@
   "ivsInstances": {
     "production": {
       "dataBucketName": "demo-ivs",
+      "opensearch": {
+        "enable": false
+      },
       "rawDataBucketName": "demo-ivs-rawdata"
     }
   },
