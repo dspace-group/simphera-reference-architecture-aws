@@ -101,9 +101,13 @@ ivsGpuNodeSize = [
 ]
 
 # A list containing the individual IVS instances, such as 'staging' and 'production'.
+# 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'.
 ivsInstances = {
   "production": {
     "dataBucketName": "demo-ivs",
+    "opensearch": {
+      "enable": false
+    },
     "rawDataBucketName": "demo-ivs-rawdata"
   }
 }
