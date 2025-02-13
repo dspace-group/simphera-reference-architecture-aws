@@ -37,7 +37,10 @@ ecr_pullthrough_cache_rule_config = {
   "exist": false
 }
 
-enable_ivs = false
+# Input configuration for AWS EKS add-on efs csi. By setting key 'enable' to 'true', efs csi add-on is deployed.
+efs_csi_config = {
+  "enable": true
+}
 
 # Scans license server EC2 instance and EKS nodes for updates.
 # Installs patches on license server automatically.
