@@ -8,11 +8,13 @@
   "coredns_config": {
     "enable": true
   },
+  "efs_csi_config": {
+    "enable": true
+  },
   "ecr_pullthrough_cache_rule_config": {
     "enable": false,
     "exist": false
   },
-  "enable_ivs": false,
   "enable_patching": false,
   "gpuNodeCountMax": 12,
   "gpuNodeCountMin": 0,

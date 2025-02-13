@@ -185,11 +185,6 @@ variable "ecr_pullthrough_cache_rule_config" {
   }
 }
 
-variable "enable_ivs" {
-  type    = bool
-  default = false
-}
-
 variable "rtMaps_link" {
   type        = string
   description = "Download link for RTMaps license server."
@@ -348,6 +343,16 @@ variable "coredns_config" {
     configuration_values = optional(string, null)
   })
   description = "Input configuration for AWS EKS add-on coredns. By setting key 'enable' to 'true', coredns add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = true
+  }
+}
+
+variable "efs_csi_config" {
+  type = object({
+    enable = optional(bool, true)
+  })
+  description = "Input configuration for AWS EKS add-on efs csi. By setting key 'enable' to 'true', efs csi add-on is deployed."
   default = {
     enable = true
   }
