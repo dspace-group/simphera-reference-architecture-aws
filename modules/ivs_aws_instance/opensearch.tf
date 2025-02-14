@@ -34,7 +34,7 @@ resource "aws_opensearch_domain" "opensearch" {
   ebs_options { # this is used if instance_type supports ebs storage, most of instance types do https://aws.amazon.com/opensearch-service/pricing/
     ebs_enabled = true
     volume_type = "gp3"
-    volume_size = "100" #?
+    volume_size = var.opensearch.volume_size
     iops        = 3000
     throughput  = 125
   }

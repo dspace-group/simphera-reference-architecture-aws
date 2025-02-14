@@ -35,6 +35,7 @@ variable "opensearch" {
     engine_version          = string
     instance_type           = string
     instance_count          = number
+    volume_size             = number
     master_user_secret_name = string
     security_group_ids      = list(string)
   })
