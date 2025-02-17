@@ -31,6 +31,8 @@ locals {
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
   create_simphera_resources                 = length(var.simpheraInstances) > 0 ? true : false
   create_ivs_resources                      = length(var.ivsInstances) > 0 ? true : false
+  create_efs                                = local.create_simphera_resources ? 1 : 0
+  storage_subnets                           = local.create_efs > 0 ? { for index, zone in local.private_subnets : "zone${index}" => local.private_subnets[index] } : {}
 
   default_node_pools = {
     "default" = {
