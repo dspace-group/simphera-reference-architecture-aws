@@ -1,21 +1,26 @@
 terraform {
-  required_version = ">= 1.1.7"
+  required_version = ">= 1.3.0"
 
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 3.72, < 5.0.0"
-      # beginning with version 5.0 some arguments are removed from resource "aws_vpc".
+      version = "= 5.60.0"
+      # minimum version 5.60.0 is required due to argument requirements for the aws_eks_cluster resource.
     }
+
     kubernetes = {
       source  = "hashicorp/kubernetes"
-      version = ">= 2.10"
+      version = "= 2.30.0"
     }
 
     helm = {
       source  = "hashicorp/helm"
-      version = ">= 2.4.1"
+      version = "= 2.13.2"
     }
 
+    random = {
+      source  = "hashicorp/random"
+      version = "= 3.6.2"
+    }
   }
 }

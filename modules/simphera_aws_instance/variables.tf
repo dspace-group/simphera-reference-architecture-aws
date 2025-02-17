@@ -24,10 +24,16 @@ variable "name" {
   description = "The name of the SIMPHERA instance. e.g. production"
 }
 
+variable "postgresqlApplyImmediately" {
+  type        = bool
+  description = "Apply PostgreSQL changes immediately (true) or during next maintenance window (false)"
+  default     = false
+}
+
 variable "postgresqlVersion" {
   type        = string
   description = "PostgreSQL Server version to deploy"
-  default     = "11"
+  default     = "16"
 }
 
 variable "postgresqlStorage" {
@@ -48,6 +54,12 @@ variable "postgresqlMaxStorage" {
     condition     = 20 <= var.postgresqlMaxStorage && var.postgresqlMaxStorage <= 65536
     error_message = "The variable postgresqlMaxStorage must be between 20 and 65536 GiB."
   }
+}
+
+variable "enableKeycloak" {
+  type        = bool
+  description = "A switch to enable/disable deployment of Keycloak DB"
+  default     = true
 }
 
 variable "postgresqlStorageKeycloak" {
@@ -73,13 +85,13 @@ variable "postgresqlMaxStorageKeycloak" {
 variable "db_instance_type_keycloak" {
   type        = string
   description = "PostgreSQL database instance type for Keycloak data"
-  default     = "db.t3.large"
+  default     = "db.t4g.large"
 }
 
 variable "db_instance_type_simphera" {
   type        = string
   description = "PostgreSQL database instance type for SIMPHERA data"
-  default     = "db.t3.large"
+  default     = "db.t4g.large"
 }
 
 variable "k8s_namespace" {
@@ -135,9 +147,10 @@ variable "log_bucket" {
   default     = ""
 }
 
-variable "database_subnet_group_name" {
-  type        = string
-  description = "Name of database subnet group"
+variable "private_subnets" {
+  type        = list(any)
+  description = "List of CIDRs for the private subnets."
+  default     = ["10.1.0.0/22", "10.1.4.0/22", "10.1.8.0/22"]
 }
 
 variable "cloudwatch_retention" {

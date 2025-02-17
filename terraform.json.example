@@ -1,70 +1,106 @@
-
 {
+  "aws_load_balancer_controller_config": {
+    "enable": false
+  },
   "cloudwatch_retention": 7,
-  "cluster_autoscaler_helm_config": {},
-  "enable_aws_for_fluentbit": false,
-  "enable_ingress_nginx": false,
+  "cluster_autoscaler_config": {},
+  "codemeter": "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd",
+  "coredns_config": {
+    "enable": true
+  },
+  "ecr_pullthrough_cache_rule_config": {
+    "enable": false,
+    "exist": false
+  },
+  "enable_ivs": false,
   "enable_patching": false,
-  "gpuNodeCountMin": 0,
   "gpuNodeCountMax": 12,
+  "gpuNodeCountMin": 0,
   "gpuNodeDiskSize": 100,
   "gpuNodePool": false,
   "gpuNodeSize": [
-    "p3.2xlarge"
+    "g5.2xlarge"
   ],
-  "ivsGpuNodeCountMin": 0,
+  "gpu_operator_config": {
+    "enable": false
+  },
+  "infrastructurename": "simphera",
+  "ingress_nginx_config": {
+    "enable": false
+  },
+  "install_schedule": "cron(0 3 * * ? *)",
   "ivsGpuNodeCountMax": 2,
+  "ivsGpuNodeCountMin": 0,
   "ivsGpuNodeDiskSize": 100,
   "ivsGpuNodePool": false,
   "ivsGpuNodeSize": [
     "g4dn.2xlarge"
   ],
-  "gpuNvidiaDriverVersion": "535.54.03",
-  "infrastructurename": "simphera",
-  "install_schedule": "cron(0 3 * * ? *)",
-  "kubernetesVersion": "1.28",
+  "ivsInstances": {
+    "production": {
+      "dataBucketName": "demo-ivs",
+      "rawDataBucketName": "demo-ivs-rawdata"
+    }
+  },
+  "kubernetesVersion": "1.30",
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
+  "linuxExecutionNodeDiskSize": 200,
   "linuxExecutionNodeSize": [
+    "m6a.4xlarge",
     "m5a.4xlarge",
-    "m5a.8xlarge"
+    "m5.4xlarge",
+    "m6i.4xlarge",
+    "m4.4xlarge",
+    "m7i.4xlarge",
+    "m7a.4xlarge"
   ],
   "linuxNodeCountMax": 12,
   "linuxNodeCountMin": 1,
+  "linuxNodeDiskSize": 200,
   "linuxNodeSize": [
+    "m6a.4xlarge",
     "m5a.4xlarge",
-    "m5a.8xlarge"
+    "m5.4xlarge",
+    "m6i.4xlarge",
+    "m4.4xlarge",
+    "m7i.4xlarge",
+    "m7a.4xlarge"
   ],
   "maintainance_duration": 3,
   "map_accounts": [],
   "map_roles": [],
   "map_users": [],
+  "private_subnet_ids": [],
+  "public_subnet_ids": [],
+  "rtMaps_link": "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2",
+  "s3_csi_config": {
+    "enable": false
+  },
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
       "backup_retention": 35,
-      "db_instance_type_keycloak": "db.t3.large",
-      "db_instance_type_simphera": "db.t3.large",
+      "db_instance_type_keycloak": "db.t4g.large",
+      "db_instance_type_simphera": "db.t4g.large",
       "enable_backup_service": true,
       "enable_deletion_protection": true,
+      "enable_keycloak": true,
       "k8s_namespace": "simphera",
       "name": "production",
+      "postgresqlApplyImmediately": false,
       "postgresqlMaxStorage": 100,
       "postgresqlMaxStorageKeycloak": 100,
       "postgresqlStorage": 20,
       "postgresqlStorageKeycloak": 20,
-      "postgresqlVersion": "11",
+      "postgresqlVersion": "16",
       "secretname": "aws-simphera-dev-production"
     }
   },
   "tags": {},
   "vpcCidr": "10.1.0.0/18",
-  "vpcDatabaseSubnets": [
-    "10.1.24.0/22",
-    "10.1.28.0/22",
-    "10.1.32.0/22"
-  ],
+  "vpcId": null,
   "vpcPrivateSubnets": [
     "10.1.0.0/22",
     "10.1.4.0/22",

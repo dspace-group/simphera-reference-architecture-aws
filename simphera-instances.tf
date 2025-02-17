@@ -7,9 +7,11 @@ module "simphera_instance" {
   eks_oidc_issuer_url          = module.eks.eks_oidc_issuer_url
   eks_oidc_provider_arn        = module.eks.eks_oidc_provider_arn
   name                         = each.value.name
+  postgresqlApplyImmediately   = each.value.postgresqlApplyImmediately
   postgresqlVersion            = each.value.postgresqlVersion
   postgresqlStorage            = each.value.postgresqlStorage
   postgresqlMaxStorage         = each.value.postgresqlMaxStorage
+  enableKeycloak               = each.value.enable_keycloak
   postgresqlStorageKeycloak    = each.value.postgresqlStorageKeycloak
   postgresqlMaxStorageKeycloak = each.value.postgresqlMaxStorageKeycloak
   db_instance_type_keycloak    = each.value.db_instance_type_keycloak
@@ -23,5 +25,5 @@ module "simphera_instance" {
   postgresql_security_group_id = module.security_group.security_group_id
   kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
   log_bucket                   = aws_s3_bucket.bucket_logs.id
-  database_subnet_group_name   = module.vpc.database_subnet_group_name
+  private_subnets              = local.private_subnets
 }

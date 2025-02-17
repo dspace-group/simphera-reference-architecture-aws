@@ -1,15 +1,18 @@
-
 data "aws_ami" "al2gpu_ami" {
   owners      = ["amazon"]
   most_recent = true
   filter {
     name   = "name"
-    values = ["amazon-eks-gpu-node-1.31-v20241109"]
+    values = ["*ubuntu-eks/k8s_${var.kubernetesVersion}/images/hvm-ssd/ubuntu-jammy-22.04-amd64-server*"]
   }
 }
+
 locals {
+  create_vpc                                = var.vpcId == null ? true : false
+  vpc_id                                    = local.create_vpc ? module.vpc[0].vpc_id : var.vpcId
+  use_private_subnets_ids                   = length(var.private_subnet_ids) == 0 ? false : true
+  use_public_subnet_ids                     = length(var.public_subnet_ids) == 0 ? false : true
   infrastructurename                        = var.infrastructurename
-  log_group_name                            = "/${module.eks.eks_cluster_id}/worker-fluentbit-logs"
   account_id                                = data.aws_caller_identity.current.account_id
   region                                    = data.aws_region.current.name
   license_server_role                       = "${local.infrastructurename}-license-server-role"
@@ -24,17 +27,17 @@ locals {
   s3_instance_buckets                       = flatten([for name, instance in module.simphera_instance : instance.s3_buckets])
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
   s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
-  # Using a one-line command for gpuPostUserData to avoid issues due to different line endings between Windows and Linux.
-  gpuPostUserData = "sudo yum -y erase nvidia-driver \nsudo yum -y install make gcc \nsudo yum -y update \nsudo yum -y install gcc kernel-devel-$(uname -r) \nsudo curl -fSsl -O https://us.download.nvidia.com/tesla/${var.gpuNvidiaDriverVersion}/NVIDIA-Linux-x86_64-${var.gpuNvidiaDriverVersion}.run \nsudo chmod +x NVIDIA-Linux-x86_64*.run \nsudo CC=/usr/bin/gcc10-cc ./NVIDIA-Linux-x86_64*.run -s --no-dkms --install-libglvnd \nsudo touch /etc/modprobe.d/nvidia.conf \necho \"options nvidia NVreg_EnableGpuFirmware=0\" | sudo tee --append /etc/modprobe.d/nvidia.conf \nsudo reboot"
+  private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
+  public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
 
   default_node_pool = {
     "default" = {
       node_group_name = "default"
       instance_types  = var.linuxNodeSize
-      subnet_ids      = module.vpc.private_subnets
-      desired_size    = var.linuxNodeCountMin
+      subnet_ids      = local.private_subnets
       max_size        = var.linuxNodeCountMax
       min_size        = var.linuxNodeCountMin
+      volume_size     = var.linuxNodeDiskSize
     }
   }
 
@@ -43,10 +46,11 @@ locals {
     "${team_name}" => {
       node_group_name = "execnodes-${team_name}"
       instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = module.vpc.private_subnets
+      subnet_ids      = local.private_subnets
       desired_size    = var.linuxExecutionNodeCountMin
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
+      volume_size     = var.linuxExecutionNodeDiskSize
       k8s_labels = {
         "team" = team_name
       }
@@ -62,16 +66,14 @@ locals {
 
   gpu_node_pool = {
     "gpuexecnodes" = {
-      node_group_name        = "gpuexecnodes"
-      instance_types         = var.gpuNodeSize
-      subnet_ids             = module.vpc.private_subnets
-      desired_size           = var.gpuNodeCountMin
-      max_size               = var.gpuNodeCountMax
-      min_size               = var.gpuNodeCountMin
-      disk_size              = var.gpuNodeDiskSize
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
-      post_userdata          = local.gpuPostUserData
+      node_group_name   = "gpuexecnodes"
+      instance_types    = var.gpuNodeSize
+      subnet_ids        = local.private_subnets
+      max_size          = var.gpuNodeCountMax
+      min_size          = var.gpuNodeCountMin
+      custom_ami_id     = data.aws_ami.al2gpu_ami.image_id
+      block_device_name = "/dev/sda1"
+      volume_size       = var.gpuNodeDiskSize
       k8s_labels = {
         "purpose" = "gpu"
       }
@@ -84,19 +86,16 @@ locals {
       ]
     }
   }
-
   ivsgpu_node_pool = {
     "gpuivsnodes" = {
-      node_group_name        = "gpuivsnodes"
-      instance_types         = var.ivsGpuNodeSize
-      subnet_ids             = module.vpc.private_subnets
-      desired_size           = var.ivsGpuNodeCountMin
-      max_size               = var.ivsGpuNodeCountMax
-      min_size               = var.ivsGpuNodeCountMin
-      disk_size              = var.ivsGpuNodeDiskSize
-      custom_ami_id          = data.aws_ami.al2gpu_ami.image_id
-      create_launch_template = true
-      post_userdata          = local.gpuPostUserData
+      node_group_name   = "gpuivsnodes"
+      instance_types    = var.ivsGpuNodeSize
+      subnet_ids        = local.private_subnets
+      max_size          = var.ivsGpuNodeCountMax
+      min_size          = var.ivsGpuNodeCountMin
+      custom_ami_id     = data.aws_ami.al2gpu_ami.image_id
+      block_device_name = "/dev/sda1"
+      volume_size       = var.ivsGpuNodeDiskSize
       k8s_labels = {
         "product" = "ivs",
         "purpose" = "gpu"
@@ -114,5 +113,21 @@ locals {
         }
       ]
     }
+  }
+  node_pools = merge(local.default_node_pool, local.exec_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  ivs_node_groups_roles = merge(
+    {
+      default = module.eks.node_groups[0]["default"].nodegroup_role_id
+      #execnodes = module.eks.node_groups[0]["execnodes"].nodegroup_role_id
+    },
+    var.ivsGpuNodePool ? { gpuivsnodes = module.eks.node_groups[0]["gpuivsnodes"].nodegroup_role_id } : {}
+  )
+  aws_context = {
+    caller_identity_account_id = data.aws_caller_identity.current.account_id
+    partition_dns_suffix       = data.aws_partition.current.dns_suffix
+    partition_id               = data.aws_partition.current.id
+    partition                  = data.aws_partition.current.partition
+    region_name                = data.aws_region.current.name
+    iam_issuer_arn             = data.aws_iam_session_context.current.issuer_arn
   }
 }

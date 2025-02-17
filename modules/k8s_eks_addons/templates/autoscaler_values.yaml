@@ -1,0 +1,25 @@
+awsRegion: ${aws_region}
+
+autoDiscovery:
+  clusterName: ${eks_cluster_id}
+  tags:
+    - k8s.io/cluster-autoscaler/enabled
+    - k8s.io/cluster-autoscaler/${eks_cluster_id}
+extraArgs:
+  aws-use-static-instance-list: true
+
+image:
+  tag: ${image_tag}
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 512Mi
+  requests:
+    cpu: 200m
+    memory: 512Mi
+
+rbac:
+  serviceAccount:
+    name: ${service_account}
+    create: false

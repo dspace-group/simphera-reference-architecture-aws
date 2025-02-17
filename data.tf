@@ -4,4 +4,49 @@ data "aws_availability_zones" "available" {
 
 data "aws_caller_identity" "current" {}
 
+data "aws_partition" "current" {}
+
 data "aws_region" "current" {}
+
+data "aws_iam_session_context" "current" {
+  arn = data.aws_caller_identity.current.arn
+}
+
+data "aws_vpc" "preconfigured" {
+  count = local.create_vpc ? 0 : 1
+  id    = var.vpcId
+}
+
+data "aws_subnets" "private_subnets" {
+  count = local.create_vpc ? 0 : 1
+  filter {
+    name   = "vpc-id"
+    values = [var.vpcId]
+  }
+
+  tags = {
+    purpose = "private"
+  }
+}
+
+data "aws_subnet" "private_subnet" {
+  for_each = local.create_vpc ? toset([]) : toset(data.aws_subnets.private_subnets[0].ids)
+  id       = each.value
+}
+
+data "aws_subnets" "public_subnets" {
+  count = local.create_vpc ? 0 : 1
+  filter {
+    name   = "vpc-id"
+    values = [var.vpcId]
+  }
+
+  tags = {
+    purpose = "public"
+  }
+}
+
+data "aws_subnet" "public_subnet" {
+  for_each = local.create_vpc ? toset([]) : toset(data.aws_subnets.public_subnets[0].ids)
+  id       = each.value
+}

@@ -22,7 +22,7 @@ repos:
     -   id: tfsec
         name: tfsec
         entry: --entrypoint /src/hooks/tfsec.sh aquasec/tfsec:v1.28
-        language: docker_image                         
+        language: docker_image
 -   repo: local
     hooks:
     -   id: terraform_docs

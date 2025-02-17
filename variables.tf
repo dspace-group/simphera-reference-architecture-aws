@@ -12,8 +12,8 @@ variable "infrastructurename" {
 
 variable "linuxNodeSize" {
   type        = list(string)
-  description = "The machine size of the Linux nodes for the regular services"
-  default     = ["m5a.4xlarge", "m5a.8xlarge"]
+  description = "The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones."
+  default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
 variable "linuxNodeCountMin" {
@@ -28,10 +28,16 @@ variable "linuxNodeCountMax" {
   default     = 12
 }
 
+variable "linuxNodeDiskSize" {
+  type        = number
+  description = "The disk size in GiB of the nodes for the regular services"
+  default     = 200
+}
+
 variable "linuxExecutionNodeSize" {
   type        = list(string)
-  description = "The machine size of the Linux nodes for the job execution"
-  default     = ["m5a.4xlarge", "m5a.8xlarge"]
+  description = "The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones."
+  default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
 variable "linuxExecutionNodeCountMin" {
@@ -44,6 +50,12 @@ variable "linuxExecutionNodeCountMax" {
   type        = number
   description = "The maximum number of Linux nodes for the job execution"
   default     = 4
+}
+
+variable "linuxExecutionNodeDiskSize" {
+  type        = number
+  description = "The disk size in GiB of the nodes for the job execution"
+  default     = 200
 }
 
 variable "gpuNodePool" {
@@ -67,7 +79,7 @@ variable "gpuNodeCountMax" {
 variable "gpuNodeSize" {
   type        = list(string)
   description = "The machine size of the nodes for the gpu job execution"
-  default     = ["p3.2xlarge"]
+  default     = ["g5.2xlarge"]
 }
 
 variable "gpuNodeDiskSize" {
@@ -106,27 +118,40 @@ variable "ivsGpuNodeDiskSize" {
   default     = 100
 }
 
-variable "gpuNvidiaDriverVersion" {
-  type        = string
-  description = "The NVIDIA driver version for GPU node group."
-  default     = "535.54.03"
-}
-
 variable "licenseServer" {
   type        = bool
   description = "Specifies whether a license server VM will be created."
   default     = false
 }
 
+variable "codemeter" {
+  type        = string
+  description = "Download link for codemeter rpm package."
+  default     = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
+}
+
 variable "kubernetesVersion" {
   type        = string
-  description = "The version of the EKS cluster."
-  default     = "1.28"
+  description = "The kubernetes version of the EKS cluster."
+  default     = "1.30"
 }
+
+variable "vpcId" {
+  type        = string
+  description = "The ID of preconfigured VPC. Change from 'null' to use already existing VPC."
+  default     = null
+}
+
 variable "vpcCidr" {
   type        = string
   description = "The CIDR for the virtual private cluster."
   default     = "10.1.0.0/18"
+}
+
+variable "private_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the private subnets."
+  default     = []
 }
 
 variable "vpcPrivateSubnets" {
@@ -135,28 +160,40 @@ variable "vpcPrivateSubnets" {
   default     = ["10.1.0.0/22", "10.1.4.0/22", "10.1.8.0/22"]
 }
 
+variable "public_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the public subnets."
+  default     = []
+}
+
 variable "vpcPublicSubnets" {
   type        = list(any)
   description = "List of CIDRs for the public subnets."
   default     = ["10.1.12.0/22", "10.1.16.0/22", "10.1.20.0/22"]
 }
 
-variable "vpcDatabaseSubnets" {
-  type        = list(any)
-  description = "List of CIDRs for the database subnets."
-  default     = ["10.1.24.0/22", "10.1.28.0/22", "10.1.32.0/22"]
+variable "ecr_pullthrough_cache_rule_config" {
+  type = object({
+    enable = bool
+    exist  = bool
+  })
+
+  description = "Specifies if ECR pull through cache rule and accompanying resources will be created. Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster. When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR. If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes. Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created"
+  default = {
+    enable = false
+    exist  = false
+  }
 }
 
-variable "enable_aws_for_fluentbit" {
-  type        = bool
-  description = "Install FluentBit to send container logs to CloudWatch."
-  default     = false
+variable "enable_ivs" {
+  type    = bool
+  default = false
 }
 
-variable "enable_ingress_nginx" {
-  type        = bool
-  description = "Enable Ingress Nginx add-on"
-  default     = false
+variable "rtMaps_link" {
+  type        = string
+  description = "Download link for RTMaps license server."
+  default     = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 }
 
 variable "map_accounts" {
@@ -185,13 +222,36 @@ variable "map_users" {
   default     = []
 }
 
+variable "ingress_nginx_config" {
+  type = object({
+    enable          = bool
+    helm_repository = optional(string, "https://kubernetes.github.io/ingress-nginx")
+    helm_version    = optional(string, "4.1.4")
+    chart_values = optional(string, <<-YAML
+controller:
+  images:
+    registry: "registry.k8s.io"
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+YAML
+    )
+  })
+  description = "Input configuration for ingress-nginx service deployed with helm release. By setting key 'enable' to 'true', ingress-nginx service will be deployed. 'helm_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of an ingress-nginx chart."
+  default = {
+    enable = false
+  }
+}
+
 variable "simpheraInstances" {
   type = map(object({
     name                         = string
+    postgresqlApplyImmediately   = bool
     postgresqlVersion            = string
     postgresqlStorage            = number
     postgresqlMaxStorage         = number
     db_instance_type_simphera    = string
+    enable_keycloak              = bool
     postgresqlStorageKeycloak    = number
     postgresqlMaxStorageKeycloak = number
     db_instance_type_keycloak    = string
@@ -206,18 +266,34 @@ variable "simpheraInstances" {
   default = {
     "production" = {
       name                         = "production"
-      postgresqlVersion            = "11"
+      postgresqlApplyImmediately   = false
+      postgresqlVersion            = "16"
       postgresqlStorage            = 20
       postgresqlMaxStorage         = 100
+      enable_keycloak              = true
       postgresqlStorageKeycloak    = 20
       postgresqlMaxStorageKeycloak = 100
-      db_instance_type_keycloak    = "db.t3.large"
-      db_instance_type_simphera    = "db.t3.large"
+      db_instance_type_keycloak    = "db.t4g.large"
+      db_instance_type_simphera    = "db.t4g.large"
       k8s_namespace                = "simphera"
       secretname                   = "aws-simphera-dev-production"
       enable_backup_service        = true
       backup_retention             = 35
       enable_deletion_protection   = true
+    }
+  }
+}
+
+variable "ivsInstances" {
+  type = map(object({
+    dataBucketName    = string
+    rawDataBucketName = string
+  }))
+  description = "A list containing the individual IVS instances, such as 'staging' and 'production'."
+  default = {
+    "production" = {
+      dataBucketName    = "demo-ivs"
+      rawDataBucketName = "demo-ivs-rawdata"
     }
   }
 }
@@ -233,6 +309,7 @@ variable "scan_schedule" {
   description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
   default     = "cron(0 0 * * ? *)"
 }
+
 variable "install_schedule" {
   type        = string
   description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."
@@ -251,9 +328,17 @@ variable "cloudwatch_retention" {
   default     = 7
 }
 
-variable "cluster_autoscaler_helm_config" {
-  type        = any
-  description = "Cluster Autoscaler Helm Config"
+variable "cluster_autoscaler_config" {
+  type = object({
+    enable          = optional(bool, true)
+    helm_repository = optional(string, "https://kubernetes.github.io/autoscaler")
+    helm_version    = optional(string, "9.37.0")
+    chart_values = optional(string, <<-YAML
+
+    YAML
+    )
+  })
+  description = "Input configuration for cluster-autoscaler deployed with helm release. By setting key 'enable' to 'true', cluster-autoscaler release will be deployed. 'helm_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a cluster-autoscaler chart."
   default     = {}
 }
 
@@ -261,4 +346,94 @@ variable "team_names" {
   type        = list(string)
   description = "list of the name of the teams competing in the iac"
   default     = ["Team1", "Team2", "Team3", "Team4", "Team5", "Team6", "Team7", "Team8", "Team9", "Team10"]
+}
+
+variable "coredns_config" {
+  type = object({
+    enable               = optional(bool, true)
+    configuration_values = optional(string, null)
+  })
+  description = "Input configuration for AWS EKS add-on coredns. By setting key 'enable' to 'true', coredns add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = true
+  }
+}
+
+variable "s3_csi_config" {
+  type = object({
+    enable = optional(bool, false)
+    configuration_values = optional(string, <<-YAML
+node:
+    tolerateAllTaints: true
+YAML
+    )
+  })
+  description = "Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver. By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = false
+  }
+}
+
+variable "aws_load_balancer_controller_config" {
+  type = object({
+    enable          = optional(bool, false)
+    helm_repository = optional(string, "https://aws.github.io/eks-charts")
+    helm_version    = optional(string, "1.4.5")
+    chart_values = optional(string, <<-YAML
+
+    YAML
+    )
+  })
+  description = "Input configuration for load_balancer_controller deployed with helm release. By setting key 'enable' to 'true', load_balancer_controller release will be deployed. 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart."
+  default = {
+    enable = false
+  }
+}
+
+variable "gpu_operator_config" {
+  type = object({
+    enable          = optional(bool, true)
+    helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")
+    helm_version    = optional(string, "v24.9.0")
+    driver_version  = optional(string, "550.90.07")
+    chart_values = optional(string, <<-YAML
+operator:
+  defaultRuntime: containerd
+
+dcgmExporter:
+  enabled: false
+
+driver:
+  enabled: true
+
+validator:
+  driver:
+    env:
+    - name: DISABLE_DEV_CHAR_SYMLINK_CREATION
+      value: "true"
+
+toolkit:
+  enabled: true
+
+daemonsets:
+  tolerations:
+  - key: purpose
+    value: gpu
+    operator: Equal
+    effect: NoSchedule
+
+node-feature-discovery:
+  worker:
+    tolerations:
+    - key: purpose
+      value: gpu
+      operator: Equal
+      effect: NoSchedule
+YAML
+    )
+  })
+  description = "Input configuration for the GPU operator chart deployed with helm release. By setting key 'enable' to 'true', GPU operator will be deployed. 'helm_repository' is an URL for the repository of the GPU operator helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of the GPU operator chart."
+  default = {
+    enable = false
+  }
 }

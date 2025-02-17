@@ -21,8 +21,3 @@ The hooks calls [`terraform fmt`](https://developer.hashicorp.com/terraform/cli/
 # GitHub Workflow
 
 In addition, there is a GitHub Workflow defined in `.github/workflows/qualitygate.yml` that runs `terraform fmt` and `terraform validate` when a pull request is created.
-
-
-
-
-
