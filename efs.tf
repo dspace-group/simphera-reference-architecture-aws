@@ -43,9 +43,9 @@ resource "aws_efs_file_system_policy" "policy" {
 }
 
 resource "aws_efs_mount_target" "mount_target" {
-  count           = local.create_efs ? length(local.private_subnets) : 0
+  count           = local.create_efs * length(local.private_subnets)
   file_system_id  = aws_efs_file_system.efs_file_system[0].id
-  subnet_id       = each.value
+  subnet_id       = local.private_subnets[count.index]
   security_groups = [module.eks.cluster_primary_security_group_id]
 }
 
