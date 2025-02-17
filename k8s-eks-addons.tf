@@ -4,6 +4,7 @@ module "k8s_eks_addons" {
   ingress_nginx_config                = merge(var.ingress_nginx_config, { subnets_ids = local.public_subnets })
   cluster_autoscaler_config           = var.cluster_autoscaler_config
   coredns_config                      = var.coredns_config
+  efs_csi_config                      = var.efs_csi_config
   s3_csi_config                       = var.s3_csi_config
   aws_load_balancer_controller_config = var.aws_load_balancer_controller_config
   gpu_operator_config                 = var.gpu_operator_config

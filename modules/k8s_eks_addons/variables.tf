@@ -50,6 +50,13 @@ variable "coredns_config" {
   description = "Input configuration for AWS EKS add-on coredns."
 }
 
+variable "efs_csi_config" {
+  type = object({
+    enable = optional(bool, true)
+  })
+  description = "Input configuration for AWS EKS add-on efs csi."
+}
+
 variable "aws_load_balancer_controller_config" {
   description = "AWS Load Balancer Controller configuration."
   type = object({

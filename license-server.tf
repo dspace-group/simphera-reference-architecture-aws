@@ -16,14 +16,16 @@ resource "aws_instance" "license_server" {
   user_data = <<-EOF
 #!/bin/bash
 yum update -y
-wget -O CodeMeter.rpm "${var.codemeter}"
-yum -y localinstall CodeMeter.rpm
-systemctl stop codemeter
-sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
-systemctl start codemeter
-systemctl enable codemeter
+if ${local.create_simphera_resources}; then
+  wget -O CodeMeter.rpm "${var.codemeter}"
+  yum -y localinstall CodeMeter.rpm
+  systemctl stop codemeter
+  sed -i -e '/IsNetworkServer=/ s/=.*/=1/' /etc/wibu/CodeMeter/Server.ini
+  systemctl start codemeter
+  systemctl enable codemeter
+fi
 
-if ${var.enable_ivs}; then
+if ${local.create_ivs_resources}; then
 
   # Package is needed by rtmaps
   yum -y install libxcrypt-compat

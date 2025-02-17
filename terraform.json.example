@@ -12,7 +12,9 @@
     "enable": false,
     "exist": false
   },
-  "enable_ivs": false,
+  "efs_csi_config": {
+    "enable": true
+  },
   "enable_patching": false,
   "gpuNodeCountMax": 12,
   "gpuNodeCountMin": 0,
