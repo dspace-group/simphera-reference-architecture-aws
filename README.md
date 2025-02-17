@@ -170,6 +170,10 @@ Your account ARN (Amazon Resource Number) is in the output of `aws sts get-calle
 
 ### Create Secrets Manager Secrets
 
+You have to provide the name of the certain secrets in your Terraform variables.
+To create required secrets, follow these instructions.
+
+#### PostgreSQL
 Username and password for the PostgreSQL databases are stored in AWS Secrets Manager.
 Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
 It is recommended to create individual secrets per SIMPHERA instance (e.g. production and staging instance).
@@ -199,8 +203,22 @@ aws secretsmanager create-secret --name <secret name> --secret-string $postgresq
 
 On the next page you can define a name for the secret.
 Automatic credentials rotation is currently not supported by SIMPHERA, but you can <a href="#rotating-credentials">rotate secrets manually</a>.
-You have to provide the name of the secret in your Terraform variables.
-The next section describes how you need to adjust your Terraform variables.
+
+#### OpenSearch
+Master username and master password for the OpenSearch databases are stored in AWS Secrets Manager.
+Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
+It is recommended to create individual secrets per IVS instance (e.g. production and staging instance).
+To create the secret, open the Secrets Manager console and click the button `Store a new secret`.
+As secret type choose `Other type of secret`.
+The password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character..
+Open the Plaintext tab and paste the following JSON object and enter your usernames and passwords:
+
+```json
+{
+  "master_user": "your_username",
+  "master_password": "your_password"
+}
+```
 
 ### Adjust Terraform Variables
 
@@ -546,7 +564,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="input_gpuNodeDiskSize"></a> [gpuNodeDiskSize](#input\_gpuNodeDiskSize) | The disk size in GiB of the nodes for the gpu job execution | `number` | `100` | no |
 | <a name="input_gpuNodePool"></a> [gpuNodePool](#input\_gpuNodePool) | Specifies whether an additional node pool for gpu job execution is added to the kubernetes cluster | `bool` | `false` | no |
 | <a name="input_gpuNodeSize"></a> [gpuNodeSize](#input\_gpuNodeSize) | The machine size of the nodes for the gpu job execution | `list(string)` | <pre>[<br>  "g5.2xlarge"<br>]</pre> | no |
-| <a name="input_gpu_operator_config"></a> [gpu\_operator\_config](#input\_gpu\_operator\_config) | Input configuration for the GPU operator chart deployed with helm release. By setting key 'enable' to 'true', GPU operator will be deployed. 'helm\_repository' is an URL for the repository of the GPU operator helm chart, where 'helm\_version' is its respective version of a chart. 'chart\_values' is used for changing default values.yaml of the GPU operator chart. | <pre>object({<br>    enable          = optional(bool, true)<br>    helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")<br>    helm_version    = optional(string, "v24.9.0")<br>    driver_version  = optional(string, "550.90.07")<br>    chart_values = optional(string, <<-YAML<br>operator:<br>  defaultRuntime: containerd<br><br>dcgmExporter:<br>  enabled: false<br><br>driver:<br>  enabled: true<br><br>validator:<br>  driver:<br>    env:<br>    - name: DISABLE_DEV_CHAR_SYMLINK_CREATION<br>      value: "true"<br><br>toolkit:<br>  enabled: true<br><br>daemonsets:<br>  tolerations:<br>  - key: purpose<br>    value: gpu<br>    operator: Equal<br>    effect: NoSchedule<br><br>node-feature-discovery:<br>  worker:<br>    tolerations:<br>    - key: purpose<br>      value: gpu<br>      operator: Equal<br>      effect: NoSchedule<br>YAML<br>    )<br>  })</pre> | <pre>{<br>  "enable": false<br>}</pre> | no |
+| <a name="input_gpu_operator_config"></a> [gpu\_operator\_config](#input\_gpu\_operator\_config) | Input configuration for the GPU operator chart deployed with helm release. By setting key 'enable' to 'true', GPU operator will be deployed. 'helm\_repository' is an URL for the repository of the GPU operator helm chart, where 'helm\_version' is its respective version of a chart. 'chart\_values' is used for changing default values.yaml of the GPU operator chart. | <pre>object({<br>    enable          = optional(bool, true)<br>    helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")<br>    helm_version    = optional(string, "v24.9.0")<br>    driver_version  = optional(string, "550.90.07")<br>    chart_values = optional(string, <<-YAML<br>operator:<br>  defaultRuntime: containerd<br><br>dcgmExporter:<br>  enabled: false<br><br>driver:<br>  enabled: true<br><br>validator:<br>  driver:<br>    env:<br>    - name: DISABLE_DEV_CHAR_SYMLINK_CREATION<br>      value: "true"<br><br>toolkit:<br>  enabled: true<br><br>daemonsets:<br>  tolerations:<br>  - key: purpose<br>    value: gpu<br>    operator: Equal<br>    effect: NoSchedule<br>  - key: nvidia.com/gpu<br>    value: ""<br>    operator: Exists<br>    effect: NoSchedule<br><br>node-feature-discovery:<br>  worker:<br>    tolerations:<br>    - key: purpose<br>      value: gpu<br>      operator: Equal<br>      effect: NoSchedule<br>    - key: nvidia.com/gpu<br>      value: ""<br>      operator: Exists<br>      effect: NoSchedule<br>YAML<br>    )<br>  })</pre> | <pre>{<br>  "enable": false<br>}</pre> | no |
 | <a name="input_infrastructurename"></a> [infrastructurename](#input\_infrastructurename) | The name of the infrastructure. e.g. simphera-infra | `string` | `"simphera"` | no |
 | <a name="input_ingress_nginx_config"></a> [ingress\_nginx\_config](#input\_ingress\_nginx\_config) | Input configuration for ingress-nginx service deployed with helm release. By setting key 'enable' to 'true', ingress-nginx service will be deployed. 'helm\_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm\_version' is its respective version of a chart. 'chart\_values' is used for changing default values.yaml of an ingress-nginx chart. | <pre>object({<br>    enable          = bool<br>    helm_repository = optional(string, "https://kubernetes.github.io/ingress-nginx")<br>    helm_version    = optional(string, "4.1.4")<br>    chart_values = optional(string, <<-YAML<br>controller:<br>  images:<br>    registry: "registry.k8s.io"<br>  service:<br>    annotations:<br>      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing<br>YAML<br>    )<br>  })</pre> | <pre>{<br>  "enable": false<br>}</pre> | no |
 | <a name="input_install_schedule"></a> [install\_schedule](#input\_install\_schedule) | 6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan\_schedule. | `string` | `"cron(0 3 * * ? *)"` | no |
@@ -555,7 +573,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="input_ivsGpuNodeDiskSize"></a> [ivsGpuNodeDiskSize](#input\_ivsGpuNodeDiskSize) | The disk size in GiB of the nodes for the IVS gpu job execution | `number` | `100` | no |
 | <a name="input_ivsGpuNodePool"></a> [ivsGpuNodePool](#input\_ivsGpuNodePool) | Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster | `bool` | `false` | no |
 | <a name="input_ivsGpuNodeSize"></a> [ivsGpuNodeSize](#input\_ivsGpuNodeSize) | The machine size of the GPU nodes for IVS jobs | `list(string)` | <pre>[<br>  "g4dn.2xlarge"<br>]</pre> | no |
-| <a name="input_ivsInstances"></a> [ivsInstances](#input\_ivsInstances) | A list containing the individual IVS instances, such as 'staging' and 'production'. | <pre>map(object({<br>    dataBucketName    = string<br>    rawDataBucketName = string<br>  }))</pre> | <pre>{<br>  "production": {<br>    "dataBucketName": "demo-ivs",<br>    "rawDataBucketName": "demo-ivs-rawdata"<br>  }<br>}</pre> | no |
+| <a name="input_ivsInstances"></a> [ivsInstances](#input\_ivsInstances) | A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master\_user\_secret\_name' is an AWS secret containing key 'master\_user' and 'master\_password'. 'opensearch.instance\_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/ | <pre>map(object({<br>    dataBucketName    = string<br>    rawDataBucketName = string<br>    opensearch = optional(object({<br>      enable                  = optional(bool, false)<br>      engine_version          = optional(string, "OpenSearch_2.17")<br>      instance_type           = optional(string, "m7g.medium.search")<br>      instance_count          = optional(number, 1)<br>      volume_size             = optional(number, 100)<br>      master_user_secret_name = optional(string, null)<br>      }),<br>      {}<br>    )<br>  }))</pre> | <pre>{<br>  "production": {<br>    "dataBucketName": "demo-ivs",<br>    "opensearch": {<br>      "enable": false<br>    },<br>    "rawDataBucketName": "demo-ivs-rawdata"<br>  }<br>}</pre> | no |
 | <a name="input_kubernetesVersion"></a> [kubernetesVersion](#input\_kubernetesVersion) | The kubernetes version of the EKS cluster. | `string` | `"1.30"` | no |
 | <a name="input_licenseServer"></a> [licenseServer](#input\_licenseServer) | Specifies whether a license server VM will be created. | `bool` | `false` | no |
 | <a name="input_linuxExecutionNodeCountMax"></a> [linuxExecutionNodeCountMax](#input\_linuxExecutionNodeCountMax) | The maximum number of Linux nodes for the job execution | `number` | `10` | no |
@@ -591,6 +609,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="output_database_endpoints"></a> [database\_endpoints](#output\_database\_endpoints) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_database_identifiers"></a> [database\_identifiers](#output\_database\_identifiers) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_eks_cluster_id"></a> [eks\_cluster\_id](#output\_eks\_cluster\_id) | Amazon EKS Cluster Name |
+| <a name="output_opensearch_domain_endpoints"></a> [opensearch\_domain\_endpoints](#output\_opensearch\_domain\_endpoints) | List of OpenSearch Domains endpoints of IVS instances |
 | <a name="output_pullthrough_cache_prefix"></a> [pullthrough\_cache\_prefix](#output\_pullthrough\_cache\_prefix) | n/a |
 | <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | S3 buckets from all SIMPHERA instances. |
 <!-- END_TF_DOCS -->

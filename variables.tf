@@ -288,12 +288,25 @@ variable "ivsInstances" {
   type = map(object({
     dataBucketName    = string
     rawDataBucketName = string
+    opensearch = optional(object({
+      enable                  = optional(bool, false)
+      engine_version          = optional(string, "OpenSearch_2.17")
+      instance_type           = optional(string, "m7g.medium.search")
+      instance_count          = optional(number, 1)
+      volume_size             = optional(number, 100)
+      master_user_secret_name = optional(string, null)
+      }),
+      {}
+    )
   }))
-  description = "A list containing the individual IVS instances, such as 'staging' and 'production'."
+  description = "A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'. 'opensearch.instance_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/"
   default = {
     "production" = {
       dataBucketName    = "demo-ivs"
       rawDataBucketName = "demo-ivs-rawdata"
+      opensearch = {
+        enable = false
+      }
     }
   }
 }
@@ -415,6 +428,10 @@ daemonsets:
     value: gpu
     operator: Equal
     effect: NoSchedule
+  - key: nvidia.com/gpu
+    value: ""
+    operator: Exists
+    effect: NoSchedule
 
 node-feature-discovery:
   worker:
@@ -422,6 +439,10 @@ node-feature-discovery:
     - key: purpose
       value: gpu
       operator: Equal
+      effect: NoSchedule
+    - key: nvidia.com/gpu
+      value: ""
+      operator: Exists
       effect: NoSchedule
 YAML
     )

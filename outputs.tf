@@ -28,6 +28,10 @@ output "eks_cluster_id" {
   value       = module.eks.eks_cluster_id
 }
 
+output "opensearch_domain_endpoints" {
+  description = "List of OpenSearch Domains endpoints of IVS instances"
+  value       = [for key, value in module.ivs_instance : value.opensearch_domain_endpoint]
+}
 
 # Section below is useful when troubleshooting on pre-configured network infrastructure
 #output "aws_vpc_id" {

@@ -1,3 +1,7 @@
+## v0.5.0
+
+- Implemented deployment of an OpenSearch Domain for usage in IVS
+
 ## v0.4.0
 
 - Implemented initial support for IVS.
