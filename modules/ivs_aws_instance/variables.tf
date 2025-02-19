@@ -1,3 +1,11 @@
+variable "infrastructurename" {
+  type = string
+}
+
+variable "instancename" {
+  type = string
+}
+
 variable "tags" {
   type        = map(any)
   description = "The tags to be added to all resources."
