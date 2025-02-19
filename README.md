@@ -72,7 +72,6 @@ If you want to run [AURELION](https://www.dspace.com/en/pub/home/products/sw/exp
 
 In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the SIMPHERA Reference Architecture for AWS uses p3.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every p3.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
 
-
 ### Create Security Credentials <a name="awsprofile"></a>
 
 You can create [security credentials](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_access-keys.html#Using_CreateAccessKey) for that IAM user with the AWS console.
@@ -222,7 +221,6 @@ provider "aws" {
 +  profile = "<profile-name>"
 }
 ```
-
 
 ### Apply Terraform Configuration
 
@@ -436,6 +434,14 @@ helm delete simphera -n <namespace> --kubeconfig <path_to_kubeconfig>
 Reinstall the SIMPHERA Quickstart Helmchart so that all Kubernetes pods and jobs will retrieve the new credentials.
 Important: During credentials rotation, SIMPHERA will not be available for a short period.
 
+## List of tools with versions needed for Simphera reference architecture deployment
+
+| Tool name | Version |
+| -- | -- |
+| AWS CLI | >=2.10.0 |
+| Helm | >=3.8.0 |
+| Terraform | >=1.2.9 |
+| kubectl | >=1.27.0 |
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -520,7 +526,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_cloudwatch_retention"></a> [cloudwatch\_retention](#input\_cloudwatch\_retention) | Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs. | `number` | `7` | no |
-| <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Config | `any` | `{}` | no |
+| <a name="input_cluster_autoscaler_helm_config"></a> [cluster\_autoscaler\_helm\_config](#input\_cluster\_autoscaler\_helm\_config) | Cluster Autoscaler Helm Config | `any` | <pre>{<br>  "version": "9.28.0"<br>}</pre> | no |
 | <a name="input_enable_aws_for_fluentbit"></a> [enable\_aws\_for\_fluentbit](#input\_enable\_aws\_for\_fluentbit) | Install FluentBit to send container logs to CloudWatch. | `bool` | `false` | no |
 | <a name="input_enable_ingress_nginx"></a> [enable\_ingress\_nginx](#input\_enable\_ingress\_nginx) | Enable Ingress Nginx add-on | `bool` | `false` | no |
 | <a name="input_enable_patching"></a> [enable\_patching](#input\_enable\_patching) | Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually. | `bool` | `false` | no |
@@ -550,7 +556,7 @@ Important: During credentials rotation, SIMPHERA will not be available for a sho
 | <a name="input_map_roles"></a> [map\_roles](#input\_map\_roles) | Additional IAM roles to add to the aws-auth ConfigMap | <pre>list(object({<br>    rolearn  = string<br>    username = string<br>    groups   = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_map_users"></a> [map\_users](#input\_map\_users) | Additional IAM users to add to the aws-auth ConfigMap | <pre>list(object({<br>    userarn  = string<br>    username = string<br>    groups   = list(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_scan_schedule"></a> [scan\_schedule](#input\_scan\_schedule) | 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install\_schedule. | `string` | `"cron(0 0 * * ? *)"` | no |
-| <a name="input_simpheraInstances"></a> [simpheraInstances](#input\_simpheraInstances) | A list containing the individual SIMPHERA instances, such as 'staging' and 'production'. | <pre>map(object({<br>    name                         = string<br>    postgresqlVersion            = string<br>    postgresqlStorage            = number<br>    postgresqlMaxStorage         = number<br>    db_instance_type_simphera    = string<br>    postgresqlStorageKeycloak    = number<br>    postgresqlMaxStorageKeycloak = number<br>    db_instance_type_keycloak    = string<br>    k8s_namespace                = string<br>    secretname                   = string<br>    enable_backup_service        = bool<br>    backup_retention             = number<br>    enable_deletion_protection   = bool<br><br>  }))</pre> | <pre>{<br>  "production": {<br>    "backup_retention": 35,<br>    "db_instance_type_keycloak": "db.t3.large",<br>    "db_instance_type_simphera": "db.t3.large",<br>    "enable_backup_service": true,<br>    "enable_deletion_protection": true,<br>    "k8s_namespace": "simphera",<br>    "name": "production",<br>    "postgresqlMaxStorage": 100,<br>    "postgresqlMaxStorageKeycloak": 100,<br>    "postgresqlStorage": 20,<br>    "postgresqlStorageKeycloak": 20,<br>    "postgresqlVersion": "11",<br>    "secretname": "aws-simphera-dev-production"<br>  }<br>}</pre> | no |
+| <a name="input_simpheraInstances"></a> [simpheraInstances](#input\_simpheraInstances) | A list containing the individual SIMPHERA instances, such as 'staging' and 'production'. | <pre>map(object({<br>    name                         = string<br>    postgresqlApplyImmediately   = bool<br>    postgresqlVersion            = string<br>    postgresqlStorage            = number<br>    postgresqlMaxStorage         = number<br>    db_instance_type_simphera    = string<br>    enable_keycloak              = bool<br>    postgresqlStorageKeycloak    = number<br>    postgresqlMaxStorageKeycloak = number<br>    db_instance_type_keycloak    = string<br>    k8s_namespace                = string<br>    secretname                   = string<br>    enable_backup_service        = bool<br>    backup_retention             = number<br>    enable_deletion_protection   = bool<br><br>  }))</pre> | <pre>{<br>  "production": {<br>    "backup_retention": 35,<br>    "db_instance_type_keycloak": "db.t3.large",<br>    "db_instance_type_simphera": "db.t3.large",<br>    "enable_backup_service": true,<br>    "enable_deletion_protection": true,<br>    "enable_keycloak": true,<br>    "k8s_namespace": "simphera",<br>    "name": "production",<br>    "postgresqlApplyImmediately": false,<br>    "postgresqlMaxStorage": 100,<br>    "postgresqlMaxStorageKeycloak": 100,<br>    "postgresqlStorage": 20,<br>    "postgresqlStorageKeycloak": 20,<br>    "postgresqlVersion": "16",<br>    "secretname": "aws-simphera-dev-production"<br>  }<br>}</pre> | no |
 | <a name="input_tags"></a> [tags](#input\_tags) | The tags to be added to all resources. | `map(any)` | `{}` | no |
 | <a name="input_vpcCidr"></a> [vpcCidr](#input\_vpcCidr) | The CIDR for the virtual private cluster. | `string` | `"10.1.0.0/18"` | no |
 | <a name="input_vpcDatabaseSubnets"></a> [vpcDatabaseSubnets](#input\_vpcDatabaseSubnets) | List of CIDRs for the database subnets. | `list(any)` | <pre>[<br>  "10.1.24.0/22",<br>  "10.1.28.0/22",<br>  "10.1.32.0/22"<br>]</pre> | no |

@@ -24,10 +24,16 @@ variable "name" {
   description = "The name of the SIMPHERA instance. e.g. production"
 }
 
+variable "postgresqlApplyImmediately" {
+  type        = bool
+  description = "Apply PostgreSQL changes immediately (true) or during next maintenance window (false)"
+  default     = false
+}
+
 variable "postgresqlVersion" {
   type        = string
   description = "PostgreSQL Server version to deploy"
-  default     = "11"
+  default     = "16"
 }
 
 variable "postgresqlStorage" {
@@ -48,6 +54,12 @@ variable "postgresqlMaxStorage" {
     condition     = 20 <= var.postgresqlMaxStorage && var.postgresqlMaxStorage <= 65536
     error_message = "The variable postgresqlMaxStorage must be between 20 and 65536 GiB."
   }
+}
+
+variable "enableKeycloak" {
+  type        = bool
+  description = "A switch to enable/disable deployment of Keycloak DB"
+  default     = true
 }
 
 variable "postgresqlStorageKeycloak" {

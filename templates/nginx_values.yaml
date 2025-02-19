@@ -9,5 +9,8 @@ controller:
       service.beta.kubernetes.io/aws-load-balancer-target-node-labels: kubernetes.io/os=linux
       service.beta.kubernetes.io/aws-load-balancer-type: "nlb"
   metrics:
-    enabled: false
-
+    enabled: true
+    port: 10254
+    portName: metrics
+    serviceMonitor:
+      enabled: false

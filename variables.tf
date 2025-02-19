@@ -188,10 +188,12 @@ variable "map_users" {
 variable "simpheraInstances" {
   type = map(object({
     name                         = string
+    postgresqlApplyImmediately   = bool
     postgresqlVersion            = string
     postgresqlStorage            = number
     postgresqlMaxStorage         = number
     db_instance_type_simphera    = string
+    enable_keycloak              = bool
     postgresqlStorageKeycloak    = number
     postgresqlMaxStorageKeycloak = number
     db_instance_type_keycloak    = string
@@ -206,9 +208,11 @@ variable "simpheraInstances" {
   default = {
     "production" = {
       name                         = "production"
-      postgresqlVersion            = "11"
+      postgresqlApplyImmediately   = false
+      postgresqlVersion            = "16"
       postgresqlStorage            = 20
       postgresqlMaxStorage         = 100
+      enable_keycloak              = true
       postgresqlStorageKeycloak    = 20
       postgresqlMaxStorageKeycloak = 100
       db_instance_type_keycloak    = "db.t3.large"
@@ -254,7 +258,7 @@ variable "cloudwatch_retention" {
 variable "cluster_autoscaler_helm_config" {
   type        = any
   description = "Cluster Autoscaler Helm Config"
-  default     = {}
+  default     = { "version" : "9.28.0" }
 }
 
 variable "team_names" {

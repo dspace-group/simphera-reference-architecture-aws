@@ -1,8 +1,10 @@
 resource "aws_db_instance" "simphera" {
 
+  apply_immediately                   = var.postgresqlApplyImmediately
   allocated_storage                   = var.postgresqlStorage
   max_allocated_storage               = var.postgresqlMaxStorage
   auto_minor_version_upgrade          = true # [RDS.13] RDS automatic minor version upgrades should be enabled
+  allow_major_version_upgrade         = true
   engine                              = "postgres"
   engine_version                      = var.postgresqlVersion
   instance_class                      = var.db_instance_type_simphera
@@ -35,9 +37,13 @@ resource "aws_db_instance" "simphera" {
 }
 
 resource "aws_db_instance" "keycloak" {
+
+  count                               = var.enableKeycloak ? 1 : 0
+  apply_immediately                   = var.postgresqlApplyImmediately
   allocated_storage                   = var.postgresqlStorageKeycloak
   max_allocated_storage               = var.postgresqlMaxStorageKeycloak
   auto_minor_version_upgrade          = true # [RDS.13] RDS automatic minor version upgrades should be enabled
+  allow_major_version_upgrade         = true
   engine                              = "postgres"
   engine_version                      = var.postgresqlVersion
   instance_class                      = var.db_instance_type_keycloak
@@ -125,6 +131,7 @@ resource "aws_cloudwatch_log_group" "db_simphera" {
 }
 
 resource "aws_cloudwatch_log_group" "db_keycloak" {
+  count             = var.enableKeycloak ? 1 : 0
   name              = "/aws/rds/instance/${local.db_keycloak_id}/postgresql" # CAUTION: the name is predetermined by AWS RDS. Do not change it. Otherwise AWS will create a new log group without retention and encryption.
   retention_in_days = var.cloudwatch_retention
   kms_key_id        = var.kms_key_cloudwatch
