@@ -28,7 +28,26 @@ resource "aws_iam_role_policy_attachment" "s3_backup" {
   policy_arn = "arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Backup"
   role       = aws_iam_role.backup_iam_role[0].name
 }
-resource "aws_backup_vault" "backup-vault" {
+
+resource "aws_backup_vault" "backup_vault" {
   count = var.backup_service_enable ? 1 : 0
   name  = "${local.instance_identifier}-backup-vault"
+}
+
+resource "aws_backup_plan" "backup_plan" {
+  count = var.backup_service_enable ? 1 : 0
+  name  = "${local.instance_identifier}-backup-plan"
+
+  rule {
+    rule_name                = "${local.instance_identifier}-backup-rule"
+    target_vault_name        = aws_backup_vault.backup_vault[0].name
+    schedule                 = var.backup_schedule
+    recovery_point_tags      = merge(var.tags, { "instance" : local.instance_identifier })
+    enable_continuous_backup = true
+
+    lifecycle {
+      delete_after = var.backup_retention
+    }
+  }
+  tags = var.tags
 }
