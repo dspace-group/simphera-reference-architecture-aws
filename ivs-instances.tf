@@ -2,7 +2,7 @@ module "ivs_instance" {
   source             = "./modules/ivs_aws_instance"
   for_each           = var.ivsInstances
   k8s_namespace      = each.value.k8s_namespace
-  infrastructurename = var.infrastructurename
+  infrastructurename = module.eks.eks_cluster_id
   instancename       = each.key
   tags               = var.tags
   dataBucketName     = each.value.dataBucketName
