@@ -60,12 +60,16 @@ resource "aws_backup_selection" "ebs" {
   resources    = ["arn:aws:ec2:*:*:volume/*"]
   condition {
     string_equals {
-      key   = "aws:ResourceTag/kubernetes.io/cluster/${var.infrastructurename}"
-      value = "owned"
+      key   = "aws:ResourceTag/KubernetesCluster"
+      value = var.infrastructurename
     }
     string_equals {
       key   = "aws:ResourceTag/kubernetes.io/created-for/pvc/name"
       value = "datadir-ivs-mongodb-0"
+    }
+    string_equals {
+      key   = "aws:ResourceTag/kubernetes.io/created-for/pvc/namespace"
+      value = var.k8s_namespace
     }
   }
 }
