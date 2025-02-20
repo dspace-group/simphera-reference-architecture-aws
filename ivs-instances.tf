@@ -1,6 +1,7 @@
 module "ivs_instance" {
   source             = "./modules/ivs_aws_instance"
   for_each           = var.ivsInstances
+  k8s_namespace      = each.value.k8s_namespace
   infrastructurename = var.infrastructurename
   instancename       = each.key
   tags               = var.tags

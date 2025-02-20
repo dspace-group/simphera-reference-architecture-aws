@@ -281,6 +281,7 @@ variable "simpheraInstances" {
 
 variable "ivsInstances" {
   type = map(object({
+    k8s_namespace     = string
     dataBucketName    = string
     rawDataBucketName = string
     opensearch = optional(object({
@@ -300,6 +301,7 @@ variable "ivsInstances" {
   description = "A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'. 'opensearch.instance_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/"
   default = {
     "production" = {
+      k8s_namespace     = "ivs"
       dataBucketName    = "demo-ivs"
       rawDataBucketName = "demo-ivs-rawdata"
       opensearch = {

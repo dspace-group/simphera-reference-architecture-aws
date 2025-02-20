@@ -1,3 +1,6 @@
+variable "k8s_namespace" {
+  type = string
+}
 variable "infrastructurename" {
   type = string
 }
