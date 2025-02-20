@@ -1,5 +1,5 @@
 locals {
-  storage_subnets = { for index, zone in var.vpcPrivateSubnets : "zone${index}" => module.vpc.private_subnets[index] }
+  storage_subnets = { for index, zone in local.private_subnets : "zone${index}" => local.private_subnets[index] }
 }
 
 resource "aws_efs_file_system" "efs_file_system" {

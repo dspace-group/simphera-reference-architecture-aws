@@ -1,17 +1,23 @@
 {
   "cloudwatch_retention": 7,
   "cluster_autoscaler_helm_config": {
-    "version": "9.28.0"
+    "version": "9.34.1"
+  },
+  "codemeter": "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd",
+  "ecr_pullthrough_cache_rule_config": {
+    "enable": false,
+    "exist": false
   },
   "enable_aws_for_fluentbit": false,
   "enable_ingress_nginx": false,
+  "enable_ivs": false,
   "enable_patching": false,
   "gpuNodeCountMax": 12,
   "gpuNodeCountMin": 0,
   "gpuNodeDiskSize": 100,
   "gpuNodePool": false,
   "gpuNodeSize": [
-    "p3.2xlarge"
+    "g5.2xlarge"
   ],
   "gpuNvidiaDriverVersion": "535.54.03",
   "infrastructurename": "simphera",
@@ -27,20 +33,35 @@
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
+  "linuxExecutionNodeDiskSize": 200,
   "linuxExecutionNodeSize": [
+    "m6a.4xlarge",
     "m5a.4xlarge",
-    "m5a.8xlarge"
+    "m5.4xlarge",
+    "m6i.4xlarge",
+    "m4.4xlarge",
+    "m7i.4xlarge",
+    "m7a.4xlarge"
   ],
   "linuxNodeCountMax": 12,
   "linuxNodeCountMin": 1,
+  "linuxNodeDiskSize": 200,
   "linuxNodeSize": [
+    "m6a.4xlarge",
     "m5a.4xlarge",
-    "m5a.8xlarge"
+    "m5.4xlarge",
+    "m6i.4xlarge",
+    "m4.4xlarge",
+    "m7i.4xlarge",
+    "m7a.4xlarge"
   ],
   "maintainance_duration": 3,
   "map_accounts": [],
   "map_roles": [],
   "map_users": [],
+  "private_subnet_ids": [],
+  "public_subnet_ids": [],
+  "rtMaps_link": "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2",
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
@@ -63,11 +84,7 @@
   },
   "tags": {},
   "vpcCidr": "10.1.0.0/18",
-  "vpcDatabaseSubnets": [
-    "10.1.24.0/22",
-    "10.1.28.0/22",
-    "10.1.32.0/22"
-  ],
+  "vpcId": null,
   "vpcPrivateSubnets": [
     "10.1.0.0/22",
     "10.1.4.0/22",

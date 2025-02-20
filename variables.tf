@@ -12,8 +12,8 @@ variable "infrastructurename" {
 
 variable "linuxNodeSize" {
   type        = list(string)
-  description = "The machine size of the Linux nodes for the regular services"
-  default     = ["m5a.4xlarge", "m5a.8xlarge"]
+  description = "The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones."
+  default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
 variable "linuxNodeCountMin" {
@@ -28,10 +28,16 @@ variable "linuxNodeCountMax" {
   default     = 12
 }
 
+variable "linuxNodeDiskSize" {
+  type        = number
+  description = "The disk size in GiB of the nodes for the regular services"
+  default     = 200
+}
+
 variable "linuxExecutionNodeSize" {
   type        = list(string)
-  description = "The machine size of the Linux nodes for the job execution"
-  default     = ["m5a.4xlarge", "m5a.8xlarge"]
+  description = "The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones."
+  default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
 variable "linuxExecutionNodeCountMin" {
@@ -44,6 +50,12 @@ variable "linuxExecutionNodeCountMax" {
   type        = number
   description = "The maximum number of Linux nodes for the job execution"
   default     = 4
+}
+
+variable "linuxExecutionNodeDiskSize" {
+  type        = number
+  description = "The disk size in GiB of the nodes for the job execution"
+  default     = 200
 }
 
 variable "gpuNodePool" {
@@ -67,7 +79,7 @@ variable "gpuNodeCountMax" {
 variable "gpuNodeSize" {
   type        = list(string)
   description = "The machine size of the nodes for the gpu job execution"
-  default     = ["p3.2xlarge"]
+  default     = ["g5.2xlarge"]
 }
 
 variable "gpuNodeDiskSize" {
@@ -118,15 +130,34 @@ variable "licenseServer" {
   default     = false
 }
 
+variable "codemeter" {
+  type        = string
+  description = "Download link for codemeter rpm package."
+  default     = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
+}
+
 variable "kubernetesVersion" {
   type        = string
   description = "The version of the EKS cluster."
   default     = "1.28"
 }
+
+variable "vpcId" {
+  type        = string
+  description = "The ID of preconfigured VPC. Change from 'null' to use already existing VPC."
+  default     = null
+}
+
 variable "vpcCidr" {
   type        = string
   description = "The CIDR for the virtual private cluster."
   default     = "10.1.0.0/18"
+}
+
+variable "private_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the private subnets."
+  default     = []
 }
 
 variable "vpcPrivateSubnets" {
@@ -135,22 +166,46 @@ variable "vpcPrivateSubnets" {
   default     = ["10.1.0.0/22", "10.1.4.0/22", "10.1.8.0/22"]
 }
 
+variable "public_subnet_ids" {
+  type        = list(any)
+  description = "List of IDs for the public subnets."
+  default     = []
+}
+
 variable "vpcPublicSubnets" {
   type        = list(any)
   description = "List of CIDRs for the public subnets."
   default     = ["10.1.12.0/22", "10.1.16.0/22", "10.1.20.0/22"]
 }
 
-variable "vpcDatabaseSubnets" {
-  type        = list(any)
-  description = "List of CIDRs for the database subnets."
-  default     = ["10.1.24.0/22", "10.1.28.0/22", "10.1.32.0/22"]
+variable "ecr_pullthrough_cache_rule_config" {
+  type = object({
+    enable = bool
+    exist  = bool
+  })
+
+  description = "Specifies if ECR pull through cache rule and accompanying resources will be created. Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster. When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR. If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes. Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created"
+  default = {
+    enable = false
+    exist  = false
+  }
 }
 
 variable "enable_aws_for_fluentbit" {
   type        = bool
   description = "Install FluentBit to send container logs to CloudWatch."
   default     = false
+}
+
+variable "enable_ivs" {
+  type    = bool
+  default = false
+}
+
+variable "rtMaps_link" {
+  type        = string
+  description = "Download link for RTMaps license server."
+  default     = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 }
 
 variable "enable_ingress_nginx" {
@@ -237,6 +292,7 @@ variable "scan_schedule" {
   description = "6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule."
   default     = "cron(0 0 * * ? *)"
 }
+
 variable "install_schedule" {
   type        = string
   description = "6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule."
@@ -258,7 +314,7 @@ variable "cloudwatch_retention" {
 variable "cluster_autoscaler_helm_config" {
   type        = any
   description = "Cluster Autoscaler Helm Config"
-  default     = { "version" : "9.28.0" }
+  default     = { "version" : "9.34.1" }
 }
 
 variable "team_names" {

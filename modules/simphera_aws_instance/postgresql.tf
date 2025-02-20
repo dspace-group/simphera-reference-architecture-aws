@@ -1,3 +1,9 @@
+resource "aws_db_subnet_group" "database" {
+  name       = "${local.instancename}-vpc"
+  subnet_ids = var.private_subnets
+  tags       = var.tags
+}
+
 resource "aws_db_instance" "simphera" {
 
   apply_immediately                   = var.postgresqlApplyImmediately
@@ -22,7 +28,7 @@ resource "aws_db_instance" "simphera" {
   iam_database_authentication_enabled = true # [RDS.10] IAM authentication should be configured for RDS instances
   copy_tags_to_snapshot               = true
   storage_encrypted                   = true # [RDS.3] RDS DB instances should have encryption at rest enabled
-  db_subnet_group_name                = var.database_subnet_group_name
+  db_subnet_group_name                = aws_db_subnet_group.database.name
   vpc_security_group_ids              = [var.postgresql_security_group_id]
   tags                                = var.tags
   depends_on = [
@@ -61,7 +67,7 @@ resource "aws_db_instance" "keycloak" {
   iam_database_authentication_enabled = true # [RDS.10] IAM authentication should be configured for RDS instances
   copy_tags_to_snapshot               = true
   storage_encrypted                   = true # [RDS.3] RDS DB instances should have encryption at rest enabled
-  db_subnet_group_name                = var.database_subnet_group_name
+  db_subnet_group_name                = aws_db_subnet_group.database.name
   vpc_security_group_ids              = [var.postgresql_security_group_id]
   tags                                = var.tags
   depends_on = [
@@ -73,7 +79,6 @@ resource "aws_db_instance" "keycloak" {
     update = "2h"
   }
 }
-
 
 data "http" "aws_tls_certificate" {
   url = "https://truststore.pki.rds.amazonaws.com/${var.region}/${var.region}-bundle.pem"

@@ -31,17 +31,17 @@ jobs:
         run: terraform fmt -check -recursive
 
       - name: Terraform init
-        run: terraform init -backend=false
+        run: terraform init -backend=false 
 
       - name: Terraform validate
         run: terraform validate
-        
+
       - name: Init TFLint
         run: tflint --init
 
       - name: Terraform lint Root
         run: tflint
-      
+
       - name: Terraform lint SIMPHERA Base
         run: tflint --config ../../.tflint.hcl --chdir ./modules/simphera_aws_instance
 
@@ -64,7 +64,6 @@ jobs:
            working-dir: .
            config-file: tfvars.hcl.terraform-docs.yml
            output-file: terraform.tfvars.example
-           output-format: tfvars hcl
            output-method: replace
            template: |
              {{ .Content }}
@@ -79,5 +78,5 @@ jobs:
           output-method: replace
           template: |
             {{ .Content }}
-          git-push: "true"  
+          git-push: "true"
 

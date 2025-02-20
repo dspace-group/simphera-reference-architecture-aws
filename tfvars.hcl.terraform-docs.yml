@@ -1,2 +1,19 @@
+# Original template for content: https://github.com/terraform-docs/terraform-docs/blob/v0.16.0/format/templates/tfvars_hcl.tmpl
+
+formatter: asciidoc
+content: |
+  {{ if .Module.Inputs -}}
+    {{- range $index, $element := .Module.Inputs }}
+      {{ if $element.Description -}}
+        {{ if gt (len $element.Description) 120 }}
+          {{- range $value := (tostring $element.Description | split ". ") }}# {{ trimSuffix "." $value }}.
+        {{ end -}}
+        {{ else -}}
+          # {{ tostring $element.Description }}
+        {{ end -}}
+      {{ end -}}
+      {{- $element.Name }} = {{ $element.GetValue }}
+    {{ end }}
+  {{- end -}}
 settings:
   description: true

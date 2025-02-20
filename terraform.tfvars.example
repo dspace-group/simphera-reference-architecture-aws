@@ -4,7 +4,20 @@ cloudwatch_retention = 7
 
 # Cluster Autoscaler Helm Config
 cluster_autoscaler_helm_config = {
-  "version": "9.28.0"
+  "version": "9.34.1"
+}
+
+# Download link for codemeter rpm package.
+codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
+
+# Specifies if ECR pull through cache rule and accompanying resources will be created.
+# Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster.
+# When 'enable' is set to 'true', key 'exist' indicates whether pull through cache rule already exists for region's private ECR.
+# If key 'enable' is set to 'true', IAM policy will be attached to the cluster's nodes.
+# Additionally, if 'exist' is set to 'false', credentials for upstream registry and pull through cache rule will be created.
+ecr_pullthrough_cache_rule_config = {
+  "enable": false,
+  "exist": false
 }
 
 # Install FluentBit to send container logs to CloudWatch.
@@ -13,7 +26,11 @@ enable_aws_for_fluentbit = false
 # Enable Ingress Nginx add-on
 enable_ingress_nginx = false
 
-# Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually.
+enable_ivs = false
+
+# Scans license server EC2 instance and EKS nodes for updates.
+# Installs patches on license server automatically.
+# EKS nodes need to be updated manually.
 enable_patching = false
 
 # The maximum number of nodes for gpu job execution
@@ -30,7 +47,7 @@ gpuNodePool = false
 
 # The machine size of the nodes for the gpu job execution
 gpuNodeSize = [
-  "p3.2xlarge"
+  "g5.2xlarge"
 ]
 
 # The NVIDIA driver version for GPU node group.
@@ -71,10 +88,20 @@ linuxExecutionNodeCountMax = 10
 # The minimum number of Linux nodes for the job execution
 linuxExecutionNodeCountMin = 0
 
-# The machine size of the Linux nodes for the job execution
+# The disk size in GiB of the nodes for the job execution
+linuxExecutionNodeDiskSize = 200
+
+# The machine size of the Linux nodes for the job execution, user must check the availability of the instance types for the region.
+# The list is ordered by priority where the first instance type gets the highest priority.
+# Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxExecutionNodeSize = [
+  "m6a.4xlarge",
   "m5a.4xlarge",
-  "m5a.8xlarge"
+  "m5.4xlarge",
+  "m6i.4xlarge",
+  "m4.4xlarge",
+  "m7i.4xlarge",
+  "m7a.4xlarge"
 ]
 
 # The maximum number of Linux nodes for the regular services
@@ -83,10 +110,20 @@ linuxNodeCountMax = 12
 # The minimum number of Linux nodes for the regular services
 linuxNodeCountMin = 1
 
-# The machine size of the Linux nodes for the regular services
+# The disk size in GiB of the nodes for the regular services
+linuxNodeDiskSize = 200
+
+# The machine size of the Linux nodes for the regular services, user must check the availability of the instance types for the region.
+# The list is ordered by priority where the first instance type gets the highest priority.
+# Instance types must fulfill the following requirements: 64 GB RAM, 16 vCPUs, at least 110 IPs, at least 2 availability zones.
 linuxNodeSize = [
+  "m6a.4xlarge",
   "m5a.4xlarge",
-  "m5a.8xlarge"
+  "m5.4xlarge",
+  "m6i.4xlarge",
+  "m4.4xlarge",
+  "m7i.4xlarge",
+  "m7a.4xlarge"
 ]
 
 # How long in hours for the maintenance window.
@@ -100,6 +137,15 @@ map_roles = []
 
 # Additional IAM users to add to the aws-auth ConfigMap
 map_users = []
+
+# List of IDs for the private subnets.
+private_subnet_ids = []
+
+# List of IDs for the public subnets.
+public_subnet_ids = []
+
+# Download link for RTMaps license server.
+rtMaps_link = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 
 # 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule.
 scan_schedule = "cron(0 0 * * ? *)"
@@ -131,12 +177,8 @@ tags = {}
 # The CIDR for the virtual private cluster.
 vpcCidr = "10.1.0.0/18"
 
-# List of CIDRs for the database subnets.
-vpcDatabaseSubnets = [
-  "10.1.24.0/22",
-  "10.1.28.0/22",
-  "10.1.32.0/22"
-]
+# The ID of preconfigured VPC. Change from 'null' to use already existing VPC.
+vpcId = null
 
 # List of CIDRs for the private subnets.
 vpcPrivateSubnets = [

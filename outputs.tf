@@ -28,7 +28,14 @@ output "eks_cluster_id" {
   value       = module.eks.eks_cluster_id
 }
 
-output "vpc_private_subnets" {
-  description = "List of private subnets of VPC"
-  value       = module.vpc.private_subnets
-}
+
+# Section below is useful when troubleshooting on pre-configured network infrastructure
+#output "aws_vpc_id" {
+#  description = "Amazon VPC ID"
+#  value       = data.aws_vpc.preconfigured.id
+#}
+
+#output "aws_private_subnets" {
+#  description = "Amazon VPC private subnets"
+#  value       = { for s, t in data.aws_subnet.private_subnet : "zone${s}" => data.aws_subnet.private_subnet[s].id }
+#}
