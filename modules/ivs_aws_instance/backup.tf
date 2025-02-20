@@ -84,7 +84,7 @@ resource "aws_backup_selection" "s3" {
 
 resource "aws_s3_bucket_versioning" "data_bucket" {
   count  = var.backup_service_enable ? 1 : 0
-  bucket = aws_s3_bucket.data_bucket[0].id
+  bucket = aws_s3_bucket.data_bucket.id
   versioning_configuration {
     status = "Enabled"
   }
@@ -92,7 +92,7 @@ resource "aws_s3_bucket_versioning" "data_bucket" {
 
 resource "aws_s3_bucket_versioning" "rawdata_bucket" {
   count  = var.backup_service_enable ? 1 : 0
-  bucket = aws_s3_bucket.rawdata_bucket[0].id
+  bucket = aws_s3_bucket.rawdata_bucket.id
   versioning_configuration {
     status = "Enabled"
   }
