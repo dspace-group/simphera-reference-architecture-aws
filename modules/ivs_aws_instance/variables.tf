@@ -1,7 +1,7 @@
 variable "k8s_namespace" {
   type = string
 }
-variable "infrastructurename" {
+variable "eks_cluster_id" {
   type = string
 }
 

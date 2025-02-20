@@ -61,7 +61,7 @@ resource "aws_backup_selection" "ebs" {
   condition {
     string_equals {
       key   = "aws:ResourceTag/KubernetesCluster"
-      value = var.infrastructurename
+      value = var.eks_cluster_id
     }
     string_equals {
       key   = "aws:ResourceTag/kubernetes.io/created-for/pvc/name"
