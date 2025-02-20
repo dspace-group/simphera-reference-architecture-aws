@@ -51,3 +51,29 @@ resource "aws_backup_plan" "backup_plan" {
   }
   tags = var.tags
 }
+
+resource "aws_backup_selection" "ebs" {
+  count        = var.backup_service_enable ? 1 : 0
+  iam_role_arn = aws_iam_role.backup_iam_role[0].arn
+  name         = "${local.instance_identifier}-ebs-selection"
+  plan_id      = aws_backup_plan.backup_plan[0].id
+  resources    = ["arn:aws:ec2:*:*:volume/*"]
+  condition {
+    string_equals {
+      key   = "aws:ResourceTag/kubernetes.io/cluster/${var.infrastructurename}"
+      value = "owned"
+    }
+    string_equals {
+      key   = "aws:ResourceTag/kubernetes.io/created-for/pvc/name"
+      value = "datadir-ivs-mongodb-0"
+    }
+  }
+}
+
+resource "aws_backup_selection" "s3" {
+  count        = var.backup_service_enable ? 1 : 0
+  iam_role_arn = aws_iam_role.backup_iam_role[0].arn
+  name         = "${local.instance_identifier}-s3-selection"
+  plan_id      = aws_backup_plan.backup_plan[0].id
+  resources    = [aws_s3_bucket.data_bucket.arn, aws_s3_bucket.rawdata_bucket.arn]
+}
