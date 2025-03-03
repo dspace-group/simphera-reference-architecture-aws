@@ -1,3 +1,15 @@
+## v0.3.0
+
+- replaced terraform-aws-eks-blueprint addon ingress-nginx with module `modules/k8s_eks_addons/ingress-nginx.tf`
+- replaced terraform-aws-eks-blueprint addon cluster-autoscaler with module `modules/k8s_eks_addons/cluster-autoscaler.tf`
+- replaced terraform-aws-eks-blueprint addon coredns with module `modules/k8s_eks_addons/coredns.tf`
+- replaced terraform-aws-eks-blueprint addon efs csi driver with module `modules/k8s_eks_addons/efs-csi.tf`
+- replaced terraform-aws-eks-blueprint addon kube_proxy with module `modules/k8s_eks_addons/kube-proxy.tf`
+- replaced terraform-aws-eks-blueprint addon ebs-csi-driver with module `modules/k8s_eks_addons/ebs-csi.tf`
+- replaced terraform-aws-eks-blueprint addon vpc-cni with module `modules/k8s_eks_addons/vpc-cni.tf`
+- added addon aws-mountpoint-s3-csi-driver with module `modules/k8s_eks_addons/s3-csi.tf`
+- replaced terraform-aws-eks-blueprint addon aws-load-balancer-controller with module `modules/k8s_eks_addons/aws-load-balancer-controller.tf`
+
 ## v0.2.0
 
 - added option to use preconfigured VPC and subnets, in case of customers who

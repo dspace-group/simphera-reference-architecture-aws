@@ -85,13 +85,13 @@ variable "postgresqlMaxStorageKeycloak" {
 variable "db_instance_type_keycloak" {
   type        = string
   description = "PostgreSQL database instance type for Keycloak data"
-  default     = "db.t3.large"
+  default     = "db.t4g.large"
 }
 
 variable "db_instance_type_simphera" {
   type        = string
   description = "PostgreSQL database instance type for SIMPHERA data"
-  default     = "db.t3.large"
+  default     = "db.t4g.large"
 }
 
 variable "k8s_namespace" {

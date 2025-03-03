@@ -1,0 +1,3 @@
+sidecars:
+  snapshotter:
+    forceEnable: false

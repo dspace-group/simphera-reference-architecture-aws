@@ -25,23 +25,23 @@
 #   }
 # }
 
-module "security_group" {
-  source      = "terraform-aws-modules/security-group/aws"
-  version     = "~> 4"
-  name        = "${var.infrastructurename}-db-sg"
-  description = "PostgreSQL security group"
-  vpc_id      = local.vpc_id
-  tags        = var.tags
-  ingress_with_cidr_blocks = [
-    {
-      from_port   = 5432
-      to_port     = 5432
-      protocol    = "tcp"
-      description = "PostgreSQL access from within VPC"
-      cidr_blocks = data.aws_vpc.preconfigured[0].cidr_block #local.create_vpc ? module.vpc[0].vpc_cidr_block : data.aws_vpc.preconfigured[0].cidr_block
-    },
-  ]
-}
+# module "security_group" {
+#   source      = "terraform-aws-modules/security-group/aws"
+#   version     = "~> 4"
+#   name        = "${var.infrastructurename}-db-sg"
+#   description = "PostgreSQL security group"
+#   vpc_id      = local.vpc_id
+#   tags        = var.tags
+#   ingress_with_cidr_blocks = [
+#     {
+#       from_port   = 5432
+#       to_port     = 5432
+#       protocol    = "tcp"
+#       description = "PostgreSQL access from within VPC"
+#       cidr_blocks = data.aws_vpc.preconfigured[0].cidr_block #local.create_vpc ? module.vpc[0].vpc_cidr_block : data.aws_vpc.preconfigured[0].cidr_block
+#     },
+#   ]
+# }
 
 # # [EC2.6] VPC flow logging should be enabled in all VPCs
 # # https://docs.aws.amazon.com/securityhub/latest/userguide/securityhub-standards-fsbp-controls.html#fsbp-ec2-6

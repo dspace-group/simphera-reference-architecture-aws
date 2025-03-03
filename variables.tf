@@ -138,8 +138,8 @@ variable "codemeter" {
 
 variable "kubernetesVersion" {
   type        = string
-  description = "The version of the EKS cluster."
-  default     = "1.28"
+  description = "The kubernetes version of the EKS cluster."
+  default     = "1.30"
 }
 
 variable "vpcId" {
@@ -191,12 +191,6 @@ variable "ecr_pullthrough_cache_rule_config" {
   }
 }
 
-variable "enable_aws_for_fluentbit" {
-  type        = bool
-  description = "Install FluentBit to send container logs to CloudWatch."
-  default     = false
-}
-
 variable "enable_ivs" {
   type    = bool
   default = false
@@ -206,12 +200,6 @@ variable "rtMaps_link" {
   type        = string
   description = "Download link for RTMaps license server."
   default     = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
-}
-
-variable "enable_ingress_nginx" {
-  type        = bool
-  description = "Enable Ingress Nginx add-on"
-  default     = false
 }
 
 variable "map_accounts" {
@@ -238,6 +226,27 @@ variable "map_users" {
   }))
   description = "Additional IAM users to add to the aws-auth ConfigMap"
   default     = []
+}
+
+variable "ingress_nginx_config" {
+  type = object({
+    enable          = bool
+    helm_repository = optional(string, "https://kubernetes.github.io/ingress-nginx")
+    helm_version    = optional(string, "4.1.4")
+    chart_values = optional(string, <<-YAML
+controller:
+  images:
+    registry: "registry.k8s.io"
+  service:
+    annotations:
+      service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+YAML
+    )
+  })
+  description = "Input configuration for ingress-nginx service deployed with helm release. By setting key 'enable' to 'true', ingress-nginx service will be deployed. 'helm_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of an ingress-nginx chart."
+  default = {
+    enable = false
+  }
 }
 
 variable "simpheraInstances" {
@@ -270,8 +279,8 @@ variable "simpheraInstances" {
       enable_keycloak              = true
       postgresqlStorageKeycloak    = 20
       postgresqlMaxStorageKeycloak = 100
-      db_instance_type_keycloak    = "db.t3.large"
-      db_instance_type_simphera    = "db.t3.large"
+      db_instance_type_keycloak    = "db.t4g.large"
+      db_instance_type_simphera    = "db.t4g.large"
       k8s_namespace                = "simphera"
       secretname                   = "aws-simphera-dev-production"
       enable_backup_service        = true
@@ -311,10 +320,60 @@ variable "cloudwatch_retention" {
   default     = 7
 }
 
-variable "cluster_autoscaler_helm_config" {
-  type        = any
-  description = "Cluster Autoscaler Helm Config"
-  default     = { "version" : "9.34.1" }
+variable "cluster_autoscaler_config" {
+  type = object({
+    enable          = optional(bool, true)
+    helm_repository = optional(string, "https://kubernetes.github.io/autoscaler")
+    helm_version    = optional(string, "9.37.0")
+    chart_values = optional(string, <<-YAML
+
+    YAML
+    )
+  })
+  description = "Input configuration for cluster-autoscaler deployed with helm release. By setting key 'enable' to 'true', cluster-autoscaler release will be deployed. 'helm_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a cluster-autoscaler chart."
+  default     = {}
+}
+
+variable "coredns_config" {
+  type = object({
+    enable               = optional(bool, true)
+    configuration_values = optional(string, null)
+  })
+  description = "Input configuration for AWS EKS add-on coredns. By setting key 'enable' to 'true', coredns add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = true
+  }
+}
+
+variable "s3_csi_config" {
+  type = object({
+    enable = optional(bool, false)
+    configuration_values = optional(string, <<-YAML
+node:
+    tolerateAllTaints: true
+YAML
+    )
+  })
+  description = "Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver. By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed. Key 'configuration_values' is used to change add-on configuration. Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/)."
+  default = {
+    enable = false
+  }
+}
+
+variable "aws_load_balancer_controller_config" {
+  type = object({
+    enable          = optional(bool, false)
+    helm_repository = optional(string, "https://aws.github.io/eks-charts")
+    helm_version    = optional(string, "1.4.5")
+    chart_values = optional(string, <<-YAML
+
+    YAML
+    )
+  })
+  description = "Input configuration for load_balancer_controller deployed with helm release. By setting key 'enable' to 'true', load_balancer_controller release will be deployed. 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart."
+  default = {
+    enable = false
+  }
 }
 
 variable "team_names" {

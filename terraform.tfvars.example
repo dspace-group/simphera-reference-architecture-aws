@@ -1,14 +1,31 @@
 
+# Input configuration for load_balancer_controller deployed with helm release.
+# By setting key 'enable' to 'true', load_balancer_controller release will be deployed.
+# 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart.
+aws_load_balancer_controller_config = {
+  "enable": false
+}
+
 # Global cloudwatch retention period for the EKS, VPC, SSM, and PostgreSQL logs.
 cloudwatch_retention = 7
 
-# Cluster Autoscaler Helm Config
-cluster_autoscaler_helm_config = {
-  "version": "9.34.1"
-}
+# Input configuration for cluster-autoscaler deployed with helm release.
+# By setting key 'enable' to 'true', cluster-autoscaler release will be deployed.
+# 'helm_repository' is an URL for the repository of cluster-autoscaler helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of a cluster-autoscaler chart.
+cluster_autoscaler_config = {}
 
 # Download link for codemeter rpm package.
 codemeter = "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd"
+
+# Input configuration for AWS EKS add-on coredns.
+# By setting key 'enable' to 'true', coredns add-on is deployed.
+# Key 'configuration_values' is used to change add-on configuration.
+# Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
+coredns_config = {
+  "enable": true
+}
 
 # Specifies if ECR pull through cache rule and accompanying resources will be created.
 # Key 'enable' indicates whether pull through cache rule needs to be enabled for the cluster.
@@ -19,12 +36,6 @@ ecr_pullthrough_cache_rule_config = {
   "enable": false,
   "exist": false
 }
-
-# Install FluentBit to send container logs to CloudWatch.
-enable_aws_for_fluentbit = false
-
-# Enable Ingress Nginx add-on
-enable_ingress_nginx = false
 
 enable_ivs = false
 
@@ -56,6 +67,14 @@ gpuNvidiaDriverVersion = "535.54.03"
 # The name of the infrastructure. e.g. simphera-infra
 infrastructurename = "simphera"
 
+# Input configuration for ingress-nginx service deployed with helm release.
+# By setting key 'enable' to 'true', ingress-nginx service will be deployed.
+# 'helm_repository' is an URL for the repository of ingress-nginx helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of an ingress-nginx chart.
+ingress_nginx_config = {
+  "enable": false
+}
+
 # 6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule.
 install_schedule = "cron(0 3 * * ? *)"
 
@@ -76,8 +95,8 @@ ivsGpuNodeSize = [
   "g4dn.2xlarge"
 ]
 
-# The version of the EKS cluster.
-kubernetesVersion = "1.28"
+# The kubernetes version of the EKS cluster.
+kubernetesVersion = "1.30"
 
 # Specifies whether a license server VM will be created.
 licenseServer = false
@@ -147,6 +166,14 @@ public_subnet_ids = []
 # Download link for RTMaps license server.
 rtMaps_link = "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2"
 
+# Input configuration for AWS EKS add-on aws-mountpoint-s3-csi-driver.
+# By setting key 'enable' to 'true', aws-mountpoint-s3-csi-driver add-on is deployed.
+# Key 'configuration_values' is used to change add-on configuration.
+# Its content should follow add-on configuration schema (see https://aws.amazon.com/blogs/containers/amazon-eks-add-ons-advanced-configuration/).
+s3_csi_config = {
+  "enable": false
+}
+
 # 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule.
 scan_schedule = "cron(0 0 * * ? *)"
 
@@ -154,8 +181,8 @@ scan_schedule = "cron(0 0 * * ? *)"
 simpheraInstances = {
   "production": {
     "backup_retention": 35,
-    "db_instance_type_keycloak": "db.t3.large",
-    "db_instance_type_simphera": "db.t3.large",
+    "db_instance_type_keycloak": "db.t4g.large",
+    "db_instance_type_simphera": "db.t4g.large",
     "enable_backup_service": true,
     "enable_deletion_protection": true,
     "enable_keycloak": true,

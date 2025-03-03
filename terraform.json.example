@@ -1,15 +1,17 @@
 {
-  "cloudwatch_retention": 7,
-  "cluster_autoscaler_helm_config": {
-    "version": "9.34.1"
+  "aws_load_balancer_controller_config": {
+    "enable": false
   },
+  "cloudwatch_retention": 7,
+  "cluster_autoscaler_config": {},
   "codemeter": "https://www.wibu.com/support/user/user-software/file/download/13346.html?tx_wibudownloads_downloadlist%5BdirectDownload%5D=directDownload&tx_wibudownloads_downloadlist%5BuseAwsS3%5D=0&cHash=8dba7ab094dec6267346f04fce2a2bcd",
+  "coredns_config": {
+    "enable": true
+  },
   "ecr_pullthrough_cache_rule_config": {
     "enable": false,
     "exist": false
   },
-  "enable_aws_for_fluentbit": false,
-  "enable_ingress_nginx": false,
   "enable_ivs": false,
   "enable_patching": false,
   "gpuNodeCountMax": 12,
@@ -21,6 +23,9 @@
   ],
   "gpuNvidiaDriverVersion": "535.54.03",
   "infrastructurename": "simphera",
+  "ingress_nginx_config": {
+    "enable": false
+  },
   "install_schedule": "cron(0 3 * * ? *)",
   "ivsGpuNodeCountMax": 2,
   "ivsGpuNodeCountMin": 0,
@@ -29,7 +34,7 @@
   "ivsGpuNodeSize": [
     "g4dn.2xlarge"
   ],
-  "kubernetesVersion": "1.28",
+  "kubernetesVersion": "1.30",
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
@@ -62,12 +67,15 @@
   "private_subnet_ids": [],
   "public_subnet_ids": [],
   "rtMaps_link": "http://dl.intempora.com/RTMaps4/rtmaps_4.9.0_ubuntu1804_x86_64_release.tar.bz2",
+  "s3_csi_config": {
+    "enable": false
+  },
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
       "backup_retention": 35,
-      "db_instance_type_keycloak": "db.t3.large",
-      "db_instance_type_simphera": "db.t3.large",
+      "db_instance_type_keycloak": "db.t4g.large",
+      "db_instance_type_simphera": "db.t4g.large",
       "enable_backup_service": true,
       "enable_deletion_protection": true,
       "enable_keycloak": true,

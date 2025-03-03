@@ -58,4 +58,3 @@ resource "aws_iam_role_policy_attachment" "backup_s3_policy" {
   policy_arn = "arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Backup"
   role       = aws_iam_role.backup_iam_role[0].name
 }
-
