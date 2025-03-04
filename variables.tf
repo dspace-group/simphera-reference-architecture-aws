@@ -260,6 +260,7 @@ variable "simpheraInstances" {
     enable_keycloak              = bool
     postgresqlStorageKeycloak    = number
     postgresqlMaxStorageKeycloak = number
+    postgresql_security_group_id = string
     db_instance_type_keycloak    = string
     k8s_namespace                = string
     secretname                   = string
@@ -279,6 +280,7 @@ variable "simpheraInstances" {
       enable_keycloak              = true
       postgresqlStorageKeycloak    = 20
       postgresqlMaxStorageKeycloak = 100
+      postgresql_security_group_id = "simphera-db-sg"
       db_instance_type_keycloak    = "db.t4g.large"
       db_instance_type_simphera    = "db.t4g.large"
       k8s_namespace                = "simphera"

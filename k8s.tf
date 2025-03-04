@@ -65,7 +65,8 @@ resource "aws_autoscaling_group_tag" "execnodes" {
 # see https://github.com/kubernetes/autoscaler/blob/master/cluster-autoscaler/cloudprovider/aws/README.md#auto-discovery-setup
 #     https://github.com/kubernetes/autoscaler/issues/1869#issuecomment-518530724
 resource "aws_autoscaling_group_tag" "execnodes_node-template_resources_ephemeral-storage" {
-  autoscaling_group_name = data.aws_eks_node_group.execnodes.resources[0].autoscaling_groups[0].name
+  count                  = length(var.team_names)
+  autoscaling_group_name = data.aws_eks_node_group.execnodes[count.index].resources[0].autoscaling_groups[0].name
 
   tag {
     key   = "k8s.io/cluster-autoscaler/node-template/resources/ephemeral-storage"

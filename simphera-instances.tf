@@ -22,7 +22,7 @@ module "simphera_instance" {
   backup_retention             = each.value.backup_retention
   cloudwatch_retention         = var.cloudwatch_retention
   enable_deletion_protection   = each.value.enable_deletion_protection
-  postgresql_security_group_id = module.security_group.security_group_id
+  postgresql_security_group_id = each.value.postgresql_security_group_id
   kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
   log_bucket                   = aws_s3_bucket.bucket_logs.id
   private_subnets              = local.private_subnets
