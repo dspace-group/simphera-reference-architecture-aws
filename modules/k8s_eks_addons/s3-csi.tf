@@ -20,7 +20,7 @@ resource "aws_eks_addon" "aws-mountpoint-s3-csi-driver" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   configuration_values        = var.coredns_config.configuration_values
-  tags                        = var.addon_context.tags
+  tags                        = var.tags
 }
 
 resource "aws_iam_role" "s3_csi_driver_role" {
@@ -34,7 +34,7 @@ resource "aws_iam_role" "s3_csi_driver_role" {
       {
         "Effect" : "Allow",
         "Principal" : {
-          "Federated" : "arn:${var.addon_context.aws_partition_id}:iam::${var.addon_context.aws_caller_identity_account_id}:oidc-provider/${var.addon_context.eks_oidc_issuer_url}"
+          "Federated" : "arn:${var.addon_context.aws_context.partition_id}:iam::${var.addon_context.aws_context.caller_identity_account_id}:oidc-provider/${var.addon_context.eks_oidc_issuer_url}"
         },
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
@@ -49,7 +49,7 @@ resource "aws_iam_role" "s3_csi_driver_role" {
 
   force_detach_policies = true
 
-  tags = var.addon_context.tags
+  tags = var.tags
 }
 
 resource "aws_iam_policy" "Amazons3CSIDriverPolicy" {

@@ -118,12 +118,6 @@ variable "ivsGpuNodeDiskSize" {
   default     = 100
 }
 
-variable "gpuNvidiaDriverVersion" {
-  type        = string
-  description = "The NVIDIA driver version for GPU node group."
-  default     = "535.54.03"
-}
-
 variable "licenseServer" {
   type        = bool
   description = "Specifies whether a license server VM will be created."
@@ -189,11 +183,6 @@ variable "ecr_pullthrough_cache_rule_config" {
     enable = false
     exist  = false
   }
-}
-
-variable "enable_ivs" {
-  type    = bool
-  default = false
 }
 
 variable "rtMaps_link" {
@@ -290,6 +279,33 @@ variable "simpheraInstances" {
   }
 }
 
+variable "ivsInstances" {
+  type = map(object({
+    dataBucketName    = string
+    rawDataBucketName = string
+    opensearch = optional(object({
+      enable                  = optional(bool, false)
+      engine_version          = optional(string, "OpenSearch_2.17")
+      instance_type           = optional(string, "m7g.medium.search")
+      instance_count          = optional(number, 1)
+      volume_size             = optional(number, 100)
+      master_user_secret_name = optional(string, null)
+      }),
+      {}
+    )
+  }))
+  description = "A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'. 'opensearch.instance_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/"
+  default = {
+    "production" = {
+      dataBucketName    = "demo-ivs"
+      rawDataBucketName = "demo-ivs-rawdata"
+      opensearch = {
+        enable = false
+      }
+    }
+  }
+}
+
 variable "enable_patching" {
   type        = bool
   description = "Scans license server EC2 instance and EKS nodes for updates. Installs patches on license server automatically. EKS nodes need to be updated manually."
@@ -345,6 +361,16 @@ variable "coredns_config" {
   }
 }
 
+variable "efs_csi_config" {
+  type = object({
+    enable = optional(bool, true)
+  })
+  description = "Input configuration for AWS EKS add-on efs csi. By setting key 'enable' to 'true', efs csi add-on is deployed."
+  default = {
+    enable = true
+  }
+}
+
 variable "s3_csi_config" {
   type = object({
     enable = optional(bool, false)
@@ -371,6 +397,62 @@ variable "aws_load_balancer_controller_config" {
     )
   })
   description = "Input configuration for load_balancer_controller deployed with helm release. By setting key 'enable' to 'true', load_balancer_controller release will be deployed. 'helm_repository' is an URL for the repository of load_balancer_controller helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of a load_balancer_controller chart."
+  default = {
+    enable = false
+  }
+}
+
+variable "gpu_operator_config" {
+  type = object({
+    enable          = optional(bool, true)
+    helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")
+    helm_version    = optional(string, "v24.9.0")
+    driver_version  = optional(string, "550.90.07")
+    chart_values = optional(string, <<-YAML
+operator:
+  defaultRuntime: containerd
+
+dcgmExporter:
+  enabled: false
+
+driver:
+  enabled: true
+
+validator:
+  driver:
+    env:
+    - name: DISABLE_DEV_CHAR_SYMLINK_CREATION
+      value: "true"
+
+toolkit:
+  enabled: true
+
+daemonsets:
+  tolerations:
+  - key: purpose
+    value: gpu
+    operator: Equal
+    effect: NoSchedule
+  - key: nvidia.com/gpu
+    value: ""
+    operator: Exists
+    effect: NoSchedule
+
+node-feature-discovery:
+  worker:
+    tolerations:
+    - key: purpose
+      value: gpu
+      operator: Equal
+      effect: NoSchedule
+    - key: nvidia.com/gpu
+      value: ""
+      operator: Exists
+      effect: NoSchedule
+YAML
+    )
+  })
+  description = "Input configuration for the GPU operator chart deployed with helm release. By setting key 'enable' to 'true', GPU operator will be deployed. 'helm_repository' is an URL for the repository of the GPU operator helm chart, where 'helm_version' is its respective version of a chart. 'chart_values' is used for changing default values.yaml of the GPU operator chart."
   default = {
     enable = false
   }

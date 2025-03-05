@@ -37,7 +37,10 @@ ecr_pullthrough_cache_rule_config = {
   "exist": false
 }
 
-enable_ivs = false
+# Input configuration for AWS EKS add-on efs csi. By setting key 'enable' to 'true', efs csi add-on is deployed.
+efs_csi_config = {
+  "enable": true
+}
 
 # Scans license server EC2 instance and EKS nodes for updates.
 # Installs patches on license server automatically.
@@ -61,8 +64,13 @@ gpuNodeSize = [
   "g5.2xlarge"
 ]
 
-# The NVIDIA driver version for GPU node group.
-gpuNvidiaDriverVersion = "535.54.03"
+# Input configuration for the GPU operator chart deployed with helm release.
+# By setting key 'enable' to 'true', GPU operator will be deployed.
+# 'helm_repository' is an URL for the repository of the GPU operator helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of the GPU operator chart.
+gpu_operator_config = {
+  "enable": false
+}
 
 # The name of the infrastructure. e.g. simphera-infra
 infrastructurename = "simphera"
@@ -94,6 +102,19 @@ ivsGpuNodePool = false
 ivsGpuNodeSize = [
   "g4dn.2xlarge"
 ]
+
+# A list containing the individual IVS instances, such as 'staging' and 'production'.
+# 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'.
+# 'opensearch.instance_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/.
+ivsInstances = {
+  "production": {
+    "dataBucketName": "demo-ivs",
+    "opensearch": {
+      "enable": false
+    },
+    "rawDataBucketName": "demo-ivs-rawdata"
+  }
+}
 
 # The kubernetes version of the EKS cluster.
 kubernetesVersion = "1.30"

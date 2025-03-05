@@ -27,3 +27,8 @@ output "eks_cluster_id" {
   description = "Amazon EKS Cluster Name"
   value       = module.eks.eks_cluster_id
 }
+
+output "opensearch_domain_endpoints" {
+  description = "List of OpenSearch Domains endpoints of IVS instances"
+  value       = [for key, value in module.ivs_instance : value.opensearch_domain_endpoint]
+}

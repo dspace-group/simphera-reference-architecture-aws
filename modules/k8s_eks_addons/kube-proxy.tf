@@ -14,5 +14,5 @@ resource "aws_eks_addon" "kube_proxy" {
   preserve                    = true
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
-  tags                        = var.addon_context.tags
+  tags                        = var.tags
 }
