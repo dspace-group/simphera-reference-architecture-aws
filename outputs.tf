@@ -32,14 +32,3 @@ output "opensearch_domain_endpoints" {
   description = "List of OpenSearch Domains endpoints of IVS instances"
   value       = [for key, value in module.ivs_instance : value.opensearch_domain_endpoint]
 }
-
-# Section below is useful when troubleshooting on pre-configured network infrastructure
-#output "aws_vpc_id" {
-#  description = "Amazon VPC ID"
-#  value       = data.aws_vpc.preconfigured.id
-#}
-
-#output "aws_private_subnets" {
-#  description = "Amazon VPC private subnets"
-#  value       = { for s, t in data.aws_subnet.private_subnet : "zone${s}" => data.aws_subnet.private_subnet[s].id }
-#}
