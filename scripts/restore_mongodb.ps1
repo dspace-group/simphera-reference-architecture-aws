@@ -25,7 +25,7 @@
 .PARAMETER namespace
     K8s namespace where ivs-mongodb is deployed.
 .PARAMETER retain_pv
-    Flag used if old PersistentVolume needs to be retain, if not set old PV is deleted.
+    Flag used if old PersistentVolume needs to be retain. If not set, old PV is deleted.
 .EXAMPLE
     ./restore_mongodb.ps1 -clusterid "aws-preprod-dev-eks" -snapshot_arn "arn:aws:ec2:eu-central-1::snapshot/snap-09ff08e544900c72b" -rolearn "arn:aws:iam::012345678901:role/restorerole" -profile "profile-1" -region "eu-central-1" -kubeconfig "C:\Users\user1\.kube\clusterid\config" -namespace "ivs" -ivs_release_name "ivs"
 #>
