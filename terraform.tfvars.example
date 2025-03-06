@@ -61,8 +61,13 @@ gpuNodeSize = [
   "g5.2xlarge"
 ]
 
-# The NVIDIA driver version for GPU node group.
-gpuNvidiaDriverVersion = "535.54.03"
+# Input configuration for the GPU operator chart deployed with helm release.
+# By setting key 'enable' to 'true', GPU operator will be deployed.
+# 'helm_repository' is an URL for the repository of the GPU operator helm chart, where 'helm_version' is its respective version of a chart.
+# 'chart_values' is used for changing default values.yaml of the GPU operator chart.
+gpu_operator_config = {
+  "enable": false
+}
 
 # The name of the infrastructure. e.g. simphera-infra
 infrastructurename = "simphera"
@@ -94,6 +99,14 @@ ivsGpuNodePool = false
 ivsGpuNodeSize = [
   "g4dn.2xlarge"
 ]
+
+# A list containing the individual IVS instances, such as 'staging' and 'production'.
+ivsInstances = {
+  "production": {
+    "dataBucketName": "demo-ivs",
+    "rawDataBucketName": "demo-ivs-rawdata"
+  }
+}
 
 # The kubernetes version of the EKS cluster.
 kubernetesVersion = "1.30"

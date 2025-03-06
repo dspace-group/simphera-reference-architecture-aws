@@ -1,3 +1,8 @@
+## v0.4.0
+
+- Implemented initial support for IVS.
+- replaced terraform-aws-eks-blueprints for the `eks` module with custom implementation of module `modules/eks`
+
 ## v0.3.0
 
 - replaced terraform-aws-eks-blueprint addon ingress-nginx with module `modules/k8s_eks_addons/ingress-nginx.tf`
