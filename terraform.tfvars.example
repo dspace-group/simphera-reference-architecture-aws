@@ -109,6 +109,7 @@ ivsGpuNodeSize = [
 ivsInstances = {
   "production": {
     "dataBucketName": "demo-ivs",
+    "k8s_namespace": "ivs",
     "opensearch": {
       "enable": false
     },
