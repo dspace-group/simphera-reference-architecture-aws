@@ -77,7 +77,7 @@ resource "aws_backup_selection" "ebs" {
     }
     string_equals {
       key   = "aws:ResourceTag/kubernetes.io/created-for/pvc/name"
-      value = "datadir-ivs-mongodb-0"
+      value = "datadir-${var.ivs_release_name}-mongodb-0"
     }
     string_equals {
       key   = "aws:ResourceTag/kubernetes.io/created-for/pvc/namespace"

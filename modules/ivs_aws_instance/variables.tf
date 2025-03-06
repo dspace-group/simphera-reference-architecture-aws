@@ -53,6 +53,11 @@ variable "opensearch" {
   description = "Input variables for configuring an AWS's OpenSearch domain"
 }
 
+variable "ivs_release_name" {
+  type        = string
+  description = "Name of the helm release of the IVS"
+}
+
 variable "backup_service_enable" {
   type        = bool
   description = "Enable backup of IVS resources"
@@ -62,6 +67,7 @@ variable "backup_retention" {
   type        = number
   description = "How many days before backed up resources are hold before deletion"
 }
+
 variable "backup_schedule" {
   type        = string
   description = "Cron string that schedules backup occurance"

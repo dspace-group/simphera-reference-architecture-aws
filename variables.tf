@@ -294,6 +294,7 @@ variable "ivsInstances" {
       }),
       {}
     )
+    ivs_release_name      = optional(string, "ivs")
     backup_service_enable = optional(bool, false)
     backup_retention      = optional(number, 7)
     backup_schedule       = optional(string, "cron(0 1 * * ? *)")
