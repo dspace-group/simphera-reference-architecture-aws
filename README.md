@@ -467,31 +467,29 @@ For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administr
 
 ### Restore AWS OpenSearch Service indices
 
-Connect to one of the EKS node shell. Get list of all available snapshots for index you want to restore:
+Connect to one of the EKS node shell.
+Get list of all available snapshots you want to restore:
 ```
-curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/_cat/snapshots/cs-automated-enc
+curl -XGET -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_cat/snapshots/cs-automated-enc?v'
 ```
 
 Run command to close index you wish to restore:
 ```
-curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/INDEX_NAME/_close
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/INDEX_NAME/_close'
 ```
 
 Run command to restore certain index:
 ```
-curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/SNAPSHOTNAME/_restore -H 'Content-Type: application/json' -d'
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/SNAPSHOT_ID/_restore?wait_for_completion' -H 'Content-Type: application/json' -d'
 {
-  "indices": "INDEX_NAME",
-  "ignore_unavailable": true,
-  "include_global_state": false,
-  "include_aliases": false
+  "indices": "INDEX_NAME"
 }
 '
 ```
 
 Run command to open index you restored:
 ```
-curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/INDEX_NAME/_open
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/INDEX_NAME/_open
 ```
 
 
