@@ -3,7 +3,7 @@ resource "aws_eks_node_group" "node_group" {
   node_group_name_prefix = format("%s-", var.node_group_name)
   node_role_arn          = aws_iam_role.node_group.arn
   subnet_ids             = var.subnet_ids
-  ami_type               = var.custom_ami_id != "" ? null : "AL2_x86_64"
+  ami_type               = var.custom_ami_id != "" ? null : var.ami_type
   capacity_type          = "ON_DEMAND"
   instance_types         = var.instance_types
   version                = var.custom_ami_id != "" ? null : var.node_group_context.cluster_version
