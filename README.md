@@ -458,7 +458,7 @@ First find a EBS snapshot arn in IVS backup vault (terraform output backup_vault
 
 Then just run aforementioned script in powershell console, example:
 ```
-./restore_mongodb.ps1 -clusterid "aws-preprod-dev-eks" -snapshot_arn "arn:aws:ec2:eu-central-1::snapshot/snap-0123456789a" -rolearn "arn:aws:iam::012345678901:role/restorerole" -profile "profile-1" -region "eu-central-1" -kubeconfig "C:\Users\user1\. -ivs_release_name "ivs"kube\clusterid\config" -namespace "ivs"
+./restore_mongodb.ps1 -clusterid "aws-preprod-dev-eks" -snapshot_arn "arn:aws:ec2:eu-central-1::snapshot/snap-0123456789a" -rolearn "arn:aws:iam::012345678901:role/restorerole" -profile "profile-1" -region "eu-central-1" -kubeconfig "C:\Users\user1\.kube\clusterid\config" -ivs_release_name "ivs" -namespace "ivs"
 ```
 
 ### Restore data/raw-data s3 bucket

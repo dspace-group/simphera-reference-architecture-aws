@@ -24,6 +24,8 @@
     Path to the kubeconfig for clusterid.
 .PARAMETER namespace
     K8s namespace where ivs-mongodb is deployed.
+.PARAMETER retain_pv
+    Flag used if old PersistentVolume needs to be retain, if not set old PV is deleted.
 .EXAMPLE
     ./restore_mongodb.ps1 -clusterid "aws-preprod-dev-eks" -snapshot_arn "arn:aws:ec2:eu-central-1::snapshot/snap-09ff08e544900c72b" -rolearn "arn:aws:iam::012345678901:role/restorerole" -profile "profile-1" -region "eu-central-1" -kubeconfig "C:\Users\user1\.kube\clusterid\config" -namespace "ivs" -ivs_release_name "ivs"
 #>
@@ -35,8 +37,8 @@ param(
     [parameter(Mandatory = $true)][string] $region,
     [parameter(Mandatory = $true)][string] $kubeconfig,
     [parameter(Mandatory = $true)][string] $namespace,
-    [parameter(Mandatory = $true)][string] $ivs_release_name
-
+    [parameter(Mandatory = $true)][string] $ivs_release_name,
+    [switch] $retain_pv
 )
 
 $ErrorActionPreference = "Stop"
@@ -44,6 +46,15 @@ Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
 $aws_profile_flags = @("--profile", $profile, "--region", $region)
+
+function AddPVRetainPolicy {
+    param(
+        $pv_name,
+        $kubeconfig
+    )
+    Write-Host "Patch $pv_name's 'persistentVolumeReclaimPolicy' to 'Retain'"
+    kubectl patch pv $pv_name -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}' --kubeconfig $kubeconfig
+}
 
 function ReplaceValueSubstring {
     param (
@@ -126,22 +137,6 @@ function RestoreVolume {
     $restore_job_id = $restore_job.RestoreJobId
     $new_volume_id = WaitRestore $restore_job_id $aws_profile_flags
     return $new_volume_id, $availabilityzone
-}
-
-function GetPVByVolumeId {
-    param(
-        $kubeconfig,
-        $volume_id
-    )
-    $pvs = kubectl get pv -o json --kubeconfig $kubeconfig | ConvertFrom-Json
-    $pv = ""
-    foreach ($each in $pvs.items) {
-        if ($each.spec.awsElasticBlockStore.volumeID.EndsWith($volume_id)) {
-            $pv = $each
-            break
-        }
-    }
-    return $pv
 }
 
 function GetPVByClaimRef {
@@ -287,6 +282,9 @@ function UpscaleResources {
 Write-Host "Processing $snapshot_arn"
 
 $old_pv = GetPVByClaimRef -claim_ref "datadir-$ivs_release_name-mongodb-0" -namespace $namespace -kubeconfig $kubeconfig
+if ($retain_pv) {
+    AddPVRetainPolicy -pv_name $old_pv.metadata.name -kubeconfig $kubeconfig
+}
 $old_volume_id = ($old_pv.spec.awsElasticBlockStore.volumeID -split "/")[-1]
 $new_volume_id, $availability_zone = RestoreVolume -snapshort_arn $snapshot_arn -aws_profile_flags $aws_profile_flags -rolearn $rolearn -old_volume_id $old_volume_id
 $uuid = New-Guid
