@@ -19,6 +19,10 @@ resource "aws_eks_addon" "aws_vpc_cni" {
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   tags                        = var.tags
+  configuration_values        = <<-YAML
+    enableWindowsIpam: "true"
+    enableWindowsPrefixDelegation: "true"
+    YAML
 }
 
 resource "aws_iam_role" "aws_vpc_cni_role" {

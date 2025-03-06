@@ -18,7 +18,8 @@ locals {
       username : "system:node:{{EC2PrivateDNSName}}"
       groups : [
         "system:bootstrappers",
-        "system:nodes"
+        "system:nodes",
+        "eks:kube-proxy-windows"
       ]
     }
   ]
