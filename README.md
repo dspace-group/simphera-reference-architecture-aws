@@ -438,6 +438,63 @@ aws backup start-restore-job `
 
 Alternatively, you can [restore the S3 data via the AWS console](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
 
+## Backup and Restore IVS
+
+When IVS instance is deployed with backup enabled user can restore data from one of the backups, MongoDB EBS volume, S3 buckets or OpenSearch Indices.
+To enable backups for your IVS instance, make sure you have the flag `backup_service_enable` et in your `.tfvars` file:
+
+```hcl
+ivsInstances = {
+  "production" = {
+        backup_service_enable    = true
+    }
+}
+```
+
+### Restore MongoDB EBS volume
+
+To backup MongoDB EBS volume, user can use [restore_mongodb.ps1](scripts/restore_mongodb.ps1) script.
+First find a EBS snapshot arn in IVS backup vault (terraform output backup_vaults) at AWS GUI.
+
+Then just run aforementioned script in powershell console, example:
+```
+./restore_mongodb.ps1 -clusterid "aws-preprod-dev-eks" -snapshot_arn "arn:aws:ec2:eu-central-1::snapshot/snap-0123456789a" -rolearn "arn:aws:iam::012345678901:role/restorerole" -profile "profile-1" -region "eu-central-1" -kubeconfig "C:\Users\user1\. -ivs_release_name "ivs"kube\clusterid\config" -namespace "ivs"
+```
+
+### Restore data/raw-data s3 bucket
+
+For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administration manual](https://www.dspace.com/en/pub/home/support/kb/supkbspecial/simphdocs/simphadmin.cfm), section `Protecting MinIO Data Using AWS S3` subsection `Restoring data`.
+
+### Restore AWS OpenSearch Service indices
+
+Connect to one of the EKS node shell. Get list of all available snapshots for index you want to restore:
+```
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/_cat/snapshots/cs-automated-enc
+```
+
+Run command to close index you wish to restore:
+```
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/INDEX_NAME/_close
+```
+
+Run command to restore certain index:
+```
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/SNAPSHOTNAME/_restore -H 'Content-Type: application/json' -d'
+{
+  "indices": "INDEX_NAME",
+  "ignore_unavailable": true,
+  "include_global_state": false,
+  "include_aliases": false
+}
+'
+```
+
+Run command to open index you restored:
+```
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/INDEX_NAME/_open
+```
+
+
 ## Encryption
 
 Encryption is enabled at all AWS resources that are created by Terraform:

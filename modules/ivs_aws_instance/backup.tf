@@ -29,6 +29,18 @@ resource "aws_iam_role_policy_attachment" "s3_backup" {
   role       = aws_iam_role.backup_iam_role[0].name
 }
 
+resource "aws_iam_role_policy_attachment" "restore" {
+  count      = var.backup_service_enable ? 1 : 0
+  policy_arn = "arn:aws:iam::aws:policy/service-role/AWSBackupServiceRolePolicyForRestores"
+  role       = aws_iam_role.backup_iam_role[0].name
+}
+
+resource "aws_iam_role_policy_attachment" "restore_s3" {
+  count      = var.backup_service_enable ? 1 : 0
+  policy_arn = "arn:aws:iam::aws:policy/AWSBackupServiceRolePolicyForS3Restore"
+  role       = aws_iam_role.backup_iam_role[0].name
+}
+
 resource "aws_backup_vault" "backup_vault" {
   count = var.backup_service_enable ? 1 : 0
   name  = "${local.instance_identifier}-backup-vault"
