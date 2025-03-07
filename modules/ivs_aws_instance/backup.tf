@@ -63,7 +63,7 @@ resource "aws_backup_plan" "backup_plan" {
   }
   tags = var.tags
 }
-# EBS
+
 resource "aws_backup_selection" "ebs" {
   count        = var.backup_service_enable ? 1 : 0
   iam_role_arn = aws_iam_role.backup_iam_role[0].arn
@@ -85,7 +85,7 @@ resource "aws_backup_selection" "ebs" {
     }
   }
 }
-# S3
+
 resource "aws_backup_selection" "s3" {
   count        = var.backup_service_enable ? 1 : 0
   iam_role_arn = aws_iam_role.backup_iam_role[0].arn

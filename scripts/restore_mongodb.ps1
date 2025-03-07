@@ -42,19 +42,9 @@ param(
 )
 
 $ErrorActionPreference = "Stop"
-Set-StrictMode -Version Latest
 $PSNativeCommandUseErrorActionPreference = $true
 
 $aws_profile_flags = @("--profile", $profile, "--region", $region)
-
-function AddPVRetainPolicy {
-    param(
-        $pv_name,
-        $kubeconfig
-    )
-    Write-Host "Patch $pv_name's 'persistentVolumeReclaimPolicy' to 'Retain'"
-    kubectl patch pv $pv_name -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}' --kubeconfig $kubeconfig
-}
 
 function ReplaceValueSubstring {
     param (
@@ -239,16 +229,6 @@ function DeletePVCs {
     Start-Sleep -Seconds 60
 }
 
-function RestartBackend {
-    param(
-        $namespace,
-        $kubeconfig
-    )
-    Write-Host "Deleting backend pod"
-    kubectl delete pod -l "app.kubernetes.io/component=backend" -n $namespace --kubeconfig $kubeconfig --wait
-    Write-Host "backend pod deleted"
-}
-
 function WaitUpscale {
     param(
         $statefulset_name,
@@ -283,7 +263,8 @@ Write-Host "Processing $snapshot_arn"
 
 $old_pv = GetPVByClaimRef -claim_ref "datadir-$ivs_release_name-mongodb-0" -namespace $namespace -kubeconfig $kubeconfig
 if ($retain_pv) {
-    AddPVRetainPolicy -pv_name $old_pv.metadata.name -kubeconfig $kubeconfig
+    Write-Host "Patch $pv_name's 'persistentVolumeReclaimPolicy' to 'Retain'"
+    kubectl patch pv $pv_name -p '{"spec":{"persistentVolumeReclaimPolicy":"Retain"}}' --kubeconfig $kubeconfig
 }
 $old_volume_id = ($old_pv.spec.awsElasticBlockStore.volumeID -split "/")[-1]
 $new_volume_id, $availability_zone = RestoreVolume -snapshort_arn $snapshot_arn -aws_profile_flags $aws_profile_flags -rolearn $rolearn -old_volume_id $old_volume_id
@@ -304,4 +285,7 @@ $new_pvc_json | kubectl apply --kubeconfig $kubeconfig -f -
 Write-Host "PVC created"
 
 UpscaleResources -mongodb_replicas_num $mongodb_replicas_num -namespace $namespace -kubeconfig $kubeconfig -ivs_release_name $ivs_release_name
-RestartBackend -namespace $namespace -kubeconfig $kubeconfig
+
+Write-Host "Deleting backend pod"
+kubectl delete pod -l "app.kubernetes.io/component=backend" -n $namespace --kubeconfig $kubeconfig --wait
+Write-Host "backend pod deleted"

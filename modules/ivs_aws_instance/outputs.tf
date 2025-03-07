@@ -4,6 +4,6 @@ output "opensearch_domain_endpoint" {
 }
 
 output "backup_vaults" {
-  description = "Backups vaults created for the SIMPHERA instance."
+  description = "Backups vaults created for the IVS instance."
   value       = [aws_backup_vault.backup_vault[*].name]
 }
