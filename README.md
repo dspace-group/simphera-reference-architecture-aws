@@ -438,6 +438,61 @@ aws backup start-restore-job `
 
 Alternatively, you can [restore the S3 data via the AWS console](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
 
+## Backup and Restore IVS
+
+When IVS instance is deployed with backup enabled user can restore data from one of the backups, MongoDB EBS volume, S3 buckets or OpenSearch Indices.
+To enable backups for your IVS instance, make sure you have the flag `backup_service_enable` et in your `.tfvars` file:
+
+```hcl
+ivsInstances = {
+  "production" = {
+        backup_service_enable    = true
+    }
+}
+```
+
+### Restore MongoDB EBS volume
+
+To backup MongoDB EBS volume, user can use [restore_mongodb.ps1](scripts/restore_mongodb.ps1) script.
+First find a EBS snapshot arn in IVS backup vault (terraform output backup_vaults) at AWS GUI.
+
+Then just run aforementioned script in powershell console, example:
+```
+./restore_mongodb.ps1 -clusterid "aws-preprod-dev-eks" -snapshot_arn "arn:aws:ec2:eu-central-1::snapshot/snap-0123456789a" -rolearn "arn:aws:iam::012345678901:role/restorerole" -profile "profile-1" -region "eu-central-1" -kubeconfig "C:\Users\user1\.kube\clusterid\config" -ivs_release_name "ivs" -namespace "ivs"
+```
+
+### Restore data/raw-data s3 bucket
+
+For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administration manual](https://www.dspace.com/en/pub/home/support/kb/supkbspecial/simphdocs/simphadmin.cfm), section `Protecting MinIO Data Using AWS S3` subsection `Restoring data`.
+
+### Restore AWS OpenSearch Service indices
+
+Connect to one of the EKS node shell.
+Get list of all available snapshots you want to restore:
+```
+curl -XGET -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_cat/snapshots/cs-automated-enc?v'
+```
+
+Run command to close index you wish to restore:
+```
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/INDEX_NAME/_close'
+```
+
+Run command to restore certain index:
+```
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/SNAPSHOT_ID/_restore?wait_for_completion' -H 'Content-Type: application/json' -d'
+{
+  "indices": "INDEX_NAME"
+}
+'
+```
+
+Run command to open index you restored:
+```
+curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/INDEX_NAME/_open
+```
+
+
 ## Encryption
 
 Encryption is enabled at all AWS resources that are created by Terraform:
@@ -573,7 +628,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="input_ivsGpuNodeDiskSize"></a> [ivsGpuNodeDiskSize](#input\_ivsGpuNodeDiskSize) | The disk size in GiB of the nodes for the IVS gpu job execution | `number` | `100` | no |
 | <a name="input_ivsGpuNodePool"></a> [ivsGpuNodePool](#input\_ivsGpuNodePool) | Specifies whether an additional node pool for IVS gpu job execution is added to the kubernetes cluster | `bool` | `false` | no |
 | <a name="input_ivsGpuNodeSize"></a> [ivsGpuNodeSize](#input\_ivsGpuNodeSize) | The machine size of the GPU nodes for IVS jobs | `list(string)` | <pre>[<br>  "g4dn.2xlarge"<br>]</pre> | no |
-| <a name="input_ivsInstances"></a> [ivsInstances](#input\_ivsInstances) | A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master\_user\_secret\_name' is an AWS secret containing key 'master\_user' and 'master\_password'. 'opensearch.instance\_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/ | <pre>map(object({<br>    dataBucketName    = string<br>    rawDataBucketName = string<br>    opensearch = optional(object({<br>      enable                  = optional(bool, false)<br>      engine_version          = optional(string, "OpenSearch_2.17")<br>      instance_type           = optional(string, "m7g.medium.search")<br>      instance_count          = optional(number, 1)<br>      volume_size             = optional(number, 100)<br>      master_user_secret_name = optional(string, null)<br>      }),<br>      {}<br>    )<br>  }))</pre> | <pre>{<br>  "production": {<br>    "dataBucketName": "demo-ivs",<br>    "opensearch": {<br>      "enable": false<br>    },<br>    "rawDataBucketName": "demo-ivs-rawdata"<br>  }<br>}</pre> | no |
+| <a name="input_ivsInstances"></a> [ivsInstances](#input\_ivsInstances) | A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master\_user\_secret\_name' is an AWS secret containing key 'master\_user' and 'master\_password'. 'opensearch.instance\_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/ | <pre>map(object({<br>    k8s_namespace     = string<br>    dataBucketName    = string<br>    rawDataBucketName = string<br>    opensearch = optional(object({<br>      enable                  = optional(bool, false)<br>      engine_version          = optional(string, "OpenSearch_2.17")<br>      instance_type           = optional(string, "m7g.medium.search")<br>      instance_count          = optional(number, 1)<br>      volume_size             = optional(number, 100)<br>      master_user_secret_name = optional(string, null)<br>      }),<br>      {}<br>    )<br>    ivs_release_name      = optional(string, "ivs")<br>    backup_service_enable = optional(bool, false)<br>    backup_retention      = optional(number, 7)<br>    backup_schedule       = optional(string, "cron(0 1 * * ? *)")<br>  }))</pre> | <pre>{<br>  "production": {<br>    "dataBucketName": "demo-ivs",<br>    "k8s_namespace": "ivs",<br>    "opensearch": {<br>      "enable": false<br>    },<br>    "rawDataBucketName": "demo-ivs-rawdata"<br>  }<br>}</pre> | no |
 | <a name="input_kubernetesVersion"></a> [kubernetesVersion](#input\_kubernetesVersion) | The kubernetes version of the EKS cluster. | `string` | `"1.30"` | no |
 | <a name="input_licenseServer"></a> [licenseServer](#input\_licenseServer) | Specifies whether a license server VM will be created. | `bool` | `false` | no |
 | <a name="input_linuxExecutionNodeCountMax"></a> [linuxExecutionNodeCountMax](#input\_linuxExecutionNodeCountMax) | The maximum number of Linux nodes for the job execution | `number` | `10` | no |
@@ -605,7 +660,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | Name | Description |
 |------|-------------|
 | <a name="output_account_id"></a> [account\_id](#output\_account\_id) | The AWS account id used for creating resources. |
-| <a name="output_backup_vaults"></a> [backup\_vaults](#output\_backup\_vaults) | Backups vaults from all SIMPHERA instances. |
+| <a name="output_backup_vaults"></a> [backup\_vaults](#output\_backup\_vaults) | Backups vaults from all SIMPHERA and IVS instances. |
 | <a name="output_database_endpoints"></a> [database\_endpoints](#output\_database\_endpoints) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_database_identifiers"></a> [database\_identifiers](#output\_database\_identifiers) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_eks_cluster_id"></a> [eks\_cluster\_id](#output\_eks\_cluster\_id) | Amazon EKS Cluster Name |
