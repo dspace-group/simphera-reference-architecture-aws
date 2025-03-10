@@ -24,6 +24,8 @@
     Path to the kubeconfig for clusterid.
 .PARAMETER namespace
     K8s namespace where ivs-mongodb is deployed.
+.PARAMETER ivs_release_name
+    Chart's release name of the IVS.
 .PARAMETER retain_pv
     Flag used if old PersistentVolume needs to be retain. If not set, old PV is deleted.
 .EXAMPLE
