@@ -64,13 +64,14 @@ locals {
       ]
     }
     "winexecnodes" = {
-      node_group_name = "winexecnodes"
-      instance_types  = var.linuxExecutionNodeSize
-      subnet_ids      = local.private_subnets
-      max_size        = var.linuxExecutionNodeCountMax
-      min_size        = 1
-      volume_size     = var.linuxExecutionNodeDiskSize
-      ami_type        = "WINDOWS_CORE_2022_x86_64"
+      node_group_name   = "winexecnodes"
+      instance_types    = var.linuxExecutionNodeSize
+      subnet_ids        = local.private_subnets
+      max_size          = var.linuxExecutionNodeCountMax
+      min_size          = 1
+      block_device_name = "/dev/sda1"
+      volume_size       = var.linuxExecutionNodeDiskSize
+      ami_type          = "WINDOWS_CORE_2022_x86_64"
       k8s_labels = {
         "product" = "ivs"
       }
@@ -136,9 +137,9 @@ locals {
   node_pools = merge(local.default_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
   ivs_node_groups_roles = merge(
     {
-      default   = module.eks.node_groups[0]["default"].nodegroup_role_id
-      execnodes = module.eks.node_groups[0]["execnodes"].nodegroup_role_id
-      execnodes = module.eks.node_groups[0]["winexecnodes"].nodegroup_role_id
+      default      = module.eks.node_groups[0]["default"].nodegroup_role_id
+      execnodes    = module.eks.node_groups[0]["execnodes"].nodegroup_role_id
+      winexecnodes = module.eks.node_groups[0]["winexecnodes"].nodegroup_role_id
     },
     var.ivsGpuNodePool ? { gpuivsnodes = module.eks.node_groups[0]["gpuivsnodes"].nodegroup_role_id } : {}
   )
