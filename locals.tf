@@ -33,6 +33,7 @@ locals {
   create_ivs_resources                      = length(var.ivsInstances) > 0 ? true : false
   create_efs                                = local.create_simphera_resources ? 1 : 0
   storage_subnets                           = local.create_efs > 0 ? { for index, zone in local.private_subnets : "zone${index}" => local.private_subnets[index] } : {}
+  gpu_driver_versions_escaped               = [for driver in var.gpu_operator_config.driver_versions : { driver = replace(driver, ".", "-") }]
 
   default_node_pools = {
     "default" = {
@@ -63,8 +64,9 @@ locals {
     }
   }
   gpu_node_pool = {
-    "gpuexecnodes" = {
-      node_group_name   = "gpuexecnodes"
+    for driver_version, driver_version_escaped in local.gpu_driver_versions_escaped :
+    "gpuexecnodes-${driver_version_escaped}" => {
+      node_group_name   = "gpuexecnodes-${driver_version_escaped}"
       instance_types    = var.gpuNodeSize
       subnet_ids        = local.private_subnets
       max_size          = var.gpuNodeCountMax
@@ -73,7 +75,8 @@ locals {
       block_device_name = "/dev/sda1"
       volume_size       = var.gpuNodeDiskSize
       k8s_labels = {
-        "purpose" = "gpu"
+        "purpose"    = "gpu",
+        "gpu-driver" = "${driver_version}"
       }
       k8s_taints = [
         {
