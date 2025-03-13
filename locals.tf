@@ -52,6 +52,7 @@ locals {
       volume_size     = var.linuxExecutionNodeDiskSize
       k8s_labels = {
         "purpose" = "execution"
+        "product" = "ivs"
       }
       k8s_taints = [
         {
@@ -95,15 +96,9 @@ locals {
       block_device_name = "/dev/sda1"
       volume_size       = var.ivsGpuNodeDiskSize
       k8s_labels = {
-        "product" = "ivs",
-        "purpose" = "gpu"
+        "product" = "ivs"
       }
       k8s_taints = [
-        {
-          key      = "purpose",
-          value    = "gpu",
-          "effect" = "NO_SCHEDULE"
-        },
         {
           key      = "nvidia.com/gpu",
           value    = "",
