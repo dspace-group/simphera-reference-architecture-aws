@@ -1,5 +1,5 @@
 locals {
-  gpu_driver_versions_escaped = [for driver in var.gpu_operator_config.driver_versions : { driver = replace(driver, ".", "-") }]
+  gpu_driver_versions_escaped = { for driver in var.gpu_operator_config.driver_versions : driver => replace(driver, ".", "-") }
 }
 
 
