@@ -12,11 +12,11 @@ terraform {
     }
     tls = {
       source  = "hashicorp/tls"
-      version = "= 4.0.5"
+      version = ">= 4.0.5"
     }
     http = {
       source  = "hashicorp/http"
-      version = "= 3.4.3"
+      version = ">= 3.4.3"
     }
   }
 }
