@@ -58,7 +58,7 @@ spec:
   nodeSelector:
     gpu-driver: ${each.value}
   tolerations:
-    key: purpose
+  - key: purpose
     operator: Equal
     value: gpu
     effect: NoSchedule
