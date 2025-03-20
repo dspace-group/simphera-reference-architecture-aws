@@ -31,10 +31,12 @@ resource "helm_release" "gpu_operator" {
 #   name: driver-gpu-nodes-${each.value}
 # spec:
 #   driverType: gpu
+#   image: driver
+#   repository: nvcr.io/nvidia
 #   nodeSelector:
-#     gpu-driver: ${each.value}
+#     gpu-driver: ${each.key}
 #   tolerations:
-#     key: purpose
+#   - key: purpose
 #     operator: Equal
 #     value: gpu
 #     effect: NoSchedule
