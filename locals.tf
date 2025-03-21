@@ -76,7 +76,7 @@ locals {
       volume_size       = var.gpuNodeDiskSize
       k8s_labels = {
         "purpose"    = "gpu",
-        "gpu-driver" = "${driver_version}"
+        "gpu-driver" = driver_version
       }
       k8s_taints = [
         {
