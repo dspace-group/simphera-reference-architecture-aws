@@ -24,7 +24,6 @@
     "g5.2xlarge"
   ],
   "gpu_operator_config": {
-    "driver_versions": [],
     "enable": false
   },
   "infrastructurename": "simphera",
