@@ -82,6 +82,6 @@ variable "gpu_operator_config" {
     helm_repository = string
     helm_version    = string
     chart_values    = string
-    driver_version  = string
+    driver_versions = list(string)
   })
 }
