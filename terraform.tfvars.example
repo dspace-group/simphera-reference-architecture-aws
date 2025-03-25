@@ -69,7 +69,6 @@ gpuNodeSize = [
 # 'helm_repository' is an URL for the repository of the GPU operator helm chart, where 'helm_version' is its respective version of a chart.
 # 'chart_values' is used for changing default values.yaml of the GPU operator chart.
 gpu_operator_config = {
-  "driver_versions": [],
   "enable": false
 }
 
