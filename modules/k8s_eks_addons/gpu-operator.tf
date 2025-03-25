@@ -1,5 +1,5 @@
 locals {
-  gpu_driver_versions_escaped = { for driver in var.gpu_operator_config.driver_versions : driver => replace(driver, ".", "-") }
+  gpu_driver_versions_escaped = { for driver in var.gpu_operator_config.driver_versions : driver => replace(driver, ".", "-") if var.gpu_operator_config.enable }
 }
 
 
@@ -20,30 +20,6 @@ resource "helm_release" "gpu_operator" {
   timeout = 1200
   wait    = false
 }
-
-# resource "kubernetes_manifest" "nvidia-driver" {
-#   for_each = local.gpu_driver_versions_escaped
-
-#   manifest   = yamldecode(<<YAML
-# apiVersion: nvidia.com/v1alpha1
-# kind: NVIDIADriver
-# metadata:
-#   name: driver-gpu-nodes-${each.value}
-# spec:
-#   driverType: gpu
-#   image: driver
-#   repository: nvcr.io/nvidia
-#   nodeSelector:
-#     gpu-driver: ${each.key}
-#   tolerations:
-#   - key: purpose
-#     operator: Equal
-#     value: gpu
-#     effect: NoSchedule
-#   version: ${each.key}
-# YAML)
-#   depends_on = [helm_release.gpu_operator]
-# }
 
 # kubernetes_manifest from hashicorp/kubernetes provider doesnt work with custom resources yet,
 # see https://github.com/hashicorp/terraform-provider-kubernetes/issues/1775 for more information

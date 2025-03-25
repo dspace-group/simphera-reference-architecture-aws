@@ -33,7 +33,7 @@ locals {
   create_ivs_resources                      = length(var.ivsInstances) > 0 ? true : false
   create_efs                                = local.create_simphera_resources ? 1 : 0
   storage_subnets                           = local.create_efs > 0 ? { for index, zone in local.private_subnets : "zone${index}" => local.private_subnets[index] } : {}
-  gpu_driver_versions_escaped               = { for driver in var.gpu_operator_config.driver_versions : driver => replace(driver, ".", "-") }
+  gpu_driver_versions_escaped               = { for driver in var.gpu_operator_config.driver_versions : driver => replace(driver, ".", "-") if var.gpu_operator_config.enable }
 
   default_node_pools = {
     "default" = {
