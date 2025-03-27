@@ -84,6 +84,7 @@
   "s3_csi_config": {
     "enable": false
   },
+  "s3_force_destroy": false,
   "scan_schedule": "cron(0 0 * * ? *)",
   "simpheraInstances": {
     "production": {
