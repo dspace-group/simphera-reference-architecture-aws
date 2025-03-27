@@ -27,4 +27,6 @@ module "simphera_instance" {
   log_bucket                   = aws_s3_bucket.bucket_logs.id
   private_subnets              = local.private_subnets
   s3_force_destroy             = var.s3_force_destroy
+
+  depends_on = [module.eks]
 }
