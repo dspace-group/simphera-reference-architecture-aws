@@ -19,4 +19,5 @@ module "ivs_instance" {
   backup_service_enable = each.value.backup_service_enable
   backup_retention      = each.value.backup_retention
   backup_schedule       = each.value.backup_schedule
+  s3_force_destroy      = var.s3_force_destroy
 }

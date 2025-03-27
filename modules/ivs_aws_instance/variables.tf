@@ -72,3 +72,9 @@ variable "backup_schedule" {
   type        = string
   description = "Cron string that schedules backup occurance"
 }
+
+variable "s3_force_destroy" {
+  type        = bool
+  description = "indicates whether or not all objects inside the s3 buckets managed by this module (including locked objects) should be destroyed"
+  default     = false
+}

@@ -84,8 +84,9 @@ resource "kubernetes_service_account" "minio_service_account" {
 
 
 resource "aws_s3_bucket" "bucket" {
-  bucket = local.instancename
-  tags   = var.tags
+  bucket        = local.instancename
+  tags          = var.tags
+  force_destroy = var.s3_force_destroy
 }
 
 
