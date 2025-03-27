@@ -413,7 +413,7 @@ variable "gpu_operator_config" {
     enable          = optional(bool, true)
     helm_repository = optional(string, "https://helm.ngc.nvidia.com/nvidia")
     helm_version    = optional(string, "v24.9.0")
-    driver_version  = optional(string, "550.90.07")
+    driver_versions = optional(list(string), ["550.90.07"])
     chart_values = optional(string, <<-YAML
 operator:
   defaultRuntime: containerd
@@ -423,6 +423,9 @@ dcgmExporter:
 
 driver:
   enabled: true
+  nvidiaDriverCRD:
+    enabled: true
+    deployDefaultCR: false
 
 validator:
   driver:
