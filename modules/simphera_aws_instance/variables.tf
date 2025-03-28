@@ -158,3 +158,9 @@ variable "cloudwatch_retention" {
   description = "Cloudwatch retention period for the PostgreSQL logs."
   type        = number
 }
+
+variable "s3_force_destroy" {
+  type        = bool
+  description = "indicates whether or not all objects inside the s3 buckets managed by this module (including locked objects) should be destroyed"
+  default     = false
+}

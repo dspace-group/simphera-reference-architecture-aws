@@ -196,6 +196,9 @@ s3_csi_config = {
   "enable": false
 }
 
+# indicates whether or not all objects inside the s3 buckets managed by this module (including locked objects) should be destroyed.
+s3_force_destroy = false
+
 # 6-field Cron expression describing the scan maintenance schedule. Must not overlap with variable install_schedule.
 scan_schedule = "cron(0 0 * * ? *)"
 

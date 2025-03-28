@@ -146,9 +146,10 @@ resource "aws_iam_role_policy_attachment" "license_server_ssm" {
 }
 
 resource "aws_s3_bucket" "license_server_bucket" {
-  count  = var.licenseServer ? 1 : 0
-  bucket = local.license_server_bucket_name
-  tags   = var.tags
+  count         = var.licenseServer ? 1 : 0
+  bucket        = local.license_server_bucket_name
+  tags          = var.tags
+  force_destroy = var.s3_force_destroy
 }
 
 # [S3.5] S3 buckets should require requests to use Secure Socket Layer
