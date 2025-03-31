@@ -94,6 +94,12 @@ variable "ivsGpuNodePool" {
   default     = false
 }
 
+variable "ivsGpuDriverVersion" {
+  type        = string
+  description = "Specifies driver version for IVS gpu nodes"
+  default     = "550.90.07"
+}
+
 variable "ivsGpuNodeSize" {
   type        = list(string)
   description = "The machine size of the GPU nodes for IVS jobs"

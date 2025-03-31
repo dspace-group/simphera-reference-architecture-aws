@@ -99,7 +99,8 @@ locals {
       block_device_name = "/dev/sda1"
       volume_size       = var.ivsGpuNodeDiskSize
       k8s_labels = {
-        "product" = "ivs"
+        "product"    = "ivs",
+        "gpu-driver" = var.ivsGpuDriverVersion
       }
       k8s_taints = [
         {
