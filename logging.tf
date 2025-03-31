@@ -1,7 +1,7 @@
 resource "aws_s3_bucket" "bucket_logs" {
   bucket        = "${var.infrastructurename}-logs"
   tags          = var.tags
-  force_destroy = var.s3_force_destroy
+  force_destroy = true
 
   #[S3.9] S3 bucket server access logging should be enabled
 

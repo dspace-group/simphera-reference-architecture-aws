@@ -149,7 +149,7 @@ resource "aws_s3_bucket" "license_server_bucket" {
   count         = var.licenseServer ? 1 : 0
   bucket        = local.license_server_bucket_name
   tags          = var.tags
-  force_destroy = var.s3_force_destroy
+  force_destroy = false
 }
 
 # [S3.5] S3 buckets should require requests to use Secure Socket Layer

@@ -466,9 +466,3 @@ YAML
     enable = false
   }
 }
-
-variable "s3_force_destroy" {
-  type        = bool
-  description = "indicates whether or not all objects inside the s3 buckets managed by this module (including locked objects) should be destroyed"
-  default     = false
-}
