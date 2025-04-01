@@ -31,6 +31,7 @@
     "enable": false
   },
   "install_schedule": "cron(0 3 * * ? *)",
+  "ivsGpuDriverVersion": "550.90.07",
   "ivsGpuNodeCountMax": 2,
   "ivsGpuNodeCountMin": 0,
   "ivsGpuNodeDiskSize": 100,

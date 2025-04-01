@@ -42,6 +42,10 @@ spec:
     operator: Equal
     value: gpu
     effect: NoSchedule
+  - key: nvidia.com/gpu
+    value: ""
+    operator: Exists
+    effect: NoSchedule
   version: ${each.key}
 YAML
 

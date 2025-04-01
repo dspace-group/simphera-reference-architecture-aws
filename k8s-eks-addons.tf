@@ -7,7 +7,10 @@ module "k8s_eks_addons" {
   efs_csi_config                      = var.efs_csi_config
   s3_csi_config                       = var.s3_csi_config
   aws_load_balancer_controller_config = var.aws_load_balancer_controller_config
-  gpu_operator_config                 = var.gpu_operator_config
+  gpu_operator_config = merge(
+    var.gpu_operator_config,
+    var.ivsGpuNodePool ? { driver_versions = distinct(concat(var.gpu_operator_config.driver_versions, [var.ivsGpuDriverVersion])) } : {}
+  )
   addon_context = {
     aws_context         = local.aws_context
     eks_cluster_id      = module.eks.eks_cluster_id

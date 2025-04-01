@@ -86,6 +86,9 @@ ingress_nginx_config = {
 # 6-field Cron expression describing the install maintenance schedule. Must not overlap with variable scan_schedule.
 install_schedule = "cron(0 3 * * ? *)"
 
+# Specifies driver version for IVS gpu nodes
+ivsGpuDriverVersion = "550.90.07"
+
 # The maximum number of GPU nodes nodes for IVS jobs
 ivsGpuNodeCountMax = 2
 
