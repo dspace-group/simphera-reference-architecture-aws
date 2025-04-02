@@ -27,5 +27,5 @@ module "simphera_instance" {
   log_bucket                   = aws_s3_bucket.bucket_logs.id
   private_subnets              = local.private_subnets
 
-  depends_on = [module.eks, module.k8s_eks_addons]
+  depends_on = [module.eks, kubernetes_storage_class_v1.efs]
 }
