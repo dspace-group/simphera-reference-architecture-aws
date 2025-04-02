@@ -102,7 +102,7 @@ variable "k8s_namespace" {
 
 variable "enable_deletion_protection" {
   type        = bool
-  description = "Enable deletion protection for databases."
+  description = "Enable deletion protection for databases and content of s3 buckets."
   default     = true
 }
 

@@ -1,11 +1,13 @@
 resource "aws_s3_bucket" "data_bucket" {
-  bucket = var.dataBucketName
-  tags   = var.tags
+  bucket        = var.dataBucketName
+  tags          = var.tags
+  force_destroy = var.enable_deletion_protection ? false : true
 }
 
 resource "aws_s3_bucket" "rawdata_bucket" {
-  bucket = var.rawDataBucketName
-  tags   = var.tags
+  bucket        = var.rawDataBucketName
+  tags          = var.tags
+  force_destroy = var.enable_deletion_protection ? false : true
 }
 
 resource "aws_iam_role_policy" "eks_node_s3_access_policy" {

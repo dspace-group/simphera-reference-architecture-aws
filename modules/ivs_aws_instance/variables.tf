@@ -72,3 +72,9 @@ variable "backup_schedule" {
   type        = string
   description = "Cron string that schedules backup occurance"
 }
+
+variable "enable_deletion_protection" {
+  type        = bool
+  description = "Enable deletion protection for databases and content of s3 buckets."
+  default     = true
+}
