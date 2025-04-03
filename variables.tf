@@ -227,7 +227,7 @@ variable "ingress_nginx_config" {
   type = object({
     enable          = bool
     helm_repository = optional(string, "https://kubernetes.github.io/ingress-nginx")
-    helm_version    = optional(string, "4.1.4")
+    helm_version    = optional(string, "4.12.1")
     chart_values = optional(string, <<-YAML
 controller:
   images:
