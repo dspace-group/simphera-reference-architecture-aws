@@ -235,6 +235,9 @@ controller:
   service:
     annotations:
       service.beta.kubernetes.io/aws-load-balancer-scheme: internet-facing
+  allowSnippetAnnotations: true
+  config:
+    strict-validate-path-type: false
 YAML
     )
   })
