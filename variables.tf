@@ -238,6 +238,7 @@ controller:
   allowSnippetAnnotations: true
   config:
     strict-validate-path-type: false
+    annotations-risk-level: Critical
 YAML
     )
   })
