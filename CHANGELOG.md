@@ -1,6 +1,7 @@
 ## v0.5.0
 
 - Implemented deployment of an OpenSearch Domain for usage in IVS
+- Update default version for helm chart of `ingress-nginx` to `4.12.1` (controller version `1.12.1`)
 
 ## v0.4.0
 
