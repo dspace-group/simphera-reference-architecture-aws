@@ -33,7 +33,12 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             "Resource": [
                 "${aws_s3_bucket.data_bucket.arn}",
                 "${aws_s3_bucket.rawdata_bucket.arn}"
-            ]
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:UserAgent": "aws-sdk-go/1.44.37 (go1.17.7; linux; amd64)"
+                }
+            }
         },
         {
             "Action": [
@@ -46,7 +51,12 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             "Resource": [
                 "${aws_s3_bucket.data_bucket.arn}/*",
                 "${aws_s3_bucket.rawdata_bucket.arn}/*"
-            ]
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:UserAgent": "aws-sdk-go/1.44.37 (go1.17.7; linux; amd64)"
+                }
+            }
         },
         {
             "Action": [
@@ -57,7 +67,12 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             "Resource": [
                 "${aws_s3_bucket.data_bucket.arn}/*",
                 "${aws_s3_bucket.rawdata_bucket.arn}/*"
-            ]
+            ],
+            "Condition": {
+                "StringEquals": {
+                    "aws:UserAgent": "aws-sdk-go/1.44.37 (go1.17.7; linux; amd64)"
+                }
+            }
         }
     ]
 }
