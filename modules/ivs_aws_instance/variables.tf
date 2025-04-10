@@ -78,3 +78,10 @@ variable "enable_deletion_protection" {
   description = "Enable deletion protection for databases and content of s3 buckets."
   default     = true
 }
+
+variable "goofys_user_agent_name" {
+  type        = string
+  description = "Name of the goofys user agent."
+  default     = "aws:UserAgent\": \"aws-sdk-go/1.44.37 (go1.17.7; linux; amd64)"
+}
+
