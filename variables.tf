@@ -305,10 +305,11 @@ variable "ivsInstances" {
       }),
       {}
     )
-    ivs_release_name      = optional(string, "ivs")
-    backup_service_enable = optional(bool, false)
-    backup_retention      = optional(number, 7)
-    backup_schedule       = optional(string, "cron(0 1 * * ? *)")
+    ivs_release_name           = optional(string, "ivs")
+    backup_service_enable      = optional(bool, false)
+    backup_retention           = optional(number, 7)
+    backup_schedule            = optional(string, "cron(0 1 * * ? *)")
+    enable_deletion_protection = optional(bool, true)
   }))
   description = "A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'. 'opensearch.instance_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/"
   default = {
