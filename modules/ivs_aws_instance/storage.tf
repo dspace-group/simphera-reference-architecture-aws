@@ -36,7 +36,7 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             ],
             "Condition": {
                 "StringEquals": {
-                    "${var.goofys_user_agent_name}"
+                    "${local.goofys_user_agent_name}"
                 }
             }
         },
@@ -54,7 +54,7 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             ],
             "Condition": {
                 "StringEquals": {
-                    "${var.goofys_user_agent_name}"
+                    "${local.goofys_user_agent_name}"
                 }
             }
         },
@@ -70,7 +70,7 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             ],
             "Condition": {
                 "StringEquals": {
-                    "${var.goofys_user_agent_name}"
+                    "${local.goofys_user_agent_name}"
                 }
             }
         }

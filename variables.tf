@@ -291,10 +291,10 @@ variable "simpheraInstances" {
 
 variable "ivsInstances" {
   type = map(object({
-    k8s_namespace          = string
-    dataBucketName         = string
-    rawDataBucketName      = string
-    goofys_user_agent_name = optional(string, "aws:UserAgent\": \"aws-sdk-go/1.44.37 (go1.17.7; linux; amd64)")
+    k8s_namespace                        = string
+    dataBucketName                       = string
+    rawDataBucketName                    = string
+    goofys_user_agent_sdk_and_go_version = optional(map(string), { sdk_version = "1.44.37", go_version = "1.17.7" })
     opensearch = optional(object({
       enable                  = optional(bool, false)
       engine_version          = optional(string, "OpenSearch_2.17")

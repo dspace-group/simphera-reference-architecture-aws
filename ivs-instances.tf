@@ -20,5 +20,5 @@ module "ivs_instance" {
   backup_retention           = each.value.backup_retention
   backup_schedule            = each.value.backup_schedule
   enable_deletion_protection = each.value.enable_deletion_protection
-  goofys_user_agent_name     = each.value.goofys_user_agent_name
+  goofys_user_agent_sdk_and_go_version     = each.value.goofys_user_agent_sdk_and_go_version
 }

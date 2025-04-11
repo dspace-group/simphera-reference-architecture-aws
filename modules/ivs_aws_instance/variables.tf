@@ -79,8 +79,8 @@ variable "enable_deletion_protection" {
   default     = true
 }
 
-variable "goofys_user_agent_name" {
-  type        = string
-  description = "Name of the goofys user agent."
+variable "goofys_user_agent_sdk_and_go_version" {
+  type        = map(string)
+  description = "Goofys user agent sdk and go version."
 }
 
