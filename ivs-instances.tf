@@ -14,10 +14,11 @@ module "ivs_instance" {
     security_group_ids = [module.eks.cluster_primary_security_group_id]
     }
   )
-  aws_context                = local.aws_context
-  ivs_release_name           = each.value.ivs_release_name
-  backup_service_enable      = each.value.backup_service_enable
-  backup_retention           = each.value.backup_retention
-  backup_schedule            = each.value.backup_schedule
-  enable_deletion_protection = each.value.enable_deletion_protection
+  aws_context                          = local.aws_context
+  ivs_release_name                     = each.value.ivs_release_name
+  backup_service_enable                = each.value.backup_service_enable
+  backup_retention                     = each.value.backup_retention
+  backup_schedule                      = each.value.backup_schedule
+  enable_deletion_protection           = each.value.enable_deletion_protection
+  goofys_user_agent_sdk_and_go_version = each.value.goofys_user_agent_sdk_and_go_version
 }

@@ -78,3 +78,9 @@ variable "enable_deletion_protection" {
   description = "Enable deletion protection for databases and content of s3 buckets."
   default     = true
 }
+
+variable "goofys_user_agent_sdk_and_go_version" {
+  type        = map(string)
+  description = "Goofys user agent sdk and go version."
+}
+
