@@ -118,7 +118,7 @@ ivsInstances = {
     },
     "rawDataBucketName": "demo-ivs-rawdata"
   }
-}
+}1.32
 
 # The kubernetes version of the EKS cluster.
 kubernetesVersion = "1.30"
