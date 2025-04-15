@@ -57,3 +57,15 @@ resource "aws_ec2_tag" "cluster_primary_security_group" {
   key         = each.key
   value       = each.value
 }
+
+resource "kubernetes_storage_class_v1" "ebs" {
+  metadata {
+    name = "gp3"
+  }
+  storage_provisioner = "ebs.csi.aws.com"
+  volume_binding_mode = "WaitForFirstConsumer"
+  parameters = {
+    type   = "gp3"
+    fsType = "ext4"
+  }
+}
