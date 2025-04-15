@@ -26,10 +26,14 @@ locals {
   patchgroupid                              = "${var.infrastructurename}-patch-group"
   s3_instance_buckets                       = flatten([for name, instance in module.simphera_instance : instance.s3_buckets])
   #license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
-  s3_buckets      = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket]) #, local.license_server_bucket)
-  private_subnets = var.private_subnet_ids                                                # local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
-  public_subnets  = var.public_subnet_ids                                                 # local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
-
+  s3_buckets                  = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket]) #, local.license_server_bucket)
+  private_subnets             = var.private_subnet_ids                                                # local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
+  public_subnets              = var.public_subnet_ids                                                 # local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
+  create_simphera_resources   = length(var.simpheraInstances) > 0 ? true : false
+  create_ivs_resources        = length(var.ivsInstances) > 0 ? true : false
+  create_efs                  = local.create_simphera_resources ? 1 : 0
+  storage_subnets             = local.create_efs > 0 ? { for index, zone in local.private_subnets : "zone${index}" => local.private_subnets[index] } : {}
+  gpu_driver_versions_escaped = { for driver in var.gpu_operator_config.driver_versions : driver => replace(driver, ".", "-") if var.gpu_operator_config.enable }
 
   default_node_pools = {
     "default" = {
@@ -63,8 +67,9 @@ locals {
     }
   }
   gpu_node_pool = {
-    "gpuexecnodes" = {
-      node_group_name   = "gpuexecnodes"
+    for driver_version, driver_version_escaped in local.gpu_driver_versions_escaped :
+    "gpuexecnodes-${driver_version_escaped}" => {
+      node_group_name   = "gpuexecnodes-${driver_version_escaped}"
       instance_types    = var.gpuNodeSize
       subnet_ids        = local.private_subnets
       max_size          = var.gpuNodeCountMax
@@ -73,7 +78,8 @@ locals {
       block_device_name = "/dev/sda1"
       volume_size       = var.gpuNodeDiskSize
       k8s_labels = {
-        "purpose" = "gpu"
+        "purpose"    = "gpu",
+        "gpu-driver" = driver_version
       }
       k8s_taints = [
         {
@@ -95,15 +101,10 @@ locals {
       block_device_name = "/dev/sda1"
       volume_size       = var.ivsGpuNodeDiskSize
       k8s_labels = {
-        "product" = "ivs",
-        "purpose" = "gpu"
+        "product"    = "ivs",
+        "gpu-driver" = var.ivsGpuDriverVersion
       }
       k8s_taints = [
-        {
-          key      = "purpose",
-          value    = "gpu",
-          "effect" = "NO_SCHEDULE"
-        },
         {
           key      = "nvidia.com/gpu",
           value    = "",

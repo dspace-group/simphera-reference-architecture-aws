@@ -12,7 +12,9 @@
     "enable": false,
     "exist": false
   },
-  "enable_ivs": false,
+  "efs_csi_config": {
+    "enable": true
+  },
   "enable_patching": false,
   "gpuNodeCountMax": 12,
   "gpuNodeCountMin": 0,
@@ -29,6 +31,7 @@
     "enable": false
   },
   "install_schedule": "cron(0 3 * * ? *)",
+  "ivsGpuDriverVersion": "550.90.07",
   "ivsGpuNodeCountMax": 2,
   "ivsGpuNodeCountMin": 0,
   "ivsGpuNodeDiskSize": 100,
@@ -39,10 +42,14 @@
   "ivsInstances": {
     "production": {
       "dataBucketName": "demo-ivs",
+      "k8s_namespace": "ivs",
+      "opensearch": {
+        "enable": false
+      },
       "rawDataBucketName": "demo-ivs-rawdata"
     }
   },
-  "kubernetesVersion": "1.30",
+  "kubernetesVersion": "1.32",
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,

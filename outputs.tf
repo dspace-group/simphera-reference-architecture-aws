@@ -4,8 +4,11 @@ output "account_id" {
 }
 
 output "backup_vaults" {
-  description = "Backups vaults from all SIMPHERA instances."
-  value       = flatten([for name, instance in module.simphera_instance : instance.backup_vaults])
+  description = "Backups vaults from all SIMPHERA and IVS instances."
+  value = flatten([
+    flatten([for name, instance in module.simphera_instance : instance.backup_vaults]) #,
+    #flatten([for name, instance in module.ivs_instance : instance.backup_vaults])
+  ])
 }
 
 output "database_identifiers" {

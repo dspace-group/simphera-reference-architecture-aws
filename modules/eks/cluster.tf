@@ -40,6 +40,7 @@ resource "aws_eks_cluster" "eks" {
   lifecycle {
     ignore_changes = [
       bootstrap_self_managed_addons,
+      access_config[0].bootstrap_cluster_creator_admin_permissions
     ]
   }
 

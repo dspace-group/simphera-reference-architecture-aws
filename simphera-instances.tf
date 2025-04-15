@@ -26,4 +26,6 @@ module "simphera_instance" {
   kms_key_cloudwatch           = aws_kms_key.kms_key_cloudwatch_log_group.arn
   log_bucket                   = aws_s3_bucket.bucket_logs.id
   private_subnets              = local.private_subnets
+
+  depends_on = [module.eks, kubernetes_storage_class_v1.efs]
 }
