@@ -26,7 +26,8 @@ locals {
   patchgroupid                              = "${var.infrastructurename}-patch-group"
   s3_instance_buckets                       = flatten([for name, instance in module.simphera_instance : instance.s3_buckets])
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
-  s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
+  ivs_buckets                               = flatten([for name, instance in var.ivsInstances : [instance.dataBucketName, instance.rawDataBucketName]])
+  s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket, local.ivs_buckets)
   private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
   create_simphera_resources                 = length(var.simpheraInstances) > 0 ? true : false

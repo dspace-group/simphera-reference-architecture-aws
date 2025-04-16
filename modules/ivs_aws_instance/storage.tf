@@ -80,7 +80,7 @@ EOF
 }
 
 resource "aws_iam_role" "s3_access" {
-  name = "${local.s3_access_service_account}-role"
+  name = "${local.ivs_buckets_service_account}-role"
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -92,7 +92,7 @@ resource "aws_iam_role" "s3_access" {
         "Action" : "sts:AssumeRoleWithWebIdentity",
         "Condition" : {
           "StringEquals" : {
-            "${var.eks_oidc_issuer}:sub" : "system:serviceaccount:${var.k8s_namespace}:${local.s3_access_service_account}"
+            "${var.eks_oidc_issuer}:sub" : "system:serviceaccount:${var.k8s_namespace}:${local.ivs_buckets_service_account}"
           }
         }
       }
@@ -104,7 +104,7 @@ resource "aws_iam_role" "s3_access" {
 
 resource "aws_iam_role_policy" "s3_access" {
   role   = aws_iam_role.s3_access.id
-  name   = "${local.s3_access_service_account}-access-policy"
+  name   = "${local.ivs_buckets_service_account}-access-policy"
   policy = <<EOF
     {
         "Version": "2012-10-17",
@@ -157,7 +157,7 @@ resource "aws_iam_role_policy" "s3_access" {
 
 resource "kubernetes_service_account" "s3_access" {
   metadata {
-    name      = local.s3_access_service_account
+    name      = local.ivs_buckets_service_account
     namespace = var.k8s_namespace
     annotations = {
       "eks.amazonaws.com/role-arn" = aws_iam_role.s3_access.arn
