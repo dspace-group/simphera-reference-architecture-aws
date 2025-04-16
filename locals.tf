@@ -136,9 +136,9 @@ locals {
   node_pools = merge(local.default_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
   ivs_node_groups_roles = merge(
     {
-      default      = module.eks.node_groups[0]["default"].nodegroup_role_id
-      execnodes    = module.eks.node_groups[0]["execnodes"].nodegroup_role_id
-      winexecnodes = module.eks.node_groups[0]["winexecnodes"].nodegroup_role_id
+      default   = module.eks.node_groups[0]["default"].nodegroup_role_id
+      execnodes = module.eks.node_groups[0]["execnodes"].nodegroup_role_id
+      # winexecnodes = module.eks.node_groups[0]["winexecnodes"].nodegroup_role_id
     },
     var.ivsGpuNodePool ? { gpuivsnodes = module.eks.node_groups[0]["gpuivsnodes"].nodegroup_role_id } : {}
   )

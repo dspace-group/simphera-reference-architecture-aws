@@ -73,6 +73,7 @@ variable "backup_schedule" {
   description = "Cron string that schedules backup occurance"
 }
 
+
 variable "enable_deletion_protection" {
   type        = bool
   description = "Enable deletion protection for databases and content of s3 buckets."
@@ -82,5 +83,16 @@ variable "enable_deletion_protection" {
 variable "goofys_user_agent_sdk_and_go_version" {
   type        = map(string)
   description = "Goofys user agent sdk and go version."
+}
+
+variable "eks_oidc_provider_arn" {
+  type        = string
+  description = ""
+}
+
+
+variable "eks_oidc_issuer" {
+  type        = string
+  description = ""
 }
 
