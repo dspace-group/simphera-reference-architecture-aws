@@ -23,4 +23,6 @@ module "ivs_instance" {
   goofys_user_agent_sdk_and_go_version = each.value.goofys_user_agent_sdk_and_go_version
   eks_oidc_issuer                      = replace(module.eks.eks_oidc_issuer_url, "https://", "")
   eks_oidc_provider_arn                = module.eks.eks_oidc_provider_arn
+
+  depends_on = [module.k8s_eks_addons]
 }

@@ -478,3 +478,20 @@ YAML
     enable = false
   }
 }
+
+variable "windows_execution_node" {
+  type = object({
+    enable         = bool
+    node_size      = list(string)
+    disk_size      = number
+    node_count_min = number
+    node_count_max = number
+  })
+  default = {
+    enable         = false
+    node_size      = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
+    disk_size      = 200
+    node_count_min = 0
+    node_count_max = 1
+  }
+}
