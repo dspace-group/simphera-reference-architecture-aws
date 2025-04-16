@@ -5,6 +5,16 @@ variable "eks_cluster_id" {
   type = string
 }
 
+variable "eks_oidc_provider_arn" {
+  type        = string
+  description = "The ARN of the OIDC Provider"
+}
+
+variable "eks_oidc_issuer" {
+  type        = string
+  description = "The URL on the EKS cluster OIDC Issuer"
+}
+
 variable "instancename" {
   type = string
 }
@@ -84,15 +94,3 @@ variable "goofys_user_agent_sdk_and_go_version" {
   type        = map(string)
   description = "Goofys user agent sdk and go version."
 }
-
-variable "eks_oidc_provider_arn" {
-  type        = string
-  description = ""
-}
-
-
-variable "eks_oidc_issuer" {
-  type        = string
-  description = ""
-}
-

@@ -64,7 +64,7 @@ locals {
       ]
     }
   }
-  windows_node_pools = {
+  ivs_windows_node_pool = {
     "winexecnodes" = {
       node_group_name   = "winexecnodes"
       instance_types    = var.windows_execution_node.node_size
@@ -137,7 +137,7 @@ locals {
     local.default_node_pools,
     var.gpuNodePool ? local.gpu_node_pool : {},
     var.ivsGpuNodePool ? local.ivsgpu_node_pool : {},
-    var.windows_execution_node.enable ? local.windows_node_pools : {}
+    var.windows_execution_node.enable ? local.ivs_windows_node_pool : {}
   )
   ivs_node_groups_roles = merge(
     {
