@@ -117,5 +117,20 @@
     "10.1.12.0/22",
     "10.1.16.0/22",
     "10.1.20.0/22"
-  ]
+  ],
+  "windows_execution_node": {
+    "disk_size": 200,
+    "enable": false,
+    "node_count_max": 1,
+    "node_count_min": 0,
+    "node_size": [
+      "m6a.4xlarge",
+      "m5a.4xlarge",
+      "m5.4xlarge",
+      "m6i.4xlarge",
+      "m4.4xlarge",
+      "m7i.4xlarge",
+      "m7a.4xlarge"
+    ]
+  }
 }
