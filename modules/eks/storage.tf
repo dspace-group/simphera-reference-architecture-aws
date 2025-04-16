@@ -8,4 +8,5 @@ resource "kubernetes_storage_class_v1" "gp3" {
     type   = "gp3"
     fsType = "ext4"
   }
+  depends_on = [aws_eks_cluster.eks]
 }
