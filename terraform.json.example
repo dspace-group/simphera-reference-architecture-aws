@@ -121,7 +121,7 @@
   "windows_execution_node": {
     "disk_size": 200,
     "enable": false,
-    "node_count_max": 1,
+    "node_count_max": 2,
     "node_count_min": 0,
     "node_size": [
       "m6a.4xlarge",
