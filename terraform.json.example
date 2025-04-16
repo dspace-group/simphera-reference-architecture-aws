@@ -49,7 +49,7 @@
       "rawDataBucketName": "demo-ivs-rawdata"
     }
   },
-  "kubernetesVersion": "1.30",
+  "kubernetesVersion": "1.32",
   "licenseServer": false,
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
