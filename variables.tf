@@ -487,6 +487,7 @@ variable "windows_execution_node" {
     node_count_min = number
     node_count_max = number
   })
+  description = "Configuration for Windows node group. 'node_size' stands for the machine size of the nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. 'disk_size' stands for the disk size in GiB of the nodes for the job execution. 'node_count_min' stands for the minimum number of the nodes for the job execution. 'node_count_max' stand for the maximum number of the nodes for the job execution"
   default = {
     enable         = false
     node_size      = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
