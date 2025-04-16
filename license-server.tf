@@ -182,6 +182,22 @@ module "security_group_license_server" {
       description              = "Inbound TCP on port 22350 from kubernetes nodes security group"
       source_security_group_id = module.eks.cluster_primary_security_group_id
     },
+    {
+      type                     = "ingress"
+      from_port                = 5053
+      to_port                  = 5053
+      protocol                 = "tcp"
+      description              = "Allow ingoing RTMaps license request (rlm)"
+      source_security_group_id = module.eks.cluster_primary_security_group_id
+    },
+    {
+      type                     = "ingress"
+      from_port                = 60403
+      to_port                  = 60403
+      protocol                 = "tcp"
+      description              = "Allow ingoing RTMaps license request (IVS intempora)"
+      source_security_group_id = module.eks.cluster_primary_security_group_id
+    },
   ]
   egress_with_cidr_blocks = [
     {
