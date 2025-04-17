@@ -26,7 +26,8 @@ locals {
   patchgroupid                              = "${var.infrastructurename}-patch-group"
   s3_instance_buckets                       = flatten([for name, instance in module.simphera_instance : instance.s3_buckets])
   license_server_bucket                     = var.licenseServer ? [aws_s3_bucket.license_server_bucket[0].bucket] : []
-  s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket)
+  ivs_buckets                               = flatten([for name, instance in var.ivsInstances : [instance.dataBucketName, instance.rawDataBucketName]])
+  s3_buckets                                = concat(local.s3_instance_buckets, [aws_s3_bucket.bucket_logs.bucket], local.license_server_bucket, local.ivs_buckets)
   private_subnets                           = local.create_vpc ? module.vpc[0].private_subnets : (local.use_private_subnets_ids ? var.private_subnet_ids : [for s in data.aws_subnet.private_subnet : s.id])
   public_subnets                            = local.create_vpc ? module.vpc[0].public_subnets : (local.use_public_subnet_ids ? var.public_subnet_ids : [for s in data.aws_subnet.public_subnet : s.id])
   create_simphera_resources                 = length(var.simpheraInstances) > 0 ? true : false
@@ -53,6 +54,28 @@ locals {
       volume_size     = var.linuxExecutionNodeDiskSize
       k8s_labels = {
         "purpose" = "execution"
+        "product" = "ivs"
+      }
+      k8s_taints = [
+        {
+          key      = "purpose",
+          value    = "execution",
+          "effect" = "NO_SCHEDULE"
+        }
+      ]
+    }
+  }
+  ivs_windows_node_pool = {
+    "winexecnodes" = {
+      node_group_name   = "winexecnodes"
+      instance_types    = var.windows_execution_node.node_size
+      subnet_ids        = local.private_subnets
+      max_size          = var.windows_execution_node.node_count_max
+      min_size          = var.windows_execution_node.node_count_min
+      block_device_name = "/dev/sda1"
+      volume_size       = var.windows_execution_node.disk_size
+      ami_type          = "WINDOWS_CORE_2022_x86_64"
+      k8s_labels = {
         "product" = "ivs"
       }
       k8s_taints = [
@@ -111,7 +134,12 @@ locals {
       ]
     }
   }
-  node_pools = merge(local.default_node_pools, var.gpuNodePool ? local.gpu_node_pool : {}, var.ivsGpuNodePool ? local.ivsgpu_node_pool : {})
+  node_pools = merge(
+    local.default_node_pools,
+    var.gpuNodePool ? local.gpu_node_pool : {},
+    var.ivsGpuNodePool ? local.ivsgpu_node_pool : {},
+    var.windows_execution_node.enable ? local.ivs_windows_node_pool : {}
+  )
   ivs_node_groups_roles = merge(
     {
       default   = module.eks.node_groups[0]["default"].nodegroup_role_id

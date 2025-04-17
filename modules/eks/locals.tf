@@ -16,10 +16,15 @@ locals {
     for node in var.node_groups : {
       rolearn : "arn:${var.aws_context.partition_id}:iam::${var.aws_context.caller_identity_account_id}:role/${aws_eks_cluster.eks.id}-${node.node_group_name}"
       username : "system:node:{{EC2PrivateDNSName}}"
-      groups : [
-        "system:bootstrappers",
-        "system:nodes"
-      ]
+      groups : concat(
+        ["system:bootstrappers", "system:nodes"],
+        strcontains(node.ami_type, "WINDOWS") ? ["eks:kube-proxy-windows"] : []
+      )
     }
   ]
+  windows_enabled               = anytrue([for node in var.node_groups : strcontains(node.ami_type, "WINDOWS")])
+  windows_vpc_cni_configuration = <<-YAML
+    enableWindowsIpam: "true"
+    enableWindowsPrefixDelegation: "true"
+    YAML
 }

@@ -99,6 +99,7 @@ variable "node_groups" {
     max_size          = number
     min_size          = number
     custom_ami_id     = optional(string, "")
+    ami_type          = optional(string, "AL2_x86_64")
     block_device_name = optional(string, "/dev/xvda")
     volume_size       = number
     k8s_labels        = optional(map(string), {})
