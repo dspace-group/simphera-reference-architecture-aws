@@ -141,7 +141,6 @@ resource "aws_iam_role_policy" "s3_access" {
             },
             {
                 "Action": [
-                    "s3:DeleteObject",
                     "s3:PutObject"
                 ],
                 "Effect": "Allow",
