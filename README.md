@@ -509,7 +509,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | -- | -- |
 | AWS CLI | >=2.10.0 |
 | Helm | >=3.8.0 |
-| Terraform | >=1.3.0 |
+| Terraform | >=1.9.0 |
 | kubectl | >=1.27.0 |
 
 <!-- BEGIN_TF_DOCS -->
@@ -517,7 +517,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.60.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.13.2 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.19.0 |
