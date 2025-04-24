@@ -7,7 +7,7 @@ module "node_group" {
   instance_types            = each.value.instance_types
   max_size                  = each.value.max_size
   min_size                  = each.value.min_size
-  ami_type                  = try(each.value.ami_type, "AL2_x86_64")
+  ami_type                  = each.value.ami_type
   custom_ami_id             = try(each.value.custom_ami_id, null)
   block_device_name         = each.value.block_device_name
   volume_size               = each.value.volume_size

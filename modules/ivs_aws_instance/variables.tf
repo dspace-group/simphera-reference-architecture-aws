@@ -17,6 +17,13 @@ variable "eks_oidc_issuer" {
 
 variable "instancename" {
   type = string
+  validation {
+    condition = (
+      length("${var.eks_cluster_id}-${var.instancename}-${var.k8s_namespace}-sa") <= 253 &&
+      can(regex("^[a-z0-9]([a-z0-9-.]*[a-z0-9])?$", "${var.eks_cluster_id}-${var.instancename}-${var.k8s_namespace}-sa"))
+    )
+    error_message = "Combined string <var.eks_cluster_id>-<var.instancename>-<var.k8s_namespace>-sa must respect DNS Subdomain Names rule https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-subdomain-names"
+  }
 }
 
 variable "tags" {
