@@ -14,3 +14,10 @@ module "eks" {
 
   depends_on = [module.vpc]
 }
+
+resource "kubernetes_namespace" "monitoring_namespace" {
+  metadata {
+    name = var.simphera_monitoring_namespace
+  }
+  depends_on = [module.k8s_eks_addons]
+}
