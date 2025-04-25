@@ -22,7 +22,7 @@ output "database_endpoints" {
 }
 
 output "s3_buckets" {
-  description = "S3 buckets from all SIMPHERA instances."
+  description = "S3 buckets managed by terraform."
   value       = local.s3_buckets
 }
 
@@ -34,4 +34,9 @@ output "eks_cluster_id" {
 output "opensearch_domain_endpoints" {
   description = "List of OpenSearch Domains endpoints of IVS instances"
   value       = [for key, value in module.ivs_instance : value.opensearch_domain_endpoint]
+}
+
+output "ivs_buckets_service_accounts" {
+  description = "List of K8s service account names with access to the IVS buckets"
+  value       = [for name, instance in module.ivs_instance : instance.ivs_buckets_service_account]
 }

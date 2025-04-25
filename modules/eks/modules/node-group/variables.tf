@@ -34,6 +34,11 @@ variable "custom_ami_id" {
   default     = null
 }
 
+variable "ami_type" {
+  description = "The AMI type"
+  type        = string
+}
+
 variable "block_device_name" {
   description = "The name of the device to mount"
   type        = string

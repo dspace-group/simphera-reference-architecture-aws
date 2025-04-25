@@ -509,7 +509,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | -- | -- |
 | AWS CLI | >=2.10.0 |
 | Helm | >=3.8.0 |
-| Terraform | >=1.5.0 |
+| Terraform | >=1.9.0 |
 | kubectl | >=1.27.0 |
 
 <!-- BEGIN_TF_DOCS -->
@@ -517,7 +517,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.5.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | >= 5.60.0 |
 | <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 2.13.2 |
 | <a name="requirement_kubectl"></a> [kubectl](#requirement\_kubectl) | >= 1.19.0 |
@@ -656,6 +656,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="input_vpcId"></a> [vpcId](#input\_vpcId) | The ID of preconfigured VPC. Change from 'null' to use already existing VPC. | `string` | `null` | no |
 | <a name="input_vpcPrivateSubnets"></a> [vpcPrivateSubnets](#input\_vpcPrivateSubnets) | List of CIDRs for the private subnets. | `list(any)` | <pre>[<br>  "10.1.0.0/22",<br>  "10.1.4.0/22",<br>  "10.1.8.0/22"<br>]</pre> | no |
 | <a name="input_vpcPublicSubnets"></a> [vpcPublicSubnets](#input\_vpcPublicSubnets) | List of CIDRs for the public subnets. | `list(any)` | <pre>[<br>  "10.1.12.0/22",<br>  "10.1.16.0/22",<br>  "10.1.20.0/22"<br>]</pre> | no |
+| <a name="input_windows_execution_node"></a> [windows\_execution\_node](#input\_windows\_execution\_node) | Configuration for Windows node group. 'node\_size' stands for the machine size of the nodes for the job execution, user must check the availability of the instance types for the region. The list is ordered by priority where the first instance type gets the highest priority. 'disk\_size' stands for the disk size in GiB of the nodes for the job execution. 'node\_count\_min' stands for the minimum number of the nodes for the job execution. 'node\_count\_max' stand for the maximum number of the nodes for the job execution | <pre>object({<br>    enable         = bool<br>    node_size      = list(string)<br>    disk_size      = number<br>    node_count_min = number<br>    node_count_max = number<br>  })</pre> | <pre>{<br>  "disk_size": 200,<br>  "enable": false,<br>  "node_count_max": 2,<br>  "node_count_min": 0,<br>  "node_size": [<br>    "m6a.4xlarge",<br>    "m5a.4xlarge",<br>    "m5.4xlarge",<br>    "m6i.4xlarge",<br>    "m4.4xlarge",<br>    "m7i.4xlarge",<br>    "m7a.4xlarge"<br>  ]<br>}</pre> | no |
 
 ## Outputs
 
@@ -666,7 +667,8 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | <a name="output_database_endpoints"></a> [database\_endpoints](#output\_database\_endpoints) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_database_identifiers"></a> [database\_identifiers](#output\_database\_identifiers) | Identifiers of the SIMPHERA and Keycloak databases from all SIMPHERA instances. |
 | <a name="output_eks_cluster_id"></a> [eks\_cluster\_id](#output\_eks\_cluster\_id) | Amazon EKS Cluster Name |
+| <a name="output_ivs_buckets_service_accounts"></a> [ivs\_buckets\_service\_accounts](#output\_ivs\_buckets\_service\_accounts) | List of K8s service account names with access to the IVS buckets |
 | <a name="output_opensearch_domain_endpoints"></a> [opensearch\_domain\_endpoints](#output\_opensearch\_domain\_endpoints) | List of OpenSearch Domains endpoints of IVS instances |
 | <a name="output_pullthrough_cache_prefix"></a> [pullthrough\_cache\_prefix](#output\_pullthrough\_cache\_prefix) | n/a |
-| <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | S3 buckets from all SIMPHERA instances. |
+| <a name="output_s3_buckets"></a> [s3\_buckets](#output\_s3\_buckets) | S3 buckets managed by terraform. |
 <!-- END_TF_DOCS -->
