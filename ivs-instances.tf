@@ -2,7 +2,7 @@ module "ivs_instance" {
   source            = "./modules/ivs_aws_instance"
   for_each          = var.ivsInstances
   k8s_namespace     = each.value.k8s_namespace
-  eks_cluster_id    = module.eks.eks_cluster_id
+  eks_cluster_id    = var.infrastructurename
   instancename      = each.key
   tags              = var.tags
   dataBucketName    = each.value.dataBucketName
@@ -21,4 +21,6 @@ module "ivs_instance" {
   backup_schedule                      = each.value.backup_schedule
   enable_deletion_protection           = each.value.enable_deletion_protection
   goofys_user_agent_sdk_and_go_version = each.value.goofys_user_agent_sdk_and_go_version
+  eks_oidc_issuer                      = replace(module.eks.eks_oidc_issuer_url, "https://", "")
+  eks_oidc_provider_arn                = module.eks.eks_oidc_provider_arn
 }

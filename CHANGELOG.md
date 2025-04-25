@@ -3,6 +3,7 @@
 - Implemented deployment of an OpenSearch Domain for usage in IVS
 - Update default version for helm chart of `ingress-nginx` to `4.12.1` (controller version `1.12.1`)
 - Increase required terraform version to 1.9.0
+- Added optional creation of Windows based node group `winexecnode`
 
 ## v0.4.0
 
