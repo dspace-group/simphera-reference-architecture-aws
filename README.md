@@ -1,60 +1,70 @@
-# SIMPHERA Reference Architecture for AWS
+# Cloud Products Reference Architecture for AWS
 
-This repository contains the reference architecture of the infrastructure needed to deploy dSPACE SIMPHERA to AWS. It does not contain the helm chart needed to deploy SIMPHERA itself, but only the base infrastructure such as Kubernetes, PostgreSQL, S3 buckets, etc.
+dSPACE has multiple products deployable to the cloud. These products require same base infrastructure resources such as VPC, Kubernetes, S3 buckets, etc. Also, for specific products, specific cloud infrastructure resources might be needed. This repository is used to fullfill those requirements for AWS cloud provider using terraform.
 
-You can use the reference architecture as a starting point for your SIMPHERA installation if you plan to deploy SIMPHERA to AWS. You can use the reference architecture as it is and only have to configure few individual values. If you have special requirements feel free to adapt the architecture to your needs. For example, the reference architecture does not contain any kind of VPN connection to a private, on-premise network because this is highly user specific. But the reference architecture is configured in such a way that the ingress points are available in the public internet.
+Helm charts needed for deployment of dSPACE products are not contained in this repository.
 
-Using the reference architecture you can deploy a single or even multiple instances of SIMPHERA, e.g. one for _production_ and one for _testing_.
+You can use the reference architecture as a starting point for your SIMPHERA/IVS installation if you plan to deploy SIMPHERA/IVS to AWS. You can use the reference architecture as it is and only have to configure few individual values. If you have special requirements feel free to adapt the architecture to your needs. For example, the reference architecture does not contain any kind of VPN connection to a private, on-premise network because this is highly user specific. But the reference architecture is configured in such a way that the ingress points are available in the public internet.
+
+Using the reference architecture you can deploy a single or even multiple instances of SIMPHERA/IVS, e.g. one for _production_ and one for _testing_.
 
 ## Architecture
 
 The following figure shows the main resources of the architecture:
 ![SIMPHERA Reference Architecture for AWS](AWSReferenceArchitecture.png)
-The main building brick of the SIMPHERA reference architecture for AWS is the Amazon EKS cluster.
-The cluster contains two auto scaling groups:
-The first group is reserved for SIMPHERA services and other auxiliary third-party services like Keycloak, nginx, etc.
-The second group is for the executors that perform the testing of the system under test.
+The main building brick of the Cloud product reference architecture for AWS is the Amazon EKS cluster.
+The cluster contains five or more auto scaling groups: 
+The first group is reserved for SIMPHERA/IVS services and other auxiliary third-party services like Keycloak, nginx, etc. (default labels: `kubernetes.io/os: linux`; default taints: none)
+The second group is for the executors that perform the testing of the system under test or for jobs scheduled by IVS. (default labels: `kubernetes.io/os: linux`, `purpose: execution`, `product: ivs`; default taints: `purpose: execution; effect: NoSchedule`)
+The third group is used for the execution of the tests or simlations that require GPU. It is possible to have different GPU group of this kind for each required NVIDIA driver. (default labels: `kubernetes.io/os: linux`, `purpose: gpu`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `purpose: gpu; effect: NoSchedule`)
+The fourth group is used by IVS jobs that require GPU for the execution. (default labels: `kubernetes.io/os: linux`, `product: ivs`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `nvidia.com/gpu; effect: NoSchedule`)
+The fifth group is used by IVS jobs that require Windows operating system for the execution. (default labels: `kubernetes.io/os: windows`, `product: ivs`; default taints: `purpose:execution; effect: NoSchedule`)
 The data for SIMPHERA projects is stored in a Amazon RDS PostgreSQL instance.
 Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance.
+If your IVS installation has Similarity Search feature enabled, embedding tags can be stored in Amazon OpenSerarch Service domain.
 Executors need licenses to execute tests and simulations.
+IVS jobs need licenses to execute imports/processing/tagging of the IVS recordings.
 They obtain the licenses from a license server.
 The license server is deployed on an EC2 instance.
-Project files and test results are stored in an non-public Amazon S3 bucket.
+SIMPHERA project files and test results are stored in an non-public Amazon S3 bucket.
+IVS recordings, test results and some static web files are stored in non public Amazon S3 buckets, referenced as `dataBucketName` and `rawDataBucketName`.
 For the initial setup of the license server, several files need to be exchanged between an administration PC and the license server.
 These files are exchanged via an non-public S3 bucket that can be read and written from the administration PC and the license server.
-A detailed list of the AWS resources that are mandatory/optional for the operation of SIMPHERA can be found in the [AWSCloudSpec](./AWSCloudSpec.md).
+A detailed list of the AWS resources that are mandatory/optional for the operation of dSPACE Cloud products can be found in the [AWSCloudSpec](./AWSCloudSpec.md).
 
 ## Billable Resources and Services
 
 Charges may apply for the following AWS resources and services:
 
-| Service | Description | Mandatory? |
-| ------- | ----------- | ---------- |
-| Amazon Elastic Kubernetes Service | A Kubernetes cluster is required to run SIMPHERA. | Yes |
-| Amazon Virtual Private Cloud | Virtual network for SIMPHERA. | Yes |
-| Elastic Load Balancing | SIMPHERA uses a network load balancer. | Yes |
-| Amazon EC2 Auto Scaling | SIMPHERA automatically scales compute nodes if the capacity is exhausted. | Yes |
-| Amazon Relational Database | Project and authorization data is stored in Amazon RDS for PostgreSQL instances. | Yes |
-| Amazon Simple Storage Service | Binary artifacts are stored in an S3 bucket. | Yes |
-| Amazon Elastic File System | Binary artifacts are stored temporarily in EFS. | Yes |
-| AWS Key Management Service (AWS KMS) | Encryption for Kubernetes secrets is enabled by default. | |
-| Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. For additional information, please contact our support team. ||
-| Amazon CloudWatch | Metrics and container logs to CloudWatch. It is recommended to deploy the dSPACE monitoring stack in Kubernetes.||
+| Service | Description | Product | Mandatory? |
+| ------- | ----------- | ------- | ---------- |
+| Amazon Elastic Kubernetes Service | A Kubernetes cluster required to run dSPACE products. | SIMPHERA/IVS | Yes |
+| Amazon Virtual Private Cloud | Virtual network for dSPACE products. | SIMPHERA/IVS | Yes |
+| Elastic Load Balancing | A network load balancer used to access deployed services. | SIMPHERA/IVS | Yes |
+| Amazon EC2 Auto Scaling | Automatically scales compute nodes if the capacity is exhausted. | SIMPHERA/IVS | Yes |
+| Amazon Relational Database | Project and authorization data is stored in Amazon RDS for PostgreSQL instances. | SIMPHERA | Yes |
+| Amazon Simple Storage Service | Binary artifacts and static data are stored in an S3 bucket. | SIMPHERA/IVS | Yes |
+| Amazon Elastic File System | Binary artifacts are stored temporarily in EFS. | SIMPHERA | Yes |
+| AWS Key Management Service (AWS KMS) | Encryption for Kubernetes secrets is enabled by default. | SIMPHERA/IVS ||
+| Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. For additional information, please contact our support team. | SIMPHERA/IVS ||
+| Amazon CloudWatch | Metrics and container logs to CloudWatch. It is recommended to deploy the dSPACE monitoring stack in Kubernetes.| SIMPHERA/IVS ||
+| Amazon OpenSearch Service | Database service for storing embedding tags, used by IVS embedding service and Similarity search feature | IVS ||
+| Amazon Elastic Block Store | Block storage volumes used for EC2 volumes or as persistent volumes in Kubernetes cluster | SIMPHERA/IVS ||
 
 ## Usage Instructions
 
-To create the AWS resources that are required for operating SIMPHERA, you need to accomplish the following tasks:
+To create the AWS resources that are required for operating dSPACE cloud product, you need to accomplish the following tasks:
 
 1. install Terraform on your local administration PC
-1. register an AWS account where the resources needed for SIMPHERA are created
-1. create an IAM user with least privileges required to create the resources for SIMPHERA
+1. register an AWS account where the resources needed for dSPACE cloud products are created
+1. create an IAM user with least privileges required to create the resources for dSPACE cloud products
 1. create security credentials for that IAM user
 1. request service quota increase for gpu instances if needed
 1. create non-public S3 bucket for Terraform state
 1. create IAM policy that gives the IAM user access to the S3 bucket
 1. clone this repository onto your local administration PC
 1. create Secrets manager secrets
-1. adjust Terraform variables
+1. adjust Terraform variables to match your usage (SIMPHERA/IVS/all)
 1. apply Terraform configuration
 1. connect to the Kubernetes cluster
 
@@ -68,7 +78,7 @@ Terraform has the concept of a _state_. On the one hand side there are the resou
 
 ### Request service quota for gpu computing instances
 
-If you want to run [AURELION](https://www.dspace.com/en/pub/home/products/sw/experimentandvisualization/aurelion_sensor-realistic_sim.cfm) with your SIMPHERA solution, you need to add gpu instances to your cluster.
+If you want to run [AURELION](https://www.dSPACE.com/en/pub/home/products/sw/experimentandvisualization/aurelion_sensor-realistic_sim.cfm) with your SIMPHERA solution, you need to add gpu instances to your cluster.
 
 In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the SIMPHERA Reference Architecture for AWS uses g5.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every g5.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
 
@@ -105,9 +115,9 @@ Verify connectivity and your access credentials by executing following command:
 aws sts get-caller-identity
 
 {
-    "UserId": "REWAYDCFMNYCPKCWRZEHT:JohnDoe@dspace.com",
+    "UserId": "REWAYDCFMNYCPKCWRZEHT:JohnDoe@dSPACE.com",
     "Account": "592245445799",
-    "Arn": "arn:aws:sts::592245445799:assumed-role/AWSReservedSSO_AdministratorAccess_vmcbaym7ueknr9on/JohnDoe@dspace.com"
+    "Arn": "arn:aws:sts::592245445799:assumed-role/AWSReservedSSO_AdministratorAccess_vmcbaym7ueknr9on/JohnDoe@dSPACE.com"
 }
 ```
 
@@ -268,6 +278,8 @@ It is recommended to use AWS `admin` account, or ask your AWS administrator to a
 Resources that contain data, i.e. the databases, S3 storage, and the recovery points in the backup vault are protected against unintentional deletion.
 :warning: **If you continue with the procedure described in this section, your data will be irretrievably deleted.**
 
+#### Backup vaults
+
 Before the backup vault can be deleted, all the continuous recovery points for S3 storage and the databases need to be deleted, for example by using the following Powershell snippet:
 
 ```powershell
@@ -290,6 +302,8 @@ foreach ($vault in $vaults){
 }
 ```
 
+#### RDS databases
+
 Before the databases can be deleted, you need to remove their delete protection:
 
 ```powershell
@@ -300,6 +314,8 @@ foreach ($db in $databases){
   aws rds delete-db-instance --profile $profile --db-instance-identifier $db --skip-final-snapshot
 }
 ```
+
+#### S3 buckets
 
 To delete the S3 buckets that contains both versioned and non-versioned objects, the buckets must first be emptied. The following PowerShell script can be used to erase all objects within the buckets and then delete the buckets.
 
@@ -340,7 +356,7 @@ You can update your _kubeconfig_ using the [aws cli update-kubeconfig command](h
 aws eks --region <region> update-kubeconfig --name <cluster_name> --kubeconfig <filename>
 ```
 
-## Backup and Restore
+## Backup and Restore SIMPHERA
 
 SIMPHERA stores data in the PostgreSQL database and in S3 buckets (MinIO) that needs to be backed up.
 AWS supports continuous backups for Amazon RDS for PostgreSQL and S3 that allows point-in-time recovery.
@@ -463,7 +479,7 @@ Then just run aforementioned script in powershell console, example:
 
 ### Restore data/raw-data s3 bucket
 
-For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administration manual](https://www.dspace.com/en/pub/home/support/kb/supkbspecial/simphdocs/simphadmin.cfm), section `Protecting MinIO Data Using AWS S3` subsection `Restoring data`.
+For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administration manual](https://www.dSPACE.com/en/pub/home/support/kb/supkbspecial/simphdocs/simphadmin.cfm), section `Protecting MinIO Data Using AWS S3` subsection `Restoring data`.
 
 ### Restore AWS OpenSearch Service indices
 
@@ -503,7 +519,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 - CloudWatch logs
 - Backup Vault
 
-## List of tools with versions needed for Simphera reference architecture deployment
+## List of tools with versions needed for dSPACE cloud products reference architecture deployment
 
 | Tool name | Version |
 | -- | -- |
@@ -551,7 +567,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | [aws_cloudwatch_log_group.flowlogs](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_install_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
 | [aws_cloudwatch_log_group.ssm_scan_log_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudwatch_log_group) | resource |
-| [aws_ecr_pull_through_cache_rule.dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_pull_through_cache_rule) | resource |
+| [aws_ecr_pull_through_cache_rule.dSPACEcloudreleases](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_pull_through_cache_rule) | resource |
 | [aws_efs_file_system.efs_file_system](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_file_system) | resource |
 | [aws_efs_file_system_policy.policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_file_system_policy) | resource |
 | [aws_efs_mount_target.mount_target](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/efs_mount_target) | resource |
@@ -575,7 +591,7 @@ Encryption is enabled at all AWS resources that are created by Terraform:
 | [aws_s3_bucket_policy.license_server_bucket_ssl](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy) | resource |
 | [aws_s3_bucket_public_access_block.buckets_logs_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.bucket_logs_encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
-| [aws_secretsmanager_secret.ecr_pullthroughcache_dspacecloudreleases](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret.ecr_pullthroughcache_dSPACEcloudreleases](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
 | [aws_secretsmanager_secret_version.ecr_credentials](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
 | [aws_ssm_maintenance_window.install](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_maintenance_window) | resource |
 | [aws_ssm_maintenance_window.scan](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ssm_maintenance_window) | resource |
