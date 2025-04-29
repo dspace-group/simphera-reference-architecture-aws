@@ -11,7 +11,7 @@ Using the reference architecture you can deploy a single or even multiple instan
 ## Architecture
 
 The following figure shows the main resources of the architecture:
-![SIMPHERA Reference Architecture for AWS](AWSReferenceArchitecture.png)
+![Cloud Products Reference Architecture for AWS](AWSReferenceArchitecture.png)
 The main building brick of the Cloud product reference architecture for AWS is the Amazon EKS cluster.
 The cluster contains five or more auto scaling groups: 
 The first group is reserved for SIMPHERA/IVS services and other auxiliary third-party services like Keycloak, nginx, etc. (default labels: `kubernetes.io/os: linux`; default taints: none)
@@ -80,7 +80,7 @@ Terraform has the concept of a _state_. On the one hand side there are the resou
 
 If you want to run [AURELION](https://www.dSPACE.com/en/pub/home/products/sw/experimentandvisualization/aurelion_sensor-realistic_sim.cfm) with your SIMPHERA solution, you need to add gpu instances to your cluster.
 
-In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the SIMPHERA Reference Architecture for AWS uses g5.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every g5.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
+In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the Cloud Products Reference Architecture for AWS uses g5.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every g5.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
 
 ### Create Security Credentials <a name="awsprofile"></a>
 
