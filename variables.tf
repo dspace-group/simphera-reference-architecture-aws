@@ -289,6 +289,19 @@ variable "simpheraInstances" {
   }
 }
 
+variable "simphera_monitoring_namespace" {
+  type        = string
+  description = "Name of the K8s namespace used for deploying SIMPHERA monitoring chart"
+  default     = "monitoring"
+  validation {
+    condition = (
+      length(var.simphera_monitoring_namespace) <= 63 &&
+      can(regex("^[a-z0-9]([a-z0-9-]*[a-z0-9])?$", var.simphera_monitoring_namespace))
+    )
+    error_message = "Name of the k8s namespaces must respect RFC 1123 (https://kubernetes.io/docs/concepts/overview/working-with-objects/names/#dns-label-names)"
+  }
+}
+
 variable "ivsInstances" {
   type = map(object({
     k8s_namespace                        = string

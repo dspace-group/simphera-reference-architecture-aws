@@ -105,6 +105,7 @@
       "secretname": "aws-simphera-dev-production"
     }
   },
+  "simphera_monitoring_namespace": "monitoring",
   "tags": {},
   "vpcCidr": "10.1.0.0/18",
   "vpcId": null,

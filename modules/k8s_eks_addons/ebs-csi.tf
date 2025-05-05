@@ -15,7 +15,7 @@ resource "aws_eks_addon" "aws_ebs_csi_driver" {
   addon_name                  = local.aws_ebs_csi_addon_name
   addon_version               = data.aws_eks_addon_version.aws_ebs_csi_driver.version
   service_account_role_arn    = aws_iam_role.ebs_csi_driver_role.arn
-  preserve                    = true
+  preserve                    = false
   resolve_conflicts_on_create = "OVERWRITE"
   resolve_conflicts_on_update = "OVERWRITE"
   tags                        = var.tags
