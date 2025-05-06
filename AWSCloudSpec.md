@@ -2,21 +2,26 @@
 
 ## <a name="Service_Amazon Elastic Compute Cloud"></a> ![Amazon Elastic Compute Cloud](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2.png) Amazon Elastic Compute Cloud
 
+### <a name="ResourceEC2Instance"></a>![EC2 Instance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2Instance.png) EC2 Instance
+| AMI Name | Platform | Description | Mandatory |
+| -------- | -------- | ----------- | --------- |
+| amazon-eks-node | Linux/UNIX | Default node pool instances (auto-scaled) | Yes |
+| amazon-eks-node | Linux/UNIX | Execution node pool instances (auto-scaled). The default instance type for the execution node pool is t3.medium. Running a large number of simulations in parallel may exceed the maximum number of vCPUs limited in the service quota `Running On-Demand All Standard (A, C, D, H, I, M, R, T, Z) instances`. | No |
+| amzn2-ami-hvm-2.0.20210813.1-x86_64-gp2 | Amazon Linux  | dSPACE license server  | No |
+
 ### <a name="Resource_Elastic IP address"></a>![Elastic IP address](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2ElasticIPAddress.png) Elastic IP address
 | Description |
 | ----------- |
 | Elastic IP Address for NAT Gateway |
 
 ### <a name="Resource_Launch template"></a>Launch template
-| Name | Mandatory? |
+| Name | Mandatory |
 | ---- | ---------- |
 | Launch template for default node pool. | Yes |
 | Launch template for execution node pool. | No |
 | Launch template for GPU execution node pool. | No |
 | Launch template for IVS GPU execution node pool. | No |
 | Launch template for IVS WIndows execution node pool. | No |
-
-## <a name="Service_Amazon EC2 Auto Scaling"></a> ![Amazon EC2 Auto Scaling](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Compute/EC2AutoScaling.png) Amazon EC2 Auto Scaling
 
 # <a name="Category_Containers"></a> ![Containers](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Containers/Containers.png) Containers
 
@@ -28,36 +33,36 @@
 | <cluster name> | EKS Kubernetes cluster |
 
 ### <a name="Resource_Add-on"></a>Add-on
-| Name | Description | Mandatory? |
-| ---- | ----------- | ---------- |
-| vpc-cni | tbd | Yes |
-| kube-proxy | tbd | Yes |
-| coredns | tbd | No |
-| aws-ebs-csi-driver | tbd | No |
-| aws-efs-csi-driver | tbd | No |
-| aws-mountpoint-s3-csi-driver | tbd | No |
+| Name | Mandatory |
+| ---- | ---------- |
+| vpc-cni | Yes |
+| kube-proxy | Yes |
+| coredns | No |
+| aws-ebs-csi-driver | No |
+| aws-efs-csi-driver | No |
+| aws-mountpoint-s3-csi-driver | No |
 
 ### <a name="Resource_Node group"></a>Node group
-| Name | Description | Mandatory? |
+| Name | Description | Mandatory |
 | ---- | ----------- | ---------- |
-| <cluster name>-default | tbd | Yes |
-| <cluster name>-execnodes | tbd | No |
-| <cluster name>-gpuexecnodes-<driver version> | tbd | No |
-| <cluster name>-gpuivsnodes | tbd | No |
-| <cluster name>-winexecnodes | tbd | No |
+| <cluster name>-default | Node group for default node pool. | Yes |
+| <cluster name>-execnodes | Node group for execution node pool. | No |
+| <cluster name>-gpuexecnodes-<driver version> | Node group for GPU execution node pool. | No |
+| <cluster name>-gpuivsnodes | Node group for IVS GPU execution node pool. | No |
+| <cluster name>-winexecnodes | Node group for IVS WIndows execution node pool. | No |
 
 # <a name="Category_Database"></a> ![Database](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Database/Database.png) Database
 
 ## <a name="Service_Amazon Relational Database"></a> ![Amazon Relational Database](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Database/RDS.png) Amazon Relational Database
 
 ### <a name="Resource_PostgreSQL instance"></a>![PostgreSQL instance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Database/AuroraPostgreSQLInstance.png) PostgreSQL instance
-| Name | Description | Mandatory? |
+| Name | Description | Mandatory |
 | ---- | ----------- | ---------- |
 | <cluster name>-<environment>-simphera | Store data records of items like projects, test suites, etc. | Yes |
 | <cluster name>-<environment>-keycloak | Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance. | Yes |
 
 ### <a name="Resource_Subnet group"></a>Subnet group
-| Name | Description | Mandatory? |
+| Name | Description | Mandatory |
 | ---- | ----------- | ---------- |
 | <cluster name>-<environment>-vpc | Amazon Relational Database subnet group used for simphera and keycloak database instances | Yes |
 
@@ -66,14 +71,14 @@
 ## <a name="Service_Amazon CloudWatch"></a> ![Amazon CloudWatch](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/ManagementGovernance/CloudWatch.png) Amazon CloudWatch
 
 ### <a name="Resource_Log groups"></a>![Log groups](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/ManagementGovernance/CloudWatchLogs.png) Log groups
-| Name | Description | Mandatory? |
+| Name | Description | Mandatory |
 | ---- | ----------- | ---------- |
 | /aws/eks/<cluster name>/cluster | Node metrics and Kubernetes system logs. | No |
 | /aws/rds/instance/<cluster name>-<environment>-keycloak/postgresql | Keycloak database logs. | No |
 | /aws/rds/instance/<cluster name>-<environment>-simphera/postgresql | Simphera database logs | No |
 | /aws/vpc/<cluster name> | VPC logs | No |
-| /aws/ssm/<cluster name>/scan | tbd | No |
-| /aws/ssm/<cluster name>/install | tbd | No |
+| /aws/ssm/<cluster name>/scan | EC2 scan maintenance logs | No |
+| /aws/ssm/<cluster name>/install | EC2 maintenance installation logs | No |
 
 # <a name="Category_Networking & Content Delivery"></a> ![Networking & Content Delivery](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/NetworkingContentDelivery/NetworkingContentDelivery.png) Networking & Content Delivery
 
@@ -81,7 +86,7 @@
 
 ### VPC Requirements
 
-| Requirement | Description |  Default value | Mandatory? |
+| Requirement | Description |  Default value | Mandatory |
 | ----------- | ----------- | -------------- | ---------- |
 | IPv4 CIDR block | Network size ie. number of available IPs in VPC | 10.1.0.0/18 | yes |
 | Availability zones | How many AZs to spread VPC across | 3 (at least 2 for high availability) | yes |
@@ -93,12 +98,12 @@
 | DNS hostnames | Determines whether the VPC supports assigning public DNS hostnames to instances with public IP addresses. | enable | yes |
 
 ### <a name="Resource_Internet gateway"></a>![Internet gateway](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/NetworkingContentDelivery/VPCInternetGateway.png) Internet gateway
-| Name | Description | Mandatory? |
+| Name | Description | Mandatory |
 | ---- | ----------- | ---------- |
 | <cluster name>-vpc | Internet Gateway for SIMPHERA Virtual Private Network. | Yes |
 
 ### <a name="Resource_NAT gateway"></a>![NAT gateway](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/NetworkingContentDelivery/VPCNATGateway.png) NAT gateway
-| Name | Description | Mandatory? |
+| Name | Description | Mandatory |
 | ---- | ----------- | ---------- |
 | <cluster name>-vpc-eu-central-1a | NAT Gateway for SIMPHERA Virtual Private Network. | Yes |
 
@@ -130,7 +135,7 @@
 
 ### Private subnets requirements
 
-| Requirement | Description |  Default value | Mandatory? |
+| Requirement | Description |  Default value | Mandatory |
 | ----------- | ----------- | -------------- | ---------- |
 | IPv4 CIDR blocks | Network size, ie number of available IPs per private subnet | 10.1.0.0/22 <br /> 10.1.4.0/22 <br /> 10.1.8.0/22 | yes |
 | Tags | Metadata for organizing your AWS resources | "kubernetes.io/cluster/\<cluster name>" = "shared" <br /> "kubernetes.io/role/elb" = "1" <br /> "purpose" = "private" | yes |
@@ -138,7 +143,7 @@
 
 ### Public subnets requirements
 
-| Requirement | Description |  Default value | Mandatory? |
+| Requirement | Description |  Default value | Mandatory |
 | ----------- | ----------- | -------------- | ---------- |
 | IPv4 CIDR blocks | Network size, ie number of available IPs per public subnet | 10.1.12.0/22 <br /> 10.1.16.0/22 <br /> 10.1.20.0/22 | yes |
 | Tags | Metadata for organizing your AWS resources | "kubernetes.io/cluster/\<cluster name>" = "shared" <br /> "kubernetes.io/role/elb" = "1" <br /> "purpose" = "public" | yes |
@@ -146,20 +151,20 @@
 
 ### 'Private' route table requirements
 
-| Requirement | Description |  Default value | Mandatory? |
+| Requirement | Description |  Default value | Mandatory |
 | ----------- | ----------- | -------------- | ---------- |
 | Routes | Minimum routes for network communication to work | 0.0.0.0/0 to \<NAT gateway> <br /> \<vpcCidrBlock> to local | yes |
 | Subnet associations | Apply route table routes to a particular subnet | Explicit, all private subnets | yes |
 
 ### 'Public' route table requirements
 
-| Requirement | Description |  Default value | Mandatory? |
+| Requirement | Description |  Default value | Mandatory |
 | ----------- | ----------- | -------------- | ---------- |
 | Routes | Minimum routes for network communication to work | 0.0.0.0/0 to \<Internet gateway> <br /> \<vpcCidrBlock> to local | yes |
 | Subnet associations | Apply route table routes to a particular subnet | Explicit, all public subnets | yes |
 
 ### <a name="Resource_Virtual Private Cloud"></a>Virtual Private Cloud
-| Name | Description | Mandatory? |
+| Name | Description | Mandatory |
 | ---- | ----------- | ---------- |
 | <cluster name>-vpc | VPC used for deploying resources required by dSPACE cloud products | Yes |
 
@@ -175,12 +180,12 @@
 ## <a name="Service_Amazon Simple Storage Service"></a> ![Amazon Simple Storage Service](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Storage/SimpleStorageService.png) Amazon Simple Storage Service
 
 ### <a name="Resource_Bucket"></a>![Bucket](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Storage/SimpleStorageServiceBucket.png) Bucket
-| Name | Description | [ACL](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl) | Mandatory? |
+| Name | Description | [ACL](https://docs.aws.amazon.com/AmazonS3/latest/userguide/acl-overview.html#canned-acl) | Mandatory |
 | ---- | ----------- | ---------- | ---------- |
 | <cluster name>-<environment> | Stores binary data like zipped files containing simulation models, test results, vehicle models, etc. | private | Yes |
-| <cluster name>-logs | tbd | private | No |
-| <IVS raw data bucket name>-<environment> | tbd | private | No |
-| <IVS data bucket name>-<environment> | tbd | private | No |
+| <cluster name>-logs | Bucket for storing general logs of infrastructure | private | No |
+| <IVS raw data bucket name>-<environment> | IVS recordings | private | No |
+| <IVS data bucket name>-<environment> | IVS execution results and static web files | private | No |
 | <cluster name>-license-server-bucket | This bucket is used for the initial setup of the license server to transfer several license files securely between an administration PC and the license server | private | No |
 
 # <a name="Category_Analytics"></a> ![Analytics](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Analytics/Analytics.png) Analytics
@@ -188,16 +193,16 @@
 ## <a name="Service_Amazon OpenSearch Service"></a> ![Amazon OpenSearch Service](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/Analytics/OpenSearchService.png) Amazon OpenSearch Service
 
 ### <a name="Resource_Domain"></a>Domain
-| Name | Description | Mandatory? |
-| ---- | ----------- | ---------- |
-| <cluster name>-<instance environment> | tbd | No |
+| Name | Mandatory |
+| ---- | ---------- |
+| <cluster name>-<instance environment> | No |
 
 # <a name="Category_Security, Identity, & Compliance"></a> ![Security, Identity, & Compliance](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/SecurityIdentityCompliance.png) Security, Identity, & Compliance
 
 ## <a name="Service_AWS Key Management Service"></a> ![AWS Key Management Service](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/KeyManagementService.png) AWS Key Management Service
 
 ### <a name="Resource_Customer managed keys"></a>Customer managed keys
-| Description | Mandatory? |
+| Description | Mandatory |
 | ----------- | ---------- |
 | EKS cluster secret encryption key | Yes |
 
@@ -228,7 +233,7 @@
 
 ### ![Policies](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/IdentityAccessManagementPermissions.png) Policies
 | Policy name | Description | Managed By |
-| ----------- | ----------- | ---------- | 
+| ----------- | ----------- | ---------- |
 |<a name="<cluster name>-<environment>-s3-policy"></a>[<cluster name>-<environment>-s3-policy](./)|Allows access to S3 bucket.|Customer|
 |<a name="AmazonRDSEnhancedMonitoringRole"></a>[AmazonRDSEnhancedMonitoringRole](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonRDSEnhancedMonitoringRole)|Provides access to Cloudwatch for RDS Enhanced Monitoring|AWS|
 |<a name="AmazonEKS_CNI_Policy"></a>[AmazonEKS_CNI_Policy](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEKS_CNI_Policy)|This policy provides the Amazon VPC CNI Plugin (amazon-vpc-cni-k8s) the permissions it requires to modify the IP address configuration on your EKS worker nodes. This permission set allows the CNI to list, describe, and modify Elastic Network Interfaces on your behalf. More information on the AWS VPC CNI Plugin is available here: https://github.com/aws/amazon-vpc-cni-k8s|AWS|
