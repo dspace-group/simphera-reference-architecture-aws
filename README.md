@@ -288,7 +288,8 @@ It is recommended to use AWS `admin` account, or ask your AWS administrator to a
 ### Destroy Infrastructure
 
 Resources that contain data, i.e. the databases, S3 storage, and the recovery points in the backup vault are protected against unintentional deletion.
-> **[WARNING]** **If you continue with the procedure described in this section, your data will be irretrievably deleted**.
+> [!WARNING]
+> **If you continue with the procedure described in this section, your data will be irretrievably deleted**.
 
 #### Backup vaults
 
