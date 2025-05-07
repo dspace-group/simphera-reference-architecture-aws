@@ -18,6 +18,7 @@ The following figure shows the main resources used for SIMPHERA product:
 
 The following figure shows the main resources used for SIMPHERA product:
 ![IVS Reference Architecture for AWS](AWSIVSReferenceArchitecture.svg)
+
 The main building brick of the Cloud product reference architecture for AWS is the Amazon EKS cluster.
 The cluster contains auto scaling groups:
 
