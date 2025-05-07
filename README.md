@@ -11,14 +11,24 @@ Using the reference architecture you can deploy a single or even multiple instan
 ## Architecture
 
 The following figure shows the main resources of the architecture:
-![Cloud Products Reference Architecture for AWS](AWSReferenceArchitecture.png)
+![Cloud Products Reference Architecture for AWS](AWSReferenceArchitecture.svg)
+
+The following figure shows the main resources used for SIMPHERA product:
+![SIMPHERA Reference Architecture for AWS](AWSSimpheraReferenceArchitecture.svg)
+
+The following figure shows the main resources used for SIMPHERA product:
+![IVS Reference Architecture for AWS](AWSIVSReferenceArchitecture.svg)
 The main building brick of the Cloud product reference architecture for AWS is the Amazon EKS cluster.
 The cluster contains auto scaling groups:
-1. group reserved for SIMPHERA/IVS services and other auxiliary third-party services like Keycloak, nginx, etc. (default labels: `kubernetes.io/os: linux`; default taints: none)
-1. group for the executors that perform the testing of the system under test or for jobs scheduled by IVS. (default labels: `kubernetes.io/os: linux`, `purpose: execution`, `product: ivs`; default taints: `purpose: execution; effect: NoSchedule`)
-1. group used for the execution of the tests or simlations that require GPU. It is possible to have different GPU group of this kind for each required NVIDIA driver. (default labels: `kubernetes.io/os: linux`, `purpose: gpu`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `purpose: gpu; effect: NoSchedule`)
-1. group used by IVS jobs that require GPU for the execution. (default labels: `kubernetes.io/os: linux`, `product: ivs`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `nvidia.com/gpu; effect: NoSchedule`)
-1. group used by IVS jobs that require Windows operating system for the execution. (default labels: `kubernetes.io/os: windows`, `product: ivs`; default taints: `purpose:execution; effect: NoSchedule`)
+
+| Node Group Description | Taints | Labels |
+| ---------------------- | ------ | ------ |
+| group reserved for SIMPHERA/IVS services and other auxiliary third-party services like Keycloak, nginx, etc. |  | <ul><li>`kubernetes.io/os: linux`</li></ul> |
+| group for the executors that perform the testing of the system under test or for jobs scheduled by IVS.| <ul><li>`purpose: execution; effect: NoSchedule`</li></ul> | <ul><li>`kubernetes.io/os: linux`</li><li>`purpose: execution`</li> <li>`product: ivs`</li></ul> |
+| group used for the execution of the tests or simlations that require GPU. It is possible to have different GPU group of this kind for each required NVIDIA driver. | <ul><li>`purpose: gpu; effect: NoSchedule`</li></ul> | <ul><li>`kubernetes.io/os: linux`</li><li>`purpose: gpu`</li><li>`gpu-driver: '__DRIVER_VERSION__'`</li></ul> |
+| group used by IVS jobs that require GPU for the execution. | <ul><li>`nvidia.com/gpu; effect: NoSchedule`</li></ul> | <ul><li>`kubernetes.io/os: linux`</li><li>`product: ivs`</li><li>`gpu-driver: '__DRIVER_VERSION__'`</li></ul> |
+| group used by IVS jobs that require Windows operating system for the execution. | <ul><li>`purpose:execution; effect: NoSchedule`</li></ul> | <ul><li>`kubernetes.io/os: windows`</li><li>`product: ivs`</li></ul> |
+
 The data for SIMPHERA projects is stored in a Amazon RDS PostgreSQL instance.
 Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance.
 If your IVS installation has Similarity Search feature enabled, embedding tags can be stored in Amazon OpenSerarch Service domain.
@@ -235,6 +245,7 @@ Open the Plaintext tab and paste the following JSON object and enter your userna
 For your configuration, please rename the template file `terraform.tfvars.example` to `terraform.tfvars` and open it in a text editor.
 This file contains all variables that are configurable including documentation of the variables. Please adapt the values before you deploy the resources.
 
+For example, adapt name of the secret used for PostgreSQL, related to the SIMPHERA product:
 ```diff
 simpheraInstances = {
   "production" = {
