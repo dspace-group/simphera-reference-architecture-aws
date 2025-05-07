@@ -1,10 +1,10 @@
-# Cloud Products Reference Architecture for AWS
+# dSPACE Cloud Products Reference Architecture for AWS
 
-dSPACE has multiple products deployable to the cloud. These products require same base infrastructure resources such as VPC, Kubernetes, S3 buckets, etc. Also, for specific products, specific cloud infrastructure resources might be needed. This repository is used to fullfill those requirements for AWS cloud provider using terraform.
+dSPACE offers a variety of cloud-deployable products. These products require the same basic infrastructure resources, such as VPC, Kubernetes, and S3 buckets. Additionally, for various products, specific cloud infrastructure resources may be required. This repository is used for deployment of such products to the AWS cloud provider via Terraform.
 
 Helm charts needed for deployment of dSPACE products are not contained in this repository.
 
-You can use the reference architecture as a starting point for your SIMPHERA/IVS installation if you plan to deploy SIMPHERA/IVS to AWS. You can use the reference architecture as it is and only have to configure few individual values. If you have special requirements feel free to adapt the architecture to your needs. For example, the reference architecture does not contain any kind of VPN connection to a private, on-premise network because this is highly user specific. But the reference architecture is configured in such a way that the ingress points are available in the public internet.
+You can use the reference architecture as a starting point for your installation of dSPACE Cloud Products to at AWS. You can use the reference architecture as it is and only have to configure few individual values. If you have special requirements feel free to adapt the architecture to your needs. For example, the reference architecture does not contain any kind of VPN connection to a private, on-premise network because this is highly user specific. But the reference architecture is configured in such a way that the ingress points are available in the public internet.
 
 Using the reference architecture you can deploy a single or even multiple instances of SIMPHERA/IVS, e.g. one for _production_ and one for _testing_.
 
@@ -13,12 +13,12 @@ Using the reference architecture you can deploy a single or even multiple instan
 The following figure shows the main resources of the architecture:
 ![Cloud Products Reference Architecture for AWS](AWSReferenceArchitecture.png)
 The main building brick of the Cloud product reference architecture for AWS is the Amazon EKS cluster.
-The cluster contains five or more auto scaling groups: 
-The first group is reserved for SIMPHERA/IVS services and other auxiliary third-party services like Keycloak, nginx, etc. (default labels: `kubernetes.io/os: linux`; default taints: none)
-The second group is for the executors that perform the testing of the system under test or for jobs scheduled by IVS. (default labels: `kubernetes.io/os: linux`, `purpose: execution`, `product: ivs`; default taints: `purpose: execution; effect: NoSchedule`)
-The third group is used for the execution of the tests or simlations that require GPU. It is possible to have different GPU group of this kind for each required NVIDIA driver. (default labels: `kubernetes.io/os: linux`, `purpose: gpu`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `purpose: gpu; effect: NoSchedule`)
-The fourth group is used by IVS jobs that require GPU for the execution. (default labels: `kubernetes.io/os: linux`, `product: ivs`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `nvidia.com/gpu; effect: NoSchedule`)
-The fifth group is used by IVS jobs that require Windows operating system for the execution. (default labels: `kubernetes.io/os: windows`, `product: ivs`; default taints: `purpose:execution; effect: NoSchedule`)
+The cluster contains auto scaling groups:
+1. group reserved for SIMPHERA/IVS services and other auxiliary third-party services like Keycloak, nginx, etc. (default labels: `kubernetes.io/os: linux`; default taints: none)
+1. group for the executors that perform the testing of the system under test or for jobs scheduled by IVS. (default labels: `kubernetes.io/os: linux`, `purpose: execution`, `product: ivs`; default taints: `purpose: execution; effect: NoSchedule`)
+1. group used for the execution of the tests or simlations that require GPU. It is possible to have different GPU group of this kind for each required NVIDIA driver. (default labels: `kubernetes.io/os: linux`, `purpose: gpu`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `purpose: gpu; effect: NoSchedule`)
+1. group used by IVS jobs that require GPU for the execution. (default labels: `kubernetes.io/os: linux`, `product: ivs`, `gpu-driver: '__DRIVER_VERSION__'`; default taints: `nvidia.com/gpu; effect: NoSchedule`)
+1. group used by IVS jobs that require Windows operating system for the execution. (default labels: `kubernetes.io/os: windows`, `product: ivs`; default taints: `purpose:execution; effect: NoSchedule`)
 The data for SIMPHERA projects is stored in a Amazon RDS PostgreSQL instance.
 Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance.
 If your IVS installation has Similarity Search feature enabled, embedding tags can be stored in Amazon OpenSerarch Service domain.
@@ -45,15 +45,15 @@ Charges may apply for the following AWS resources and services:
 | Amazon Relational Database | Project and authorization data is stored in Amazon RDS for PostgreSQL instances. | SIMPHERA | Yes |
 | Amazon Simple Storage Service | Binary artifacts and static data are stored in an S3 bucket. | SIMPHERA/IVS | Yes |
 | Amazon Elastic File System | Binary artifacts are stored temporarily in EFS. | SIMPHERA | Yes |
-| AWS Key Management Service (AWS KMS) | Encryption for Kubernetes secrets is enabled by default. | SIMPHERA/IVS ||
-| Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. For additional information, please contact our support team. | SIMPHERA/IVS ||
+| AWS Key Management Service (AWS KMS) | Encryption for Kubernetes secrets is enabled by default. | SIMPHERA/IVS | Yes |
+| Amazon Elastic Compute Cloud | Optionally, you can deploy a dSPACE license server on an EC2 instance. Alternatively, you can deploy the server on external infrastructure. For additional information, please contact our support team. | SIMPHERA/IVS | Yes |
 | Amazon CloudWatch | Metrics and container logs to CloudWatch. It is recommended to deploy the dSPACE monitoring stack in Kubernetes.| SIMPHERA/IVS ||
 | Amazon OpenSearch Service | Database service for storing embedding tags, used by IVS embedding service and Similarity search feature | IVS ||
-| Amazon Elastic Block Store | Block storage volumes used for EC2 volumes or as persistent volumes in Kubernetes cluster | SIMPHERA/IVS ||
+| Amazon Elastic Block Store | Block storage volumes used for EC2 volumes or as persistent volumes in Kubernetes cluster | SIMPHERA/IVS | Yes (IVS) |
 
 ## Usage Instructions
 
-To create the AWS resources that are required for operating dSPACE cloud product, you need to accomplish the following tasks:
+To create the AWS resources that are required for operating the dSPACE cloud product from your local administration PC, you need to accomplish the following tasks:
 
 1. install Terraform on your local administration PC
 1. register an AWS account where the resources needed for dSPACE cloud products are created
@@ -78,7 +78,7 @@ Terraform has the concept of a _state_. On the one hand side there are the resou
 
 ### Request service quota for gpu computing instances
 
-If you want to run [AURELION](https://www.dSPACE.com/en/pub/home/products/sw/experimentandvisualization/aurelion_sensor-realistic_sim.cfm) with your SIMPHERA solution, you need to add gpu instances to your cluster.
+If you want to run [AURELION](https://www.dspace.com/en/pub/home/products/sw/experimentandvisualization/aurelion_sensor-realistic_sim.cfm) with your SIMPHERA solution or any other workload that requires gpus such as annotation tasks in IVS, you need to add gpu instances to your cluster.
 
 In case you want to add a gpu node pool to your AWS infrastructure, you might have to increase the [quota](https://docs.aws.amazon.com/servicequotas/latest/userguide/intro.html) for the gpu instance type you have selected. Per default, the Cloud Products Reference Architecture for AWS uses g5.2xlarge instances. The quota [_Running On-Demand P instances_](https://console.aws.amazon.com/servicequotas/home/services/ec2/quotas/L-417A185B) sets the maximum number of vCPUs assigned to the Running On-Demand P instances for a specific AWS region. Every g5.2xlarge instance has 8 vCPUs, which is why the quota has to be at least 8 for the AWS region where you want to deploy the instances.
 
@@ -115,9 +115,9 @@ Verify connectivity and your access credentials by executing following command:
 aws sts get-caller-identity
 
 {
-    "UserId": "REWAYDCFMNYCPKCWRZEHT:JohnDoe@dSPACE.com",
+    "UserId": "REWAYDCFMNYCPKCWRZEHT:JohnDoe@dspace.com",
     "Account": "592245445799",
-    "Arn": "arn:aws:sts::592245445799:assumed-role/AWSReservedSSO_AdministratorAccess_vmcbaym7ueknr9on/JohnDoe@dSPACE.com"
+    "Arn": "arn:aws:sts::592245445799:assumed-role/AWSReservedSSO_AdministratorAccess_vmcbaym7ueknr9on/JohnDoe@dspace.com"
 }
 ```
 
@@ -276,7 +276,7 @@ It is recommended to use AWS `admin` account, or ask your AWS administrator to a
 ### Destroy Infrastructure
 
 Resources that contain data, i.e. the databases, S3 storage, and the recovery points in the backup vault are protected against unintentional deletion.
-:warning: **If you continue with the procedure described in this section, your data will be irretrievably deleted.**
+> **[WARNING]** **If you continue with the procedure described in this section, your data will be irretrievably deleted**.
 
 #### Backup vaults
 
@@ -302,7 +302,7 @@ foreach ($vault in $vaults){
 }
 ```
 
-#### RDS databases
+#### RDS databases (SIMPHERA)
 
 Before the databases can be deleted, you need to remove their delete protection:
 
@@ -356,7 +356,7 @@ You can update your _kubeconfig_ using the [aws cli update-kubeconfig command](h
 aws eks --region <region> update-kubeconfig --name <cluster_name> --kubeconfig <filename>
 ```
 
-## Backup and Restore SIMPHERA
+## Backup and Restore (SIMPHERA)
 
 SIMPHERA stores data in the PostgreSQL database and in S3 buckets (MinIO) that needs to be backed up.
 AWS supports continuous backups for Amazon RDS for PostgreSQL and S3 that allows point-in-time recovery.
@@ -375,7 +375,7 @@ simpheraInstances = {
 }
 ```
 
-### Amazon RDS for PostgreSQL
+### Amazon RDS for PostgreSQL (SIMPHERA)
 
 Create an target RDS instance (backup server) that is a copy of a source RDS instance (production server) of a specific point-in-time.
 The command [`restore-db-instance-to-point-in-time`](https://awscli.amazonaws.com/v2/documentation/api/latest/reference/rds/restore-db-instance-to-point-in-time.html) creates the target database.
@@ -454,7 +454,7 @@ aws backup start-restore-job `
 
 Alternatively, you can [restore the S3 data via the AWS console](https://docs.aws.amazon.com/aws-backup/latest/devguide/restoring-s3.html).
 
-## Backup and Restore IVS
+## Backup and Restore (IVS)
 
 When IVS instance is deployed with backup enabled user can restore data from one of the backups, MongoDB EBS volume, S3 buckets or OpenSearch Indices.
 To enable backups for your IVS instance, make sure you have the flag `backup_service_enable` et in your `.tfvars` file:
@@ -479,7 +479,7 @@ Then just run aforementioned script in powershell console, example:
 
 ### Restore data/raw-data s3 bucket
 
-For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administration manual](https://www.dSPACE.com/en/pub/home/support/kb/supkbspecial/simphdocs/simphadmin.cfm), section `Protecting MinIO Data Using AWS S3` subsection `Restoring data`.
+For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administration manual](https://www.dspace.com/en/pub/home/support/kb/supkbspecial/simphdocs/simphadmin.cfm), section `Protecting MinIO Data Using AWS S3` subsection `Restoring data`.
 
 ### Restore AWS OpenSearch Service indices
 
