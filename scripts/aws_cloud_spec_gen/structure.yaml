@@ -1,0 +1,120 @@
+- name: Compute
+  icon: Compute.png
+  path: Compute
+  services:
+    - name: Amazon Elastic Compute Cloud
+      icon: EC2.png
+      resources:
+        - name: Elastic IP address
+          icon: EC2ElasticIPAddress.png
+          arn: ec2:elastic-ip
+        - name: Launch template
+          arn: ec2:launch-template
+    - name: Amazon EC2 Auto Scaling
+      icon: EC2AutoScaling.png
+      resources: []
+- name: Containers
+  path: Containers
+  icon: Containers.png
+  services:
+    - name: Amazon Elastic Kubernetes Service
+      icon: ElasticKubernetesService.png
+      resources:
+        - name: Cluster
+          arn: eks:cluster
+        - name: Add-on
+          arn: eks:addon
+        - name: Node group
+          arn: eks:nodegroup
+- name: Database
+  path: Database
+  icon: Database.png
+  services:
+    - name: Amazon Relational Database
+      icon: RDS.png
+      resources:
+        - name: PostgreSQL instance
+          icon: AuroraPostgreSQLInstance.png
+          arn: rds:db
+        - name: Subnet group
+          arn: rds:subgrp
+- name: Management & Governance
+  path: ManagementGovernance
+  icon: ManagementGovernance.png
+  services:
+    - name: Amazon CloudWatch
+      icon: CloudWatch.png
+      resources:
+        - name: Log groups
+          icon: CloudWatchLogs.png
+          arn: logs:log-group
+- name: Networking & Content Delivery
+  icon: NetworkingContentDelivery.png
+  path: NetworkingContentDelivery
+  services:
+    - name: Amazon Virtual Private Cloud
+      icon: VirtualPrivateCloud.png
+      resources:
+        - name: VPC Requirements
+          type: requirements
+          source: vpc_requirements.md
+        - name: Internet gateway
+          icon: VPCInternetGateway.png
+          arn: ec2:internet-gateway
+        - name: NAT gateway
+          icon: VPCNATGateway.png
+          arn: ec2:natgateway
+        - name: Route table
+          arn: ec2:route-table
+        - name: Security group
+          arn: ec2:security-group
+        - name: Subnet
+          arn: ec2:subnet
+        - name: Private subnets requirements
+          type: requirements
+          source: private_subnets_requirements.md
+        - name: Public subnets requirements
+          type: requirements
+          source: public_subnets_requirements.md
+        - name: "'Private' route table requirements"
+          type: requirements
+          source: private_route_table_requirements.md
+        - name: "'Public' route table requirements"
+          type: requirements
+          source: public_route_table_requirements.md
+        - name: Virtual Private Cloud
+          arn: ec2:vpc
+    - name: Elastic Load Balancing
+      icon: ElasticLoadBalancing.png
+      resources:
+        - name: Network Load Balancer
+          icon: ElasticLoadBalancingNetworkLoadBalancer.png
+          arn: "elasticloadbalancing:loadbalancer/net"
+- name: Storage
+  path: Storage
+  icon: Storage.png
+  services:
+    - name: Amazon Simple Storage Service
+      icon: SimpleStorageService.png
+      resources:
+        - name: Bucket
+          icon: SimpleStorageServiceBucket.png
+          arn: "s3"
+- name: Analytics
+  path: Analytics
+  icon: Analytics.png
+  services:
+    - name: Amazon OpenSearch Service
+      icon: OpenSearchService.png
+      resources:
+        - name: Domain
+          arn: "es:domain"
+- name: Security, Identity, & Compliance
+  path: SecurityIdentityCompliance
+  icon: SecurityIdentityCompliance.png
+  services:
+    - name: AWS Key Management Service
+      icon: KeyManagementService.png
+      resources:
+        - name: Customer managed keys
+          arn: kms:key
