@@ -183,7 +183,7 @@ Your account ARN (Amazon Resource Number) is in the output of `aws sts get-calle
 You have to provide the name of the certain secrets in your Terraform variables.
 To create required secrets, follow these instructions.
 
-#### PostgreSQL
+#### PostgreSQL (SIMPHERA)
 Username and password for the PostgreSQL databases are stored in AWS Secrets Manager.
 Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
 It is recommended to create individual secrets per SIMPHERA instance (e.g. production and staging instance).
@@ -214,7 +214,7 @@ aws secretsmanager create-secret --name <secret name> --secret-string $postgresq
 On the next page you can define a name for the secret.
 Automatic credentials rotation is currently not supported by SIMPHERA, but you can <a href="#rotating-credentials">rotate secrets manually</a>.
 
-#### OpenSearch
+#### OpenSearch (IVS)
 Master username and master password for the OpenSearch databases are stored in AWS Secrets Manager.
 Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
 It is recommended to create individual secrets per IVS instance (e.g. production and staging instance).
