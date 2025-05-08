@@ -174,8 +174,34 @@ module "security_group_license_server" {
   vpc_id      = local.vpc_id
   tags        = var.tags
   ingress_with_source_security_group_id = concat(
-    local.create_simphera_resources ? local.simphera_license_server_sg_rules : [],
-    local.create_ivs_resources ? local.ivs_license_server_sg_rules : []
+    local.create_simphera_resources ? [
+      {
+        type                     = "ingress"
+        from_port                = 22350
+        to_port                  = 22350
+        protocol                 = "tcp"
+        description              = "Inbound TCP on port 22350 from kubernetes nodes security group"
+        source_security_group_id = module.eks.cluster_primary_security_group_id
+      },
+    ] : [],
+    local.create_ivs_resources ? [
+      {
+        type                     = "ingress"
+        from_port                = 5053
+        to_port                  = 5053
+        protocol                 = "tcp"
+        description              = "Allow ingoing RTMaps license request (rlm)"
+        source_security_group_id = module.eks.cluster_primary_security_group_id
+      },
+      {
+        type                     = "ingress"
+        from_port                = 60403
+        to_port                  = 60403
+        protocol                 = "tcp"
+        description              = "Allow ingoing RTMaps license request (IVS intempora)"
+        source_security_group_id = module.eks.cluster_primary_security_group_id
+      }
+    ] : []
   )
   egress_with_cidr_blocks = [
     {
