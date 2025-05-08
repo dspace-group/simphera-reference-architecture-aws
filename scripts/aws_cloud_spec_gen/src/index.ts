@@ -380,4 +380,4 @@ policies.forEach(arn_ => {
 Array.prototype.push.apply(buffer, buffer_roles)
 Array.prototype.push.apply(buffer, buffer_policies)
 
-fs.writeFileSync(`AWSCloudSpec-${clusterid}-05052025.md`, buffer.join("\n"))
+fs.writeFileSync(`AWSCloudSpec.md`, buffer.join("\n"))
