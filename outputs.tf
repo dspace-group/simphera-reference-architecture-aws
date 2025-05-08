@@ -4,7 +4,7 @@ output "account_id" {
 }
 
 output "backup_vaults" {
-  description = "Backups vaults from all SIMPHERA and IVS instances."
+  description = "Backups vaults from all dSPACE cloud products managed by terraform."
   value = flatten([
     flatten([for name, instance in module.simphera_instance : instance.backup_vaults]),
     flatten([for name, instance in module.ivs_instance : instance.backup_vaults])
