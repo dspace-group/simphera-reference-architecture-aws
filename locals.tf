@@ -147,6 +147,34 @@ locals {
     },
     var.ivsGpuNodePool ? { gpuivsnodes = module.eks.node_groups[0]["gpuivsnodes"].nodegroup_role_id } : {}
   )
+  simphera_license_server_sg_rules = [
+    {
+      type                     = "ingress"
+      from_port                = 22350
+      to_port                  = 22350
+      protocol                 = "tcp"
+      description              = "Inbound TCP on port 22350 from kubernetes nodes security group"
+      source_security_group_id = module.eks.cluster_primary_security_group_id
+    },
+  ]
+  ivs_license_server_sg_rules = [
+    {
+      type                     = "ingress"
+      from_port                = 5053
+      to_port                  = 5053
+      protocol                 = "tcp"
+      description              = "Allow ingoing RTMaps license request (rlm)"
+      source_security_group_id = module.eks.cluster_primary_security_group_id
+    },
+    {
+      type                     = "ingress"
+      from_port                = 60403
+      to_port                  = 60403
+      protocol                 = "tcp"
+      description              = "Allow ingoing RTMaps license request (IVS intempora)"
+      source_security_group_id = module.eks.cluster_primary_security_group_id
+    }
+  ]
   aws_context = {
     caller_identity_account_id = data.aws_caller_identity.current.account_id
     partition_dns_suffix       = data.aws_partition.current.dns_suffix
