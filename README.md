@@ -32,7 +32,7 @@ The cluster contains auto scaling groups:
 
 The data for SIMPHERA projects is stored in a Amazon RDS PostgreSQL instance.
 Keycloak stores SIMPHERA users in a separate Amazon RDS PostgreSQL instance.
-If your IVS installation has Similarity Search feature enabled, embedding tags can be stored in Amazon OpenSerarch Service domain.
+If your IVS installation has Similarity Search feature enabled, embedding tags can be stored in Amazon OpenSearch Service domain.
 Executors need licenses to execute tests and simulations.
 IVS jobs need licenses to execute imports/processing/tagging of the IVS recordings.
 They obtain the licenses from a license server.
