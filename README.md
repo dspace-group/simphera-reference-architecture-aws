@@ -4,7 +4,7 @@ dSPACE offers a variety of cloud-deployable products. These products require the
 
 Helm charts needed for deployment of dSPACE products are not contained in this repository.
 
-You can use the reference architecture as a starting point for your installation of dSPACE Cloud Products to at AWS. You can use the reference architecture as it is and only have to configure few individual values. If you have special requirements feel free to adapt the architecture to your needs. For example, the reference architecture does not contain any kind of VPN connection to a private, on-premise network because this is highly user specific. But the reference architecture is configured in such a way that the ingress points are available in the public internet.
+You can use the reference architecture as a starting point for your installation of dSPACE Cloud Products to AWS. You can use the reference architecture as it is and only have to configure few individual values. If you have special requirements feel free to adapt the architecture to your needs. For example, the reference architecture does not contain any kind of VPN connection to a private, on-premise network because this is highly user specific. But the reference architecture is configured in such a way that the ingress points are available in the public internet.
 
 Using the reference architecture you can deploy a single or even multiple instances of SIMPHERA/IVS, e.g. one for _production_ and one for _testing_.
 
@@ -19,7 +19,7 @@ The following figure shows the main resources used for SIMPHERA product:
 The following figure shows the main resources used for IVS product:
 ![IVS Reference Architecture for AWS](AWSIVSReferenceArchitecture.svg)
 
-The main building brick of the Cloud product reference architecture for AWS is the Amazon EKS cluster.
+The main building block of the dSPACE Cloud Products reference architecture for AWS is the Amazon EKS cluster.
 The cluster contains auto scaling groups:
 
 | Node Group Description | Taints | Labels |
@@ -49,8 +49,8 @@ Charges may apply for the following AWS resources and services:
 
 | Service | Description | Product | Mandatory? |
 | ------- | ----------- | ------- | ---------- |
-| Amazon Elastic Kubernetes Service | A Kubernetes cluster required to run dSPACE products. | SIMPHERA/IVS | Yes |
-| Amazon Virtual Private Cloud | Virtual network for dSPACE products. | SIMPHERA/IVS | Yes |
+| Amazon Elastic Kubernetes Service | A Kubernetes cluster required to run dSPACE Cloud Products. | SIMPHERA/IVS | Yes |
+| Amazon Virtual Private Cloud | Virtual network for dSPACE Cloud Products. | SIMPHERA/IVS | Yes |
 | Elastic Load Balancing | A network load balancer used to access deployed services. | SIMPHERA/IVS | Yes |
 | Amazon EC2 Auto Scaling | Automatically scales compute nodes if the capacity is exhausted. | SIMPHERA/IVS | Yes |
 | Amazon Relational Database | Project and authorization data is stored in Amazon RDS for PostgreSQL instances. | SIMPHERA | Yes |
@@ -64,11 +64,11 @@ Charges may apply for the following AWS resources and services:
 
 ## Usage Instructions
 
-To create the AWS resources that are required for operating the dSPACE cloud product from your local administration PC, you need to accomplish the following tasks:
+To create the AWS resources that are required for operating the dSPACE Cloud Products from your local administration PC, you need to accomplish the following tasks:
 
 1. install Terraform on your local administration PC
-1. register an AWS account where the resources needed for dSPACE cloud products are created
-1. create an IAM user with least privileges required to create the resources for dSPACE cloud products
+1. register an AWS account where the resources needed for dSPACE Cloud Products are created
+1. create an IAM user with least privileges required to create the resources for dSPACE Cloud Products
 1. create security credentials for that IAM user
 1. request service quota increase for gpu instances if needed
 1. create non-public S3 bucket for Terraform state
