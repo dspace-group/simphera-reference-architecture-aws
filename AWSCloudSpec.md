@@ -130,9 +130,9 @@
 ### <a name="Resource_Security group"></a>Security group
 <table>
 <tr><th>Group name</th><th>Group description</th><th>Direction</th><th>Protocol</th><th>Port range</th><th>Rule description</th></tr>
-<tr><td rowspan="1"><_cluster name_>-db-sg</td><td rowspan="1">PostgreSQL security group</td><td>inbound</td><td>tcp</td><td>5432</td><td>PostgreSQL access from within VPC</td></tr>
-<tr><td rowspan="5">eks-cluster-sg-<_cluster name_>-1760095786</td><td rowspan="5">EKS created security group applied to ENI that is attached to EKS Control Plane master nodes, as well as any managed workloads.</td><td>inbound</td><td>tcp</td><td>30494</td><td>kubernetes.io/rule/nlb/client=a032278f64e794c8698e8cc19a5a3bc6</td></tr><tr><td>inbound</td><td>All</td><td>All</td><td></td></tr><tr><td>inbound</td><td>tcp</td><td>31661</td><td>kubernetes.io/rule/nlb/client=a032278f64e794c8698e8cc19a5a3bc6</td></tr><tr><td>inbound</td><td>icmp</td><td>3 - 4</td><td>kubernetes.io/rule/nlb/mtu</td></tr><tr><td>outbound</td><td>All</td><td>All</td><td></td></tr>
-<tr><td rowspan="2"><_cluster name_>-license-server</td><td rowspan="2">License server security group</td><td>inbound</td><td>tcp</td><td>22350</td><td>Inbound TCP on port 22350 from kubernetes nodes security group</td></tr><tr><td>outbound</td><td>All</td><td>All</td><td>allow all outbound traffic</td></tr>
+<tr><td rowspan="1">&lt;<i>cluster name</i>&gt;-db-sg </td><td rowspan="1">PostgreSQL security group</td><td>inbound</td><td>tcp</td><td>5432</td><td>PostgreSQL access from within VPC</td></tr>
+<tr><td rowspan="5">eks-cluster-sg-&lt;<i>cluster name</i>&gt;-1760095786</td><td rowspan="5">EKS created security group applied to ENI that is attached to EKS Control Plane master nodes, as well as any managed workloads.</td><td>inbound</td><td>tcp</td><td>30494</td><td>kubernetes.io/rule/nlb/client=a032278f64e794c8698e8cc19a5a3bc6</td></tr><tr><td>inbound</td><td>All</td><td>All</td><td></td></tr><tr><td>inbound</td><td>tcp</td><td>31661</td><td>kubernetes.io/rule/nlb/client=a032278f64e794c8698e8cc19a5a3bc6</td></tr><tr><td>inbound</td><td>icmp</td><td>3 - 4</td><td>kubernetes.io/rule/nlb/mtu</td></tr><tr><td>outbound</td><td>All</td><td>All</td><td></td></tr>
+<tr><td rowspan="2">&lt;<i>cluster name</i>&gt;-license-server</td><td rowspan="2">License server security group</td><td>inbound</td><td>tcp</td><td>22350</td><td>Inbound TCP on port 22350 from kubernetes nodes security group</td></tr><tr><td>outbound</td><td>All</td><td>All</td><td>allow all outbound traffic</td></tr>
 
 </table>
 
