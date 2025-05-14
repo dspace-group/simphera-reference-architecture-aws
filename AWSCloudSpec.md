@@ -67,7 +67,7 @@
 | ---- | ----------- | ---------- |
 | <_cluster name_>-default | Node group for default node pool. | Yes |
 | <_cluster name_>-execnodes | Node group for execution node pool. | No |
-| <_cluster name_>-gpuexecnodes-<driver version> | Node group for GPU execution node pool. | No |
+| <_cluster name_>-gpuexecnodes-&lt;_driver_version_&gt; | Node group for GPU execution node pool. | No |
 | <_cluster name_>-gpuivsnodes | Node group for IVS GPU execution node pool. | No |
 | <_cluster name_>-winexecnodes | Node group for IVS WIndows execution node pool. | No |
 
@@ -245,39 +245,42 @@
 
 | Role name | Description | Policies  |
 | --------- | ----------- | --------- |
-|<_environment_>-executoragentlinux||<ul><li>[<_cluster name_>-<_environment_>-s3-policy](#<_cluster name_>-<_environment_>-s3-policy)</li></ul>|
-|<_environment_>-rds-enhanced-monitoring||<ul><li>[AmazonRDSEnhancedMonitoringRole](#AmazonRDSEnhancedMonitoringRole)</li></ul>|
-|<_cluster name_>-aws-node-irsa|AWS IAM Role for the Kubernetes service account aws-node.|<ul><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li></ul>|
-|<_cluster name_>-cluster-autoscaler-sa-irsa|AWS IAM Role for the Kubernetes service account cluster-autoscaler-sa.|<ul><li>[<_cluster name_>-cluster-autoscaler-irsa](#<_cluster name_>-cluster-autoscaler-irsa)</li></ul>|
-|<_cluster name_>-cluster-role||<ul><li>[AmazonEKSClusterPolicy](#AmazonEKSClusterPolicy)</li><li>[AmazonEKSVPCResourceController](#AmazonEKSVPCResourceController)</li><li><_cluster name_>-cluster-role</li></ul>|
-|<_cluster name_>-default|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li><li>s3-access-policy</li></ul>|
-|<_cluster name_>-ebs-csi-controller-irsa|AWS IAM Role for the Kubernetes service account ebs-csi-controller-sa.|<ul><li>[AmazonEBSCSIDriverPolicy](#AmazonEBSCSIDriverPolicy)</li></ul>|
-|<_cluster name_>-efs-csi-controller-irsa|AWS IAM Role for the Kubernetes service account efs-csi-controller-sa.|<ul><li>[AmazonEFSCSIDriverPolicy](#AmazonEFSCSIDriverPolicy)</li></ul>|
-|<_cluster name_>-execnodes|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li><li>s3-access-policy</li></ul>|
-|<_cluster name_>-flowlogs-role||<ul><li>[<_cluster name_>-flowlogs-policy](#<_cluster name_>-flowlogs-policy)</li></ul>|
-|<_cluster name_>-gpuexecnodes-<driver version>|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li></ul>|
-|<_cluster name_>-gpuivsnodes|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li><li>s3-access-policy</li></ul>|
-|<_cluster name_>-license-server-role|IAM role used for the license server instance profile.|<ul><li>[<_cluster name_>-license-server-policy](#<_cluster name_>-license-server-policy)</li><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li></ul>|
-|<_cluster name_>-<_instance environment_>-ivs-sa-role||<ul><li><_cluster name_>-<_instance environment_>-ivs-sa-access-policy</li></ul>|
-|<_cluster name_>-s3-csi-driver-irsa|AWS IAM Role for the Kubernetes service account s3-csi-driver-sa.|<ul><li>[Amazons3CSIDriverPolicy](#Amazons3CSIDriverPolicy)</li></ul>|
-|<_cluster name_>-<_environment_>-s3-role|IAM role for the MinIO service account|<ul><li>[<_cluster name_>-<_environment_>-s3-policy](#<_cluster name_>-<_environment_>-s3-policy)</li></ul>|
-|<_cluster name_>-winexecnodes|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li></ul>|
+|&lt;_environment_&gt;-executoragentlinux||<ul><li>[&lt;_cluster_name_&gt;-&lt;_environment_&gt;-s3-policy](#&lt;_cluster_name_&gt;-&lt;_environment_&gt;-s3-policy)</li></ul>|
+|&lt;_environment_&gt;-rds-enhanced-monitoring||<ul><li>[AmazonRDSEnhancedMonitoringRole](#AmazonRDSEnhancedMonitoringRole)</li></ul>|
+|&lt;_cluster_name_&gt;-aws-node-irsa|AWS IAM Role for the Kubernetes service account aws-node.|<ul><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li></ul>|
+|&lt;_cluster_name_&gt;-cluster-autoscaler-sa-irsa|AWS IAM Role for the Kubernetes service account cluster-autoscaler-sa.|<ul><li>[&lt;_cluster_name_&gt;-cluster-autoscaler-irsa](#&lt;_cluster_name_&gt;-cluster-autoscaler-irsa)</li></ul>|
+|&lt;_cluster_name_&gt;-cluster-role||<ul><li>[AmazonEKSClusterPolicy](#AmazonEKSClusterPolicy)</li><li>[AmazonEKSVPCResourceController](#AmazonEKSVPCResourceController)</li><li>[&lt;_cluster_name_&gt;-cluster-role](#&lt;_cluster_name_&gt;-cluster-role)</li></ul>|
+|&lt;_cluster_name_&gt;-default|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li><li>[s3-access-policy](#s3-access-policy)</li></ul>|
+|&lt;_cluster_name_&gt;-ebs-csi-controller-irsa|AWS IAM Role for the Kubernetes service account ebs-csi-controller-sa.|<ul><li>[AmazonEBSCSIDriverPolicy](#AmazonEBSCSIDriverPolicy)</li></ul>|
+|&lt;_cluster_name_&gt;-efs-csi-controller-irsa|AWS IAM Role for the Kubernetes service account efs-csi-controller-sa.|<ul><li>[AmazonEFSCSIDriverPolicy](#AmazonEFSCSIDriverPolicy)</li></ul>|
+|&lt;_cluster_name_&gt;-execnodes|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li><li>[s3-access-policy](#s3-access-policy)</li></ul>|
+|&lt;_cluster_name_&gt;-flowlogs-role||<ul><li>[&lt;_cluster_name_&gt;-flowlogs-policy](#&lt;_cluster_name_&gt;-flowlogs-policy)</li></ul>|
+|&lt;_cluster_name_&gt;-gpuexecnodes-&lt;_driver_version_&gt;|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li></ul>|
+|&lt;_cluster_name_&gt;-gpuivsnodes|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li><li>[s3-access-policy](#s3-access-policy)</li></ul>|
+|&lt;_cluster_name_&gt;-license-server-role|IAM role used for the license server instance profile.|<ul><li>[&lt;_cluster_name_&gt;-license-server-policy](#&lt;_cluster_name_&gt;-license-server-policy)</li><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li></ul>|
+|&lt;_cluster_name_&gt;-&lt;_instance_environment_&gt;-ivs-sa-role|IAM Role for read and write access to IVS S3 buckets used by service account in cluster.|<ul><li>[&lt;_cluster_name_&gt;-&lt;_instance_environment_&gt;-ivs-sa-access-policy](#&lt;_cluster_name_&gt;-&lt;_instance_environment_&gt;-ivs-sa-access-policy)</li></ul>|
+|&lt;_cluster_name_&gt;-s3-csi-driver-irsa|AWS IAM Role for the Kubernetes service account s3-csi-driver-sa.|<ul><li>[Amazons3CSIDriverPolicy](#Amazons3CSIDriverPolicy)</li></ul>|
+|&lt;_cluster_name_&gt;-&lt;_environment_&gt;-s3-role|IAM role for the MinIO service account|<ul><li>[&lt;_cluster_name_&gt;-&lt;_environment_&gt;-s3-policy](#&lt;_cluster_name_&gt;-&lt;_environment_&gt;-s3-policy)</li></ul>|
+|&lt;_cluster_name_&gt;-winexecnodes|EKS Managed Node group IAM Role|<ul><li>[AmazonSSMManagedInstanceCore](#AmazonSSMManagedInstanceCore)</li><li>[AmazonEKS_CNI_Policy](#AmazonEKS_CNI_Policy)</li><li>[AmazonEC2ContainerRegistryReadOnly](#AmazonEC2ContainerRegistryReadOnly)</li><li>[AmazonEKSWorkerNodePolicy](#AmazonEKSWorkerNodePolicy)</li></ul>|
 
 ### ![Policies](https://raw.githubusercontent.com/awslabs/aws-icons-for-plantuml/main/dist/SecurityIdentityCompliance/IdentityAccessManagementPermissions.png) Policies
 
 | Policy name | Description | Managed By |
 | ----------- | ----------- | ---------- |
-|<a name="<_cluster name_>-<_environment_>-s3-policy"></a>[<_cluster name_>-<_environment_>-s3-policy](./)|Allows access to S3 bucket.|Customer|
+|<a name="&lt;_cluster_name_&gt;-&lt;_environment_&gt;-s3-policy"></a>[&lt;_cluster_name_&gt;-&lt;_environment_&gt;-s3-policy](./modules/simphera_aws_instance/templates/minio-policy.json#L1-L33)|Allows access to S3 bucket.|Customer|
 |<a name="AmazonRDSEnhancedMonitoringRole"></a>[AmazonRDSEnhancedMonitoringRole](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonRDSEnhancedMonitoringRole)|Provides access to Cloudwatch for RDS Enhanced Monitoring|AWS|
 |<a name="AmazonEKS_CNI_Policy"></a>[AmazonEKS_CNI_Policy](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEKS_CNI_Policy)|This policy provides the Amazon VPC CNI Plugin (amazon-vpc-cni-k8s) the permissions it requires to modify the IP address configuration on your EKS worker nodes. This permission set allows the CNI to list, describe, and modify Elastic Network Interfaces on your behalf. More information on the AWS VPC CNI Plugin is available here: <https://github.com/aws/amazon-vpc-cni-k8s>|AWS|
-|<a name="<_cluster name_>-cluster-autoscaler-irsa"></a>[<_cluster name_>-cluster-autoscaler-irsa](./)|Cluster Autoscaler IAM policy|Customer|
+|<a name="&lt;_cluster_name_&gt;-cluster-autoscaler-irsa"></a>[&lt;_cluster_name_&gt;-cluster-autoscaler-irsa](./modules/k8s_eks_addons/cluster-autoscaler.tf#L7)|Cluster Autoscaler IAM policy|Customer|
 |<a name="AmazonEKSClusterPolicy"></a>[AmazonEKSClusterPolicy](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEKSClusterPolicy)|This policy provides Kubernetes the permissions it requires to manage resources on your behalf. Kubernetes requires Ec2:CreateTags permissions to place identifying information on EC2 resources including but not limited to Instances, Security Groups, and Elastic Network Interfaces. |AWS|
-|<a name="AmazonEKSVPCResourceController"></a>[AmazonEKSVPCResourceController](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEKSVPCResourceController)|Policy used by VPC Resource Controller to manage ENI and IPs for worker nodes.|AWS|
+|<a name="AmazonEKSVPCResourceController"></a>[AmazonEKSVPCResourceController](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonEKSVPCResourceController.html#AmazonEKSVPCResourceController-json)|Policy used by VPC Resource Controller to manage ENI and IPs for worker nodes.|AWS|
 |<a name="AmazonSSMManagedInstanceCore"></a>[AmazonSSMManagedInstanceCore](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonSSMManagedInstanceCore)|The policy for Amazon EC2 Role to enable AWS Systems Manager service core functionality.|AWS|
 |<a name="AmazonEC2ContainerRegistryReadOnly"></a>[AmazonEC2ContainerRegistryReadOnly](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEC2ContainerRegistryReadOnly)|Provides read-only access to Amazon EC2 Container Registry repositories.|AWS|
 |<a name="AmazonEKSWorkerNodePolicy"></a>[AmazonEKSWorkerNodePolicy](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEKSWorkerNodePolicy)|This policy allows Amazon EKS worker nodes to connect to Amazon EKS Clusters.|AWS|
-|<a name="AmazonEBSCSIDriverPolicy"></a>[AmazonEBSCSIDriverPolicy](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEBSCSIDriverPolicy)|IAM Policy that allows the CSI driver service account to make calls to related services such as EC2 on your behalf.|AWS|
-|<a name="AmazonEFSCSIDriverPolicy"></a>[AmazonEFSCSIDriverPolicy](https://raw.githubusercontent.com/SummitRoute/aws_managed_policies/master/policies/AmazonEFSCSIDriverPolicy)|Provides management access to EFS resources and read access to EC2|AWS|
-|<a name="<_cluster name_>-flowlogs-policy"></a>[<_cluster name_>-flowlogs-policy](./)||Customer|
-|<a name="<_cluster name_>-license-server-policy"></a>[<_cluster name_>-license-server-policy](./)|Allows access to S3 bucket and Secure Session Manager connections.|Customer|
-|<a name="Amazons3CSIDriverPolicy"></a>[Amazons3CSIDriverPolicy](./)|Amazons3CSIDriverPolicy|Customer|
+|<a name="AmazonEBSCSIDriverPolicy"></a>[AmazonEBSCSIDriverPolicy](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonEBSCSIDriverPolicy.html#AmazonEBSCSIDriverPolicy-json)|IAM Policy that allows the CSI driver service account to make calls to related services such as EC2 on your behalf.|AWS|
+|<a name="AmazonEFSCSIDriverPolicy"></a>[AmazonEFSCSIDriverPolicy](https://docs.aws.amazon.com/aws-managed-policy/latest/reference/AmazonEFSCSIDriverPolicy.html#AmazonEFSCSIDriverPolicy-json)|Provides management access to EFS resources and read access to EC2|AWS|
+|<a name="&lt;_cluster_name_&gt;-flowlogs-policy"></a>[&lt;_cluster_name_&gt;-flowlogs-policy](./network.tf#L88)||Customer|
+|<a name="&lt;_cluster_name_&gt;-license-server-policy"></a>[&lt;_cluster_name_&gt;-license-server-policy](./templates/license_server_policy.json#L1)|Allows access to S3 bucket and Secure Session Manager connections.|Customer|
+|<a name="Amazons3CSIDriverPolicy"></a>[Amazons3CSIDriverPolicy](./modules/k8s_eks_addons/s3-csi.tf#L60-L87)|Amazons3CSIDriverPolicy|Customer|
+|<a name="s3-access-policy"></a>[s3-access-policy](./modules/ivs_aws_instance/storage.tf#L17)|Allows full access to IVS S3 buckets.|Customer|
+|<a name="&lt;_cluster_name_&gt;-&lt;_instance_environment_&gt;-ivs-sa-access-policy"></a>[&lt;_cluster_name_&gt;-&lt;_instance_environment_&gt;-ivs-sa-access-policy](./modules/ivs_aws_instance/storage.tf#L108)|Allows read and write access to IVS S3 buckets.|Customer|
+|<a name="&lt;_cluster_name_&gt;-cluster-role"></a>[&lt;_cluster_name_&gt;-cluster-role](./modules/eks/iam.tf#L15)|Inline policy used to block implicit creation of CloudWatch log group by EKS|Customer|
