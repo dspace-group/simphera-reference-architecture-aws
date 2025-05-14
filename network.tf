@@ -50,6 +50,7 @@ resource "aws_flow_log" "flowlog" {
   log_destination = aws_cloudwatch_log_group.flowlogs[0].arn
   traffic_type    = "ALL"
   vpc_id          = local.vpc_id
+  tags            = var.tags
 }
 
 resource "aws_cloudwatch_log_group" "flowlogs" {
@@ -78,6 +79,7 @@ resource "aws_iam_role" "flowlogs_role" {
   ]
 }
 EOF
+  tags               = var.tags
 }
 
 resource "aws_iam_policy" "flowlogs_policy" {
@@ -100,6 +102,7 @@ resource "aws_iam_policy" "flowlogs_policy" {
   ]
 }
 EOF
+  tags   = var.tags
 }
 
 resource "aws_iam_role_policy_attachment" "flowlogs_attachment" {
