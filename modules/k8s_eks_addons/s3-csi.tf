@@ -54,7 +54,7 @@ resource "aws_iam_role" "s3_csi_driver_role" {
 
 resource "aws_iam_policy" "Amazons3CSIDriverPolicy" {
   count       = var.s3_csi_config.enable ? 1 : 0
-  name        = "Amazons3CSIDriverPolicy"
+  name        = "${var.addon_context.eks_cluster_id}-s3-csi-driver-irsa"
   description = "Amazons3CSIDriverPolicy"
 
   policy = jsonencode({
