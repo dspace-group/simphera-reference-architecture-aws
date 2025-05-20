@@ -126,6 +126,11 @@ kubernetesVersion = "1.32"
 # Specifies whether a license server VM will be created.
 licenseServer = false
 
+# The capacity type of the Linux nodes to be used.
+# Defaults to 'ON_DEMAND' and can be changed to 'SPOT'.
+# Be ware that using spot instances can result in abrupt termination of simulation/validation jobs and corresponding 'error' results.
+linuxExecutionCapacityType = "ON_DEMAND"
+
 # The maximum number of Linux nodes for the job execution
 linuxExecutionNodeCountMax = 10
 
