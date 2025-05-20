@@ -42,7 +42,7 @@ variable "linuxExecutionNodeSize" {
 
 variable "linuxExecutionCapacityType" {
   type        = string
-  description = "The capacity type of the Linux nodes to be used. Defaults to 'ON_DEMAND' but can be changed to 'SPOT' Be ware that using spot instances can result in abrupt termination of simulation/validation jobs and corresponding 'error' results."
+  description = "The capacity type of the Linux nodes to be used. Defaults to 'ON_DEMAND' and can be changed to 'SPOT'. Be ware that using spot instances can result in abrupt termination of simulation/validation jobs and corresponding 'error' results."
   default     = "ON_DEMAND"
 }
 
