@@ -42,7 +42,7 @@ variable "linuxExecutionNodeSize" {
 
 variable "linuxExecutionCapacityType" {
   type        = string
-  description = "The capacity type of the Linux nodes to be used, either ON_DEMAND (default) or SPOT."
+  description = "The capacity type of the Linux nodes to be used. Defaults to 'ON_DEMAND' but can be changed to 'SPOT' Be ware that using spot instances can result in abrupt termination of simulation/validation jobs and corresponding 'error' results."
   default     = "ON_DEMAND"
 }
 
@@ -90,7 +90,7 @@ variable "gpuNodeSize" {
 
 variable "gpuCapacityType" {
   type        = string
-  description = "The capacity type of the nodes to be used for gpu job execution, either ON_DEMAND (default) or SPOT."
+  description = "The capacity type of the nodes to be used for gpu job execution. Defaults to 'ON_DEMAND' but can be changed to 'SPOT' Be ware that using spot instances can result in abrupt termination of simulation/validation jobs and corresponding 'error' results."
   default     = "ON_DEMAND"
 }
 
@@ -120,7 +120,7 @@ variable "ivsGpuNodeSize" {
 
 variable "ivsGpuCapacityType" {
   type        = string
-  description = "The capacity type of the GPU nodes for IVS jobs, either ON_DEMAND (default) or SPOT."
+  description = "The capacity type of the GPU nodes for IVS jobs. Defaults to 'ON_DEMAND' but can be changed to 'SPOT' Be ware that using spot instances can result in abrupt termination of jobs and corresponding 'error' results."
   default     = "ON_DEMAND"
 }
 
