@@ -95,7 +95,7 @@ locals {
     "gpuexecnodes-${driver_version_escaped}" => {
       node_group_name   = "gpuexecnodes-${driver_version_escaped}"
       instance_types    = var.gpuNodeSize
-      capacity_type     = var.gpuCapacityType
+      capacity_type     = "ON_DEMAND"
       subnet_ids        = local.private_subnets
       max_size          = var.gpuNodeCountMax
       min_size          = var.gpuNodeCountMin
@@ -119,7 +119,7 @@ locals {
     "gpuivsnodes" = {
       node_group_name   = "gpuivsnodes"
       instance_types    = var.ivsGpuNodeSize
-      capacity_type     = var.ivsGpuCapacityType
+      capacity_type     = "ON_DEMAND"
       subnet_ids        = local.private_subnets
       max_size          = var.ivsGpuNodeCountMax
       min_size          = var.ivsGpuNodeCountMin

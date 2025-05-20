@@ -88,12 +88,6 @@ variable "gpuNodeSize" {
   default     = ["g5.2xlarge"]
 }
 
-variable "gpuCapacityType" {
-  type        = string
-  description = "The capacity type of the nodes to be used for gpu job execution. Defaults to 'ON_DEMAND' but can be changed to 'SPOT' Be ware that using spot instances can result in abrupt termination of simulation/validation jobs and corresponding 'error' results."
-  default     = "ON_DEMAND"
-}
-
 variable "gpuNodeDiskSize" {
   type        = number
   description = "The disk size in GiB of the nodes for the gpu job execution"
@@ -116,12 +110,6 @@ variable "ivsGpuNodeSize" {
   type        = list(string)
   description = "The machine size of the GPU nodes for IVS jobs"
   default     = ["g4dn.2xlarge"]
-}
-
-variable "ivsGpuCapacityType" {
-  type        = string
-  description = "The capacity type of the GPU nodes for IVS jobs. Defaults to 'ON_DEMAND' but can be changed to 'SPOT' Be ware that using spot instances can result in abrupt termination of jobs and corresponding 'error' results."
-  default     = "ON_DEMAND"
 }
 
 variable "ivsGpuNodeCountMin" {
