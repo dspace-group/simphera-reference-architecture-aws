@@ -95,6 +95,7 @@ variable "node_groups" {
   type = map(object({
     node_group_name   = string
     instance_types    = list(string)
+    capacity_type     = optional(string, "ON_DEMAND")
     subnet_ids        = list(string)
     max_size          = number
     min_size          = number

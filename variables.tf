@@ -41,9 +41,9 @@ variable "linuxExecutionNodeSize" {
 }
 
 variable "linuxExecutionCapacityType" {
-  type        = list(string)
+  type        = string
   description = "The capacity type of the Linux nodes to be used, either ON_DEMAND (default) or SPOT."
-  default     = ["ON_DEMAND"]
+  default     = "ON_DEMAND"
 }
 
 variable "linuxExecutionNodeCountMin" {
@@ -89,9 +89,9 @@ variable "gpuNodeSize" {
 }
 
 variable "gpuCapacityType" {
-  type        = list(string)
+  type        = string
   description = "The capacity type of the nodes to be used for gpu job execution, either ON_DEMAND (default) or SPOT."
-  default     = ["ON_DEMAND"]
+  default     = "ON_DEMAND"
 }
 
 variable "gpuNodeDiskSize" {
@@ -119,9 +119,9 @@ variable "ivsGpuNodeSize" {
 }
 
 variable "ivsGpuCapacityType" {
-  type        = list(string)
+  type        = string
   description = "The capacity type of the GPU nodes for IVS jobs, either ON_DEMAND (default) or SPOT."
-  default     = ["ON_DEMAND"]
+  default     = "ON_DEMAND"
 }
 
 variable "ivsGpuNodeCountMin" {
