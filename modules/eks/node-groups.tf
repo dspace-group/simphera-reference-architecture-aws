@@ -5,6 +5,7 @@ module "node_group" {
   subnet_ids                = each.value.subnet_ids
   worker_security_group_ids = [aws_eks_cluster.eks.vpc_config[0].cluster_security_group_id]
   instance_types            = each.value.instance_types
+  capacity_type             = each.value.capacity_type
   max_size                  = each.value.max_size
   min_size                  = each.value.min_size
   ami_type                  = each.value.ami_type

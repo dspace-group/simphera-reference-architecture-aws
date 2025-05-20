@@ -40,6 +40,12 @@ variable "linuxExecutionNodeSize" {
   default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
+variable "linuxExecutionCapacityType" {
+  type        = list(string)
+  description = "The capacity type of the Linux nodes to be used, either ON_DEMAND (default) or SPOT."
+  default     = ["ON_DEMAND"]
+}
+
 variable "linuxExecutionNodeCountMin" {
   type        = number
   description = "The minimum number of Linux nodes for the job execution"
@@ -82,6 +88,12 @@ variable "gpuNodeSize" {
   default     = ["g5.2xlarge"]
 }
 
+variable "gpuCapacityType" {
+  type        = list(string)
+  description = "The capacity type of the nodes to be used for gpu job execution, either ON_DEMAND (default) or SPOT."
+  default     = ["ON_DEMAND"]
+}
+
 variable "gpuNodeDiskSize" {
   type        = number
   description = "The disk size in GiB of the nodes for the gpu job execution"
@@ -104,6 +116,12 @@ variable "ivsGpuNodeSize" {
   type        = list(string)
   description = "The machine size of the GPU nodes for IVS jobs"
   default     = ["g4dn.2xlarge"]
+}
+
+variable "ivsGpuCapacityType" {
+  type        = list(string)
+  description = "The capacity type of the GPU nodes for IVS jobs, either ON_DEMAND (default) or SPOT."
+  default     = ["ON_DEMAND"]
 }
 
 variable "ivsGpuNodeCountMin" {

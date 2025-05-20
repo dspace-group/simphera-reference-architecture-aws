@@ -40,6 +40,7 @@ locals {
     "default" = {
       node_group_name = "default"
       instance_types  = var.linuxNodeSize
+      capacity_type   = "ON_DEMAND"
       subnet_ids      = local.private_subnets
       max_size        = var.linuxNodeCountMax
       min_size        = var.linuxNodeCountMin
@@ -48,6 +49,7 @@ locals {
     "execnodes" = {
       node_group_name = "execnodes"
       instance_types  = var.linuxExecutionNodeSize
+      capacity_type   = var.linuxExecutionCapacityType
       subnet_ids      = local.private_subnets
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
@@ -69,6 +71,7 @@ locals {
     "winexecnodes" = {
       node_group_name   = "winexecnodes"
       instance_types    = var.windows_execution_node.node_size
+      capacity_type     = "ON_DEMAND"
       subnet_ids        = local.private_subnets
       max_size          = var.windows_execution_node.node_count_max
       min_size          = var.windows_execution_node.node_count_min
@@ -92,6 +95,7 @@ locals {
     "gpuexecnodes-${driver_version_escaped}" => {
       node_group_name   = "gpuexecnodes-${driver_version_escaped}"
       instance_types    = var.gpuNodeSize
+      capacity_type     = var.gpuCapacityType
       subnet_ids        = local.private_subnets
       max_size          = var.gpuNodeCountMax
       min_size          = var.gpuNodeCountMin
@@ -115,6 +119,7 @@ locals {
     "gpuivsnodes" = {
       node_group_name   = "gpuivsnodes"
       instance_types    = var.ivsGpuNodeSize
+      capacity_type     = var.ivsGpuCapacityType
       subnet_ids        = local.private_subnets
       max_size          = var.ivsGpuNodeCountMax
       min_size          = var.ivsGpuNodeCountMin
