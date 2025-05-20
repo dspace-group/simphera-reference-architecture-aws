@@ -51,6 +51,7 @@
   },
   "kubernetesVersion": "1.32",
   "licenseServer": false,
+  "linuxExecutionCapacityType": "ON_DEMAND",
   "linuxExecutionNodeCountMax": 10,
   "linuxExecutionNodeCountMin": 0,
   "linuxExecutionNodeDiskSize": 200,
