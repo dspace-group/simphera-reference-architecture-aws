@@ -18,6 +18,11 @@ variable "instance_types" {
   type        = list(string)
 }
 
+variable "capacity_type" {
+  description = "Capacity type associated with the EKS Node Group, 'ON_DEMAND' or 'SPOT'"
+  type        = string
+}
+
 variable "max_size" {
   description = "Maximum number of worker nodes"
   type        = number

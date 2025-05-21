@@ -40,6 +40,12 @@ variable "linuxExecutionNodeSize" {
   default     = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
 }
 
+variable "linuxExecutionNodeCapacityType" {
+  type        = string
+  description = "The capacity type of the Linux nodes to be used. Defaults to 'ON_DEMAND' and can be changed to 'SPOT'. Be ware that using spot instances can result in abrupt termination of simulation/validation jobs and corresponding 'error' results."
+  default     = "ON_DEMAND"
+}
+
 variable "linuxExecutionNodeCountMin" {
   type        = number
   description = "The minimum number of Linux nodes for the job execution"
@@ -496,6 +502,7 @@ variable "windows_execution_node" {
   type = object({
     enable         = bool
     node_size      = list(string)
+    capacity_type  = string
     disk_size      = number
     node_count_min = number
     node_count_max = number
@@ -504,6 +511,7 @@ variable "windows_execution_node" {
   default = {
     enable         = false
     node_size      = ["m6a.4xlarge", "m5a.4xlarge", "m5.4xlarge", "m6i.4xlarge", "m4.4xlarge", "m7i.4xlarge", "m7a.4xlarge"]
+    capacity_type  = "ON_DEMAND"
     disk_size      = 200
     node_count_min = 0
     node_count_max = 2

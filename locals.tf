@@ -48,6 +48,7 @@ locals {
     "execnodes" = {
       node_group_name = "execnodes"
       instance_types  = var.linuxExecutionNodeSize
+      capacity_type   = var.linuxExecutionNodeCapacityType
       subnet_ids      = local.private_subnets
       max_size        = var.linuxExecutionNodeCountMax
       min_size        = var.linuxExecutionNodeCountMin
@@ -69,6 +70,7 @@ locals {
     "winexecnodes" = {
       node_group_name   = "winexecnodes"
       instance_types    = var.windows_execution_node.node_size
+      capacity_type     = var.windows_execution_node.capacity_type
       subnet_ids        = local.private_subnets
       max_size          = var.windows_execution_node.node_count_max
       min_size          = var.windows_execution_node.node_count_min
