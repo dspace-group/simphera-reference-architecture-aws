@@ -1,3 +1,7 @@
+## v0.6.0
+
+- Added option to use SPOT instances for execution nodes.
+
 ## v0.5.0
 
 - Implemented deployment of an OpenSearch Domain for usage in IVS
