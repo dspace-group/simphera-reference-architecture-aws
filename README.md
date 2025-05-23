@@ -140,6 +140,7 @@ The bucket name needs to be globally unique.
 After you have created the bucket, you need to link it with Terraform:
 To do so, please make a copy of the file `state-backend-template`, name it `state-backend.tf` and open the file in a text editor. With this backend configuration, Terraform stores the state as a given `key` in the given S3 `bucket` you have created before.
 
+
 ```hcl
 terraform {
   backend "s3" {
@@ -194,7 +195,6 @@ You have to provide the name of the certain secrets in your Terraform variables.
 To create required secrets, follow these instructions.
 
 #### PostgreSQL (SIMPHERA)
-
 Username and password for the PostgreSQL databases are stored in AWS Secrets Manager.
 Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
 It is recommended to create individual secrets per SIMPHERA instance (e.g. production and staging instance).
@@ -226,7 +226,6 @@ On the next page you can define a name for the secret.
 Automatic credentials rotation is currently not supported by SIMPHERA, but you can <a href="#rotating-credentials">rotate secrets manually</a>.
 
 #### OpenSearch (IVS)
-
 Master username and master password for the OpenSearch databases are stored in AWS Secrets Manager.
 Before you let Terraform create AWS resources, you need to manually create a Secrets Manager secret that stores the username and password.
 It is recommended to create individual secrets per IVS instance (e.g. production and staging instance).
@@ -248,7 +247,6 @@ For your configuration, please rename the template file `terraform.tfvars.exampl
 This file contains all variables that are configurable including documentation of the variables. Please adapt the values before you deploy the resources.
 
 For example, adapt name of the secret used for PostgreSQL, related to the SIMPHERA product:
-
 ```diff
 simpheraInstances = {
   "production" = {
@@ -453,7 +451,7 @@ You can restore the S3 data in-place, into another existing bucket, or into a ne
 $uuid = New-Guid
 $metadata = @"
 {
-  "DestinationBucketName": "DESTINATION_BUCKET_NAME",
+  "DestinationBucketName": "man-validation-platform-int-results",
   "NewBucket": "true",
   "RestoreTime": "2022-06-20T23:45:00.000Z",
   "Encrypted": "false",
@@ -488,7 +486,6 @@ To backup MongoDB EBS volume, user can use [restore_mongodb.ps1](scripts/restore
 First find a EBS snapshot arn in IVS backup vault (terraform output backup_vaults) at AWS GUI.
 
 Then just run aforementioned script in powershell console, example:
-
 ```
 ./restore_mongodb.ps1 -clusterid "aws-preprod-dev-eks" -snapshot_arn "arn:aws:ec2:eu-central-1::snapshot/snap-0123456789a" -rolearn "arn:aws:iam::012345678901:role/restorerole" -profile "profile-1" -region "eu-central-1" -kubeconfig "C:\Users\user1\.kube\clusterid\config" -ivs_release_name "ivs" -namespace "ivs"
 ```
@@ -501,19 +498,16 @@ For restoring backup of data or raw-data S3 buckets refer to [SIMPHERA Administr
 
 Connect to one of the EKS node shell.
 Get list of all available snapshots you want to restore:
-
 ```
 curl -XGET -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_cat/snapshots/cs-automated-enc?v'
 ```
 
 Run command to close index you wish to restore:
-
 ```
 curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/INDEX_NAME/_close'
 ```
 
 Run command to restore certain index:
-
 ```
 curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-automated-enc/SNAPSHOT_ID/_restore?wait_for_completion' -H 'Content-Type: application/json' -d'
 {
@@ -523,10 +517,10 @@ curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/_snapshot/cs-autom
 ```
 
 Run command to open index you restored:
-
 ```
 curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/INDEX_NAME/_open
 ```
+
 
 ## Encryption
 
