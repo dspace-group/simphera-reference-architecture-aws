@@ -451,7 +451,7 @@ You can restore the S3 data in-place, into another existing bucket, or into a ne
 $uuid = New-Guid
 $metadata = @"
 {
-  "DestinationBucketName": "man-validation-platform-int-results",
+  "DestinationBucketName": "DESTINATION_BUCKET_NAME",
   "NewBucket": "true",
   "RestoreTime": "2022-06-20T23:45:00.000Z",
   "Encrypted": "false",
