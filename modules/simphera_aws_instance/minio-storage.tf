@@ -94,7 +94,7 @@ resource "aws_s3_bucket_logging" "logging" {
   bucket = aws_s3_bucket.bucket.id
   #[S3.9] S3 bucket server access logging should be enabled
   target_bucket = var.log_bucket
-  target_prefix = "logs/bucket/${aws_s3_bucket.bucket.id}"
+  target_prefix = "logs/bucket/${aws_s3_bucket.bucket.id}/"
 }
 
 resource "aws_s3_bucket_versioning" "bucket_versioning" {

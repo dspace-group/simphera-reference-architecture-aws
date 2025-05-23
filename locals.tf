@@ -35,6 +35,14 @@ locals {
   create_efs                                = local.create_simphera_resources ? 1 : 0
   storage_subnets                           = local.create_efs > 0 ? { for index, zone in local.private_subnets : "zone${index}" => local.private_subnets[index] } : {}
   gpu_driver_versions_escaped               = { for driver in var.gpu_operator_config.driver_versions : driver => replace(driver, ".", "-") if var.gpu_operator_config.enable }
+  s3_ssl_policy                             = jsondecode(templatefile("${path.module}/templates/s3_ssl_policy.json", { bucket = aws_s3_bucket.bucket_logs.bucket })) # [S3.5] S3 buckets should require requests to use Secure Socket Layer
+  s3_logging_policy                         = jsondecode(templatefile("${path.module}/templates/s3_log_policy.json", { bucket = aws_s3_bucket.bucket_logs.bucket })) # https://docs.aws.amazon.com/AmazonS3/latest/userguide/ServerLogs.html?icmpid=docs_amazons3_console#how-logs-delivered
+
+  log_bucket_policy = {
+    Version   = "2012-10-17"
+    Statement = concat(local.s3_ssl_policy.Statement, local.s3_logging_policy.Statement)
+  }
+
 
   default_node_pools = {
     "default" = {
