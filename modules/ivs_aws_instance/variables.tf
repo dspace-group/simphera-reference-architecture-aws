@@ -32,14 +32,20 @@ variable "tags" {
   default     = {}
 }
 
-variable "dataBucketName" {
-  type        = string
-  description = "The name of the data bucket."
+variable "data_bucket" {
+  type = object({
+    name   = string
+    create = optional(bool, true)
+    arn    = optional(string, "")
+  })
 }
 
-variable "rawDataBucketName" {
-  type        = string
-  description = "The name of the raw data bucket."
+variable "raw_data_bucket" {
+  type = object({
+    name   = string
+    create = optional(bool, true)
+    arn    = optional(string, "")
+  })
 }
 
 variable "nodeRoleNames" {
