@@ -87,24 +87,24 @@ resource "aws_backup_selection" "ebs" {
 }
 
 resource "aws_backup_selection" "s3" {
-  count        = var.backup_service_enable ? 1 : 0
+  count        = var.backup_service_enable && (local.managed_buckets != []) ? 1 : 0
   iam_role_arn = aws_iam_role.backup_iam_role[0].arn
   name         = "${local.instance_identifier}-s3-selection"
   plan_id      = aws_backup_plan.backup_plan[0].id
-  resources    = [aws_s3_bucket.data_bucket.arn, aws_s3_bucket.rawdata_bucket.arn]
+  resources    = local.managed_buckets
 }
 
 resource "aws_s3_bucket_versioning" "data_bucket" {
-  count  = var.backup_service_enable ? 1 : 0
-  bucket = aws_s3_bucket.data_bucket.id
+  count  = var.backup_service_enable && var.data_bucket.create ? 1 : 0
+  bucket = aws_s3_bucket.data_bucket[0].id
   versioning_configuration {
     status = "Enabled"
   }
 }
 
 resource "aws_s3_bucket_versioning" "rawdata_bucket" {
-  count  = var.backup_service_enable ? 1 : 0
-  bucket = aws_s3_bucket.rawdata_bucket.id
+  count  = var.backup_service_enable && var.raw_data_bucket.create ? 1 : 0
+  bucket = aws_s3_bucket.rawdata_bucket[0].id
   versioning_configuration {
     status = "Enabled"
   }

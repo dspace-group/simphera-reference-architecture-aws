@@ -1,11 +1,13 @@
 resource "aws_s3_bucket" "data_bucket" {
-  bucket        = var.dataBucketName
+  count         = var.data_bucket.create ? 1 : 0
+  bucket        = var.data_bucket.name
   tags          = var.tags
   force_destroy = var.enable_deletion_protection ? false : true
 }
 
 resource "aws_s3_bucket" "rawdata_bucket" {
-  bucket        = var.rawDataBucketName
+  count         = var.raw_data_bucket.create ? 1 : 0
+  bucket        = var.raw_data_bucket.name
   tags          = var.tags
   force_destroy = var.enable_deletion_protection ? false : true
 }
@@ -15,42 +17,42 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
   role     = each.value
   name     = "s3-access-policy"
   policy   = <<EOF
-{
-    "Version": "2012-10-17",
-    "Statement": [
-        {
-            "Action": [
-                "s3:GetEncryptionConfiguration"
-            ],
-            "Effect": "Allow",
-            "Resource": "*"
-        },
-        {
-            "Action": [
-                "s3:ListBucket"
-            ],
-            "Effect": "Allow",
-            "Resource": [
-                "${aws_s3_bucket.data_bucket.arn}",
-                "${aws_s3_bucket.rawdata_bucket.arn}"
-            ],
-            "Condition": {
-                "StringEquals": {
-                    "${local.goofys_user_agent_name}"
+    {
+        "Version": "2012-10-17",
+        "Statement": [
+            {
+                "Action": [
+                    "s3:GetEncryptionConfiguration"
+                ],
+                "Effect": "Allow",
+                "Resource": "*"
+            },
+            {
+                "Action": [
+                    "s3:ListBucket"
+                ],
+                "Effect": "Allow",
+                "Resource": [
+                    "${local.data_bucket_arn}",
+                    "${local.raw_data_bucket_arn}"
+                ],
+                "Condition": {
+                    "StringEquals": {
+                        "${local.goofys_user_agent_name}"
+                    }
                 }
-            }
-        },
-        {
-            "Action": [
-                "s3:Get*",
-                "s3:List*",
-                "s3-object-lambda:Get*",
+            },
+            {
+                "Action": [
+                    "s3:Get*",
+                    "s3:List*",
+                    "s3-object-lambda:Get*",
                 "s3-object-lambda:List*"
             ],
             "Effect": "Allow",
             "Resource": [
-                "${aws_s3_bucket.data_bucket.arn}/*",
-                "${aws_s3_bucket.rawdata_bucket.arn}/*"
+                "${local.data_bucket_arn}/*",
+                "${local.raw_data_bucket_arn}/*"
             ],
             "Condition": {
                 "StringEquals": {
@@ -60,23 +62,23 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
         },
         {
             "Action": [
-                "s3:DeleteObject",
-                "s3:PutObject"
-            ],
-            "Effect": "Allow",
-            "Resource": [
-                "${aws_s3_bucket.data_bucket.arn}/*",
-                "${aws_s3_bucket.rawdata_bucket.arn}/*"
-            ],
-            "Condition": {
-                "StringEquals": {
-                    "${local.goofys_user_agent_name}"
+                    "s3:DeleteObject",
+                    "s3:PutObject"
+                ],
+                "Effect": "Allow",
+                "Resource": [
+                    "${local.data_bucket_arn}/*",
+                    "${local.raw_data_bucket_arn}/*"
+                ],
+                "Condition": {
+                    "StringEquals": {
+                        "${local.goofys_user_agent_name}"
+                    }
                 }
             }
-        }
-    ]
-}
-EOF
+        ]
+    }
+    EOF
 }
 
 resource "aws_iam_role" "s3_access" {
@@ -122,8 +124,8 @@ resource "aws_iam_role_policy" "s3_access" {
                 ],
                 "Effect": "Allow",
                 "Resource": [
-                    "${aws_s3_bucket.data_bucket.arn}",
-                    "${aws_s3_bucket.rawdata_bucket.arn}"
+                    "${local.data_bucket_arn}",
+                    "${local.raw_data_bucket_arn}"
                 ]
             },
             {
@@ -135,8 +137,8 @@ resource "aws_iam_role_policy" "s3_access" {
                 ],
                 "Effect": "Allow",
                 "Resource": [
-                    "${aws_s3_bucket.data_bucket.arn}/*",
-                    "${aws_s3_bucket.rawdata_bucket.arn}/*"
+                    "${local.data_bucket_arn}/*",
+                    "${local.raw_data_bucket_arn}/*"
                 ]
             },
             {
@@ -145,8 +147,8 @@ resource "aws_iam_role_policy" "s3_access" {
                 ],
                 "Effect": "Allow",
                 "Resource": [
-                    "${aws_s3_bucket.data_bucket.arn}/*",
-                    "${aws_s3_bucket.rawdata_bucket.arn}/*"
+                    "${local.data_bucket_arn}/*",
+                    "${local.raw_data_bucket_arn}/*"
                 ]
             }
         ]
