@@ -310,9 +310,17 @@ variable "simphera_monitoring_namespace" {
 
 variable "ivsInstances" {
   type = map(object({
-    k8s_namespace                        = string
-    dataBucketName                       = string
-    rawDataBucketName                    = string
+    k8s_namespace = string
+    data_bucket = optional(object({
+      name   = string
+      create = optional(bool, true)
+      arn    = optional(string, "")
+    }))
+    raw_data_bucket = optional(object({
+      name   = string
+      create = optional(bool, true)
+      arn    = optional(string, "")
+    }))
     goofys_user_agent_sdk_and_go_version = optional(map(string), { sdk_version = "1.44.37", go_version = "1.17.7" })
     opensearch = optional(object({
       enable                  = optional(bool, false)
@@ -333,9 +341,13 @@ variable "ivsInstances" {
   description = "A list containing the individual IVS instances, such as 'staging' and 'production'. 'opensearch' object is used for enabling AWS OpenSearch Domain creation.'opensearch.master_user_secret_name' is an AWS secret containing key 'master_user' and 'master_password'. 'opensearch.instance_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/"
   default = {
     "production" = {
-      k8s_namespace     = "ivs"
-      dataBucketName    = "demo-ivs"
-      rawDataBucketName = "demo-ivs-rawdata"
+      k8s_namespace = "ivs"
+      data_bucket = {
+        name = "demo-ivs"
+      }
+      raw_data_bucket = {
+        name = "demo-ivs-rawdata"
+      }
       opensearch = {
         enable = false
       }

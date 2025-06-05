@@ -41,12 +41,16 @@
   ],
   "ivsInstances": {
     "production": {
-      "dataBucketName": "demo-ivs",
+      "data_bucket": {
+        "name": "demo-ivs"
+      },
       "k8s_namespace": "ivs",
       "opensearch": {
         "enable": false
       },
-      "rawDataBucketName": "demo-ivs-rawdata"
+      "raw_data_bucket": {
+        "name": "demo-ivs-rawdata"
+      }
     }
   },
   "kubernetesVersion": "1.32",
