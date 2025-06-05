@@ -111,12 +111,16 @@ ivsGpuNodeSize = [
 # 'opensearch.instance_type' must have option for ebs storage, check available type at https://aws.amazon.com/opensearch-service/pricing/.
 ivsInstances = {
   "production": {
-    "dataBucketName": "demo-ivs",
+    "data_bucket": {
+      "name": "demo-ivs"
+    },
     "k8s_namespace": "ivs",
     "opensearch": {
       "enable": false
     },
-    "rawDataBucketName": "demo-ivs-rawdata"
+    "raw_data_bucket": {
+      "name": "demo-ivs-rawdata"
+    }
   }
 }
 
