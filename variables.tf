@@ -311,16 +311,14 @@ variable "simphera_monitoring_namespace" {
 variable "ivsInstances" {
   type = map(object({
     k8s_namespace = string
-    data_bucket = optional(object({
+    data_bucket = object({
       name   = string
       create = optional(bool, true)
-      arn    = optional(string, "")
-    }))
-    raw_data_bucket = optional(object({
+    })
+    raw_data_bucket = object({
       name   = string
       create = optional(bool, true)
-      arn    = optional(string, "")
-    }))
+    })
     goofys_user_agent_sdk_and_go_version = optional(map(string), { sdk_version = "1.44.37", go_version = "1.17.7" })
     opensearch = optional(object({
       enable                  = optional(bool, false)

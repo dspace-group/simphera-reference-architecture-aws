@@ -33,20 +33,18 @@ variable "tags" {
 }
 
 variable "data_bucket" {
-  description = "Object containing name of the bucket. If flag `create` is set to `false` it is expected that bucket already exist. In that case `arn` should be set to an ARN of an existing bucket."
+  description = "Object containing name of the bucket. If flag `create` is set to `false` it is expected that bucket already exist."
   type = object({
     name   = string
     create = optional(bool, true)
-    arn    = optional(string, "")
   })
 }
 
 variable "raw_data_bucket" {
-  description = "Object containing name of the bucket. If flag `create` is set to `false` it is expected that bucket already exist. In that case `arn` should be set to an ARN of an existing bucket."
+  description = "Object containing name of the bucket. If flag `create` is set to `false` it is expected that bucket already exist."
   type = object({
     name   = string
     create = optional(bool, true)
-    arn    = optional(string, "")
   })
 }
 
