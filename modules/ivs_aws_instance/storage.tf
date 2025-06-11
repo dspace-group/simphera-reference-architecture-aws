@@ -35,7 +35,7 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             "Resource": [
                 "${local.data_bucket_arn}",
                 "${local.raw_data_bucket_arn}"
-            ],
+            ]
         },
         {
             "Action": [
@@ -48,7 +48,7 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             "Resource": [
                 "${local.data_bucket_arn}/*",
                 "${local.raw_data_bucket_arn}/*"
-            ],
+            ]
         },
         {
             "Action": [
@@ -59,7 +59,7 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
             "Resource": [
                 "${local.data_bucket_arn}/*",
                 "${local.raw_data_bucket_arn}/*"
-            ],
+            ]
         }
     ]
 }
