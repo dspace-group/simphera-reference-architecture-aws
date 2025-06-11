@@ -17,53 +17,53 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
   role     = each.value
   name     = "s3-access-policy"
   policy   = <<EOF
-    {
-        "Version": "2012-10-17",
-        "Statement": [
-            {
-                "Action": [
-                    "s3:GetEncryptionConfiguration"
-                ],
-                "Effect": "Allow",
-                "Resource": "*"
-            },
-            {
-                "Action": [
-                    "s3:ListBucket"
-                ],
-                "Effect": "Allow",
-                "Resource": [
-                    "${local.data_bucket_arn}",
-                    "${local.raw_data_bucket_arn}"
-                ]
-            },
-            {
-                "Action": [
-                    "s3:Get*",
-                    "s3:List*",
-                    "s3-object-lambda:Get*",
-                    "s3-object-lambda:List*"
-                ],
-                "Effect": "Allow",
-                "Resource": [
-                    "${local.data_bucket_arn}/*",
-                    "${local.raw_data_bucket_arn}/*"
-                ],
-            },
-            {
-                "Action": [
-                    "s3:DeleteObject",
-                    "s3:PutObject"
-                ],
-                "Effect": "Allow",
-                "Resource": [
-                    "${local.data_bucket_arn}/*",
-                    "${local.raw_data_bucket_arn}/*"
-                ]
-            }
-        ]
-    }
-    EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Action": [
+                "s3:GetEncryptionConfiguration"
+            ],
+            "Effect": "Allow",
+            "Resource": "*"
+        },
+        {
+            "Action": [
+                "s3:ListBucket"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "${local.data_bucket_arn}",
+                "${local.raw_data_bucket_arn}"
+            ],
+        },
+        {
+            "Action": [
+                "s3:Get*",
+                "s3:List*",
+                "s3-object-lambda:Get*",
+                "s3-object-lambda:List*"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "${local.data_bucket_arn}/*",
+                "${local.raw_data_bucket_arn}/*"
+            ],
+        },
+        {
+            "Action": [
+                "s3:DeleteObject",
+                "s3:PutObject"
+            ],
+            "Effect": "Allow",
+            "Resource": [
+                "${local.data_bucket_arn}/*",
+                "${local.raw_data_bucket_arn}/*"
+            ],
+        }
+    ]
+}
+EOF
 }
 
 resource "aws_iam_role" "s3_access" {
