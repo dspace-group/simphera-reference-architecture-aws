@@ -43,15 +43,15 @@ resource "aws_iam_role_policy" "eks_node_s3_access_policy" {
                     "s3:List*",
                     "s3-object-lambda:Get*",
                     "s3-object-lambda:List*"
-            ],
-            "Effect": "Allow",
-            "Resource": [
-                "${local.data_bucket_arn}/*",
-                "${local.raw_data_bucket_arn}/*"
-            ],
-        },
-        {
-            "Action": [
+                ],
+                "Effect": "Allow",
+                "Resource": [
+                    "${local.data_bucket_arn}/*",
+                    "${local.raw_data_bucket_arn}/*"
+                ],
+            },
+            {
+                "Action": [
                     "s3:DeleteObject",
                     "s3:PutObject"
                 ],
