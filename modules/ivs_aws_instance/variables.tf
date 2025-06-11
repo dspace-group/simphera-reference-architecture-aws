@@ -32,14 +32,20 @@ variable "tags" {
   default     = {}
 }
 
-variable "dataBucketName" {
-  type        = string
-  description = "The name of the data bucket."
+variable "data_bucket" {
+  description = "Object containing name of the bucket. If flag `create` is set to `false` it is expected that bucket already exist."
+  type = object({
+    name   = string
+    create = optional(bool, true)
+  })
 }
 
-variable "rawDataBucketName" {
-  type        = string
-  description = "The name of the raw data bucket."
+variable "raw_data_bucket" {
+  description = "Object containing name of the bucket. If flag `create` is set to `false` it is expected that bucket already exist."
+  type = object({
+    name   = string
+    create = optional(bool, true)
+  })
 }
 
 variable "nodeRoleNames" {

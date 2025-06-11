@@ -1,6 +1,7 @@
 ## v0.6.0
 
 - Added option to use SPOT instances for execution nodes.
+- Implement optional creation of IVS buckets
 
 ## v0.5.0
 
