@@ -526,11 +526,20 @@ curl -XPOST -u 'USERNAME:PASSWORD' 'https://OPENSEARCH_DOMAIN/INDEX_NAME/_open
 
 Encryption is enabled at all AWS resources that are created by Terraform:
 
+- EKS/secrets
+  - encrypted using Customer managed KMS key created at [kms.tf](.\modules\eks\kms.tf)
 - PostgreSQL databases
+  - RDS DB instances storage is encrypted by AWS managed KMS key of alias `aws/rds`
 - S3 buckets
+  - encrypted by Server-side encryption with AWS Key Management Service keys (SSE-KMS), AWS managed KMS of alias `aws/s3` is used
 - EFS (Elastic file system)
+  - encrypted using AWS managed KMS key of alias `aws/elasticfilesystem`
+- EBS volumes attached to EC2 instances
+  - encrypted using AWS managed KMS key of alias `aws/ebs`
 - CloudWatch logs
+  - encrypted using Customer managed KMS key created at [logging.tf](.\logging.tf#L43)
 - Backup Vault
+  - encrypted using AWS managed KMS key of alias `aws/backup`
 
 ## List of tools with versions needed for dSPACE cloud products reference architecture deployment
 
