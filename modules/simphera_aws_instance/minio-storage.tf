@@ -1,8 +1,7 @@
 resource "aws_iam_role" "minio_iam_role" {
   name        = "${local.instancename}-s3-role"
-  description = "AWS IAM Role for the Kubernetes service account minio-irsa."
-  #depends_on  = [aws_iam_policy.minio_policy]
-  tags = var.tags
+  description = "IAM role for the MinIO service account."
+  tags        = var.tags
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
     "Statement" : [
@@ -38,8 +37,7 @@ resource "aws_iam_policy" "minio_policy" {
 
 resource "aws_iam_role" "executor_role" {
   name        = "${var.name}-executoragentlinux"
-  description = "AWS IAM role to allow"
-  #depends_on = [ aws_iam_policy.minio_policy ]
+  description = "AWS IAM Role for the Kubernetes service account minio-irsa."
   # Terraform's "jsonencode" function converts a
   # Terraform expression result to valid JSON syntax.
   assume_role_policy = jsonencode({
