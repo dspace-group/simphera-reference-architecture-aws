@@ -1,7 +1,7 @@
 resource "aws_iam_role" "cluster_role" {
   name                  = local.cluster_iam_role_name
   path                  = null
-  description           = null
+  description           = "AWS IAM role that provides permissions for the Kubernetes control plane to make calls to AWS API operations."
   assume_role_policy    = data.aws_iam_policy_document.assume_role_policy.json
   permissions_boundary  = null
   force_detach_policies = true

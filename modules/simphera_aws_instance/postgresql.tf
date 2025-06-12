@@ -96,7 +96,8 @@ resource "kubernetes_secret" "aws_tls_certificate" {
 
 
 resource "aws_iam_role" "rds_enhanced_monitoring_role" {
-  name = "${var.name}-rds-enhanced-monitoring"
+  name        = "${var.name}-rds-enhanced-monitoring"
+  description = "AWS AM role that permits RDS to send enhanced monitoring metrics to CloudWatch Logs."
   assume_role_policy = jsonencode(
     {
       "Version" : "2012-10-17",
