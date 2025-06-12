@@ -1,6 +1,6 @@
 resource "aws_iam_role" "minio_iam_role" {
   name        = "${local.instancename}-s3-role"
-  description = "IAM role for the MinIO service account."
+  description = "IAM role for the MinIO service account"
   tags        = var.tags
   assume_role_policy = jsonencode({
     "Version" : "2012-10-17",
