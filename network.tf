@@ -64,6 +64,7 @@ resource "aws_cloudwatch_log_group" "flowlogs" {
 resource "aws_iam_role" "flowlogs_role" {
   count              = local.create_vpc ? 1 : 0
   name               = "${local.infrastructurename}-flowlogs-role"
+  description        = "AWS IAM service role for VPC flow logs."
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
