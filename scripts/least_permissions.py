@@ -32,7 +32,7 @@ timestamp_pattern = r"^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}[+-]\d{4}"
 
 
 def format_log(log_path: Path) -> list:
-    with open(log_path, "r") as logs:
+    with open(log_path, "r", encoding="utf-8") as logs:
         lines = logs.readlines()
     formatted_lines = []
     for line in lines:
@@ -46,7 +46,7 @@ def format_log(log_path: Path) -> list:
 
 def create_action(match: dict) -> str:
     service = special_services.get(match["service"], match["service"]).lower()
-    return "{}:{}".format(service, match["method"])
+    return f"{service}:{match['method']}"
 
 
 def extract_actions(logs: list) -> set:
@@ -76,8 +76,8 @@ def create_policy(actions: set, output_path: Path) -> None:
         "Version": "2012-10-17",
         "Statement": [{"Effect": "Allow", "Action": list(sorted(actions)), "Resource": "*"}],
     }
-    with open(output_path, "w+") as output:
-        logging.info(f"Outputting to {output_path}")
+    with open(output_path, "w+", encoding="utf-8") as output:
+        logging.info("Outputting to %s", output_path)
         json.dump(policy, output, indent=4)
 
 
@@ -89,5 +89,5 @@ def main(args: Args):
 
 
 if __name__ == "__main__":
-    args = parse_args()
-    main(args)
+    parsed_arguments = parse_args()
+    main(parsed_arguments)
