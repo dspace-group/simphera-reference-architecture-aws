@@ -69,6 +69,9 @@ To create the AWS resources that are required for operating the dSPACE Cloud Pro
 1. install Terraform on your local administration PC
 1. register an AWS account where the resources needed for dSPACE Cloud Products are created
 1. create an IAM user with least privileges required to create the resources for dSPACE Cloud Products
+  - to deploy all products use [deploy_all_policy.json](./templates/least_permissions/deploy_all_policy.json)
+  - for SIMPHERA deployment use [deploy_simphera_policy.json](./templates/least_permissions/deploy_simphera_policy.json)
+  - for IVS deployment use [deploy_ivs_policy.json](./templates/least_permissions/deploy_ivs_policy.json)
 1. create security credentials for that IAM user
 1. request service quota increase for gpu instances if needed
 1. create non-public S3 bucket for Terraform state
